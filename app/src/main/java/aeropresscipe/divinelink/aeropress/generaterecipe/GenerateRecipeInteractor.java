@@ -1,4 +1,13 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe;
 
-interface GenerateRecipeInteractor {
+public interface GenerateRecipeInteractor {
+
+    void getRecipe(OnGenerateRecipeFinishListener listener);
+
+    interface OnGenerateRecipeFinishListener{
+
+        void onSuccess();
+
+        void onError();
+    }
 }

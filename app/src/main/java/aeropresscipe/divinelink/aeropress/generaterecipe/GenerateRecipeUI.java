@@ -1,6 +1,6 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe;
 
-class GenerateRecipeUI {
+public class GenerateRecipeUI {
 
     private String Dice_1;
     private String Dice_2;

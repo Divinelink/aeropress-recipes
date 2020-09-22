@@ -2,7 +2,7 @@ package aeropresscipe.divinelink.aeropress.base;
 
 import android.app.Application;
 
-class BaseApplication extends Application {
+public class BaseApplication extends Application {
     public BaseApplication() {
     }
 

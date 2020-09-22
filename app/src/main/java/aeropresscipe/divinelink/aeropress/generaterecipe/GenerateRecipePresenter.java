@@ -1,4 +1,4 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe;
 
-interface GenerateRecipePresenter {
+public interface GenerateRecipePresenter {
 }
