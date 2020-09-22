@@ -6,7 +6,7 @@ public interface GenerateRecipeInteractor {
 
     interface OnGenerateRecipeFinishListener{
 
-        void onSuccess();
+        void onSuccess(int waterTemp, String groundSize, String brewingMethod, int waterAmount);
 
         void onError();
     }

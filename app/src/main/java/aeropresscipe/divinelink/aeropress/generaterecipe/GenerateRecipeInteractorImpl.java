@@ -10,6 +10,14 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor{
             @Override
             public void getRecipe(OnGenerateRecipeFinishListener listener) {
 
+                ArrayList<DiceDomain> temperature = addTemperatureDiceProperties();
+                ArrayList<DiceDomain> groundSize = addGroundSizeDiceProperties();
+                ArrayList<DiceDomain> brewingMethod = addBrewingMethodProperties();
+                ArrayList<DiceDomain> waterAmount = addBrewingWaterAmountProperties();
+
+                // need to get specific details from each array list. From waterAmount for example, get coffee Amount and water Amount etc.
+
+
                 listener.onSuccess();
             }
 
@@ -87,10 +95,6 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor{
                 BrewingWaterAmountDice.add(brewingAmountDice6);
 
                 return BrewingWaterAmountDice;
-
             }
-
-
-
     
 }

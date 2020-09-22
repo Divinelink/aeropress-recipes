@@ -22,7 +22,7 @@ public class DiceDomain {
         this.brewTime = brewTime;
     }
 
-    public DiceDomain(int diceID, int coffeeAmount, int brewWaterAmount) {
+        public DiceDomain(int diceID, int coffeeAmount, int brewWaterAmount) {
         this.diceID = diceID;
         this.coffeeAmount = coffeeAmount;
         this.brewWaterAmount = brewWaterAmount;
@@ -37,5 +37,9 @@ public class DiceDomain {
         this.diceID = diceID;
         this.brewingMethod = brewingMethod;
         this.bloomWater = bloomWater;
+    }
+
+    public int getBrewWaterAmount() {
+        return brewWaterAmount;
     }
 }
