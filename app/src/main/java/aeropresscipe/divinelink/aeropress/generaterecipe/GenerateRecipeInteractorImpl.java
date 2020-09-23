@@ -22,13 +22,14 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor{
 
                 // need to get specific details from each array list. From waterAmount for example, get coffee Amount and water Amount etc.
                 int temp = temperature.get(randomTempIndex).getDiceTemperature();
-                //int groundSize
+                String groundS = groundSize.get(randomGroundSizeIndex).getGroundSize();
+                int brewTime = groundSize.get(randomGroundSizeIndex).getBrewTime();
+
 
 
 
 
                 listener.onSuccess(temperature, groundSize, brewingMethod, waterAmount);
-                //listener.onSuccess(temp, );
             }
 
             private ArrayList<DiceDomain> addTemperatureDiceProperties() {

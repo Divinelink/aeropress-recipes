@@ -36,6 +36,7 @@ public class DiceDomain {
     public DiceDomain(int diceID, String brewingMethod, int bloomTime, int bloomWater) {
         this.diceID = diceID;
         this.brewingMethod = brewingMethod;
+        this.bloomTime = bloomTime;
         this.bloomWater = bloomWater;
     }
 

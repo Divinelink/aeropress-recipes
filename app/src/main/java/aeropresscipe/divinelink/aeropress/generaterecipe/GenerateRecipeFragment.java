@@ -28,28 +28,16 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
     private GenerateRecipePresenter presenter;
 
 
-
-
-    public GenerateRecipeFragment() {
-        // Required empty public constructor
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_generate_recipe, container, false);
 
-      /*  TextView tv1 = (TextView) v.findViewById(R.id.textView);
-        TextView tv2 = (TextView) v.findViewById(R.id.textView2);
-        TextView tv3 = (TextView) v.findViewById(R.id.textView3);
-        TextView tv4 = (TextView) v.findViewById(R.id.textView4); */
+        recipeRv = (RecyclerView) v.findViewById(R.id.recipe_rv);
 
-        RecyclerView recipeRv = (RecyclerView) v.findViewById(R.id.recipe_rv);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recipeRv.setLayoutManager(layoutManager);
-
 
         presenter = new GenerateRecipePresenterImpl(this);
         presenter.getRecipe();
@@ -71,9 +59,13 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
                            ArrayList<DiceDomain> brewingMethodDice,
                            ArrayList<DiceDomain> waterAmountDice) {
 
-        //GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter()
+        GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter
+                (tempDice,
+                groundSizeDice,
+                brewingMethodDice,
+                waterAmountDice,
+                getActivity());
 
-
-
+        recipeRv.setAdapter(recipeRvAdapter);
     }
 }

@@ -15,7 +15,7 @@ public class HomeActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.homeRoot, new GenerateRecipeFragment())
+                .add(R.id.homeRoot, GenerateRecipeFragment.newInstance())
                 .commit();
     }
 }

@@ -34,4 +34,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <TextView
+        android:id="@+id/coffeeAmountItem"
+        android:layout_below="@id/bloomWaterItem"
+        android:layout_width="match_parent"
+        android:text="sadas"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/brewWaterAmountItem"
+        android:layout_below="@id/coffeeAmountItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+
 </RelativeLayout>
