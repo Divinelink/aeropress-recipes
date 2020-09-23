@@ -1,12 +1,12 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe;
 
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicReferenceArray;
+import java.util.Collections;
 
 public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor{
-
+            //We only want to edit out data in the interactor, before we pass them into the Presenter
+            // otherwise we break the MVP rules
             @Override
             public void getRecipe(OnGenerateRecipeFinishListener listener) {
 
@@ -15,10 +15,20 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor{
                 ArrayList<DiceDomain> brewingMethod = addBrewingMethodProperties();
                 ArrayList<DiceDomain> waterAmount = addBrewingWaterAmountProperties();
 
+                int randomTempIndex = (int) (Math.random() * temperature.size());
+                int randomGroundSizeIndex = (int) (Math.random() * groundSize.size());
+                int randombrewingMethodIndex = (int) (Math.random() * brewingMethod.size());
+                int randomWaterAmountIndex = (int) (Math.random() * waterAmount.size());
+
                 // need to get specific details from each array list. From waterAmount for example, get coffee Amount and water Amount etc.
+                int temp = temperature.get(randomTempIndex).getDiceTemperature();
+                //int groundSize
 
 
-                listener.onSuccess();
+
+
+                listener.onSuccess(temperature, groundSize, brewingMethod, waterAmount);
+                //listener.onSuccess(temp, );
             }
 
             private ArrayList<DiceDomain> addTemperatureDiceProperties() {

@@ -42,4 +42,32 @@ public class DiceDomain {
     public int getBrewWaterAmount() {
         return brewWaterAmount;
     }
+
+    public int getDiceTemperature() {
+        return diceTemperature;
+    }
+
+    public String getGroundSize() {
+        return GroundSize;
+    }
+
+    public int getBrewTime() {
+        return brewTime;
+    }
+
+    public String getBrewingMethod() {
+        return brewingMethod;
+    }
+
+    public int getBloomTime() {
+        return bloomTime;
+    }
+
+    public int getBloomWater() {
+        return bloomWater;
+    }
+
+    public int getCoffeeAmount() {
+        return coffeeAmount;
+    }
 }
