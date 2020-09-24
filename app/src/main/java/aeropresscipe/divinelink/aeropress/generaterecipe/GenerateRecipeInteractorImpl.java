@@ -54,10 +54,10 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor{
             private ArrayList<DiceDomain> addGroundSizeDiceProperties(){
 
                 ArrayList<DiceDomain> GroundSizeDice = new ArrayList<>();
-                DiceDomain groundSizeDice1 = new DiceDomain(2,"Fine", 60);
-                DiceDomain groundSizeDice2 = new DiceDomain(2,"Medium-Fine", 90);
-                DiceDomain groundSizeDice3 = new DiceDomain(2,"Medium", 120);
-                DiceDomain groundSizeDice4 = new DiceDomain(2,"Coarse", 240);
+                DiceDomain groundSizeDice1 = new DiceDomain(2,"fine", 60);
+                DiceDomain groundSizeDice2 = new DiceDomain(2,"medium-fine", 90);
+                DiceDomain groundSizeDice3 = new DiceDomain(2,"medium", 120);
+                DiceDomain groundSizeDice4 = new DiceDomain(2,"coarse", 240);
 
                 GroundSizeDice.add(groundSizeDice1);
                 GroundSizeDice.add(groundSizeDice2);

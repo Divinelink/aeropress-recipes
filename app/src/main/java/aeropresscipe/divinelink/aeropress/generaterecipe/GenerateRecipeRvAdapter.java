@@ -4,14 +4,24 @@ package aeropresscipe.divinelink.aeropress.generaterecipe;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.graphics.Typeface;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import aeropresscipe.divinelink.aeropress.R;
+
+import static android.icu.lang.UProperty.INT_START;
 
 public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipeRvAdapter.RecipeViewHolder>{
 
@@ -43,6 +53,7 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
         private TextView bloomWaterItem;
         private TextView coffeeAmountItem;
         private TextView brewWaterAmountItem;
+        private TextView upsideDownMethodText;
 
         public RecipeViewHolder(View v){
             super(v);
@@ -54,6 +65,7 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
             this.bloomWaterItem = v.findViewById(R.id.bloomWaterItem);
             this.coffeeAmountItem = v.findViewById(R.id.coffeeAmountItem);
             this.brewWaterAmountItem = v.findViewById(R.id.brewWaterAmountItem);
+            this.upsideDownMethodText = v.findViewById(R.id.upsideDownMethodText);
         }
     }
 
@@ -86,17 +98,71 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
         int waterAmount = waterAmountDice.get(randomWaterAmountIndex).getBrewWaterAmount();
         int coffeeAmount = waterAmountDice.get(randombrewingMethodIndex).getCoffeeAmount();
 
-        recipeViewHolder.tempItem.setText("Temp is: " + temp);
 
-        recipeViewHolder.groundSizeItem.setText("Ground size: " + groundSize);
-        recipeViewHolder.brewTimeItem.setText("Brew Time: " + brewTime);
 
-        recipeViewHolder.brewingMethodItem.setText("Method: " + brewingMethod);
-        recipeViewHolder.bloomTimeItem.setText("Bloom Time: " + bloomTime);
-        recipeViewHolder.bloomWaterItem.setText("Bloom Water " + bloomWater);
+        final String Text = "Heat " + waterAmount + "g of water" + " to " + temp + " °C.";
 
-        recipeViewHolder.coffeeAmountItem.setText("Coffee amount " + coffeeAmount);
-        recipeViewHolder.brewWaterAmountItem.setText("Water amount " + waterAmount);
+        SpannableString TempWater = new SpannableString(Text);
+        TempWater.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), 5, 6+Integer.toString(waterAmount).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        TempWater.setSpan(new StyleSpan(Typeface.BOLD_ITALIC),
+                6+Integer.toString(waterAmount).length()+13,
+                6+Integer.toString(waterAmount).length()+13+Integer.toString(temp).length()+3,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
+        recipeViewHolder.tempItem.setText(TempWater);
+
+        final String Text1 = "Grind " + coffeeAmount + "g of coffee" + " to a " + groundSize + " grind.";
+        SpannableString CoffeeGrind = new SpannableString(Text1);
+
+        CoffeeGrind.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), 6, 7+ Integer.toString(coffeeAmount).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
+        if (brewingMethod.equals("Standard"))
+            recipeViewHolder.brewingMethodItem.setText("Place the aeropress on the mug in the normal orientation with wet filter and cap on.");
+        else{
+            recipeViewHolder.brewingMethodItem.setText("Place the aeropress in the upside-down orientation.");
+            recipeViewHolder.upsideDownMethodText.setVisibility(View.VISIBLE);
+        }
+
+        recipeViewHolder.groundSizeItem.setText(CoffeeGrind);
+
+        if (bloomTime!=0){
+            // BREWING WITH BLOOM
+            final String bloomText = ("Add " + bloomWater + "g of water and wait " + bloomTime + " seconds for the coffee to bloom.");
+
+            SpannableString Bloom = new SpannableString(bloomText);
+            Bloom.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), 4, 5+Integer.toString(bloomWater).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            Bloom.setSpan(new StyleSpan(Typeface.BOLD_ITALIC),
+                    23+Integer.toString(bloomWater).length(),
+                    26+Integer.toString(bloomWater).length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            recipeViewHolder.bloomTimeItem.setText(Bloom);
+
+            final String remainingWater = "Add the remaining " + Integer.toString(waterAmount-bloomWater) + "g of water.";
+
+            SpannableStringBuilder water = new SpannableStringBuilder(remainingWater);
+            water.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), 17, 19+Integer.toString(waterAmount-bloomWater).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            recipeViewHolder.bloomWaterItem.setText(water);
+        }
+        else{
+            // NO BLOOM.
+            recipeViewHolder.bloomTimeItem.setVisibility(View.GONE);
+            final String remainingWater = "Add " + Integer.toString(waterAmount) + "g of water slowly.";
+
+            SpannableStringBuilder water = new SpannableStringBuilder(remainingWater);
+            water.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), 4, 5+Integer.toString(waterAmount-bloomWater).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            recipeViewHolder.bloomWaterItem.setText(water);
+        }
+
+        final String timeToBrew = "Wait " + brewTime + "s to brew.";
+        SpannableStringBuilder spannableTimeToBrew = new SpannableStringBuilder(timeToBrew);
+        spannableTimeToBrew.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), 5, Integer.toString(brewTime).length()+6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        recipeViewHolder.brewTimeItem.setText(spannableTimeToBrew);
 
     }
 

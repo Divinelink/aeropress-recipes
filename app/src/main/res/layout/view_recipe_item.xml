@@ -6,46 +6,75 @@
 
     <TextView
         android:id="@+id/tempItem"
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <TextView
         android:id="@+id/groundSizeItem"
+        android:layout_margin="10dp"
         android:layout_below="@id/tempItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <TextView
-        android:id="@+id/brewTimeItem"
+        android:id="@+id/brewingMethodItem"
+        android:layout_margin="10dp"
         android:layout_below="@id/groundSizeItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <TextView
-        android:id="@+id/brewingMethodItem"
+        android:id="@+id/pourInText"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pour in the ground coffee."
+        android:layout_below="@+id/brewingMethodItem"
+        />
+    <TextView
+        android:id="@+id/bloomTimeItem"
+        android:layout_margin="10dp"
+        android:layout_below="@id/pourInText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/bloomWaterItem"
+        android:layout_margin="10dp"
+        android:layout_below="@id/bloomTimeItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/brewTimeItem"
+        android:layout_margin="10dp"
+        android:layout_below="@id/bloomWaterItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/brewWaterAmountItem"
+        android:layout_margin="10dp"
+        android:visibility="gone"
         android:layout_below="@id/brewTimeItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
     <TextView
-        android:id="@+id/bloomTimeItem"
-        android:layout_below="@id/brewingMethodItem"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:id="@+id/bloomWaterItem"
-        android:layout_below="@id/bloomTimeItem"
+        android:id="@+id/upsideDownMethodText"
+        android:layout_margin="10dp"
+        android:visibility="gone"
+        android:layout_below="@id/brewWaterAmountItem"
+        android:text="Wet the filter paper, and put the cap on. Place the mug upside-down on the aeropress and flip to be the normal orientation."
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/coffeeAmountItem"
-        android:layout_below="@id/bloomWaterItem"
+        android:layout_margin="10dp"
+        android:layout_below="@id/upsideDownMethodText"
         android:layout_width="match_parent"
-        android:text="sadas"
+        android:text="Press."
         android:layout_height="wrap_content"/>
 
-    <TextView
-        android:id="@+id/brewWaterAmountItem"
-        android:layout_below="@id/coffeeAmountItem"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+
 
 
 
