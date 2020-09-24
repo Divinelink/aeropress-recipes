@@ -1,15 +1,14 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -24,6 +23,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
 
 
     RecyclerView recipeRv;
+    Button generateRecipeButton;
 
     private GenerateRecipePresenter presenter;
 
@@ -35,6 +35,14 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         View v = inflater.inflate(R.layout.fragment_generate_recipe, container, false);
 
         recipeRv = (RecyclerView) v.findViewById(R.id.recipe_rv);
+        generateRecipeButton = v.findViewById(R.id.generateRecipeButton);
+
+        generateRecipeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.getRecipe();
+            }
+        });
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recipeRv.setLayoutManager(layoutManager);
