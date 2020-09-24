@@ -14,7 +14,7 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor{
                 ArrayList<DiceDomain> groundSize = addGroundSizeDiceProperties();
                 ArrayList<DiceDomain> brewingMethod = addBrewingMethodProperties();
                 ArrayList<DiceDomain> waterAmount = addBrewingWaterAmountProperties();
-
+/*
                 int randomTempIndex = (int) (Math.random() * temperature.size());
                 int randomGroundSizeIndex = (int) (Math.random() * groundSize.size());
                 int randombrewingMethodIndex = (int) (Math.random() * brewingMethod.size());
@@ -24,7 +24,7 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor{
                 int temp = temperature.get(randomTempIndex).getDiceTemperature();
                 String groundS = groundSize.get(randomGroundSizeIndex).getGroundSize();
                 int brewTime = groundSize.get(randomGroundSizeIndex).getBrewTime();
-
+*/
 
 
 
@@ -55,7 +55,7 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor{
 
                 ArrayList<DiceDomain> GroundSizeDice = new ArrayList<>();
                 DiceDomain groundSizeDice1 = new DiceDomain(2,"Fine", 60);
-                DiceDomain groundSizeDice2 = new DiceDomain(2,"MediumFine", 90);
+                DiceDomain groundSizeDice2 = new DiceDomain(2,"Medium-Fine", 90);
                 DiceDomain groundSizeDice3 = new DiceDomain(2,"Medium", 120);
                 DiceDomain groundSizeDice4 = new DiceDomain(2,"Coarse", 240);
 

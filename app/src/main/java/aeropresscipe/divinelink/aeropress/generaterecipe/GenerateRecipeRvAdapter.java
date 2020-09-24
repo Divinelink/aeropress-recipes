@@ -73,25 +73,33 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder recipeViewHolder, int i) {
 
-        final int position = i;
+        int randomTempIndex = (int) (Math.random() * tempDice.size());
+        int randomGroundSizeIndex = (int) (Math.random() * groundSizeDice.size());
+        int randombrewingMethodIndex = (int) (Math.random() * brewingMethodDice.size());
+        int randomWaterAmountIndex = (int) (Math.random() * waterAmountDice.size());
 
-        final DiceDomain temp = tempDice.get(position);
-        final DiceDomain groundSize = groundSizeDice.get(position);
-        final DiceDomain brewingMethod = brewingMethodDice.get(position);
-        final DiceDomain waterAmount =  waterAmountDice.get(position);
+        int temp = tempDice.get(randomTempIndex).getDiceTemperature();
+        String groundSize = groundSizeDice.get(randomGroundSizeIndex).getGroundSize();
+        int brewTime = groundSizeDice.get(randomGroundSizeIndex).getBrewTime();
 
+        String brewingMethod = brewingMethodDice.get(randombrewingMethodIndex).getBrewingMethod();
+        int bloomTime = brewingMethodDice.get(randombrewingMethodIndex).getBloomTime();
+        int bloomWater = brewingMethodDice.get(randombrewingMethodIndex).getBloomWater();
 
-        recipeViewHolder.tempItem.setText(String.format(Locale.US,"%d",temp.getDiceTemperature()));
+        int waterAmount = waterAmountDice.get(randomWaterAmountIndex).getBrewWaterAmount();
+        int coffeeAmount = waterAmountDice.get(randombrewingMethodIndex).getCoffeeAmount();
 
-        recipeViewHolder.groundSizeItem.setText(groundSize.getGroundSize());
-        recipeViewHolder.brewTimeItem.setText(String.format(Locale.US,"%d",groundSize.getBrewTime()));
+        recipeViewHolder.tempItem.setText("Temp is: " + temp);
 
-        recipeViewHolder.brewingMethodItem.setText(brewingMethod.getBrewingMethod());
-        recipeViewHolder.bloomTimeItem.setText(String.format(Locale.US,"%d",brewingMethod.getBloomTime()));
-        recipeViewHolder.bloomWaterItem.setText(String.format(Locale.US,"%d",brewingMethod.getBloomWater()));
+        recipeViewHolder.groundSizeItem.setText("Ground size: " + groundSize);
+        recipeViewHolder.brewTimeItem.setText("Brew Time: " + brewTime);
 
-        recipeViewHolder.coffeeAmountItem.setText(String.format(Locale.US,"%d",waterAmount.getCoffeeAmount()));
-        recipeViewHolder.brewWaterAmountItem.setText(String.format(Locale.US,"%d",waterAmount.getBrewWaterAmount()));
+        recipeViewHolder.brewingMethodItem.setText("Method: " + brewingMethod);
+        recipeViewHolder.bloomTimeItem.setText("Bloom Time: " + bloomTime);
+        recipeViewHolder.bloomWaterItem.setText("Bloom Water " + bloomWater);
+
+        recipeViewHolder.coffeeAmountItem.setText("Coffee amount " + coffeeAmount);
+        recipeViewHolder.brewWaterAmountItem.setText("Water amount " + waterAmount);
 
     }
 
