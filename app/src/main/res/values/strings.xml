@@ -6,7 +6,7 @@
   https://developer.android.com/guide/topics/resources/string-resource
    above API 24
    -->
-    <string name="heatWaterText">Heat %dg of water to %d °C.</string>
+    <string name="heatWaterText">Heat %dg of water to %d°C / %d°F.</string>
 
     <string name="grindCoffeeText">Grind %dg of coffee to a %s grind.</string>
 

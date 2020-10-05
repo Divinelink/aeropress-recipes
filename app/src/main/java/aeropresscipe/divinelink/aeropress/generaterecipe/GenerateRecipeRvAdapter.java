@@ -86,22 +86,21 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
 
         int randomTempIndex = (int) (Math.random() * tempDice.size());
         int randomGroundSizeIndex = (int) (Math.random() * groundSizeDice.size());
-        int randombrewingMethodIndex = (int) (Math.random() * brewingMethodDice.size());
+        int randomBrewingMethodIndex = (int) (Math.random() * brewingMethodDice.size());
         int randomWaterAmountIndex = (int) (Math.random() * waterAmountDice.size());
 
         int temp = tempDice.get(randomTempIndex).getDiceTemperature();
         String groundSize = groundSizeDice.get(randomGroundSizeIndex).getGroundSize();
         int brewTime = groundSizeDice.get(randomGroundSizeIndex).getBrewTime();
 
-        String brewingMethod = brewingMethodDice.get(randombrewingMethodIndex).getBrewingMethod();
-        int bloomTime = brewingMethodDice.get(randombrewingMethodIndex).getBloomTime();
-        int bloomWater = brewingMethodDice.get(randombrewingMethodIndex).getBloomWater();
+        String brewingMethod = brewingMethodDice.get(randomBrewingMethodIndex).getBrewingMethod();
+        int bloomTime = brewingMethodDice.get(randomBrewingMethodIndex).getBloomTime();
+        int bloomWater = brewingMethodDice.get(randomBrewingMethodIndex).getBloomWater();
 
         int waterAmount = waterAmountDice.get(randomWaterAmountIndex).getBrewWaterAmount();
-        int coffeeAmount = waterAmountDice.get(randombrewingMethodIndex).getCoffeeAmount();
+        int coffeeAmount = waterAmountDice.get(randomBrewingMethodIndex).getCoffeeAmount();
 
-        //TODO add Celcius to fahrenheit conversion
-        final String heatWaterText = context.getResources().getString(R.string.heatWaterText, waterAmount, temp);
+        final String heatWaterText = context.getResources().getString(R.string.heatWaterText, waterAmount, temp, temp*9/5 + 32);
 
         /*In API 24 and above, we can use <b> </b> format in strings.xml in order to bold the text
         instead of using SpannableString like below.
@@ -110,10 +109,18 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
         */
 
         SpannableString TempWater = new SpannableString(heatWaterText);
-        TempWater.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), 5, 6+Integer.toString(waterAmount).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        TempWater.setSpan(
+                new StyleSpan(Typeface.BOLD_ITALIC),
+                5,
+                6+Integer.toString(waterAmount).length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         TempWater.setSpan(new StyleSpan(Typeface.BOLD_ITALIC),
                 6+Integer.toString(waterAmount).length()+13,
                 6+Integer.toString(waterAmount).length()+13+Integer.toString(temp).length()+3,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        TempWater.setSpan(new StyleSpan(Typeface.BOLD_ITALIC),
+                6+Integer.toString(waterAmount).length()+13+Integer.toString(temp).length()+5,
+                6+Integer.toString(waterAmount).length()+13+Integer.toString(temp).length()+10,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
 
@@ -121,7 +128,6 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
 
         final String grindCoffeeText = context.getResources().getString(R.string.grindCoffeeText, coffeeAmount, groundSize);
 
-        //final String Text1 = "Grind " + coffeeAmount + "g of coffee" + " to a " + groundSize + " grind.";
         SpannableString CoffeeGrind = new SpannableString(grindCoffeeText);
 
         CoffeeGrind.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), 6, 7+ Integer.toString(coffeeAmount).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -169,7 +175,6 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
         //TODO make brewtime to show in minutes:seconds format, not just seconds
         final int minutes = brewTime / 60;
         final int seconds = brewTime % 60;
-        final String time = "%1$02d";
         final String finalTime = String.format(Locale.ENGLISH, "%d:%02d", minutes, seconds);
 
 
