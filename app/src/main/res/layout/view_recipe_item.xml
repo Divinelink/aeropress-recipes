@@ -26,7 +26,7 @@
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pour in the ground coffee."
+        android:text="@string/pourInCoffee"
         android:layout_below="@+id/brewingMethodItem"
         />
     <TextView
@@ -62,7 +62,7 @@
         android:layout_margin="10dp"
         android:visibility="gone"
         android:layout_below="@id/brewWaterAmountItem"
-        android:text="Wet the filter paper, and put the cap on. Place the mug upside-down on the aeropress and flip to be the normal orientation."
+        android:text="@string/upsideDownMethodText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -71,7 +71,7 @@
         android:layout_margin="10dp"
         android:layout_below="@id/upsideDownMethodText"
         android:layout_width="match_parent"
-        android:text="Press."
+        android:text="@string/pressText"
         android:layout_height="wrap_content"/>
 
 
