@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import aeropresscipe.divinelink.aeropress.R;
 
@@ -169,7 +170,7 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
         final int minutes = brewTime / 60;
         final int seconds = brewTime % 60;
         final String time = "%1$02d";
-        final String finalTime = String.format("%d:%02d", minutes, seconds);
+        final String finalTime = String.format(Locale.ENGLISH, "%d:%02d", minutes, seconds);
 
 
         final String timeToBrew = context.getResources().getString(R.string.waitToBrewText, finalTime, (minutes == 1 && seconds == 0) ? "minute" : "minutes");
