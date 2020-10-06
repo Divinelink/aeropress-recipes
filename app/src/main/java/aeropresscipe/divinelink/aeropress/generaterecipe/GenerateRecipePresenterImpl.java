@@ -16,16 +16,6 @@ public class GenerateRecipePresenterImpl implements GenerateRecipePresenter, Gen
         interactor = new GenerateRecipeInteractorImpl();
     }
 
-   /* @Override
-    public void onSuccess(ArrayList<DiceDomain> tempDice,
-                          ArrayList<DiceDomain> groundSizeDice,
-                          ArrayList<DiceDomain> brewingMethodDice,
-                          ArrayList<DiceDomain> waterAmountDice) {
-
-        generateRecipeView.showRecipe(tempDice, groundSizeDice, brewingMethodDice, waterAmountDice);
-
-
-    }*/
 
     @Override
     public void onSuccess(int temp,

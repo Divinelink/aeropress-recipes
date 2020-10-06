@@ -31,7 +31,6 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor{
                 int waterAmount = waterAmountDice.get(randomWaterAmountIndex).getBrewWaterAmount();
                 int coffeeAmount = waterAmountDice.get(randomBrewingMethodIndex).getCoffeeAmount();
 
-            //    listener.onSuccess(temperature, groundSize, brewingMethod, waterAmount);
                 listener.onSuccess(temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount);
             }
 

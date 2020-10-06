@@ -84,36 +84,9 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
     public void showRecipe(int temp, String groundSize, int brewTime, String brewingMethod, int bloomTime, int bloomWater, int waterAmount, int coffeeAmount) {
 
         GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter
-                (temp,
-                groundSize,
-                brewTime,
-                brewingMethod,
-                bloomTime,
-                bloomWater,
-                waterAmount,
-                coffeeAmount,
-                getActivity());
+                (temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount, getActivity());
 
         recipeRv.setAdapter(recipeRvAdapter);
     }
-/*
-    @Override
-    public void showRecipe(ArrayList<DiceDomain> tempDice,
-                           ArrayList<DiceDomain> groundSizeDice,
-                           ArrayList<DiceDomain> brewingMethodDice,
-                           ArrayList<DiceDomain> waterAmountDice) {
-
-
-
-        GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter
-                (tempDice,
-                groundSizeDice,
-                brewingMethodDice,
-                waterAmountDice,
-                getActivity());
-
-        recipeRv.setAdapter(recipeRvAdapter);
-    }
-*/
 
 }

@@ -8,11 +8,6 @@ public interface GenerateRecipeInteractor {
 
     interface OnGenerateRecipeFinishListener{
 
-    /*    void onSuccess(ArrayList<DiceDomain> tempDice,
-                       ArrayList<DiceDomain> groundSizeDice,
-                       ArrayList<DiceDomain> brewingMethodDice,
-                       ArrayList<DiceDomain> waterAmountDice);*/
-
         void onSuccess(int temp,
                        String groundSize,
                        int brewTime,

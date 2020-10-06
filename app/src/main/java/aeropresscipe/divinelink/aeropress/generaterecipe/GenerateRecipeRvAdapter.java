@@ -23,12 +23,6 @@ import aeropresscipe.divinelink.aeropress.R;
 
 public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipeRvAdapter.RecipeViewHolder>{
 
-    private ArrayList<DiceDomain> tempDice;
-    private ArrayList<DiceDomain> groundSizeDice;
-    private ArrayList<DiceDomain> brewingMethodDice;
-    private ArrayList<DiceDomain> waterAmountDice;
-
-
     private int temp;
     private String groundSize;
     private int brewTime;
@@ -58,18 +52,6 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
         this.coffeeAmount = coffeeAmount;
         this.context = context;
     }
-
-  /*  public GenerateRecipeRvAdapter(ArrayList<DiceDomain> tempDice,
-                                     ArrayList<DiceDomain> groundSizeDice,
-                                     ArrayList<DiceDomain> brewingMethodDice,
-                                     ArrayList<DiceDomain> waterAmountDice,
-                                     Context context) {
-        this.tempDice = tempDice; // Temp Dice only gives us the temp
-        this.groundSizeDice = groundSizeDice; // Ground Size Dice gives us Ground Size and Brew Time
-        this.brewingMethodDice = brewingMethodDice; // Brewing Method gives us Method, Bloom Time and Blood Water
-        this.waterAmountDice = waterAmountDice; // Water Amount gives us Coffee amount and Water Amount
-        this.context = context;
-    }*/
 
     public static class RecipeViewHolder extends RecyclerView.ViewHolder {
 
@@ -109,22 +91,6 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
 
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder recipeViewHolder, int i) {
-
-      /*  int randomTempIndex = (int) (Math.random() * tempDice.size());
-        int randomGroundSizeIndex = (int) (Math.random() * groundSizeDice.size());
-        int randomBrewingMethodIndex = (int) (Math.random() * brewingMethodDice.size());
-        int randomWaterAmountIndex = (int) (Math.random() * waterAmountDice.size());*/
-
-   /*    int temp = this.temp;
-        String groundSize = this.groundSize;
-        int brewTime = this.brewTime;
-
-        String brewingMethod = this.brewingMethod;
-        int bloomTime = this.bloomTime;
-        int bloomWater = this.bloomWater;
-
-        int waterAmount = this.waterAmount;
-        int coffeeAmount = this.coffeeAmount;*/
 
         final String heatWaterText = context.getResources().getString(R.string.heatWaterText, waterAmount, temp, temp*9/5 + 32);
 
