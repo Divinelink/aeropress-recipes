@@ -8,5 +8,4 @@ public interface GenerateRecipeView {
                     ArrayList<DiceDomain> groundSizeDice,
                     ArrayList<DiceDomain> brewingMethodDice,
                     ArrayList<DiceDomain> waterAmountDice);
-
 }

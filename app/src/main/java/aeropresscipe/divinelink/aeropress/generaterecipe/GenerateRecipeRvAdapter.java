@@ -5,9 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.res.Resources;
 import android.graphics.Typeface;
-import android.text.Html;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -21,8 +19,6 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import aeropresscipe.divinelink.aeropress.R;
-
-import static android.text.Html.FROM_HTML_MODE_LEGACY;
 
 
 public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipeRvAdapter.RecipeViewHolder>{
@@ -172,7 +168,7 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
 
             recipeViewHolder.bloomWaterItem.setText(water);
         }
-        //TODO make brewtime to show in minutes:seconds format, not just seconds
+
         final int minutes = brewTime / 60;
         final int seconds = brewTime % 60;
         final String finalTime = String.format(Locale.ENGLISH, "%d:%02d", minutes, seconds);

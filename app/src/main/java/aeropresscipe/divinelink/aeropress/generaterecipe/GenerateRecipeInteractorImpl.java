@@ -2,7 +2,6 @@ package aeropresscipe.divinelink.aeropress.generaterecipe;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor{
             //We only want to edit out data in the interactor, before we pass them into the Presenter

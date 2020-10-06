@@ -13,15 +13,6 @@ public interface GenerateRecipeInteractor {
                        ArrayList<DiceDomain> brewingMethodDice,
                        ArrayList<DiceDomain> waterAmountDice);
 
-     /*   void onSuccess( int temp,
-                        String groundSize,
-                        int brewTime,
-                        String brewingMethod,
-                        int bloomTime,
-                        int bloomWater,
-                        int coffeeAmount,
-                        int brewWaterAmount);*/
-
         void onError();
     }
 }
