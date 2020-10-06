@@ -37,8 +37,17 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="10dp"
-            android:text="Get another Recipe"/>
-
+            android:text="@string/get_another_recipe"/>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/startTimerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/generateRecipeButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Brew!"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
