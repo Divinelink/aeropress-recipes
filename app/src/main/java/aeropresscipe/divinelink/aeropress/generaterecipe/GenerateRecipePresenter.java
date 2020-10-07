@@ -2,10 +2,11 @@ package aeropresscipe.divinelink.aeropress.generaterecipe;
 
 import android.content.Context;
 
+
 public interface GenerateRecipePresenter {
 
-    void getRecipe();
+    void getRecipe(Context ctx);
 
-    void startTimer(Context ctx, int bloomTime, int brewTime);
+    void getSavedRecipe();
 
 }

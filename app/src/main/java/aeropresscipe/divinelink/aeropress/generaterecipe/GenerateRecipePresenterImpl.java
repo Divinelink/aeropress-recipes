@@ -17,6 +17,7 @@ public class GenerateRecipePresenterImpl implements GenerateRecipePresenter, Gen
     }
 
 
+
     @Override
     public void onSuccess(int temp,
                           String groundSize,
@@ -26,7 +27,11 @@ public class GenerateRecipePresenterImpl implements GenerateRecipePresenter, Gen
                           int bloomWater,
                           int waterAmount,
                           int coffeeAmount) {
+
+
+
         generateRecipeView.showRecipe(temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount);
+
     }
 
     @Override
@@ -35,12 +40,14 @@ public class GenerateRecipePresenterImpl implements GenerateRecipePresenter, Gen
     }
 
     @Override
-    public void getRecipe() {
-        interactor.getRecipe(this);
+    public void getSavedRecipe() {
+        //interactor.getSavedRecipe(this);
     }
 
     @Override
-    public void startTimer(Context ctx, int bloomTime, int brewTime) {
-
+    public void getRecipe(Context ctx) {
+        interactor.getRecipe(this, ctx);
     }
+
+
 }

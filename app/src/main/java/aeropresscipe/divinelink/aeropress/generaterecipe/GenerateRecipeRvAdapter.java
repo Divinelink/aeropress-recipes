@@ -31,7 +31,31 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
     private int bloomWater;
     private int waterAmount;
     private int coffeeAmount;
+
     private Context context;
+    private DiceUI diceUI;
+
+    public GenerateRecipeRvAdapter(int temp,
+                                   String groundSize,
+                                   int brewTime,
+                                   String brewingMethod,
+                                   int bloomTime,
+                                   int bloomWater,
+                                   int waterAmount,
+                                   int coffeeAmount,
+                                   Context context,
+                                   DiceUI diceUI) {
+        this.temp = temp;
+        this.groundSize = groundSize;
+        this.brewTime = brewTime;
+        this.brewingMethod = brewingMethod;
+        this.bloomTime = bloomTime;
+        this.bloomWater = bloomWater;
+        this.waterAmount = waterAmount;
+        this.coffeeAmount = coffeeAmount;
+        this.context = context;
+        this.diceUI = diceUI;
+    }
 
     public GenerateRecipeRvAdapter(int temp,
                                    String groundSize,
@@ -177,6 +201,11 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
 
         recipeViewHolder.brewTimeItem.setText(spannableTimeToBrew);
 
+
+        // Set DiceUI - Set Bloom and Brew Time - We need them for timer
+        diceUI = new DiceUI(bloomTime, brewTime);
+     //   diceUI.setBloomTime(bloomTime);
+      //  diceUI.setBrewTime(brewTime);
     }
 
     @Override

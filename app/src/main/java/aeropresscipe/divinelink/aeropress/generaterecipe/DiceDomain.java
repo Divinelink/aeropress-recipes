@@ -1,8 +1,15 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "Recipe")
 public class DiceDomain {
 
-    private int diceID;
+    @PrimaryKey
+    @NonNull
     private int diceTemperature;
     private String GroundSize;
     private int brewTime;
@@ -13,28 +20,35 @@ public class DiceDomain {
     private int coffeeAmount;
     private int brewWaterAmount;
 
+    public DiceDomain(){};
 
-
-
-    public DiceDomain(int diceID, String groundSize, int brewTime) {
-        this.diceID = diceID;
+    public DiceDomain(int diceTemperature, String groundSize, int brewTime, String brewingMethod, int bloomTime, int bloomWater, int brewWaterAmount, int coffeeAmount) {
+        this.diceTemperature = diceTemperature;
+        this.GroundSize = groundSize;
+        this.brewTime = brewTime;
+        this.brewingMethod = brewingMethod;
+        this.bloomTime = bloomTime;
+        this.bloomWater = bloomWater;
+        this.brewWaterAmount = brewWaterAmount;
+        this.coffeeAmount = coffeeAmount;
+    }
+    @Ignore
+    public DiceDomain( String groundSize, int brewTime) {
         this.GroundSize = groundSize;
         this.brewTime = brewTime;
     }
-
-        public DiceDomain(int diceID, int coffeeAmount, int brewWaterAmount) {
-        this.diceID = diceID;
+    @Ignore
+        public DiceDomain(int coffeeAmount, int brewWaterAmount) {
         this.coffeeAmount = coffeeAmount;
         this.brewWaterAmount = brewWaterAmount;
     }
+    @Ignore
+    public DiceDomain( int diceTemperature) {
 
-    public DiceDomain(int diceID, int diceTemperature) {
-        this.diceID = diceID;
         this.diceTemperature = diceTemperature;
     }
-
-    public DiceDomain(int diceID, String brewingMethod, int bloomTime, int bloomWater) {
-        this.diceID = diceID;
+    @Ignore
+    public DiceDomain( String brewingMethod, int bloomTime, int bloomWater) {
         this.brewingMethod = brewingMethod;
         this.bloomTime = bloomTime;
         this.bloomWater = bloomWater;
@@ -70,5 +84,37 @@ public class DiceDomain {
 
     public int getCoffeeAmount() {
         return coffeeAmount;
+    }
+
+    public void setDiceTemperature(int diceTemperature) {
+        this.diceTemperature = diceTemperature;
+    }
+
+    public void setGroundSize(String groundSize) {
+        GroundSize = groundSize;
+    }
+
+    public void setBrewTime(int brewTime) {
+        this.brewTime = brewTime;
+    }
+
+    public void setBrewingMethod(String brewingMethod) {
+        this.brewingMethod = brewingMethod;
+    }
+
+    public void setBloomTime(int bloomTime) {
+        this.bloomTime = bloomTime;
+    }
+
+    public void setBloomWater(int bloomWater) {
+        this.bloomWater = bloomWater;
+    }
+
+    public void setCoffeeAmount(int coffeeAmount) {
+        this.coffeeAmount = coffeeAmount;
+    }
+
+    public void setBrewWaterAmount(int brewWaterAmount) {
+        this.brewWaterAmount = brewWaterAmount;
     }
 }

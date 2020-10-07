@@ -1,10 +1,14 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 public interface GenerateRecipeInteractor {
 
-    void getRecipe(OnGenerateRecipeFinishListener listener);
+    void getRecipe(OnGenerateRecipeFinishListener listener, Context ctx);
+
+    void getSavedRecipe(OnGenerateRecipeFinishListener listener);
 
     interface OnGenerateRecipeFinishListener{
 
@@ -16,7 +20,6 @@ public interface GenerateRecipeInteractor {
                        int bloomWater,
                        int waterAmount,
                        int coffeeAmount);
-
 
         void onError();
     }
