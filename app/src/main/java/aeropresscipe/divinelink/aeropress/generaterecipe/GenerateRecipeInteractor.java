@@ -8,7 +8,7 @@ public interface GenerateRecipeInteractor {
 
     void getRecipe(OnGenerateRecipeFinishListener listener, Context ctx);
 
-    void getSavedRecipe(OnGenerateRecipeFinishListener listener);
+    void getNewRecipe(OnGenerateRecipeFinishListener listener, Context ctx);
 
     interface OnGenerateRecipeFinishListener{
 

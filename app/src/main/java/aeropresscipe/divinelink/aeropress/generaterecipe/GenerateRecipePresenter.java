@@ -7,6 +7,6 @@ public interface GenerateRecipePresenter {
 
     void getRecipe(Context ctx);
 
-    void getSavedRecipe();
+    void getNewRecipe(Context ctx);
 
 }

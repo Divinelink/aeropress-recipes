@@ -3,6 +3,7 @@ package aeropresscipe.divinelink.aeropress.generaterecipe;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -14,6 +15,41 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor {
     //We only want to edit out data in the interactor, before we pass them into the Presenter
     // otherwise we break the MVP rules
 
+
+    @Override
+    public void getNewRecipe(final OnGenerateRecipeFinishListener listener, final Context ctx) {
+    // Executed By Pressing "Get Another Recipe Button"
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
+                final DiceDomain newRecipe = getRandomRecipe();
+
+                // When Using AsyncTask, we also need to use .runOnUiThread(new Runnable()) where we set the adapter
+                // That updates the UI. In this case, on the fragment, on showRecipe() method.
+
+                // Stuff that updates the UI
+                Log.d("getNewRecipe", "Get New Recipe Button, updates DB and creates new recipe");
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        recipeDao.updateRecipe(newRecipe);
+                        listener.onSuccess(
+                                newRecipe.getDiceTemperature(),
+                                newRecipe.getGroundSize(),
+                                newRecipe.getBrewTime(),
+                                newRecipe.getBrewingMethod(),
+                                newRecipe.getBloomTime(),
+                                newRecipe.getBloomWater(),
+                                newRecipe.getBrewWaterAmount(),
+                                newRecipe.getCoffeeAmount()
+                        );
+                    }
+                });
+            }
+        });
+    }
+
     @Override
     public void getRecipe(final OnGenerateRecipeFinishListener listener, final Context ctx) {
 
@@ -24,52 +60,74 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor {
                 final DiceDomain recipe = recipeDao.getRecipe();
 
                 if (recipe == null) {
-                    ArrayList<DiceDomain> tempDice = addTemperatureDiceProperties();
-                    ArrayList<DiceDomain> groundSizeDice = addGroundSizeDiceProperties();
-                    ArrayList<DiceDomain> brewingMethodDice = addBrewingMethodProperties();
-                    ArrayList<DiceDomain> waterAmountDice = addBrewingWaterAmountProperties();
-                    //TODO Instead of getting a random item on getRecipe Method,
-                    // make it return a single random element from each method below.
-                    //Generate random profile
-                    int randomTempIndex = (int) (Math.random() * tempDice.size());
-                    int randomGroundSizeIndex = (int) (Math.random() * groundSizeDice.size());
-                    int randomBrewingMethodIndex = (int) (Math.random() * brewingMethodDice.size());
-                    int randomWaterAmountIndex = (int) (Math.random() * waterAmountDice.size());
+                    // If it's the first time we run the run, there's no recipe. We generate a new one using the getRandomRecipe() method
+                    final DiceDomain newRecipe = getRandomRecipe();
 
-                    final int temp = tempDice.get(randomTempIndex).getDiceTemperature();
-                    final String groundSize = groundSizeDice.get(randomGroundSizeIndex).getGroundSize();
-                    final int brewTime = groundSizeDice.get(randomGroundSizeIndex).getBrewTime();
-
-                    final String brewingMethod = brewingMethodDice.get(randomBrewingMethodIndex).getBrewingMethod();
-                    final int bloomTime = brewingMethodDice.get(randomBrewingMethodIndex).getBloomTime();
-                    final int bloomWater = brewingMethodDice.get(randomBrewingMethodIndex).getBloomWater();
-
-                    final int waterAmount = waterAmountDice.get(randomWaterAmountIndex).getBrewWaterAmount();
-                    final int coffeeAmount = waterAmountDice.get(randomWaterAmountIndex).getCoffeeAmount();
-
-                    final DiceDomain newRecipe = new DiceDomain(temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount);
-
+                    // When DB is empty, meaning it has no recipe, it automatically saves the current recipe on the DB
+                    // And we show it on the fragment.
                     AsyncTask.execute(new Runnable() {
                         @Override
                         public void run() {
-                            // When DB is empty, meaning it has no recipe, it automatically saved the current recipe on the DB
-                            // And we show it on the fragment.
+                            // Stuff that updates the UI
+                            Log.d("getRecipe", "Creates New Recipe when app starts and there's no recipe available.");
                             recipeDao.updateRecipe(newRecipe);
-                            listener.onSuccess(temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount);
+                            listener.onSuccess(
+                                    newRecipe.getDiceTemperature(),
+                                    newRecipe.getGroundSize(),
+                                    newRecipe.getBrewTime(),
+                                    newRecipe.getBrewingMethod(),
+                                    newRecipe.getBloomTime(),
+                                    newRecipe.getBloomWater(),
+                                    newRecipe.getBrewWaterAmount(),
+                                    newRecipe.getCoffeeAmount()
+                            );
                         }
                     });
                 } else {
-                    listener.onSuccess(recipe.getDiceTemperature(), recipe.getGroundSize(), recipe.getBrewTime(), recipe.getBrewingMethod(), recipe.getBloomTime(), recipe.getBloomWater(), recipe.getBrewWaterAmount(), recipe.getCoffeeAmount());
-                    //recipeDao.deleteAll();
+                    Log.d("Show Recipe!", "Show already existing recipe");
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            listener.onSuccess(
+                                    recipe.getDiceTemperature(),
+                                    recipe.getGroundSize(),
+                                    recipe.getBrewTime(),
+                                    recipe.getBrewingMethod(),
+                                    recipe.getBloomTime(),
+                                    recipe.getBloomWater(),
+                                    recipe.getBrewWaterAmount(),
+                                    recipe.getCoffeeAmount());
+                        }
+                    });
                 }
             }
         });
     }
 
+    private DiceDomain getRandomRecipe(){
+        ArrayList<DiceDomain> tempDice = addTemperatureDiceProperties();
+        ArrayList<DiceDomain> groundSizeDice = addGroundSizeDiceProperties();
+        ArrayList<DiceDomain> brewingMethodDice = addBrewingMethodProperties();
+        ArrayList<DiceDomain> waterAmountDice = addBrewingWaterAmountProperties();
 
-    @Override
-    public void getSavedRecipe(OnGenerateRecipeFinishListener listener) {
+        int randomTempIndex = (int) (Math.random() * tempDice.size());
+        int randomGroundSizeIndex = (int) (Math.random() * groundSizeDice.size());
+        int randomBrewingMethodIndex = (int) (Math.random() * brewingMethodDice.size());
+        int randomWaterAmountIndex = (int) (Math.random() * waterAmountDice.size());
 
+        final int temp = tempDice.get(randomTempIndex).getDiceTemperature();
+        final String groundSize = groundSizeDice.get(randomGroundSizeIndex).getGroundSize();
+        final int brewTime = groundSizeDice.get(randomGroundSizeIndex).getBrewTime();
+
+        final String brewingMethod = brewingMethodDice.get(randomBrewingMethodIndex).getBrewingMethod();
+        final int bloomTime = brewingMethodDice.get(randomBrewingMethodIndex).getBloomTime();
+        final int bloomWater = brewingMethodDice.get(randomBrewingMethodIndex).getBloomWater();
+
+        final int waterAmount = waterAmountDice.get(randomWaterAmountIndex).getBrewWaterAmount();
+        final int coffeeAmount = waterAmountDice.get(randomWaterAmountIndex).getCoffeeAmount();
+
+        //Return DiceDomain Object which is a random generated recipe.
+        return new DiceDomain(temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount);
     }
 
     private ArrayList<DiceDomain> addTemperatureDiceProperties() {

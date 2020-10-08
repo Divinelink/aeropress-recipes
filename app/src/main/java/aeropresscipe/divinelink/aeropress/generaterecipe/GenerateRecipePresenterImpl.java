@@ -38,10 +38,9 @@ public class GenerateRecipePresenterImpl implements GenerateRecipePresenter, Gen
     public void onError() {
 
     }
-
     @Override
-    public void getSavedRecipe() {
-        //interactor.getSavedRecipe(this);
+    public void getNewRecipe(Context ctx) {
+        interactor.getNewRecipe(this, ctx);
     }
 
     @Override
