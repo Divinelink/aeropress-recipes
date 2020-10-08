@@ -18,7 +18,7 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor {
 
     @Override
     public void getNewRecipe(final OnGenerateRecipeFinishListener listener, final Context ctx) {
-    // Executed By Pressing "Get Another Recipe Button"
+        // Executed By Pressing "Get Another Recipe Button"
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -104,7 +104,7 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor {
         });
     }
 
-    private DiceDomain getRandomRecipe(){
+    private DiceDomain getRandomRecipe() {
         ArrayList<DiceDomain> tempDice = addTemperatureDiceProperties();
         ArrayList<DiceDomain> groundSizeDice = addGroundSizeDiceProperties();
         ArrayList<DiceDomain> brewingMethodDice = addBrewingMethodProperties();

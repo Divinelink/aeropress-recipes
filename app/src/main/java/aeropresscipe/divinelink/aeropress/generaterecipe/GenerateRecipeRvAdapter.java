@@ -33,29 +33,6 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
     private int coffeeAmount;
 
     private Context context;
-    private DiceUI diceUI;
-
-    public GenerateRecipeRvAdapter(int temp,
-                                   String groundSize,
-                                   int brewTime,
-                                   String brewingMethod,
-                                   int bloomTime,
-                                   int bloomWater,
-                                   int waterAmount,
-                                   int coffeeAmount,
-                                   Context context,
-                                   DiceUI diceUI) {
-        this.temp = temp;
-        this.groundSize = groundSize;
-        this.brewTime = brewTime;
-        this.brewingMethod = brewingMethod;
-        this.bloomTime = bloomTime;
-        this.bloomWater = bloomWater;
-        this.waterAmount = waterAmount;
-        this.coffeeAmount = coffeeAmount;
-        this.context = context;
-        this.diceUI = diceUI;
-    }
 
     public GenerateRecipeRvAdapter(int temp,
                                    String groundSize,
@@ -123,7 +100,6 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
         https://developer.android.com/guide/topics/resources/string-resource
         But we'll keep on going with this solution for now.
         */
-
         SpannableString TempWater = new SpannableString(heatWaterText);
         TempWater.setSpan(
                 new StyleSpan(Typeface.BOLD_ITALIC),
@@ -193,19 +169,12 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
         final int seconds = brewTime % 60;
         final String finalTime = String.format(Locale.ENGLISH, "%d:%02d", minutes, seconds);
 
-
         final String timeToBrew = context.getResources().getString(R.string.waitToBrewText, finalTime, (minutes == 1 && seconds == 0) ? "minute" : "minutes");
 
         SpannableStringBuilder spannableTimeToBrew = new SpannableStringBuilder(timeToBrew);
         spannableTimeToBrew.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), 5, Integer.toString(brewTime).length()+7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         recipeViewHolder.brewTimeItem.setText(spannableTimeToBrew);
-
-
-        // Set DiceUI - Set Bloom and Brew Time - We need them for timer
-        diceUI = new DiceUI(bloomTime, brewTime);
-     //   diceUI.setBloomTime(bloomTime);
-      //  diceUI.setBrewTime(brewTime);
     }
 
     @Override

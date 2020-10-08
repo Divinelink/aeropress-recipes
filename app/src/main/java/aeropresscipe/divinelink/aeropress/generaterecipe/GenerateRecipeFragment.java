@@ -38,7 +38,6 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
     HomeView homeView;
     DiceUI diceUI;
 
-    boolean firstTime = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,14 +66,11 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
             }
         });
 
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recipeRv.setLayoutManager(layoutManager);
 
-
         presenter = new GenerateRecipePresenterImpl(this);
         presenter.getRecipe(getContext());
-
 
         return v;
     }
@@ -93,9 +89,6 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
 
         //FIXME Create a new object instead of this
 
-        // Set bloom time and brewtime. Needed for Timer
-
-
         if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
                 GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter
@@ -107,17 +100,14 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
                 }
             });
         }
-       // diceUI = new DiceUI(bloomTime, brewTime);
 
     }
 
 
     @Override
     public void passData(int bloomTime, int brewTime) {
-
+        // Set bloom time and brewtime. Needed for Timer
            diceUI = new DiceUI(bloomTime, brewTime);
-        // maybe we can pass data here instead of showRecipe, we'll see later
-
     }
 
 }

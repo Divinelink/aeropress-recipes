@@ -2,7 +2,6 @@ package aeropresscipe.divinelink.aeropress.generaterecipe;
 
 import android.content.Context;
 
-import java.util.ArrayList;
 
 public interface GenerateRecipeInteractor {
 

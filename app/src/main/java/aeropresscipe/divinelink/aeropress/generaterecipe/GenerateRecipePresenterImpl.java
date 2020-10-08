@@ -2,20 +2,16 @@ package aeropresscipe.divinelink.aeropress.generaterecipe;
 
 import android.content.Context;
 
-import java.util.ArrayList;
-
-public class GenerateRecipePresenterImpl implements GenerateRecipePresenter, GenerateRecipeInteractor.OnGenerateRecipeFinishListener{
+public class GenerateRecipePresenterImpl implements GenerateRecipePresenter, GenerateRecipeInteractor.OnGenerateRecipeFinishListener {
 
     private GenerateRecipeView generateRecipeView;
     private GenerateRecipeInteractor interactor;
-
 
 
     public GenerateRecipePresenterImpl(GenerateRecipeView generateRecipeView) {
         this.generateRecipeView = generateRecipeView;
         interactor = new GenerateRecipeInteractorImpl();
     }
-
 
 
     @Override
@@ -28,8 +24,6 @@ public class GenerateRecipePresenterImpl implements GenerateRecipePresenter, Gen
                           int waterAmount,
                           int coffeeAmount) {
 
-
-
         generateRecipeView.showRecipe(temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount);
         generateRecipeView.passData(bloomTime, brewTime);
 
@@ -39,6 +33,7 @@ public class GenerateRecipePresenterImpl implements GenerateRecipePresenter, Gen
     public void onError() {
 
     }
+
     @Override
     public void getNewRecipe(Context ctx) {
         interactor.getNewRecipe(this, ctx);
