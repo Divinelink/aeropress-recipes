@@ -107,14 +107,15 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
                 }
             });
         }
-        diceUI = new DiceUI(bloomTime, brewTime);
+       // diceUI = new DiceUI(bloomTime, brewTime);
 
     }
 
 
     @Override
     public void passData(int bloomTime, int brewTime) {
-        //FIXME   diceUI = new DiceUI(bloomTime, brewTime);
+
+           diceUI = new DiceUI(bloomTime, brewTime);
         // maybe we can pass data here instead of showRecipe, we'll see later
 
     }

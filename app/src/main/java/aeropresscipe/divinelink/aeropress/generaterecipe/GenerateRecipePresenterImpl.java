@@ -31,6 +31,7 @@ public class GenerateRecipePresenterImpl implements GenerateRecipePresenter, Gen
 
 
         generateRecipeView.showRecipe(temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount);
+        generateRecipeView.passData(bloomTime, brewTime);
 
     }
 
