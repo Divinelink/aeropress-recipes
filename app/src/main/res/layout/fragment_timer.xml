@@ -1,29 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
-
     tools:context=".timer.TimerFragment">
 
-    <ProgressBar
+
+    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
         android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="183dp"
-        android:layout_height="178dp"
-        />
-
-    <TextView
-    android:id="@+id/bloomtimeTV"
-    android:layout_width="135dp"
-    android:layout_height="wrap_content"
-        android:text="Bloom Time: "/>
-
-    <TextView
-        android:id="@+id/brewtimeTV"
-        android:layout_width="135dp"
+        style="@style/Widget.MaterialProgressBar.ProgressBar"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Brew Time: "/>
+        android:layout_margin="20dp"
+        android:minHeight="306dp"
+        app:mpb_progressTint="@color/white"
+        android:minWidth="306dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.498">
 
-</LinearLayout>
+    </me.zhanghai.android.materialprogressbar.MaterialProgressBar>
+
+    <TextView
+        android:id="@+id/timeTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:textSize="70sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="00:10" />
+
+    <TextView
+        android:id="@+id/notificationTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Bloom Phase!"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@+id/timeTV" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

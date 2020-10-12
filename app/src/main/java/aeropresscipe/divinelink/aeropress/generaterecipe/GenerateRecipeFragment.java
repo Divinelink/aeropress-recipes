@@ -93,14 +93,12 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
             getActivity().runOnUiThread(new Runnable() {
                 GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter
                         (temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount, getActivity());
-
                 @Override
                 public void run() {
                     recipeRv.setAdapter(recipeRvAdapter);
                 }
             });
         }
-
     }
 
 

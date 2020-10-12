@@ -13,8 +13,16 @@ public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnSta
     }
 
     @Override
-    public void onSuccess() {
-        timerView.showTimer();
+    public void onSuccess(int bloomTime, boolean bloomPhase) {
+
+        timerView.showTimer(bloomTime, bloomPhase);
+
+        // The logic behind the progress bar will go here probably
+        // Presenter knows WHEN to display certain states and triggers updates
+        // When a user clicks a button,
+        // presenter tells the view to display progress bar, ask the domain layer (interactor) for a data/update
+
+        // So basically here we
     }
 
     @Override
@@ -23,7 +31,12 @@ public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnSta
     }
 
     @Override
-    public void getNumbersForTimer() {
-        interactor.startTimer(this);
+    public void getNumbersForTimer(int bloomTime, boolean bloomPhase) {
+        // Interactor is not needed since we don't interact with any data on the model layer
+        interactor.startTimer(this, bloomTime, bloomPhase);
+    }
+    @Override
+    public void showMessage(String message) {
+        timerView.showMessage(message);
     }
 }

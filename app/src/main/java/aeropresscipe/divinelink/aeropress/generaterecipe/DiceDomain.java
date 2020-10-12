@@ -90,6 +90,8 @@ public class DiceDomain {
         this.diceTemperature = diceTemperature;
     }
 
+
+
     public void setGroundSize(String groundSize) {
         GroundSize = groundSize;
     }

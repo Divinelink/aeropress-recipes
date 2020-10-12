@@ -2,6 +2,8 @@ package aeropresscipe.divinelink.aeropress.timer;
 
 public interface TimerView {
 
-    void showTimer();
+    void showTimer(int bloomTime, boolean bloomPhase);
+
+    void showMessage(String message);
 
 }
