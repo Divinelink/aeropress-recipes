@@ -8,12 +8,12 @@ import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
 
 public interface TimerInteractor {
 
-    void startTimer(OnStartTimerFinishListener listener, int bloomTime, boolean bloomPhase);
+    void startTimer(OnStartTimerFinishListener listener, int time, boolean bloomPhase);
 
 
 
     interface OnStartTimerFinishListener{
-        void onSuccess(int bloomTime, boolean bloomPhase);
+        void onSuccess(int time, boolean bloomPhase);
         void onError();
     }
 

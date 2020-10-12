@@ -5,9 +5,9 @@ public class TimerInteractorImpl implements TimerInteractor{
 
 
     @Override
-    public void startTimer(OnStartTimerFinishListener listener, int bloomTime, boolean bloomPhase) {
+    public void startTimer(OnStartTimerFinishListener listener, int time, boolean bloomPhase) {
 
-        listener.onSuccess(bloomTime, bloomPhase);
+        listener.onSuccess(time, bloomPhase);
 
     }
 

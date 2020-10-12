@@ -64,18 +64,17 @@ public class TimerFragment extends Fragment implements TimerView {
     }
 
     @Override
-    public void showTimer(final int bloomTime, boolean bloomPhase) {
-
-
-        secondsRemaining = bloomTime;
+    public void showTimer(final int time, boolean bloomPhase) {
+        secondsRemaining = time;
+        //TODO make it show both time phase and how much water we need to put into each phase
         if (bloomPhase) {
-            progressBar.setMax(bloomTime);
+            progressBar.setMax(time);
             notificationTextView.setText(R.string.bloomPhase);
             timerHandler.postDelayed(bloomRunnable, 0);
         } else {
             timerHandler.postDelayed(brewRunnable, 0);
             notificationTextView.setText(R.string.brewPhase);
-            progressBar.setMax(bloomTime-1);
+            progressBar.setMax(time-1);
         }
     }
 
