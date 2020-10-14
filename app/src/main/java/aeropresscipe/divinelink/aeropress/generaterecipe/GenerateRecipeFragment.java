@@ -105,7 +105,6 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         }
     }
 
-
     @Override
     public void passData(int bloomTime, int brewTime, int bloomWater, int remainingBrewWater) {
         // Set bloom time and brewtime. Needed for Timer

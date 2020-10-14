@@ -1,5 +1,7 @@
 package aeropresscipe.divinelink.aeropress.timer;
 
+import android.animation.ObjectAnimator;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceUI;
@@ -7,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +18,15 @@ import android.widget.TextView;
 import aeropresscipe.divinelink.aeropress.R;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class TimerFragment extends Fragment implements TimerView {
 
+
+    //FIXME fix bug where if you press back button and there's already a timer
+    // it crashes after timer edds, because there's no context attached.
+    // re-attach same context if there's already one?
 
     TextView timerTextView;
     TextView notificationTextView;
@@ -48,8 +57,8 @@ public class TimerFragment extends Fragment implements TimerView {
         presenter = new TimerPresenterImpl(this);
 
         presenter.getNumbersForTimer(
-                getPhaseFactory.findPhase(diceUI.getBloomTime(),diceUI.getBrewTime()).getTime(),
-                getPhaseFactory.findPhase(diceUI.getBloomTime(),diceUI.getBrewTime()).getPhase());
+                getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getTime(),
+                getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getPhase());
 
         return v;
     }
@@ -71,26 +80,28 @@ public class TimerFragment extends Fragment implements TimerView {
     @Override
     public void showTimer(final int time, boolean bloomPhase) {
         secondsRemaining = time;
-        //TODO make it show both time phase and how much water we need to put into each phase
+
         if (bloomPhase) {
             timerHandler.postDelayed(bloomRunnable, 0);
             notificationTextView.setText(getString(R.string.bloomPhase, diceUI.getBloomWater()));
         } else {
             timerHandler.postDelayed(brewRunnable, 0);
             // Checks if there was a bloom or not, and set corresponding text on textView.
-            if (getPhaseFactory.findPhase(diceUI.getBloomTime(),diceUI.getBrewTime()).getPhase())
+            if (getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getPhase())
                 notificationTextView.setText(getString(R.string.brewPhaseWithBloom, diceUI.getRemainingBrewWater()));
             else
                 notificationTextView.setText(getString(R.string.brewPhaseNoBloom, diceUI.getRemainingBrewWater()));
         }
-            progressBar.setMax(time);
+        progressBar.setMax(time);
+        ObjectAnimator.ofInt(progressBar, "progress", time)
+                .setDuration(500)
+                .start();
     }
 
     Handler timerHandler = new Handler();
     Runnable bloomRunnable = new Runnable() {
         @Override
         public void run() {
-
             updateCountdownUI();
 
             if (secondsRemaining == 0) {
@@ -132,5 +143,23 @@ public class TimerFragment extends Fragment implements TimerView {
     public void showMessage(String message) {
         timerTextView.setVisibility(View.INVISIBLE);
         notificationTextView.setText(message);
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        presenter.saveValuesOnPause(getContext(), secondsRemaining);
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        //FIXME ...
+        presenter.returnValuesOnResume(getContext());
+
     }
 }

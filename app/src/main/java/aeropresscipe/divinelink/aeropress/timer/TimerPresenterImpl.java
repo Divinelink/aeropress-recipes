@@ -1,5 +1,7 @@
 package aeropresscipe.divinelink.aeropress.timer;
 
+import android.content.Context;
+
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeInteractor;
 
 public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnStartTimerFinishListener {
@@ -13,41 +15,44 @@ public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnSta
     }
 
     @Override
-    public void onSuccess(int time, boolean bloomPhase) {
+    public void returnValuesOnResume(Context ctx) {
 
-        timerView.showTimer(time, bloomPhase);
-
-        // The logic behind the progress bar will go here probably
-        // Presenter knows WHEN to display certain states and triggers updates
-        // When a user clicks a button,
-        // presenter tells the view to display progress bar, ask the domain layer (interactor) for a data/update
+        // Get values from the model when resuming to TimerFragment.
+        // And return them on the view.
+        //  interactor.startTimer(this,  ctx);
+        //  interactor.startTimer(this, ctx, );
+        interactor.returnValues(this, ctx);
 
     }
 
     @Override
-    public void onError() {
+    public void saveValuesOnPause(Context ctx, int time) {
+
+        interactor.saveValues(this, ctx, time);
 
     }
-    /*
 
     @Override
-    public void getNumbersForTimer(TimerNumbers time) {
-        timerView.showTimer(time.timeForPhase, time.isBloomPhase);
-    }*/
+    public void showMessage(String message) {
+        timerView.showMessage(message);
+    }
 
     @Override
     public void getNumbersForTimer(int time, boolean bloomPhase) {
         timerView.showTimer(time, bloomPhase);
     }
 
-    /*
-        @Override
-        public void getNumbersForTimer(int time, boolean bloomPhase) {
-            // Interactor is not needed since we don't interact with any data on the model layer
-            interactor.startTimer(this, time, bloomPhase);
-        }*/
     @Override
-    public void showMessage(String message) {
-        timerView.showMessage(message);
+    public void onError() {
+
     }
+
+    @Override
+    public void onSuccess(int time, boolean bloomPhase) {
+
+        timerView.showTimer(time, bloomPhase);
+
+    }
+
+
 }
