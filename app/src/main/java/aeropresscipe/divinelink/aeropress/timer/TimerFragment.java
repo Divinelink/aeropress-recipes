@@ -73,14 +73,17 @@ public class TimerFragment extends Fragment implements TimerView {
         secondsRemaining = time;
         //TODO make it show both time phase and how much water we need to put into each phase
         if (bloomPhase) {
-            progressBar.setMax(time);
-            notificationTextView.setText(R.string.bloomPhase);
             timerHandler.postDelayed(bloomRunnable, 0);
+            notificationTextView.setText(getString(R.string.bloomPhase, diceUI.getBloomWater()));
         } else {
             timerHandler.postDelayed(brewRunnable, 0);
-            notificationTextView.setText(R.string.brewPhase);
-            progressBar.setMax(time);
+            // Checks if there was a bloom or not, and set corresponding text on textView.
+            if (getPhaseFactory.findPhase(diceUI.getBloomTime(),diceUI.getBrewTime()).getPhase())
+                notificationTextView.setText(getString(R.string.brewPhaseWithBloom, diceUI.getRemainingBrewWater()));
+            else
+                notificationTextView.setText(getString(R.string.brewPhaseNoBloom, diceUI.getRemainingBrewWater()));
         }
+            progressBar.setMax(time);
     }
 
     Handler timerHandler = new Handler();

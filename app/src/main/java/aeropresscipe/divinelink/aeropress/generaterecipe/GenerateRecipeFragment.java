@@ -61,7 +61,6 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         timerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // presenter.startTimer(timerUI, getActivity());
                 homeView.addTimerFragment(diceUI);
             }
         });
@@ -85,9 +84,14 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
     }
 
     @Override
-    public void showRecipe(final int temp, final String groundSize, final int brewTime, final String brewingMethod, final int bloomTime, final int bloomWater, final int waterAmount, final int coffeeAmount) {
-
-        //FIXME Create a new object instead of this
+    public void showRecipe(final int temp,
+                           final String groundSize,
+                           final int brewTime,
+                           final String brewingMethod,
+                           final int bloomTime,
+                           final int bloomWater,
+                           final int waterAmount,
+                           final int coffeeAmount) {
 
         if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
@@ -103,9 +107,9 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
 
 
     @Override
-    public void passData(int bloomTime, int brewTime) {
+    public void passData(int bloomTime, int brewTime, int bloomWater, int remainingBrewWater) {
         // Set bloom time and brewtime. Needed for Timer
-           diceUI = new DiceUI(bloomTime, brewTime);
+           diceUI = new DiceUI(bloomTime, brewTime, bloomWater, remainingBrewWater);
     }
 
 }

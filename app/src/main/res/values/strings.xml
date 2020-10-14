@@ -30,9 +30,10 @@
     <string name="get_another_recipe">Get another Recipe</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="bloomPhase">Bloom Phase</string>
-    <string name="brewPhase">Brew Phase</string>
-    <string name="enjoyCoffee">Enjoy your coffee</string>
+    <string name="bloomPhase">Bloom Phase!\nPour in %dg of water.</string>
+    <string name="brewPhaseWithBloom">Brew Phase!\nPour in the remaining %dg of water.</string>
+    <string name="brewPhaseNoBloom">Brew Phase!\nPour in %dg of water.</string>
+    <string name="enjoyCoffee">Enjoy your coffee!</string>
 
 
 </resources>
