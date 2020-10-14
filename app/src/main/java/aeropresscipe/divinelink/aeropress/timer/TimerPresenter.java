@@ -1,11 +1,10 @@
 package aeropresscipe.divinelink.aeropress.timer;
 
+
 public interface TimerPresenter {
 
-    void getNumbersForTimer(int time, boolean bloomPhase);
+    void getNumbersForTimer(int bloomAndBrewTime, boolean isBloom);
 
     void showMessage(String message);
-
-
 
 }

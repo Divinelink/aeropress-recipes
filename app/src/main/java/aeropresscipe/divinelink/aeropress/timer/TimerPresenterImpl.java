@@ -28,12 +28,24 @@ public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnSta
     public void onError() {
 
     }
+    /*
+
+    @Override
+    public void getNumbersForTimer(TimerNumbers time) {
+        timerView.showTimer(time.timeForPhase, time.isBloomPhase);
+    }*/
 
     @Override
     public void getNumbersForTimer(int time, boolean bloomPhase) {
-        // Interactor is not needed since we don't interact with any data on the model layer
-        interactor.startTimer(this, time, bloomPhase);
+        timerView.showTimer(time, bloomPhase);
     }
+
+    /*
+        @Override
+        public void getNumbersForTimer(int time, boolean bloomPhase) {
+            // Interactor is not needed since we don't interact with any data on the model layer
+            interactor.startTimer(this, time, bloomPhase);
+        }*/
     @Override
     public void showMessage(String message) {
         timerView.showMessage(message);

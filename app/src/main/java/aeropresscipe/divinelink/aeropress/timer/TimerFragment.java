@@ -29,6 +29,8 @@ public class TimerFragment extends Fragment implements TimerView {
 
     DiceUI diceUI;
 
+    GetPhaseFactory getPhaseFactory = new GetPhaseFactory();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -44,7 +46,10 @@ public class TimerFragment extends Fragment implements TimerView {
 
 
         presenter = new TimerPresenterImpl(this);
-        presenter.getNumbersForTimer(diceUI.getBloomTime(), true);
+
+        presenter.getNumbersForTimer(
+                getPhaseFactory.findPhase(diceUI.getBloomTime(),diceUI.getBrewTime()).getTime(),
+                getPhaseFactory.findPhase(diceUI.getBloomTime(),diceUI.getBrewTime()).getPhase());
 
         return v;
     }
@@ -74,7 +79,7 @@ public class TimerFragment extends Fragment implements TimerView {
         } else {
             timerHandler.postDelayed(brewRunnable, 0);
             notificationTextView.setText(R.string.brewPhase);
-            progressBar.setMax(time-1);
+            progressBar.setMax(time);
         }
     }
 
@@ -85,14 +90,15 @@ public class TimerFragment extends Fragment implements TimerView {
 
             updateCountdownUI();
 
-            if (secondsRemaining == -1) {
-                presenter.getNumbersForTimer(diceUI.getBrewTime()+1, false);
+            if (secondsRemaining == 0) {
+                presenter.getNumbersForTimer(
+                        getPhaseFactory.findPhase(0, diceUI.getBrewTime()).getTime(),
+                        false);
                 timerHandler.removeCallbacks(bloomRunnable);
             } else {
                 timerHandler.postDelayed(this, 1000);
+                secondsRemaining -= 1;
             }
-
-            secondsRemaining -= 1;
         }
     };
 
@@ -101,15 +107,14 @@ public class TimerFragment extends Fragment implements TimerView {
         public void run() {
             updateCountdownUI();
 
-            if (secondsRemaining == -1) {
+            if (secondsRemaining == 0) {
                 timerHandler.removeCallbacks(brewRunnable);
                 //TODO ADD ANIMATION
                 presenter.showMessage(getString(R.string.enjoyCoffee));
             } else {
                 timerHandler.postDelayed(this, 1000);
+                secondsRemaining -= 1;
             }
-
-            secondsRemaining -= 1;
         }
     };
 
