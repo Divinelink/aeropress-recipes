@@ -9,23 +9,17 @@ public class TimerInteractorImpl implements TimerInteractor {
 
 
     @Override
-    public void saveValues(OnStartTimerFinishListener listener, Context ctx, int start_time_in_millis) {
+    public void saveValues(OnStartTimerFinishListener listener, Context ctx, int start_time_in_millis, boolean mTimerRunning) {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
         SharedPreferences.Editor editor = preferences.edit();
 
-        int mTimeLeftInMillis = preferences.getInt("millisLeft", start_time_in_millis);
-        boolean mTimerRunning = preferences.getBoolean("timerRunning", false);
+        long endTime = System.currentTimeMillis() + start_time_in_millis * 1000;
 
-        editor.putLong("millisLeft", mTimeLeftInMillis);
+        editor.putLong("endTime", endTime);
         editor.putBoolean("timerRunning", mTimerRunning);
         editor.apply();
-
-        //    listener.onSuccess(mTimeLeftInMillis, mTimerRunning);
-
     }
-
-
 
 
     @Override
@@ -33,10 +27,14 @@ public class TimerInteractorImpl implements TimerInteractor {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
 
+        long mTimeLeftInMillis = preferences.getLong("endTime", 0);
+        boolean mTimerRunning = preferences.getBoolean("timerRunning", true);
 
-        //FIXME figure out how to get start_time_in_millis and timerRunning
-        int mTimeLeftInMillis = preferences.getInt("millisLeft", start_time_in_millis);
-        boolean mTimerRunning = preferences.getBoolean("timerRunning", timerRunning);
-        listener.onSuccess(mTimeLeftInMillis, mTimerRunning);
+        long minutes = (mTimeLeftInMillis - System.currentTimeMillis()) / 1000 / 60;
+        long seconds = (mTimeLeftInMillis - System.currentTimeMillis()) / 1000 % 60;
+
+        int endTime = (int) minutes * 60 + (int) seconds;
+
+        listener.onSuccess(endTime, mTimerRunning);
     }
 }

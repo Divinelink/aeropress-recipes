@@ -56,8 +56,15 @@ class GetPhaseFactory {
         } else if (timeForBloom > 0) {
             return new BloomPhase(timeForBloom);
         }
-
         return null;
+    }
+
+    public int getMaxTime(int timeForBloom, int timeForBrew) {
+
+        if (timeForBloom == 0)
+            return timeForBrew;
+        else
+            return timeForBloom;
     }
 }
 

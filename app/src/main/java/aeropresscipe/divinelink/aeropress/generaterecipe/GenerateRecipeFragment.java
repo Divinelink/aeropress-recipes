@@ -3,8 +3,6 @@ package aeropresscipe.divinelink.aeropress.generaterecipe;
 import android.os.Bundle;
 
 import aeropresscipe.divinelink.aeropress.base.HomeView;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,10 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-
-import java.util.ArrayList;
 
 import aeropresscipe.divinelink.aeropress.R;
 
@@ -31,7 +26,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
 
     RecyclerView recipeRv;
     LinearLayout generateRecipeButton;
-    Button timerButton;
+    Button timerButton, resumeBrew;
 
 
     private GenerateRecipePresenter presenter;
@@ -50,6 +45,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         generateRecipeButton = v.findViewById(R.id.generateRecipeButton);
         //FIXME TEMPORARY BUTTON
         timerButton = v.findViewById(R.id.startTimerButton);
+        resumeBrew = v.findViewById(R.id.resumeBrewButton);
         //TODO ADD FADE-IN ANIMATION WHEN GENERATING NEW RECIPE
         generateRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +57,15 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         timerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                diceUI.setNewRecipe(true);
+                homeView.addTimerFragment(diceUI);
+            }
+        });
+
+        resumeBrew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                diceUI.setNewRecipe(false);
                 homeView.addTimerFragment(diceUI);
             }
         });

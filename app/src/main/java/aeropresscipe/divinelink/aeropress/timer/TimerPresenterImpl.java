@@ -26,9 +26,9 @@ public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnSta
     }
 
     @Override
-    public void saveValuesOnPause(Context ctx, int time) {
+    public void saveValuesOnPause(Context ctx, int time, boolean timer) {
 
-        interactor.saveValues(this, ctx, time);
+        interactor.saveValues(this, ctx, time, timer);
 
     }
 

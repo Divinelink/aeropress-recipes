@@ -49,5 +49,14 @@
         app:layout_constraintStart_toStartOf="parent"
         android:text="Brew!"/>
 
+    <Button
+        android:id="@+id/resumeBrewButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Resume Brew!"
+        app:layout_constraintBottom_toTopOf="@+id/generateRecipeButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/startTimerButton" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

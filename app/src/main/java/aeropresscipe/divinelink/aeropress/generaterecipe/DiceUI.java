@@ -6,18 +6,21 @@ import android.os.Parcelable;
 public class DiceUI implements Parcelable {
 
     private int bloomTime, brewTime, bloomWater, remainingBrewWater;
-
-
-    public DiceUI(int bloomTime, int brewTime) {
-        this.bloomTime = bloomTime;
-        this.brewTime = brewTime;
-    }
+    private boolean isNewRecipe;
 
     public DiceUI(int bloomTime, int brewTime, int bloomWater, int remainingBrewWater) {
         this.bloomTime = bloomTime;
         this.brewTime = brewTime;
         this.bloomWater = bloomWater;
         this.remainingBrewWater = remainingBrewWater;
+    }
+
+    public DiceUI(int bloomTime, int brewTime, int bloomWater, int remainingBrewWater, boolean isNewRecipe) {
+        this.bloomTime = bloomTime;
+        this.brewTime = brewTime;
+        this.bloomWater = bloomWater;
+        this.remainingBrewWater = remainingBrewWater;
+        this.isNewRecipe = isNewRecipe;
     }
 
     public int getBloomTime() {
@@ -34,6 +37,14 @@ public class DiceUI implements Parcelable {
 
     public int getBloomWater() {
         return bloomWater;
+    }
+
+    public boolean isNewRecipe() {
+        return isNewRecipe;
+    }
+
+    public void setNewRecipe(boolean newRecipe) {
+        isNewRecipe = newRecipe;
     }
 
     public void setBloomWater(int bloomWater) {

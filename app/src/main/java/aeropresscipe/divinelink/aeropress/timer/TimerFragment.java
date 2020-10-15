@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +16,6 @@ import android.widget.TextView;
 
 import aeropresscipe.divinelink.aeropress.R;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
-
-import static android.content.Context.MODE_PRIVATE;
 
 
 public class TimerFragment extends Fragment implements TimerView {
@@ -56,9 +53,7 @@ public class TimerFragment extends Fragment implements TimerView {
 
         presenter = new TimerPresenterImpl(this);
 
-        presenter.getNumbersForTimer(
-                getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getTime(),
-                getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getPhase());
+
 
         return v;
     }
@@ -82,19 +77,26 @@ public class TimerFragment extends Fragment implements TimerView {
         secondsRemaining = time;
 
         if (bloomPhase) {
-            timerHandler.postDelayed(bloomRunnable, 0);
+            timerHandler.postDelayed(bloomRunnable, 1000);
+            updateCountdownUI();
             notificationTextView.setText(getString(R.string.bloomPhase, diceUI.getBloomWater()));
         } else {
-            timerHandler.postDelayed(brewRunnable, 0);
+            timerHandler.postDelayed(brewRunnable, 1000);
             // Checks if there was a bloom or not, and set corresponding text on textView.
+            diceUI.setBloomTime(0);
+            updateCountdownUI();
             if (getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getPhase())
+                //FIXME make notificationTextView fade in and fade out constantly!
                 notificationTextView.setText(getString(R.string.brewPhaseWithBloom, diceUI.getRemainingBrewWater()));
             else
                 notificationTextView.setText(getString(R.string.brewPhaseNoBloom, diceUI.getRemainingBrewWater()));
         }
-        progressBar.setMax(time);
+        // Set max progress bar to be either the max BloomTime or BrewTime.
+        // Avoid if statements by using Factory
+        progressBar.setMax(getPhaseFactory.getMaxTime(diceUI.getBloomTime(), diceUI.getBrewTime()));
+
         ObjectAnimator.ofInt(progressBar, "progress", time)
-                .setDuration(500)
+                .setDuration(300)
                 .start();
     }
 
@@ -102,8 +104,6 @@ public class TimerFragment extends Fragment implements TimerView {
     Runnable bloomRunnable = new Runnable() {
         @Override
         public void run() {
-            updateCountdownUI();
-
             if (secondsRemaining == 0) {
                 presenter.getNumbersForTimer(
                         getPhaseFactory.findPhase(0, diceUI.getBrewTime()).getTime(),
@@ -112,6 +112,7 @@ public class TimerFragment extends Fragment implements TimerView {
             } else {
                 timerHandler.postDelayed(this, 1000);
                 secondsRemaining -= 1;
+                updateCountdownUI();
             }
         }
     };
@@ -119,7 +120,7 @@ public class TimerFragment extends Fragment implements TimerView {
     Runnable brewRunnable = new Runnable() {
         @Override
         public void run() {
-            updateCountdownUI();
+          //  updateCountdownUI();
 
             if (secondsRemaining == 0) {
                 timerHandler.removeCallbacks(brewRunnable);
@@ -128,6 +129,7 @@ public class TimerFragment extends Fragment implements TimerView {
             } else {
                 timerHandler.postDelayed(this, 1000);
                 secondsRemaining -= 1;
+                updateCountdownUI();
             }
         }
     };
@@ -149,17 +151,29 @@ public class TimerFragment extends Fragment implements TimerView {
     @Override
     public void onStop() {
         super.onStop();
+        // fixme isBloomPhase saves wrong data
+        final boolean isBloomPhase = getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getPhase();
 
-        presenter.saveValuesOnPause(getContext(), secondsRemaining);
+        timerHandler.removeCallbacks(bloomRunnable);
+        timerHandler.removeCallbacks(brewRunnable);
+
+        presenter.saveValuesOnPause(getContext(), secondsRemaining, isBloomPhase);
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
 
-        //FIXME ...
-        presenter.returnValuesOnResume(getContext());
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // FIXME after the brew is finished, make it unable to resume brew.
+        if (diceUI.isNewRecipe()) // if it's a new recipe, dont call returnValuesOnResume
+            presenter.getNumbersForTimer(
+                    getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getTime(),
+                    getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getPhase());
+        else
+            //When resuming, we need to pass the old recipe, not the new one.
+            presenter.returnValuesOnResume(getContext());
 
     }
 }
