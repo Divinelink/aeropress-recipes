@@ -10,13 +10,13 @@ public interface TimerInteractor {
 
   //  void startTimer(OnStartTimerFinishListener listener, Context ctx, long START_TIME_IN_MILLIS);
 
-    void saveValues(OnStartTimerFinishListener listener, Context ctx, int START_TIME_IN_MILLIS, boolean timerRunning);
+    void saveValues(OnStartTimerFinishListener listener, Context ctx, int bloomTime, int brewTime, boolean isBloomTimer);
 
     void returnValues(OnStartTimerFinishListener listener, Context ctx);
 
     interface OnStartTimerFinishListener{
         void onSuccess(int time, boolean bloomPhase);
-        void onError();
+        void onBrewFinished();
     }
 
 

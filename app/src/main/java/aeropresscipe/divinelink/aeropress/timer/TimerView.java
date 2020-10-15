@@ -7,4 +7,5 @@ public interface TimerView {
 
     void showMessage(String message);
 
+    void showMessage();
 }

@@ -11,5 +11,5 @@ public interface TimerPresenter {
 
     void returnValuesOnResume(Context ctx);
 
-    void saveValuesOnPause(Context ctx, int timeTimeLeftInMillis, boolean timerRunning);
+    void saveValuesOnPause(Context ctx, int timeTimeLeftInMillis, int brewTime, boolean timerRunning);
 }

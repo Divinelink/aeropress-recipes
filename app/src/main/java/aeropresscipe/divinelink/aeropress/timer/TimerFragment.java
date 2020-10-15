@@ -20,11 +20,6 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class TimerFragment extends Fragment implements TimerView {
 
-
-    //FIXME fix bug where if you press back button and there's already a timer
-    // it crashes after timer edds, because there's no context attached.
-    // re-attach same context if there's already one?
-
     TextView timerTextView;
     TextView notificationTextView;
     MaterialProgressBar progressBar;
@@ -52,8 +47,6 @@ public class TimerFragment extends Fragment implements TimerView {
 
 
         presenter = new TimerPresenterImpl(this);
-
-
 
         return v;
     }
@@ -120,7 +113,6 @@ public class TimerFragment extends Fragment implements TimerView {
     Runnable brewRunnable = new Runnable() {
         @Override
         public void run() {
-          //  updateCountdownUI();
 
             if (secondsRemaining == 0) {
                 timerHandler.removeCallbacks(brewRunnable);
@@ -145,20 +137,24 @@ public class TimerFragment extends Fragment implements TimerView {
     public void showMessage(String message) {
         timerTextView.setVisibility(View.INVISIBLE);
         notificationTextView.setText(message);
-    }
 
+        diceUI.setBloomTime(0);
+        diceUI.setBrewTime(0);
+    }
 
     @Override
     public void onStop() {
         super.onStop();
-        // fixme isBloomPhase saves wrong data
-        final boolean isBloomPhase = getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getPhase();
 
-        timerHandler.removeCallbacks(bloomRunnable);
-        timerHandler.removeCallbacks(brewRunnable);
+        // Basically when both getBloomTime and getBrewTime are equal to 0, then don't proceed.
+        if (getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getTime() != 0) {
+            final boolean isBloomPhase = getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getPhase();
 
-        presenter.saveValuesOnPause(getContext(), secondsRemaining, isBloomPhase);
+            timerHandler.removeCallbacks(bloomRunnable);
+            timerHandler.removeCallbacks(brewRunnable);
 
+            presenter.saveValuesOnPause(getContext(), secondsRemaining, diceUI.getBrewTime(), isBloomPhase);
+        }
     }
 
 
@@ -174,6 +170,18 @@ public class TimerFragment extends Fragment implements TimerView {
         else
             //When resuming, we need to pass the old recipe, not the new one.
             presenter.returnValuesOnResume(getContext());
+
+    }
+
+    @Override
+    public void showMessage() {
+        //TODO make it show a button that returns to starting screen
+        timerTextView.setVisibility(View.INVISIBLE);
+        notificationTextView.setText(R.string.enjoyCoffee);
+
+        // Temporary Fix?
+        diceUI.setBloomTime(0);
+        diceUI.setBrewTime(0);
 
     }
 }

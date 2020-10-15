@@ -15,20 +15,16 @@ public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnSta
     }
 
     @Override
+    public void saveValuesOnPause(Context ctx, int timeTimeLeftInMillis, int brewTime, boolean timerRunning) {
+        interactor.saveValues(this, ctx, timeTimeLeftInMillis, brewTime, timerRunning);
+    }
+
+    @Override
     public void returnValuesOnResume(Context ctx) {
 
         // Get values from the model when resuming to TimerFragment.
         // And return them on the view.
-        //  interactor.startTimer(this,  ctx);
-        //  interactor.startTimer(this, ctx, );
         interactor.returnValues(this, ctx);
-
-    }
-
-    @Override
-    public void saveValuesOnPause(Context ctx, int time, boolean timer) {
-
-        interactor.saveValues(this, ctx, time, timer);
 
     }
 
@@ -43,8 +39,9 @@ public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnSta
     }
 
     @Override
-    public void onError() {
+    public void onBrewFinished() {
 
+        timerView.showMessage();
     }
 
     @Override
@@ -53,6 +50,5 @@ public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnSta
         timerView.showTimer(time, bloomPhase);
 
     }
-
 
 }

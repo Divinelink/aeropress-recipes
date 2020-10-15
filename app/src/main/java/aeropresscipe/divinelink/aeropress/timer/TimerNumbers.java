@@ -1,6 +1,7 @@
 package aeropresscipe.divinelink.aeropress.timer;
 
 
+
 abstract class TimerNumbers {
 
     protected int timeForPhase;
@@ -45,19 +46,35 @@ class BrewPhase extends TimerNumbers {
         return timeForPhase;
     }
 
-
 }
+
+class NoPhase extends TimerNumbers {
+
+    @Override
+    int getTime() {
+        return 0;
+    }
+
+    @Override
+    boolean getPhase() {
+        return false;
+    }
+}
+
 
 class GetPhaseFactory {
 
     public TimerNumbers findPhase(int timeForBloom, int timeForBrew) {
-        if (timeForBloom == 0) {
+         if (timeForBloom == 0) {
             return new BrewPhase(timeForBrew);
         } else if (timeForBloom > 0) {
             return new BloomPhase(timeForBloom);
         }
         return null;
     }
+
+
+
 
     public int getMaxTime(int timeForBloom, int timeForBrew) {
 
