@@ -25,8 +25,8 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
 
 
     RecyclerView recipeRv;
-    LinearLayout generateRecipeButton;
-    Button timerButton, resumeBrew;
+    LinearLayout generateRecipeButton, timerButton;
+    Button resumeBrew;
 
 
     private GenerateRecipePresenter presenter;

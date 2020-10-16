@@ -36,5 +36,6 @@
     <string name="brewPhaseNoBloom">Brew Phase!\nPour in %dg of water.</string>
 
     <string name="enjoyCoffee">Enjoy your coffee!</string>
+    <string name="brew">Start Timer</string>
 
 </resources>

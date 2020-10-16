@@ -18,44 +18,62 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/generateRecipeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:gravity="center"
-        android:id="@+id/generateRecipeButton"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/startTimerButton">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:contentDescription="aeropress"
-            android:background="@drawable/ic_aeropress2"/>
+            android:background="@drawable/ic_dices"
+            android:contentDescription="aeropress" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="10dp"
-            android:text="@string/get_another_recipe"/>
+            android:text="@string/get_another_recipe" />
     </LinearLayout>
 
-    <Button
+    <LinearLayout
         android:id="@+id/startTimerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/generateRecipeButton"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="Brew!"/>
+        app:layout_constraintStart_toEndOf="@+id/generateRecipeButton">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:background="@drawable/ic_aeropress"
+            android:contentDescription="aeropress1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:text="@string/brew" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/resumeBrewButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:text="Resume Brew!"
         app:layout_constraintBottom_toTopOf="@+id/generateRecipeButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/startTimerButton" />
 
 
