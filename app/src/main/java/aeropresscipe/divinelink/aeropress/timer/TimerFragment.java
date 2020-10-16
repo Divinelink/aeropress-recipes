@@ -76,18 +76,19 @@ public class TimerFragment extends Fragment implements TimerView {
         } else {
             timerHandler.postDelayed(brewRunnable, 1000);
             // Checks if there was a bloom or not, and set corresponding text on textView.
-            diceUI.setBloomTime(0);
+          //  diceUI.setBloomTime(0);
             updateCountdownUI();
             if (getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getPhase())
                 //FIXME make notificationTextView fade in and fade out constantly!
                 notificationTextView.setText(getString(R.string.brewPhaseWithBloom, diceUI.getRemainingBrewWater()));
             else
                 notificationTextView.setText(getString(R.string.brewPhaseNoBloom, diceUI.getRemainingBrewWater()));
+            diceUI.setBloomTime(0);
         }
         // Set max progress bar to be either the max BloomTime or BrewTime.
         // Avoid if statements by using Factory
         progressBar.setMax(getPhaseFactory.getMaxTime(diceUI.getBloomTime(), diceUI.getBrewTime()));
-
+        //Should this be here or in presenter?
         ObjectAnimator.ofInt(progressBar, "progress", time)
                 .setDuration(300)
                 .start();
@@ -97,7 +98,7 @@ public class TimerFragment extends Fragment implements TimerView {
     Runnable bloomRunnable = new Runnable() {
         @Override
         public void run() {
-            if (secondsRemaining == 0) {
+            if (secondsRemaining == 1) {
                 presenter.getNumbersForTimer(
                         getPhaseFactory.findPhase(0, diceUI.getBrewTime()).getTime(),
                         false);
@@ -113,8 +114,7 @@ public class TimerFragment extends Fragment implements TimerView {
     Runnable brewRunnable = new Runnable() {
         @Override
         public void run() {
-
-            if (secondsRemaining == 0) {
+            if (secondsRemaining == 1) {
                 timerHandler.removeCallbacks(brewRunnable);
                 //TODO ADD ANIMATION
                 presenter.showMessage(getString(R.string.enjoyCoffee));
@@ -136,6 +136,7 @@ public class TimerFragment extends Fragment implements TimerView {
     @Override
     public void showMessage(String message) {
         timerTextView.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
         notificationTextView.setText(message);
 
         diceUI.setBloomTime(0);
@@ -177,6 +178,7 @@ public class TimerFragment extends Fragment implements TimerView {
     public void showMessage() {
         //TODO make it show a button that returns to starting screen
         timerTextView.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
         notificationTextView.setText(R.string.enjoyCoffee);
 
         // Temporary Fix?
