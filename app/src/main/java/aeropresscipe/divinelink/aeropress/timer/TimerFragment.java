@@ -76,7 +76,6 @@ public class TimerFragment extends Fragment implements TimerView {
         } else {
             timerHandler.postDelayed(brewRunnable, 1000);
             // Checks if there was a bloom or not, and set corresponding text on textView.
-          //  diceUI.setBloomTime(0);
             updateCountdownUI();
             if (getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getPhase())
                 //FIXME make notificationTextView fade in and fade out constantly!
@@ -117,7 +116,8 @@ public class TimerFragment extends Fragment implements TimerView {
             if (secondsRemaining == 1) {
                 timerHandler.removeCallbacks(brewRunnable);
                 //TODO ADD ANIMATION
-                presenter.showMessage(getString(R.string.enjoyCoffee));
+                presenter.showMessage();
+
             } else {
                 timerHandler.postDelayed(this, 1000);
                 secondsRemaining -= 1;
@@ -134,16 +134,6 @@ public class TimerFragment extends Fragment implements TimerView {
     }
 
     @Override
-    public void showMessage(String message) {
-        timerTextView.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.INVISIBLE);
-        notificationTextView.setText(message);
-
-        diceUI.setBloomTime(0);
-        diceUI.setBrewTime(0);
-    }
-
-    @Override
     public void onStop() {
         super.onStop();
 
@@ -157,7 +147,6 @@ public class TimerFragment extends Fragment implements TimerView {
             presenter.saveValuesOnPause(getContext(), secondsRemaining, diceUI.getBrewTime(), isBloomPhase);
         }
     }
-
 
     @Override
     public void onResume() {

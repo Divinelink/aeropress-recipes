@@ -29,8 +29,8 @@ public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnSta
     }
 
     @Override
-    public void showMessage(String message) {
-        timerView.showMessage(message);
+    public void showMessage() {
+        timerView.showMessage();
     }
 
     @Override

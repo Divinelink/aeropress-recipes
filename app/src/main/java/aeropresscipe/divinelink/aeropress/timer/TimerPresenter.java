@@ -7,7 +7,7 @@ public interface TimerPresenter {
 
     void getNumbersForTimer(int bloomAndBrewTime, boolean isBloom);
 
-    void showMessage(String message);
+    void showMessage();
 
     void returnValuesOnResume(Context ctx);
 
