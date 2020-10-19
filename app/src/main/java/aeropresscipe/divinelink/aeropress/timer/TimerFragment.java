@@ -97,7 +97,7 @@ public class TimerFragment extends Fragment implements TimerView {
     Runnable bloomRunnable = new Runnable() {
         @Override
         public void run() {
-            if (secondsRemaining == 1) {
+            if (secondsRemaining == 1 || secondsRemaining == 0) {
                 presenter.getNumbersForTimer(
                         getPhaseFactory.findPhase(0, diceUI.getBrewTime()).getTime(),
                         false);
@@ -113,7 +113,7 @@ public class TimerFragment extends Fragment implements TimerView {
     Runnable brewRunnable = new Runnable() {
         @Override
         public void run() {
-            if (secondsRemaining == 1) {
+            if (secondsRemaining == 1 || secondsRemaining == 0) {
                 timerHandler.removeCallbacks(brewRunnable);
                 //TODO ADD ANIMATION
                 presenter.showMessage();

@@ -9,6 +9,4 @@ public interface GenerateRecipePresenter {
 
     void getNewRecipe(Context ctx, boolean letGenerate);
 
-
-
 }
