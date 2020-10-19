@@ -1,5 +1,8 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 
 import aeropresscipe.divinelink.aeropress.base.HomeView;
@@ -10,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -29,7 +34,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
     LinearLayout generateRecipeButton, timerButton;
     Button resumeBrew;
 
-
+    private Animation myFadeInAnimation;
     private GenerateRecipePresenter presenter;
     HomeView homeView;
     DiceUI diceUI;
@@ -47,6 +52,8 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         //FIXME TEMPORARY BUTTON
         timerButton = v.findViewById(R.id.startTimerButton);
         resumeBrew = v.findViewById(R.id.resumeBrewButton);
+
+
         //TODO ADD FADE-IN ANIMATION WHEN GENERATING NEW RECIPE
         generateRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +92,9 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         presenter = new GenerateRecipePresenterImpl(this);
         presenter.getRecipe(getContext());
 
+        myFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_out);
+
+
         return v;
     }
 
@@ -115,6 +125,10 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
                 @Override
                 public void run() {
                     recipeRv.setAdapter(recipeRvAdapter);
+                    if (!myFadeInAnimation.hasEnded()) {
+                        resumeBrew.startAnimation(myFadeInAnimation);
+                    }
+
                 }
             });
         }
@@ -128,7 +142,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
 
     @Override
     public void showIsAlreadyBrewingDialog() {
-        Toast.makeText(getActivity(), "You're already brewing.\nPress & Hold to generate a new recipe.", Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), R.string.alreadyBrewingDialog, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -148,10 +162,16 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
                 @Override
                 public void run() {
                     recipeRv.setAdapter(recipeRvAdapter);
-                    resumeBrew.setVisibility(View.INVISIBLE);
+                    resumeBrew.setVisibility(View.GONE);
+                    if (!myFadeInAnimation.hasEnded()) {
+                        myFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out);
+                        resumeBrew.startAnimation(myFadeInAnimation);
+                    }
                 }
 
             });
         }
     }
+
+
 }

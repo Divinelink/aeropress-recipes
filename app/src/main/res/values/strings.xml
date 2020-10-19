@@ -38,5 +38,6 @@
     <string name="enjoyCoffee">Enjoy your coffee!</string>
     <string name="brew">Start Timer</string>
     <string name="resume_brew">Resume Brew</string>
+    <string name="alreadyBrewingDialog"><![CDATA[You\'re already brewing\nPress & Hold to get a new recipe]]></string>
 
 </resources>
