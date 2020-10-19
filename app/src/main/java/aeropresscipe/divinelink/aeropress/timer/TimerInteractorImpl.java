@@ -16,10 +16,13 @@ public class TimerInteractorImpl implements TimerInteractor {
         long endTimeBloom = System.currentTimeMillis() + bloomTime * 1000;
         long endTimeBrew = System.currentTimeMillis() + brewTime * 1000;
 
-
         editor.putLong("endTimeBloom", endTimeBloom);
         editor.putLong("endTimeBrew", endTimeBrew);
         editor.putBoolean("isBloomTimer", isBloomTimer);
+
+        //Test for resuming brew
+        editor.putBoolean("isBrewing", true);
+
         editor.apply();
     }
 
@@ -57,11 +60,6 @@ public class TimerInteractorImpl implements TimerInteractor {
         } else {
             listener.onSuccess(endTime, isBloomTimer);
         }
-
-
-        Log.d("Is It Bloom Phase", Boolean.toString(isBloomTimer));
-        Log.d("endTime is: ", Integer.toString(endTime));
-
 
     }
 }

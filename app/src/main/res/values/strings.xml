@@ -37,5 +37,6 @@
 
     <string name="enjoyCoffee">Enjoy your coffee!</string>
     <string name="brew">Start Timer</string>
+    <string name="resume_brew">Resume Brew</string>
 
 </resources>

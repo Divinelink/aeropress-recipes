@@ -7,7 +7,7 @@ public interface GenerateRecipeInteractor {
 
     void getRecipe(OnGenerateRecipeFinishListener listener, Context ctx);
 
-    void getNewRecipe(OnGenerateRecipeFinishListener listener, Context ctx);
+    void getNewRecipe(OnGenerateRecipeFinishListener listener, Context ctx, boolean letGenerate);
 
     interface OnGenerateRecipeFinishListener{
 
@@ -20,6 +20,15 @@ public interface GenerateRecipeInteractor {
                        int waterAmount,
                        int coffeeAmount);
 
-        void onError();
+        void onSuccessNewRecipe(int temp,
+                                String groundSize,
+                                int brewTime,
+                                String brewingMethod,
+                                int bloomTime,
+                                int bloomWater,
+                                int waterAmount,
+                                int coffeeAmount);
+
+        void isAlreadyBrewing();
     }
 }

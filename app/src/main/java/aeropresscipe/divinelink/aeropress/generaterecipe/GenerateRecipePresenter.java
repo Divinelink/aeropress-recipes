@@ -7,6 +7,8 @@ public interface GenerateRecipePresenter {
 
     void getRecipe(Context ctx);
 
-    void getNewRecipe(Context ctx);
+    void getNewRecipe(Context ctx, boolean letGenerate);
+
+
 
 }

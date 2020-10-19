@@ -13,6 +13,13 @@ public class GenerateRecipePresenterImpl implements GenerateRecipePresenter, Gen
         interactor = new GenerateRecipeInteractorImpl();
     }
 
+    @Override
+    public void onSuccessNewRecipe(int temp, String groundSize, int brewTime, String brewingMethod, int bloomTime, int bloomWater, int waterAmount, int coffeeAmount) {
+
+        generateRecipeView.showRecipeRemoveResume(temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount);
+        generateRecipeView.passData(bloomTime, brewTime, bloomWater, waterAmount - bloomWater);
+
+    }
 
     @Override
     public void onSuccess(int temp,
@@ -25,18 +32,20 @@ public class GenerateRecipePresenterImpl implements GenerateRecipePresenter, Gen
                           int coffeeAmount) {
 
         generateRecipeView.showRecipe(temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount);
-        generateRecipeView.passData(bloomTime, brewTime, bloomWater, waterAmount-bloomWater);
+        generateRecipeView.passData(bloomTime, brewTime, bloomWater, waterAmount - bloomWater);
 
     }
 
     @Override
-    public void onError() {
+    public void isAlreadyBrewing() {
+
+        generateRecipeView.showIsAlreadyBrewingDialog();
 
     }
 
     @Override
-    public void getNewRecipe(Context ctx) {
-        interactor.getNewRecipe(this, ctx);
+    public void getNewRecipe(Context ctx, boolean letGenerate) {
+        interactor.getNewRecipe(this, ctx, letGenerate);
     }
 
     @Override

@@ -15,14 +15,6 @@ public class DiceUI implements Parcelable {
         this.remainingBrewWater = remainingBrewWater;
     }
 
-    public DiceUI(int bloomTime, int brewTime, int bloomWater, int remainingBrewWater, boolean isNewRecipe) {
-        this.bloomTime = bloomTime;
-        this.brewTime = brewTime;
-        this.bloomWater = bloomWater;
-        this.remainingBrewWater = remainingBrewWater;
-        this.isNewRecipe = isNewRecipe;
-    }
-
     public int getBloomTime() {
         return bloomTime;
     }

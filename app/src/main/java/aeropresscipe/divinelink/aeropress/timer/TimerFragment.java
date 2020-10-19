@@ -87,7 +87,7 @@ public class TimerFragment extends Fragment implements TimerView {
         // Set max progress bar to be either the max BloomTime or BrewTime.
         // Avoid if statements by using Factory
         progressBar.setMax(getPhaseFactory.getMaxTime(diceUI.getBloomTime(), diceUI.getBrewTime()));
-        //Should this be here or in presenter?
+
         ObjectAnimator.ofInt(progressBar, "progress", time)
                 .setDuration(300)
                 .start();

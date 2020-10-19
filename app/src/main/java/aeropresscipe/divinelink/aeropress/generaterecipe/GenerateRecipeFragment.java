@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 
 import aeropresscipe.divinelink.aeropress.R;
@@ -50,7 +51,15 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         generateRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.getNewRecipe(getContext());
+                presenter.getNewRecipe(getContext(), false);
+            }
+        });
+
+        generateRecipeButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                presenter.getNewRecipe(getContext(), true);
+                return true;
             }
         });
 
@@ -102,6 +111,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
             getActivity().runOnUiThread(new Runnable() {
                 GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter
                         (temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount, getActivity());
+
                 @Override
                 public void run() {
                     recipeRv.setAdapter(recipeRvAdapter);
@@ -113,7 +123,35 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
     @Override
     public void passData(int bloomTime, int brewTime, int bloomWater, int remainingBrewWater) {
         // Set bloom time and brewtime. Needed for Timer
-           diceUI = new DiceUI(bloomTime, brewTime, bloomWater, remainingBrewWater);
+        diceUI = new DiceUI(bloomTime, brewTime, bloomWater, remainingBrewWater);
     }
 
+    @Override
+    public void showIsAlreadyBrewingDialog() {
+        Toast.makeText(getActivity(), "You're already brewing.\nPress & Hold to generate a new recipe.", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showRecipeRemoveResume(final int temp,
+                                       final String groundSize,
+                                       final int brewTime,
+                                       final String brewingMethod,
+                                       final int bloomTime,
+                                       final int bloomWater,
+                                       final int waterAmount,
+                                       final int coffeeAmount) {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter
+                        (temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount, getActivity());
+
+                @Override
+                public void run() {
+                    recipeRv.setAdapter(recipeRvAdapter);
+                    resumeBrew.setVisibility(View.INVISIBLE);
+                }
+
+            });
+        }
+    }
 }

@@ -2,7 +2,9 @@ package aeropresscipe.divinelink.aeropress.generaterecipe;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.lang.reflect.Array;
@@ -11,67 +13,43 @@ import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase;
 
-public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor {
+public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor, SharedPrefManager {
     //We only want to edit out data in the interactor, before we pass them into the Presenter
     // otherwise we break the MVP rules
 
 
     @Override
-    public void getNewRecipe(final OnGenerateRecipeFinishListener listener, final Context ctx) {
+    public void getNewRecipe(final OnGenerateRecipeFinishListener listener, final Context ctx, boolean letGenerate) {
         // Executed By Pressing "Get Another Recipe Button"
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
-                final DiceDomain newRecipe = getRandomRecipe();
 
-                // When Using AsyncTask, we also need to use .runOnUiThread(new Runnable()) where we set the adapter
-                // That updates the UI. In this case, on the fragment, on showRecipe() method.
+        // Check whether to show generate a new recipe or not.
+        // If there's a recipe running already, show a toast that asks the user to long press on the button
+        // in order to get a new recipe.
+        // When long-pressing, letGenerate is true, and isBrewing becomes false, then the model passes the new recipe on the presenter etc.
+        boolean isBrewing = IsItBrewingAlready(ctx);
 
-                // Stuff that updates the UI
-                Log.d("getNewRecipe", "Get New Recipe Button, updates DB and creates new recipe");
-                AsyncTask.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        recipeDao.updateRecipe(newRecipe);
-                        listener.onSuccess(
-                                newRecipe.getDiceTemperature(),
-                                newRecipe.getGroundSize(),
-                                newRecipe.getBrewTime(),
-                                newRecipe.getBrewingMethod(),
-                                newRecipe.getBloomTime(),
-                                newRecipe.getBloomWater(),
-                                newRecipe.getBrewWaterAmount(),
-                                newRecipe.getCoffeeAmount()
-                        );
-                    }
-                });
-            }
-        });
-    }
+        if (letGenerate)
+            isBrewing = false;
 
-    @Override
-    public void getRecipe(final OnGenerateRecipeFinishListener listener, final Context ctx) {
-
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
-                final DiceDomain recipe = recipeDao.getRecipe();
-
-                if (recipe == null) {
-                    // If it's the first time we run the run, there's no recipe. We generate a new one using the getRandomRecipe() method
+        if (isBrewing) {
+            listener.isAlreadyBrewing();
+        } else {
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
                     final DiceDomain newRecipe = getRandomRecipe();
 
-                    // When DB is empty, meaning it has no recipe, it automatically saves the current recipe on the DB
-                    // And we show it on the fragment.
+                    // When Using AsyncTask, we also need to use .runOnUiThread(new Runnable()) where we set the adapter
+                    // That updates the UI. In this case, on the fragment, on showRecipe() method.
+
+                    // Stuff that updates the UI
+                    Log.d("getNewRecipe", "Get New Recipe Button, updates DB and creates new recipe");
                     AsyncTask.execute(new Runnable() {
                         @Override
                         public void run() {
-                            // Stuff that updates the UI
-                            Log.d("getRecipe", "Creates New Recipe when app starts and there's no recipe available.");
                             recipeDao.updateRecipe(newRecipe);
-                            listener.onSuccess(
+                            listener.onSuccessNewRecipe(
                                     newRecipe.getDiceTemperature(),
                                     newRecipe.getGroundSize(),
                                     newRecipe.getBrewTime(),
@@ -83,20 +61,76 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor {
                             );
                         }
                     });
+
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean("isBrewing", false);
+
+                    editor.apply();
+                }
+            });
+        }
+    }
+
+    @Override
+    public void getRecipe(final OnGenerateRecipeFinishListener listener, final Context ctx) {
+
+        final boolean isBrewing = IsItBrewingAlready(ctx);
+
+
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
+                final DiceDomain recipe = recipeDao.getRecipe();
+                
+                if (recipe == null) {
+                    // If it's the first time we run the run, there's no recipe. We generate a new one using the getRandomRecipe() method
+                    final DiceDomain newRecipe = getRandomRecipe();
+                        // When DB is empty, meaning it has no recipe, it automatically saves the current recipe on the DB
+                        // And we show it on the fragment.
+                        AsyncTask.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.d("getRecipe", "Creates New Recipe when app starts and there's no recipe available.");
+                                recipeDao.updateRecipe(newRecipe);
+                                listener.onSuccessNewRecipe(
+                                        newRecipe.getDiceTemperature(),
+                                        newRecipe.getGroundSize(),
+                                        newRecipe.getBrewTime(),
+                                        newRecipe.getBrewingMethod(),
+                                        newRecipe.getBloomTime(),
+                                        newRecipe.getBloomWater(),
+                                        newRecipe.getBrewWaterAmount(),
+                                        newRecipe.getCoffeeAmount()
+                                );
+                            }
+                        });
                 } else {
                     Log.d("Show Recipe!", "Show already existing recipe");
                     AsyncTask.execute(new Runnable() {
                         @Override
                         public void run() {
-                            listener.onSuccess(
-                                    recipe.getDiceTemperature(),
-                                    recipe.getGroundSize(),
-                                    recipe.getBrewTime(),
-                                    recipe.getBrewingMethod(),
-                                    recipe.getBloomTime(),
-                                    recipe.getBloomWater(),
-                                    recipe.getBrewWaterAmount(),
-                                    recipe.getCoffeeAmount());
+                            if (isBrewing)
+                                listener.onSuccess(
+                                        recipe.getDiceTemperature(),
+                                        recipe.getGroundSize(),
+                                        recipe.getBrewTime(),
+                                        recipe.getBrewingMethod(),
+                                        recipe.getBloomTime(),
+                                        recipe.getBloomWater(),
+                                        recipe.getBrewWaterAmount(),
+                                        recipe.getCoffeeAmount());
+                            else
+                                listener.onSuccessNewRecipe(
+                                        recipe.getDiceTemperature(),
+                                        recipe.getGroundSize(),
+                                        recipe.getBrewTime(),
+                                        recipe.getBrewingMethod(),
+                                        recipe.getBloomTime(),
+                                        recipe.getBloomWater(),
+                                        recipe.getBrewWaterAmount(),
+                                        recipe.getCoffeeAmount());
                         }
                     });
                 }
@@ -164,7 +198,7 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor {
         GroundSizeDice.add(groundSizeDice3);
         GroundSizeDice.add(groundSizeDice4);
         //TEST
-      //  GroundSizeDice.add(groundSizeDice5);
+        //  GroundSizeDice.add(groundSizeDice5);
 
         return GroundSizeDice;
     }
@@ -198,7 +232,7 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor {
         DiceDomain brewingAmountDice3 = new DiceDomain(15, 250);
         DiceDomain brewingAmountDice4 = new DiceDomain(20, 200);
         DiceDomain brewingAmountDice5 = new DiceDomain(20, 250);
-        DiceDomain brewingAmountDice6 = new DiceDomain(23, 250);
+        DiceDomain brewingAmountDice6 = new DiceDomain(23, 300);
 
         BrewingWaterAmountDice.add(brewingAmountDice1);
         BrewingWaterAmountDice.add(brewingAmountDice2);
@@ -210,4 +244,11 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor {
         return BrewingWaterAmountDice;
     }
 
+    @Override
+    public boolean IsItBrewingAlready(Context ctx) {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+        return preferences.getBoolean("isBrewing", false);
+
+    }
 }
