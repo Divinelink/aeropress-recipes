@@ -51,4 +51,10 @@ public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnSta
 
     }
 
+    @Override
+    public void saveLikedRecipeOnDB(Context ctx) {
+
+        interactor.saveLikedRecipe(ctx);
+
+    }
 }

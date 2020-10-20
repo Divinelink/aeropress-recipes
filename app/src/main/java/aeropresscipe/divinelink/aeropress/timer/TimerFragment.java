@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import aeropresscipe.divinelink.aeropress.R;
@@ -23,6 +24,7 @@ public class TimerFragment extends Fragment implements TimerView {
     TextView timerTextView;
     TextView notificationTextView;
     MaterialProgressBar progressBar;
+    Button likeRecipeBtn;
 
     private TimerPresenter presenter;
 
@@ -44,6 +46,14 @@ public class TimerFragment extends Fragment implements TimerView {
         timerTextView = (TextView) v.findViewById(R.id.timeTV);
         progressBar = (MaterialProgressBar) v.findViewById(R.id.progressBar);
         notificationTextView = (TextView) v.findViewById(R.id.notificationTV);
+        likeRecipeBtn = (Button) v.findViewById(R.id.likeRecipeButton);
+
+        likeRecipeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.saveLikedRecipeOnDB(getContext());
+            }
+        });
 
 
         presenter = new TimerPresenterImpl(this);

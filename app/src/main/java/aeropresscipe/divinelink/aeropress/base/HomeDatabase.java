@@ -4,14 +4,18 @@ import android.content.Context;
 
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
 import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeDao;
+import aeropresscipe.divinelink.aeropress.timer.LikedRecipeDao;
+import aeropresscipe.divinelink.aeropress.timer.LikedRecipeDomain;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = DiceDomain.class, version = 3, exportSchema = false)
+@Database(entities = {DiceDomain.class, LikedRecipeDomain.class}, version = 4, exportSchema = false)
 abstract public class HomeDatabase extends RoomDatabase {
 
     public abstract RecipeDao recipeDao();
+
+    public abstract LikedRecipeDao likedRecipeDao();
 
     static private HomeDatabase INSTANCE;
 

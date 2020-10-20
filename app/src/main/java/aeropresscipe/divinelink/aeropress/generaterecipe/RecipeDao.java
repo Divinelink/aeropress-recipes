@@ -12,7 +12,7 @@ public abstract class RecipeDao {
     abstract void insertRecipe(DiceDomain diceDomain);
 
     @Query("SELECT * FROM Recipe")
-    abstract DiceDomain getRecipe();
+    public abstract DiceDomain getRecipe();
 
     @Query("DELETE FROM Recipe")
     abstract void deleteAll();
@@ -22,4 +22,6 @@ public abstract class RecipeDao {
         deleteAll();
         insertRecipe(diceDomain);
     }
+
+
 }

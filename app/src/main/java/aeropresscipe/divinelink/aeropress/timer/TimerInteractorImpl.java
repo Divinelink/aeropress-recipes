@@ -3,8 +3,13 @@ package aeropresscipe.divinelink.aeropress.timer;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import aeropresscipe.divinelink.aeropress.base.HomeDatabase;
+import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
+import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeDao;
 
 public class TimerInteractorImpl implements TimerInteractor {
 
@@ -60,6 +65,34 @@ public class TimerInteractorImpl implements TimerInteractor {
         } else {
             listener.onSuccess(endTime, isBloomTimer);
         }
+
+    }
+
+    @Override
+    public void saveLikedRecipe(final Context ctx) {
+
+
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
+                final DiceDomain recipe = recipeDao.getRecipe();
+
+                final LikedRecipeDao likedRecipeDao = HomeDatabase.getDatabase(ctx).likedRecipeDao();
+
+                // Add current recipe to LikedRecipes DB
+                likedRecipeDao.insertLikedRecipe(new LikedRecipeDomain(
+                        recipe.getDiceTemperature(),
+                        recipe.getGroundSize(),
+                        recipe.getBrewTime(),
+                        recipe.getBrewingMethod(),
+                        recipe.getBloomTime(),
+                        recipe.getBloomWater(),
+                        recipe.getBrewWaterAmount(),
+                        recipe.getCoffeeAmount()));
+            }
+        });
+
 
     }
 }

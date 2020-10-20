@@ -12,4 +12,6 @@ public interface TimerPresenter {
     void returnValuesOnResume(Context ctx);
 
     void saveValuesOnPause(Context ctx, int timeTimeLeftInMillis, int brewTime, boolean timerRunning);
+
+    void saveLikedRecipeOnDB(Context ctx);
 }

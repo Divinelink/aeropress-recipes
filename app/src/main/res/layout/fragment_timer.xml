@@ -50,4 +50,15 @@
         app:layout_constraintTop_toBottomOf="@+id/progressBar"
         tools:text="XXX Phase!\nPour in Xg amount of water." />
 
+    <Button
+        android:id="@+id/likeRecipeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="152dp"
+        android:text="ADD TO LIKED RECIPES"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
