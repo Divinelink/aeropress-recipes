@@ -14,10 +14,15 @@ public interface TimerInteractor {
 
     void returnValues(OnStartTimerFinishListener listener, Context ctx);
 
-    void saveLikedRecipe(Context ctx);
+    void saveLikedRecipe(OnSaveLikedRecipeFinishListener listener, Context ctx);
 
     interface OnStartTimerFinishListener{
         void onSuccess(int time, boolean bloomPhase);
         void onBrewFinished();
+    }
+
+    interface OnSaveLikedRecipeFinishListener{
+        void onSuccessSave(boolean isLiked);
+        void onError();
     }
 }

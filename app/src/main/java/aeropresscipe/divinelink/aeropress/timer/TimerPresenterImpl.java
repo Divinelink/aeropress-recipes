@@ -4,7 +4,7 @@ import android.content.Context;
 
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeInteractor;
 
-public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnStartTimerFinishListener {
+public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnStartTimerFinishListener, TimerInteractor.OnSaveLikedRecipeFinishListener {
 
     private TimerView timerView;
     private TimerInteractor interactor;
@@ -54,7 +54,19 @@ public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnSta
     @Override
     public void saveLikedRecipeOnDB(Context ctx) {
 
-        interactor.saveLikedRecipe(ctx);
+        interactor.saveLikedRecipe(this, ctx);
+
+    }
+
+    @Override
+    public void onSuccessSave(boolean isLiked) {
+
+        timerView.addToLiked(true);
+
+    }
+
+    @Override
+    public void onError() {
 
     }
 }

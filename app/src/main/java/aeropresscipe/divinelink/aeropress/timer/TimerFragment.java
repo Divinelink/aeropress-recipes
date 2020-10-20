@@ -1,7 +1,9 @@
 package aeropresscipe.divinelink.aeropress.timer;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.content.SharedPreferences;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceUI;
@@ -9,11 +11,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.TextView;
+
 
 import aeropresscipe.divinelink.aeropress.R;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
@@ -24,7 +31,7 @@ public class TimerFragment extends Fragment implements TimerView {
     TextView timerTextView;
     TextView notificationTextView;
     MaterialProgressBar progressBar;
-    Button likeRecipeBtn;
+    ImageButton likeRecipeBtn;
 
     private TimerPresenter presenter;
 
@@ -34,6 +41,7 @@ public class TimerFragment extends Fragment implements TimerView {
 
     GetPhaseFactory getPhaseFactory = new GetPhaseFactory();
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,12 +54,31 @@ public class TimerFragment extends Fragment implements TimerView {
         timerTextView = (TextView) v.findViewById(R.id.timeTV);
         progressBar = (MaterialProgressBar) v.findViewById(R.id.progressBar);
         notificationTextView = (TextView) v.findViewById(R.id.notificationTV);
-        likeRecipeBtn = (Button) v.findViewById(R.id.likeRecipeButton);
+        likeRecipeBtn = (ImageButton) v.findViewById(R.id.likeRecipeButton);
 
         likeRecipeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 presenter.saveLikedRecipeOnDB(getContext());
+            }
+        });
+
+
+        //FIXME move it somewhere else
+        likeRecipeBtn.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    AnimatorSet reducer = (AnimatorSet) AnimatorInflater.loadAnimator(getContext(), R.animator.reduce_size);
+                    reducer.setTarget(view);
+                    reducer.start();
+
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    AnimatorSet regainer = (AnimatorSet) AnimatorInflater.loadAnimator(getContext(), R.animator.regain_size);
+                    regainer.setTarget(view);
+                    regainer.start();
+                }
+                return false;
             }
         });
 
@@ -183,6 +210,28 @@ public class TimerFragment extends Fragment implements TimerView {
         // Temporary Fix?
         diceUI.setBloomTime(0);
         diceUI.setBrewTime(0);
+
+    }
+
+    @Override
+    public void addToLiked(final boolean isLiked) {
+
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    if (isLiked) {
+                        likeRecipeBtn.setImageResource(R.drawable.ic_star_on);
+
+                    } else
+                        likeRecipeBtn.setImageResource(R.drawable.ic_star_off);
+
+                }
+
+            });
+        }
+
 
     }
 }

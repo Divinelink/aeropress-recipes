@@ -50,15 +50,16 @@
         app:layout_constraintTop_toBottomOf="@+id/progressBar"
         tools:text="XXX Phase!\nPour in Xg amount of water." />
 
-    <Button
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:id="@+id/likeRecipeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="152dp"
-        android:text="ADD TO LIKED RECIPES"
+        android:background="@drawable/ic_star_off"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/notificationTV"
+        android:contentDescription="starIcon"
+        android:soundEffectsEnabled="false"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,4 +5,6 @@ public interface TimerView {
     void showTimer(int bloomTime, boolean bloomPhase);
 
     void showMessage();
+
+    void addToLiked(boolean isLiked);
 }

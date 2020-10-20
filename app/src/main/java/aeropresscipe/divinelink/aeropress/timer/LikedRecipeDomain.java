@@ -2,6 +2,7 @@ package aeropresscipe.divinelink.aeropress.timer;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "LikedRecipes")
@@ -15,7 +16,7 @@ public class LikedRecipeDomain {
     private int diceTemperature, brewTime, bloomTime, bloomWater, coffeeAmount, brewWaterAmount;
 
 
-
+    @Ignore
     public LikedRecipeDomain(){};
 
     public LikedRecipeDomain(int diceTemperature,

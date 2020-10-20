@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase;
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
@@ -69,7 +68,7 @@ public class TimerInteractorImpl implements TimerInteractor {
     }
 
     @Override
-    public void saveLikedRecipe(final Context ctx) {
+    public void saveLikedRecipe(final OnSaveLikedRecipeFinishListener listener, final Context ctx) {
 
 
         AsyncTask.execute(new Runnable() {
@@ -90,8 +89,12 @@ public class TimerInteractorImpl implements TimerInteractor {
                         recipe.getBloomWater(),
                         recipe.getBrewWaterAmount(),
                         recipe.getCoffeeAmount()));
+
+                listener.onSuccessSave(true);
             }
         });
+
+
 
 
     }
