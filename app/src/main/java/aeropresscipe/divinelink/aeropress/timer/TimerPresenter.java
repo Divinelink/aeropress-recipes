@@ -5,7 +5,7 @@ import android.content.Context;
 
 public interface TimerPresenter {
 
-    void getNumbersForTimer(int bloomAndBrewTime, boolean isBloom);
+    void getNumbersForTimer(int bloomAndBrewTime, boolean isBloom, Context ctx);
 
     void showMessage();
 

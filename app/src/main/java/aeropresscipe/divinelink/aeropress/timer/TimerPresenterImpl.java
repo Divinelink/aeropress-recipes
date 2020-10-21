@@ -1,6 +1,7 @@
 package aeropresscipe.divinelink.aeropress.timer;
 
 import android.content.Context;
+import android.util.Log;
 
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeInteractor;
 
@@ -34,8 +35,11 @@ public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnSta
     }
 
     @Override
-    public void getNumbersForTimer(int time, boolean bloomPhase) {
+    public void getNumbersForTimer(int time, boolean bloomPhase, Context ctx) {
+
+        Log.d("onSuccess", "GetNumbersForTimer");
         timerView.showTimer(time, bloomPhase);
+        interactor.checkIfRecipeExists(this, ctx);
     }
 
     @Override
@@ -47,6 +51,7 @@ public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnSta
     @Override
     public void onSuccess(int time, boolean bloomPhase) {
 
+        Log.d("onSuccess", "ShowTimer");
         timerView.showTimer(time, bloomPhase);
 
     }
@@ -60,9 +65,14 @@ public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnSta
 
     @Override
     public void onSuccessSave(boolean isLiked) {
+        Log.d("OnSuccessSave", "OnSuccessSave");
+        timerView.addToLiked(isLiked);
 
-        timerView.addToLiked(true);
+    }
 
+    @Override
+    public void onRecipeFound(boolean isLiked) {
+        timerView.addToLiked(isLiked);
     }
 
     @Override

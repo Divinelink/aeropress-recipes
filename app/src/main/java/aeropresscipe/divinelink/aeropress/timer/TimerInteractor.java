@@ -16,6 +16,8 @@ public interface TimerInteractor {
 
     void saveLikedRecipe(OnSaveLikedRecipeFinishListener listener, Context ctx);
 
+    void checkIfRecipeExists(OnSaveLikedRecipeFinishListener listener, Context ctx);
+
     interface OnStartTimerFinishListener{
         void onSuccess(int time, boolean bloomPhase);
         void onBrewFinished();
@@ -23,6 +25,7 @@ public interface TimerInteractor {
 
     interface OnSaveLikedRecipeFinishListener{
         void onSuccessSave(boolean isLiked);
+        void onRecipeFound(boolean isLiked);
         void onError();
     }
 }

@@ -137,7 +137,8 @@ public class TimerFragment extends Fragment implements TimerView {
             if (secondsRemaining == 1 || secondsRemaining == 0) {
                 presenter.getNumbersForTimer(
                         getPhaseFactory.findPhase(0, diceUI.getBrewTime()).getTime(),
-                        false);
+                        false,
+                        getContext());
                 timerHandler.removeCallbacks(bloomRunnable);
             } else {
                 timerHandler.postDelayed(this, 1000);
@@ -193,7 +194,8 @@ public class TimerFragment extends Fragment implements TimerView {
         if (diceUI.isNewRecipe()) // if it's a new recipe, dont call returnValuesOnResume
             presenter.getNumbersForTimer(
                     getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getTime(),
-                    getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getPhase());
+                    getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getPhase(),
+                    getContext());
         else
             //When resuming, we need to pass the old recipe, not the new one.
             presenter.returnValuesOnResume(getContext());

@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
+
+import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase;
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
@@ -29,7 +32,6 @@ public class TimerInteractorImpl implements TimerInteractor {
 
         editor.apply();
     }
-
 
     @Override
     public void returnValues(OnStartTimerFinishListener listener, Context ctx) {
@@ -70,7 +72,6 @@ public class TimerInteractorImpl implements TimerInteractor {
     @Override
     public void saveLikedRecipe(final OnSaveLikedRecipeFinishListener listener, final Context ctx) {
 
-
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -79,8 +80,11 @@ public class TimerInteractorImpl implements TimerInteractor {
 
                 final LikedRecipeDao likedRecipeDao = HomeDatabase.getDatabase(ctx).likedRecipeDao();
 
-                // Add current recipe to LikedRecipes DB
-                likedRecipeDao.insertLikedRecipe(new LikedRecipeDomain(
+                List<LikedRecipeDomain> myData = likedRecipeDao.getLikedRecipes();
+
+                System.out.println(myData.size());
+
+                LikedRecipeDomain currentRecipe = new LikedRecipeDomain(
                         recipe.getDiceTemperature(),
                         recipe.getGroundSize(),
                         recipe.getBrewTime(),
@@ -88,14 +92,80 @@ public class TimerInteractorImpl implements TimerInteractor {
                         recipe.getBloomTime(),
                         recipe.getBloomWater(),
                         recipe.getBrewWaterAmount(),
-                        recipe.getCoffeeAmount()));
+                        recipe.getCoffeeAmount());
 
-                listener.onSuccessSave(true);
+                if (!checkIfRecipeExistsInDatabase(myData, currentRecipe)) {
+                    // Add current recipe to LikedRecipes DB
+                    likedRecipeDao.insertLikedRecipe(currentRecipe);
+                    Log.d("Inserted", currentRecipe.toString());
+                    listener.onSuccessSave(true);
+                }
+                else
+                {
+                    likedRecipeDao.deleteById( recipe.getDiceTemperature(),
+                            recipe.getGroundSize(),
+                            recipe.getBrewTime(),
+                            recipe.getBrewingMethod(),
+                            recipe.getBloomTime(),
+                            recipe.getBloomWater(),
+                            recipe.getBrewWaterAmount(),
+                            recipe.getCoffeeAmount());
+                    Log.d("Deleted", currentRecipe.toString());
+                    listener.onSuccessSave(false);
+                }
             }
         });
-
-
-
-
     }
+
+    @Override
+    public void checkIfRecipeExists(final OnSaveLikedRecipeFinishListener listener, final Context ctx) {
+
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
+                final DiceDomain recipe = recipeDao.getRecipe();
+
+                final LikedRecipeDao likedRecipeDao = HomeDatabase.getDatabase(ctx).likedRecipeDao();
+                List<LikedRecipeDomain> myData = likedRecipeDao.getLikedRecipes();
+
+                LikedRecipeDomain currentRecipe = new LikedRecipeDomain(
+                        recipe.getDiceTemperature(),
+                        recipe.getGroundSize(),
+                        recipe.getBrewTime(),
+                        recipe.getBrewingMethod(),
+                        recipe.getBloomTime(),
+                        recipe.getBloomWater(),
+                        recipe.getBrewWaterAmount(),
+                        recipe.getCoffeeAmount());
+
+                if (checkIfRecipeExistsInDatabase(myData, currentRecipe)) {
+                    listener.onRecipeFound(true);
+                    Log.d("Recipe Exists in DB?", "ΥΕΣ!!!");
+                } else {
+                    listener.onRecipeFound(false);
+                    Log.d("Recipe Exists in DB?", "ANLAKI!!!");
+                }
+            }
+        });
+    }
+
+    public boolean checkIfRecipeExistsInDatabase(List<LikedRecipeDomain> myData, LikedRecipeDomain currentRecipe) {
+        boolean recipeFound = false;
+        for (LikedRecipeDomain dataInDB : myData) {
+             recipeFound = dataInDB.getDiceTemperature() == currentRecipe.getDiceTemperature() &&
+                    dataInDB.getGroundSize().equals(currentRecipe.getGroundSize()) &&
+                    dataInDB.getBrewTime() == currentRecipe.getBrewTime() &&
+                    dataInDB.getBrewingMethod().equals(currentRecipe.getBrewingMethod()) &&
+                    dataInDB.getBloomTime() == currentRecipe.getBloomTime() &&
+                    dataInDB.getBloomWater() == currentRecipe.getBloomWater() &&
+                    dataInDB.getBrewWaterAmount() == currentRecipe.getBrewWaterAmount() &&
+                    dataInDB.getCoffeeAmount() == currentRecipe.getCoffeeAmount();
+             if (recipeFound)
+                 break;
+        }
+        return recipeFound;
+    }
+
+
 }
