@@ -1,28 +1,26 @@
-package aeropresscipe.divinelink.aeropress.timer;
+package aeropresscipe.divinelink.aeropress.savedrecipes;
 
 import java.util.List;
 
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.TypeConverter;
 
 
 @Dao
-public abstract class LikedRecipeDao {
+public abstract class SavedRecipeDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract void insertLikedRecipe(LikedRecipeDomain likedRecipeDomain);
+    public abstract void insertLikedRecipe(SavedRecipeDomain savedRecipeDomain);
 
-    @Query("SELECT * FROM LikedRecipes")
-    public abstract List<LikedRecipeDomain> getLikedRecipes();
+    @Query("SELECT * FROM SavedRecipes")
+    public abstract List<SavedRecipeDomain> getSavedRecipes();
 
-    @Query("DELETE FROM LikedRecipes")
+    @Query("DELETE FROM SavedRecipes")
     abstract void deleteAll();
 
-    @Query("DELETE FROM LikedRecipes WHERE diceTemperature = :diceTemperature AND" +
+    @Query("DELETE FROM SavedRecipes WHERE diceTemperature = :diceTemperature AND" +
             " groundSize = :groundSize AND" +
             " brewTime = :brewTime AND" +
             " brewingMethod = :brewingMethod AND" +
@@ -30,7 +28,7 @@ public abstract class LikedRecipeDao {
             " bloomWater = :bloomWater AND" +
             " brewWaterAmount = :brewWaterAmount AND" +
             " coffeeAmount = :coffeeAmount ")
-    abstract void deleteCurrent(int diceTemperature,
+    public abstract void deleteCurrent(int diceTemperature,
                              String groundSize,
                              int brewTime,
                              String brewingMethod,

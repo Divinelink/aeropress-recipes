@@ -12,6 +12,8 @@ import java.util.List;
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase;
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
 import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeDao;
+import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDao;
+import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain;
 
 public class TimerInteractorImpl implements TimerInteractor {
 
@@ -76,12 +78,12 @@ public class TimerInteractorImpl implements TimerInteractor {
             @Override
             public void run() {
                 final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
-                final LikedRecipeDao likedRecipeDao = HomeDatabase.getDatabase(ctx).likedRecipeDao();
+                final SavedRecipeDao savedRecipeDao = HomeDatabase.getDatabase(ctx).savedRecipeDao();
 
                 final DiceDomain recipe = recipeDao.getRecipe();
-                final List<LikedRecipeDomain> myData = likedRecipeDao.getLikedRecipes();
+                final List<SavedRecipeDomain> myData = savedRecipeDao.getSavedRecipes();
 
-                LikedRecipeDomain currentRecipe = new LikedRecipeDomain(
+                SavedRecipeDomain currentRecipe = new SavedRecipeDomain(
                         recipe.getDiceTemperature(),
                         recipe.getGroundSize(),
                         recipe.getBrewTime(),
@@ -93,12 +95,12 @@ public class TimerInteractorImpl implements TimerInteractor {
 
                 if (!checkIfCurrentRecipeExistsOnDB(myData, currentRecipe)) {
                     // If Recipe Doesn't Exist on DB, then Save It.
-                    likedRecipeDao.insertLikedRecipe(currentRecipe);
+                    savedRecipeDao.insertLikedRecipe(currentRecipe);
                     Log.d("Inserted", currentRecipe.toString());
                     listener.onSuccessSave(true);
                 } else {
                     // Otherwise, if it already exists (and user clicks on the button) then delete it.
-                    likedRecipeDao.deleteCurrent(recipe.getDiceTemperature(),
+                    savedRecipeDao.deleteCurrent(recipe.getDiceTemperature(),
                             recipe.getGroundSize(),
                             recipe.getBrewTime(),
                             recipe.getBrewingMethod(),
@@ -120,12 +122,12 @@ public class TimerInteractorImpl implements TimerInteractor {
             @Override
             public void run() {
                 final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
-                final LikedRecipeDao likedRecipeDao = HomeDatabase.getDatabase(ctx).likedRecipeDao();
+                final SavedRecipeDao savedRecipeDao = HomeDatabase.getDatabase(ctx).savedRecipeDao();
 
                 final DiceDomain recipe = recipeDao.getRecipe();
-                final List<LikedRecipeDomain> myData = likedRecipeDao.getLikedRecipes();
+                final List<SavedRecipeDomain> myData = savedRecipeDao.getSavedRecipes();
 
-                LikedRecipeDomain currentRecipe = new LikedRecipeDomain(
+                SavedRecipeDomain currentRecipe = new SavedRecipeDomain(
                         recipe.getDiceTemperature(),
                         recipe.getGroundSize(),
                         recipe.getBrewTime(),
@@ -146,9 +148,9 @@ public class TimerInteractorImpl implements TimerInteractor {
         });
     }
 
-    public boolean checkIfCurrentRecipeExistsOnDB(List<LikedRecipeDomain> myData, LikedRecipeDomain currentRecipe) {
+    public boolean checkIfCurrentRecipeExistsOnDB(List<SavedRecipeDomain> myData, SavedRecipeDomain currentRecipe) {
         boolean recipeFound = false;
-        for (LikedRecipeDomain dataInDB : myData) {
+        for (SavedRecipeDomain dataInDB : myData) {
             recipeFound = dataInDB.getDiceTemperature() == currentRecipe.getDiceTemperature() &&
                     dataInDB.getGroundSize().equals(currentRecipe.getGroundSize()) &&
                     dataInDB.getBrewTime() == currentRecipe.getBrewTime() &&

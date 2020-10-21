@@ -48,20 +48,6 @@ class BrewPhase extends TimerNumbers {
 
 }
 
-class NoPhase extends TimerNumbers {
-
-    @Override
-    int getTime() {
-        return 0;
-    }
-
-    @Override
-    boolean getPhase() {
-        return false;
-    }
-}
-
-
 class GetPhaseFactory {
 
     public TimerNumbers findPhase(int timeForBloom, int timeForBrew) {
@@ -72,9 +58,6 @@ class GetPhaseFactory {
         }
         return null;
     }
-
-
-
 
     public int getMaxTime(int timeForBloom, int timeForBrew) {
 

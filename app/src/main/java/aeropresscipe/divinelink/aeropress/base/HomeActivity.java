@@ -1,6 +1,7 @@
 package aeropresscipe.divinelink.aeropress.base;
 
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceUI;
+import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipesFragment;
 import aeropresscipe.divinelink.aeropress.timer.TimerFragment;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +32,15 @@ public class HomeActivity extends AppCompatActivity implements HomeView{
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.homeRoot, TimerFragment.newInstance(diceUI))
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void addSavedRecipesFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.homeRoot, SavedRecipesFragment.newInstance())
                 .addToBackStack(null)
                 .commit();
     }

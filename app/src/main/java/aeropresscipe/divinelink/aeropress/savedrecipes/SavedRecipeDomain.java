@@ -1,12 +1,11 @@
-package aeropresscipe.divinelink.aeropress.timer;
+package aeropresscipe.divinelink.aeropress.savedrecipes;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "LikedRecipes")
-public class LikedRecipeDomain {
+@Entity(tableName = "SavedRecipes")
+public class SavedRecipeDomain {
 
     @PrimaryKey(autoGenerate = true)
     @NonNull
@@ -15,7 +14,7 @@ public class LikedRecipeDomain {
     private String groundSize, brewingMethod;
     private int diceTemperature, brewTime, bloomTime, bloomWater, coffeeAmount, brewWaterAmount;
 
-    public LikedRecipeDomain(int diceTemperature,
+    public SavedRecipeDomain(int diceTemperature,
                              String groundSize,
                              int brewTime,
                              String brewingMethod,

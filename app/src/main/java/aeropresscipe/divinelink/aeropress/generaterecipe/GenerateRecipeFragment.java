@@ -32,7 +32,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
 
     RecyclerView recipeRv;
     LinearLayout generateRecipeButton, timerButton;
-    Button resumeBrew;
+    Button resumeBrew, favoritesBtn;
 
     private Animation myFadeInAnimation;
     private GenerateRecipePresenter presenter;
@@ -52,6 +52,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         //FIXME TEMPORARY BUTTON
         timerButton = v.findViewById(R.id.startTimerButton);
         resumeBrew = v.findViewById(R.id.resumeBrewButton);
+        favoritesBtn = v.findViewById(R.id.showSavedRecipes);
 
 
         //TODO ADD FADE-IN ANIMATION WHEN GENERATING NEW RECIPE
@@ -83,6 +84,13 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
             public void onClick(View view) {
                 diceUI.setNewRecipe(false);
                 homeView.addTimerFragment(diceUI);
+            }
+        });
+
+        favoritesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                homeView.addSavedRecipesFragment();
             }
         });
 

@@ -8,4 +8,6 @@ public interface HomeView extends Serializable {
 
     void addTimerFragment(DiceUI diceUI);
 
+    void addSavedRecipesFragment();
+
 }
