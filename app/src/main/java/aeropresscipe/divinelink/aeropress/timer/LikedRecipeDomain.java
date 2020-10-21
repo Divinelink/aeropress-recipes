@@ -15,10 +15,6 @@ public class LikedRecipeDomain {
     private String groundSize, brewingMethod;
     private int diceTemperature, brewTime, bloomTime, bloomWater, coffeeAmount, brewWaterAmount;
 
-
-    @Ignore
-    public LikedRecipeDomain(){};
-
     public LikedRecipeDomain(int diceTemperature,
                              String groundSize,
                              int brewTime,

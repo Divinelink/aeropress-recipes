@@ -225,15 +225,11 @@ public class TimerFragment extends Fragment implements TimerView {
                 public void run() {
                     if (isLiked) {
                         likeRecipeBtn.setImageResource(R.drawable.ic_star_on);
-
                     } else
                         likeRecipeBtn.setImageResource(R.drawable.ic_star_off);
-
                 }
 
             });
         }
-
-
     }
 }

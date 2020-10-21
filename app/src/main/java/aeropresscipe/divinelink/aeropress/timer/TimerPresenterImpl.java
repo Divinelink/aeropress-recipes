@@ -3,8 +3,6 @@ package aeropresscipe.divinelink.aeropress.timer;
 import android.content.Context;
 import android.util.Log;
 
-import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeInteractor;
-
 public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnStartTimerFinishListener, TimerInteractor.OnSaveLikedRecipeFinishListener {
 
     private TimerView timerView;
@@ -26,6 +24,7 @@ public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnSta
         // Get values from the model when resuming to TimerFragment.
         // And return them on the view.
         interactor.returnValues(this, ctx);
+        interactor.checkIfRecipeIsLikedAndSavedOnDB(this, ctx);
 
     }
 
@@ -36,10 +35,8 @@ public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnSta
 
     @Override
     public void getNumbersForTimer(int time, boolean bloomPhase, Context ctx) {
-
-        Log.d("onSuccess", "GetNumbersForTimer");
         timerView.showTimer(time, bloomPhase);
-        interactor.checkIfRecipeExists(this, ctx);
+        interactor.checkIfRecipeIsLikedAndSavedOnDB(this, ctx);
     }
 
     @Override
@@ -50,23 +47,17 @@ public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnSta
 
     @Override
     public void onSuccess(int time, boolean bloomPhase) {
-
-        Log.d("onSuccess", "ShowTimer");
         timerView.showTimer(time, bloomPhase);
-
     }
 
     @Override
     public void saveLikedRecipeOnDB(Context ctx) {
-
         interactor.saveLikedRecipe(this, ctx);
-
     }
 
     @Override
-    public void onSuccessSave(boolean isLiked) {
-        Log.d("OnSuccessSave", "OnSuccessSave");
-        timerView.addToLiked(isLiked);
+    public void onSuccessSave(boolean isSaved) {
+        timerView.addToLiked(isSaved);
 
     }
 

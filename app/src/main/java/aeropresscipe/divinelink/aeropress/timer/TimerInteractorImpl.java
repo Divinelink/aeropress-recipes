@@ -76,13 +76,10 @@ public class TimerInteractorImpl implements TimerInteractor {
             @Override
             public void run() {
                 final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
-                final DiceDomain recipe = recipeDao.getRecipe();
-
                 final LikedRecipeDao likedRecipeDao = HomeDatabase.getDatabase(ctx).likedRecipeDao();
 
-                List<LikedRecipeDomain> myData = likedRecipeDao.getLikedRecipes();
-
-                System.out.println(myData.size());
+                final DiceDomain recipe = recipeDao.getRecipe();
+                final List<LikedRecipeDomain> myData = likedRecipeDao.getLikedRecipes();
 
                 LikedRecipeDomain currentRecipe = new LikedRecipeDomain(
                         recipe.getDiceTemperature(),
@@ -94,15 +91,14 @@ public class TimerInteractorImpl implements TimerInteractor {
                         recipe.getBrewWaterAmount(),
                         recipe.getCoffeeAmount());
 
-                if (!checkIfRecipeExistsInDatabase(myData, currentRecipe)) {
-                    // Add current recipe to LikedRecipes DB
+                if (!checkIfCurrentRecipeExistsOnDB(myData, currentRecipe)) {
+                    // If Recipe Doesn't Exist on DB, then Save It.
                     likedRecipeDao.insertLikedRecipe(currentRecipe);
                     Log.d("Inserted", currentRecipe.toString());
                     listener.onSuccessSave(true);
-                }
-                else
-                {
-                    likedRecipeDao.deleteById( recipe.getDiceTemperature(),
+                } else {
+                    // Otherwise, if it already exists (and user clicks on the button) then delete it.
+                    likedRecipeDao.deleteCurrent(recipe.getDiceTemperature(),
                             recipe.getGroundSize(),
                             recipe.getBrewTime(),
                             recipe.getBrewingMethod(),
@@ -118,16 +114,16 @@ public class TimerInteractorImpl implements TimerInteractor {
     }
 
     @Override
-    public void checkIfRecipeExists(final OnSaveLikedRecipeFinishListener listener, final Context ctx) {
+    public void checkIfRecipeIsLikedAndSavedOnDB(final OnSaveLikedRecipeFinishListener listener, final Context ctx) {
 
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
-                final DiceDomain recipe = recipeDao.getRecipe();
-
                 final LikedRecipeDao likedRecipeDao = HomeDatabase.getDatabase(ctx).likedRecipeDao();
-                List<LikedRecipeDomain> myData = likedRecipeDao.getLikedRecipes();
+
+                final DiceDomain recipe = recipeDao.getRecipe();
+                final List<LikedRecipeDomain> myData = likedRecipeDao.getLikedRecipes();
 
                 LikedRecipeDomain currentRecipe = new LikedRecipeDomain(
                         recipe.getDiceTemperature(),
@@ -139,21 +135,21 @@ public class TimerInteractorImpl implements TimerInteractor {
                         recipe.getBrewWaterAmount(),
                         recipe.getCoffeeAmount());
 
-                if (checkIfRecipeExistsInDatabase(myData, currentRecipe)) {
+                if (checkIfCurrentRecipeExistsOnDB(myData, currentRecipe)) {
                     listener.onRecipeFound(true);
-                    Log.d("Recipe Exists in DB?", "ΥΕΣ!!!");
+                    Log.d("Recipe Exists in DB?", "Yes");
                 } else {
                     listener.onRecipeFound(false);
-                    Log.d("Recipe Exists in DB?", "ANLAKI!!!");
+                    Log.d("Recipe Exists in DB?", "Unlucky");
                 }
             }
         });
     }
 
-    public boolean checkIfRecipeExistsInDatabase(List<LikedRecipeDomain> myData, LikedRecipeDomain currentRecipe) {
+    public boolean checkIfCurrentRecipeExistsOnDB(List<LikedRecipeDomain> myData, LikedRecipeDomain currentRecipe) {
         boolean recipeFound = false;
         for (LikedRecipeDomain dataInDB : myData) {
-             recipeFound = dataInDB.getDiceTemperature() == currentRecipe.getDiceTemperature() &&
+            recipeFound = dataInDB.getDiceTemperature() == currentRecipe.getDiceTemperature() &&
                     dataInDB.getGroundSize().equals(currentRecipe.getGroundSize()) &&
                     dataInDB.getBrewTime() == currentRecipe.getBrewTime() &&
                     dataInDB.getBrewingMethod().equals(currentRecipe.getBrewingMethod()) &&
@@ -161,8 +157,8 @@ public class TimerInteractorImpl implements TimerInteractor {
                     dataInDB.getBloomWater() == currentRecipe.getBloomWater() &&
                     dataInDB.getBrewWaterAmount() == currentRecipe.getBrewWaterAmount() &&
                     dataInDB.getCoffeeAmount() == currentRecipe.getCoffeeAmount();
-             if (recipeFound)
-                 break;
+            if (recipeFound)
+                break;
         }
         return recipeFound;
     }

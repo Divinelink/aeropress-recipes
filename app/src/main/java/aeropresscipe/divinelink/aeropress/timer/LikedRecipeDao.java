@@ -7,6 +7,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.TypeConverter;
 
 
 @Dao
@@ -15,18 +16,7 @@ public abstract class LikedRecipeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void insertLikedRecipe(LikedRecipeDomain likedRecipeDomain);
 
-    @Query("SELECT " +
-            " id," +
-            " diceTemperature," +
-            " groundSize," +
-            " brewTime," +
-            " brewingMethod," +
-            " bloomTime," +
-            " bloomWater, " +
-            " brewWaterAmount," +
-            " coffeeAmount" +
-            " FROM LikedRecipes")
-
+    @Query("SELECT * FROM LikedRecipes")
     public abstract List<LikedRecipeDomain> getLikedRecipes();
 
     @Query("DELETE FROM LikedRecipes")
@@ -40,7 +30,7 @@ public abstract class LikedRecipeDao {
             " bloomWater = :bloomWater AND" +
             " brewWaterAmount = :brewWaterAmount AND" +
             " coffeeAmount = :coffeeAmount ")
-    abstract void deleteById(int diceTemperature,
+    abstract void deleteCurrent(int diceTemperature,
                              String groundSize,
                              int brewTime,
                              String brewingMethod,
@@ -48,6 +38,7 @@ public abstract class LikedRecipeDao {
                              int bloomWater,
                              int brewWaterAmount,
                              int coffeeAmount);
+
 
 
 }
