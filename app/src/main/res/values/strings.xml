@@ -39,5 +39,10 @@
     <string name="brew">Start Timer</string>
     <string name="resume_brew">Resume Brew</string>
     <string name="alreadyBrewingDialog"><![CDATA[You\'re already brewing\nPress & Hold to get a new recipe]]></string>
+    <string name="water_temperature_image">Water Temperature Image</string>
+    <string name="beans_weight_image">Beans Weight Image</string>
+    <string name="grind_level_image">Grind Level Image</string>
+    <string name="brew_method_image">Brew Method Image</string>
+    <string name="brew_time_image">Brew Time Image</string>
 
 </resources>
