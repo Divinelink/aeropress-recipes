@@ -3,6 +3,8 @@ package aeropresscipe.divinelink.aeropress.savedrecipes;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -22,6 +24,7 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView{
     private SavedRecipesPresenter presenter;
 
     private RecyclerView savedRecipesRV;
+    private Toolbar myToolbar;
 
 
     @Override
@@ -32,10 +35,19 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView{
         View v = inflater.inflate(R.layout.fragment_saved_recipes, container, false);
 
         savedRecipesRV = (RecyclerView) v.findViewById(R.id.savedRecipesRV);
+        myToolbar = (Toolbar) v.findViewById(R.id.toolbar);
+
+        myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         savedRecipesRV.setLayoutManager(layoutManager);
 
+        //TODO ADD SLIDE DELETE ACTION AND BREW ON RECYCLE VIEW
 
 
         presenter = new SavedRecipesPresenterImpl(this);
@@ -54,7 +66,6 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView{
 
         SavedRecipesFragment fragment = new SavedRecipesFragment();
         Bundle args = new Bundle();
-      //  args.putParcelable("timer", diceUI);
         fragment.setArguments(args);
         return fragment;
     }

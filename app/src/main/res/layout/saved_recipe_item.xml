@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
 
     <androidx.cardview.widget.CardView
@@ -26,7 +27,7 @@
                 android:id="@+id/brewedOnTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Brewed on: "
+                tools:text="Brewed On: DATE HERE"
                 android:layout_margin="1dp"
                 android:textAlignment="center">
 
@@ -55,7 +56,7 @@
                         <TextView
                             android:id="@+id/waterAndTempTV"
                             style="@style/SavedRecipeItemTextViewStyle"
-                            android:text="Water and Temp" />
+                            tools:text="Water and Temp" />
 
                     </LinearLayout>
 
@@ -71,7 +72,7 @@
                         <TextView
                             android:id="@+id/beansWeightTV"
                             style="@style/SavedRecipeItemTextViewStyle"
-                            android:text="Beans Weight" />
+                            tools:text="Beans Weight" />
 
                     </LinearLayout>
 
@@ -86,7 +87,7 @@
                         <TextView
                             android:id="@+id/beansGrindLevelTV"
                             style="@style/SavedRecipeItemTextViewStyle"
-                            android:text="Beans Grind" />
+                            tools:text="Beans Grind" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -108,7 +109,7 @@
                         <TextView
                             android:id="@+id/brewMethodTV"
                             style="@style/SavedRecipeItemTextViewStyle"
-                            android:text="Brew Method" />
+                            tools:text="Brew Method" />
                     </LinearLayout>
 
                     <LinearLayout style="@style/SavedRecipeLinearLayoutForViewsStyle">
@@ -122,7 +123,7 @@
                         <TextView
                             android:id="@+id/savedTimeTV"
                             style="@style/SavedRecipeItemTextViewStyle"
-                            android:text="Time" />
+                            tools:text="Time" />
 
                     </LinearLayout>
                 </LinearLayout>

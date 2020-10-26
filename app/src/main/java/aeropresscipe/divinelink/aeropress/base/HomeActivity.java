@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import aeropresscipe.divinelink.aeropress.R;
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeFragment;
+import androidx.appcompat.widget.Toolbar;
 
 public class HomeActivity extends AppCompatActivity implements HomeView{
 

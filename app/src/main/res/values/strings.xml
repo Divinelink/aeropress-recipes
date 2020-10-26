@@ -52,5 +52,6 @@
     <string name="SavedBrewingMethodTextView">%s method</string>
     <string name="SavedTotalTimeTextView">%d\"</string>
     <string name="SavedTotalTimeWithBloomTextView">%d\" (+%d\" Bloom)</string>
+    <string name="favourites">Favourites</string>
 
 </resources>
