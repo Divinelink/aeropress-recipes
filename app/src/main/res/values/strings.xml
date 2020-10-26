@@ -45,4 +45,12 @@
     <string name="brew_method_image">Brew Method Image</string>
     <string name="brew_time_image">Brew Time Image</string>
 
+    <string name="dateBrewedTextView">Date Brewed: %s</string>
+    <string name="SavedWaterAndTempTextView">%dg - %d°C / %d°F</string>
+    <string name="SavedCoffeeWeightTextView">%dg coffee</string>
+    <string name="SavedGrindLevelTextView">%s grind</string>
+    <string name="SavedBrewingMethodTextView">%s method</string>
+    <string name="SavedTotalTimeTextView">%d\"</string>
+    <string name="SavedTotalTimeWithBloomTextView">%d\" (+%d\" Bloom)</string>
+
 </resources>

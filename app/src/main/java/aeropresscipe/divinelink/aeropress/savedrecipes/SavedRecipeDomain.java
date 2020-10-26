@@ -1,5 +1,9 @@
 package aeropresscipe.divinelink.aeropress.savedrecipes;
 
+import java.sql.Time;
+import java.time.LocalDate;
+import java.util.Date;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -13,6 +17,8 @@ public class SavedRecipeDomain {
 
     private String groundSize, brewingMethod;
     private int diceTemperature, brewTime, bloomTime, bloomWater, coffeeAmount, brewWaterAmount;
+    private String dateBrewed;
+
 
     public SavedRecipeDomain(int diceTemperature,
                              String groundSize,
@@ -21,7 +27,8 @@ public class SavedRecipeDomain {
                              int bloomTime,
                              int bloomWater,
                              int brewWaterAmount,
-                             int coffeeAmount) {
+                             int coffeeAmount,
+                             String dateBrewed) {
         this.diceTemperature = diceTemperature;
         this.groundSize = groundSize;
         this.brewTime = brewTime;
@@ -30,6 +37,15 @@ public class SavedRecipeDomain {
         this.bloomWater = bloomWater;
         this.brewWaterAmount = brewWaterAmount;
         this.coffeeAmount = coffeeAmount;
+        this.dateBrewed = dateBrewed;
+    }
+
+    public String getDateBrewed() {
+        return dateBrewed;
+    }
+
+    public void setDateBrewed(String dateBrewed) {
+        this.dateBrewed = dateBrewed;
     }
 
     public int getId() {

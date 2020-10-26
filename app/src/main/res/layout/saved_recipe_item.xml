@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/tools"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    app:ignore="UseCompoundDrawables">
+    android:layout_height="wrap_content">
 
 
     <androidx.cardview.widget.CardView
@@ -17,98 +14,119 @@
         card_view:cardElevation="5dp"
         card_view:cardUseCompatPadding="true">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:baselineAligned="false"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:layout_margin="4dp">
 
+
+            <TextView
+                android:id="@+id/brewedOnTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Brewed on: "
+                android:layout_margin="1dp"
+                android:textAlignment="center">
+
+            </TextView>
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <LinearLayout style="@style/SavedRecipeLinearLayoutForViewsStyle">
-
-                    <ImageView
-                        android:id="@+id/waterAmountImageView"
-                        style="@style/SavedRecipeImageViewStyle"
-                        android:contentDescription="@string/water_temperature_image"
-                        android:src="@drawable/ic_kettlebyxnimrodx" />
-
-                    <TextView
-                        android:id="@+id/waterAndTempTV"
-                        style="@style/SavedRecipeItemTextViewStyle"
-                        android:text="Water and Temp" />
-
-                </LinearLayout>
-
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    style="@style/SavedRecipeLinearLayoutForViewsStyle">
-                    <ImageView
-                        android:id="@+id/beansWeight"
-                        style="@style/SavedRecipeImageViewStyle"
-                        android:contentDescription="@string/beans_weight_image"
-                        android:src="@drawable/ic_weightbyphoto3idea_studio" />
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/beansWeightTV"
-                        style="@style/SavedRecipeItemTextViewStyle"
-                        android:text="Beans Weight" />
+                    <LinearLayout style="@style/SavedRecipeLinearLayoutForViewsStyle">
 
-                </LinearLayout>
+                        <ImageView
+                            android:id="@+id/waterAmountImageView"
+                            style="@style/SavedRecipeImageViewStyle"
+                            android:contentDescription="@string/water_temperature_image"
+                            android:src="@drawable/ic_kettlebyxnimrodx" />
 
-                <LinearLayout style="@style/SavedRecipeLinearLayoutForViewsStyle">
-                    <ImageView
-                        android:id="@+id/beansGrindLevel"
-                        style="@style/SavedRecipeImageViewStyle"
-                        android:contentDescription="@string/grind_level_image"
-                        android:src="@drawable/ic_coffee_grinderbypongsakornred" />
+                        <TextView
+                            android:id="@+id/waterAndTempTV"
+                            style="@style/SavedRecipeItemTextViewStyle"
+                            android:text="Water and Temp" />
 
-                    <TextView
-                        android:id="@+id/beansGrindLevelTV"
-                        style="@style/SavedRecipeItemTextViewStyle"
-                        android:text="Beans Grind" />
-                </LinearLayout>
+                    </LinearLayout>
 
-            </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                    <LinearLayout style="@style/SavedRecipeLinearLayoutForViewsStyle">
 
-                <LinearLayout style="@style/SavedRecipeLinearLayoutForViewsStyle">
+                        <ImageView
+                            android:id="@+id/beansWeight"
+                            style="@style/SavedRecipeImageViewStyle"
+                            android:contentDescription="@string/beans_weight_image"
+                            android:src="@drawable/ic_weightbyphoto3idea_studio" />
 
-                    <ImageView
-                        android:id="@+id/brewingMethodImage"
-                        style="@style/SavedRecipeImageViewStyle"
-                        android:contentDescription="@string/brew_method_image"
-                        android:src="@drawable/ic_aeropressbyxnimrodx" />
+                        <TextView
+                            android:id="@+id/beansWeightTV"
+                            style="@style/SavedRecipeItemTextViewStyle"
+                            android:text="Beans Weight" />
 
-                    <TextView
-                        android:id="@+id/brewMethodTV"
-                        style="@style/SavedRecipeItemTextViewStyle"
-                        android:text="Brew Method" />
-                </LinearLayout>
+                    </LinearLayout>
 
-                <LinearLayout style="@style/SavedRecipeLinearLayoutForViewsStyle">
-                    <ImageView
-                        android:id="@+id/time"
-                        style="@style/SavedRecipeImageViewStyle"
-                        android:contentDescription="@string/brew_time_image"
-                        android:src="@drawable/ic_chronometerbyfreepik" />
+                    <LinearLayout style="@style/SavedRecipeLinearLayoutForViewsStyle">
 
-                    <TextView
-                        android:id="@+id/timeTV"
-                        style="@style/SavedRecipeItemTextViewStyle"
-                        android:text="Time" />
+                        <ImageView
+                            android:id="@+id/beansGrindLevel"
+                            style="@style/SavedRecipeImageViewStyle"
+                            android:contentDescription="@string/grind_level_image"
+                            android:src="@drawable/ic_coffee_grinderbypongsakornred" />
+
+                        <TextView
+                            android:id="@+id/beansGrindLevelTV"
+                            style="@style/SavedRecipeItemTextViewStyle"
+                            android:text="Beans Grind" />
+                    </LinearLayout>
 
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout style="@style/SavedRecipeLinearLayoutForViewsStyle">
+
+                        <ImageView
+                            android:id="@+id/brewingMethodImage"
+                            style="@style/SavedRecipeImageViewStyle"
+                            android:contentDescription="@string/brew_method_image"
+                            android:src="@drawable/ic_aeropressbyxnimrodx" />
+
+                        <TextView
+                            android:id="@+id/brewMethodTV"
+                            style="@style/SavedRecipeItemTextViewStyle"
+                            android:text="Brew Method" />
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/SavedRecipeLinearLayoutForViewsStyle">
+
+                        <ImageView
+                            android:id="@+id/time"
+                            style="@style/SavedRecipeImageViewStyle"
+                            android:contentDescription="@string/brew_time_image"
+                            android:src="@drawable/ic_chronometerbyfreepik" />
+
+                        <TextView
+                            android:id="@+id/savedTimeTV"
+                            style="@style/SavedRecipeItemTextViewStyle"
+                            android:text="Time" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>

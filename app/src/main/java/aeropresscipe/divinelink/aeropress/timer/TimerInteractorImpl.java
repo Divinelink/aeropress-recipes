@@ -4,9 +4,13 @@ package aeropresscipe.divinelink.aeropress.timer;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase;
@@ -14,6 +18,7 @@ import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
 import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeDao;
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDao;
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain;
+import androidx.annotation.RequiresApi;
 
 public class TimerInteractorImpl implements TimerInteractor {
 
@@ -75,6 +80,7 @@ public class TimerInteractorImpl implements TimerInteractor {
     public void saveLikedRecipe(final OnSaveLikedRecipeFinishListener listener, final Context ctx) {
 
         AsyncTask.execute(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void run() {
                 final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
@@ -91,7 +97,9 @@ public class TimerInteractorImpl implements TimerInteractor {
                         recipe.getBloomTime(),
                         recipe.getBloomWater(),
                         recipe.getBrewWaterAmount(),
-                        recipe.getCoffeeAmount());
+                        recipe.getCoffeeAmount(),
+                        getCurrentDate()
+                        );
 
                 if (!checkIfCurrentRecipeExistsOnDB(myData, currentRecipe)) {
                     // If Recipe Doesn't Exist on DB, then Save It.
@@ -119,6 +127,7 @@ public class TimerInteractorImpl implements TimerInteractor {
     public void checkIfRecipeIsLikedAndSavedOnDB(final OnSaveLikedRecipeFinishListener listener, final Context ctx) {
 
         AsyncTask.execute(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void run() {
                 final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
@@ -135,7 +144,9 @@ public class TimerInteractorImpl implements TimerInteractor {
                         recipe.getBloomTime(),
                         recipe.getBloomWater(),
                         recipe.getBrewWaterAmount(),
-                        recipe.getCoffeeAmount());
+                        recipe.getCoffeeAmount(),
+                        getCurrentDate()
+                        );
 
                 if (checkIfCurrentRecipeExistsOnDB(myData, currentRecipe)) {
                     listener.onRecipeFound(true);
@@ -165,5 +176,13 @@ public class TimerInteractorImpl implements TimerInteractor {
         return recipeFound;
     }
 
+    public String getCurrentDate()
+    {
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("d MMMM yyyy");
+
+
+        return formatter.format(date.getTime());
+    }
 
 }

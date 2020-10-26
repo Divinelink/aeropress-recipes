@@ -11,13 +11,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -51,7 +48,7 @@ public class TimerFragment extends Fragment implements TimerView {
 
         diceUI = getArguments().getParcelable("timer");
 
-        timerTextView = (TextView) v.findViewById(R.id.timeTV);
+        timerTextView = (TextView) v.findViewById(R.id.savedTimeTV);
         progressBar = (MaterialProgressBar) v.findViewById(R.id.progressBar);
         notificationTextView = (TextView) v.findViewById(R.id.notificationTV);
         likeRecipeBtn = (ImageButton) v.findViewById(R.id.likeRecipeButton);

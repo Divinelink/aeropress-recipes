@@ -2,7 +2,6 @@ package aeropresscipe.divinelink.aeropress.savedrecipes;
 
 import android.os.Bundle;
 
-import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeRvAdapter;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -13,6 +12,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.R;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -32,6 +32,10 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView{
         View v = inflater.inflate(R.layout.fragment_saved_recipes, container, false);
 
         savedRecipesRV = (RecyclerView) v.findViewById(R.id.savedRecipesRV);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        savedRecipesRV.setLayoutManager(layoutManager);
+
 
 
         presenter = new SavedRecipesPresenterImpl(this);

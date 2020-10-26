@@ -6,12 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
 
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.R;
-import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeRvAdapter;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +31,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
         private TextView beansGrindLevelItem;
         private TextView brewingMethodItem;
         private TextView timeItem;
+        private TextView brewedOnItem;
 
 
         public SavedRecipeViewHolder(View v) {
@@ -42,8 +41,8 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
             this.beansWeightItem = v.findViewById(R.id.beansWeightTV);
             this.beansGrindLevelItem = v.findViewById(R.id.beansGrindLevelTV);
             this.brewingMethodItem = v.findViewById(R.id.brewMethodTV);
-            this.timeItem = v.findViewById(R.id.timeTV);
-
+            this.timeItem = v.findViewById(R.id.savedTimeTV);
+            this.brewedOnItem = v.findViewById(R.id.brewedOnTV);
 
         }
     }
@@ -60,6 +59,28 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
 
     @Override
     public void onBindViewHolder(@NonNull SavedRecipeViewHolder savedRecipeViewHolder, int i) {
+        final int position = i;
+
+        final int total_water = savedRecipes.get(position).getBloomWater() + savedRecipes.get(position).getBrewWaterAmount();
+        final int total_time = savedRecipes.get(position).getBloomTime() + savedRecipes.get(position).getBrewTime();
+        final int bloomTime = savedRecipes.get(position).getBloomTime();
+        final int temp = savedRecipes.get(position).getDiceTemperature();
+        final String grindSize = savedRecipes.get(position).getGroundSize().substring(0,1).toUpperCase() + savedRecipes.get(position).getGroundSize().substring(1).toLowerCase();
+
+        savedRecipeViewHolder.waterAndTempItem.setText(context.getResources().getString(R.string.SavedWaterAndTempTextView, total_water, temp, temp * 9 / 5 + 32));
+        savedRecipeViewHolder.beansWeightItem.setText(context.getResources().getString(R.string.SavedCoffeeWeightTextView, savedRecipes.get(position).getCoffeeAmount()));
+
+
+
+        savedRecipeViewHolder.beansGrindLevelItem.setText(context.getResources().getString(R.string.SavedGrindLevelTextView, grindSize));
+        savedRecipeViewHolder.brewingMethodItem.setText(context.getResources().getString(R.string.SavedBrewingMethodTextView, savedRecipes.get(position).getBrewingMethod()));
+
+        if (bloomTime == 0)
+            savedRecipeViewHolder.timeItem.setText(context.getResources().getString(R.string.SavedTotalTimeTextView, total_time));
+        else
+            savedRecipeViewHolder.timeItem.setText(context.getResources().getString(R.string.SavedTotalTimeWithBloomTextView, savedRecipes.get(position).getBrewTime(), bloomTime));
+
+        savedRecipeViewHolder.brewedOnItem.setText(context.getResources().getString(R.string.dateBrewedTextView, savedRecipes.get(position).getDateBrewed()));
 
 
     }

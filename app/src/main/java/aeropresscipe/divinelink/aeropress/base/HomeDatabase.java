@@ -10,7 +10,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {DiceDomain.class, SavedRecipeDomain.class}, version = 5, exportSchema = false)
+@Database(entities = {DiceDomain.class, SavedRecipeDomain.class}, version = 6, exportSchema = false)
 abstract public class HomeDatabase extends RoomDatabase {
 
     public abstract RecipeDao recipeDao();
