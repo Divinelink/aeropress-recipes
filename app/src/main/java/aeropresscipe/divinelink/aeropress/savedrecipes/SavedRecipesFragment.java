@@ -1,10 +1,12 @@
 package aeropresscipe.divinelink.aeropress.savedrecipes;
 
+import android.graphics.Canvas;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.R;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +28,9 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView{
 
     private RecyclerView savedRecipesRV;
     private Toolbar myToolbar;
+
+
+    public ItemTouchHelper mItemTouchHelper;
 
 
     @Override
@@ -54,6 +60,14 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView{
 
         presenter.getSavedRecipes(getContext());
 
+
+
+       // ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+      //  itemTouchHelper.attachToRecyclerView(savedRecipesRV);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(savedRecipesRV);
+
         return v;
     }
 
@@ -75,7 +89,7 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView{
 
         if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
-                SavedRecipesRvAdapter savedRecipesRvAdapter = new SavedRecipesRvAdapter(savedRecipes, getActivity());
+                SavedRecipesRvAdapter savedRecipesRvAdapter = new SavedRecipesRvAdapter(savedRecipes, getActivity(), mItemTouchHelper);
 
                 @Override
                 public void run() {
@@ -85,4 +99,85 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView{
             });
         }
     }
+
+    ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+            @Override
+        public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+            if (viewHolder instanceof SavedRecipesRvAdapter.ItemNoSwipeViewHolder) {
+                return 0;
+            }
+            return makeMovementFlags(ItemTouchHelper.UP|ItemTouchHelper.DOWN, ItemTouchHelper.START);
+        }
+
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            SavedRecipesRvAdapter adapter = (SavedRecipesRvAdapter) recyclerView.getAdapter();
+            adapter.move(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+            return true;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
+
+        }
+
+        @Override
+        public boolean isLongPressDragEnabled() {
+            return false;
+        }
+
+
+
+        @Override
+        public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            if (dY != 0 && dX == 0) super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            SavedRecipesRvAdapter.SavedRecipeViewHolder holder = (SavedRecipesRvAdapter.SavedRecipeViewHolder) viewHolder;
+            if (viewHolder instanceof SavedRecipesRvAdapter.ItemSwipeWithActionWidthViewHolder) {
+                if (dX < -holder.mActionContainer.getWidth()) {
+                    dX = -holder.mActionContainer.getWidth();
+                }
+                holder.mViewContent.setTranslationX(dX);
+                return;
+            }
+            if (viewHolder instanceof SavedRecipesRvAdapter.SavedRecipeViewHolder)
+                holder.mViewContent.setTranslationX(dX);
+
+
+        }
+
+/*
+        @Override
+        public void onChildDraw (Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,float dX , float dY,int actionState, boolean isCurrentlyActive){
+
+            new RecyclerViewDecorator.Builder(c, recyclerView, viewHolder, dX/4, dY, actionState, isCurrentlyActive)
+                    .addBackgroundColor(ContextCompat.getColor(getActivity(), R.color.design_default_color_background))
+
+                    .addSwipeLeftActionIcon(R.drawable.ic_aeropressbyxnimrodx)
+                    .addSwipeRightLabel("Remove")
+
+                    .addSwipeRightActionIcon(R.drawable.ic_delete)
+                    .addSwipeLeftLabel("Brew")
+
+                    .setSwipeLeftLabelColor(R.color.white)
+                    .setSwipeRightLabelColor(R.color.white)
+
+                    .create()
+                    .decorate();
+
+
+
+            super.onChildDraw(c, recyclerView, viewHolder, dX/4, dY, actionState, isCurrentlyActive);
+
+        }
+
+ */
+
+    };
+
+
+
+
+
+
 }
