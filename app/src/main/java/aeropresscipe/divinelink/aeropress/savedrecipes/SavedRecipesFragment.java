@@ -3,6 +3,7 @@ package aeropresscipe.divinelink.aeropress.savedrecipes;
 import android.graphics.Canvas;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -100,12 +101,9 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView{
         }
     }
 
-    ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
-            @Override
-        public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-            if (viewHolder instanceof SavedRecipesRvAdapter.ItemNoSwipeViewHolder) {
-                return 0;
-            }
+    ItemTouchHelper.Callback callback = new ItemTouchHelper.Callback() {
+        @Override
+        public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
             return makeMovementFlags(ItemTouchHelper.UP|ItemTouchHelper.DOWN, ItemTouchHelper.START);
         }
 
@@ -146,7 +144,7 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView{
 
         }
 
-/*
+    /*
         @Override
         public void onChildDraw (Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,float dX , float dY,int actionState, boolean isCurrentlyActive){
 

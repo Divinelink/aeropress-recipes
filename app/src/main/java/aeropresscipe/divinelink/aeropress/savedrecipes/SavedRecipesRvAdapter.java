@@ -28,10 +28,6 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private ItemTouchHelper mItemTouchHelper;
 
-    public static final int ITEM_TYPE_RECYCLER_WIDTH = 1000;
-    public static final int ITEM_TYPE_ACTION_WIDTH = 1001;
-    public static final int ITEM_TYPE_ACTION_WIDTH_NO_SPRING = 1002;
-    public static final int ITEM_TYPE_NO_SWIPE = 1003;
 
   //  private ItemTouchHelperExtension mItemTouchHelperExtension;
   private LayoutInflater getLayoutInflater() {
@@ -70,7 +66,6 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             mViewContent = v.findViewById(R.id.saved_recipe_item);
             mActionContainer = v.findViewById(R.id.view_list_repo_action_container);
-
         }
 
         public void bind() {
@@ -79,17 +74,12 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
-
                        mItemTouchHelper.startDrag(SavedRecipeViewHolder.this);
-
-
                     }
                     return true;
                 }
             });
         }
-
-
 
     }
 
@@ -101,18 +91,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
       //          .inflate(R.layout.list_item_main, viewGroup, false);
      //   SavedRecipeViewHolder vh = new SavedRecipeViewHolder(v);
         return new ItemSwipeWithActionWidthViewHolder(v);
-        /*
-        if (i == ITEM_TYPE_ACTION_WIDTH) return new ItemSwipeWithActionWidthViewHolder(v);
-        if (i == ITEM_TYPE_NO_SWIPE) return new ItemNoSwipeViewHolder(v);
-        if (i == ITEM_TYPE_RECYCLER_WIDTH) {
-            v = getLayoutInflater().inflate(R.layout.list_item_with_single_delete, viewGroup, false);
-            return new ItemViewHolderWithRecyclerWidth(v);
-        }
-
-        return new ItemSwipeWithActionWidthNoSpringViewHolder(v);
-        */
-
-    //    return vh;
+        //    return vh;
     }
 
     @Override
@@ -120,6 +99,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int i) {
         SavedRecipeViewHolder savedRecipeViewHolder = (SavedRecipeViewHolder) holder;
         savedRecipeViewHolder.bind();
+
         final int position = i;
         final int total_water = savedRecipes.get(position).getBloomWater() + savedRecipes.get(position).getBrewWaterAmount();
         final int total_time = savedRecipes.get(position).getBloomTime() + savedRecipes.get(position).getBrewTime();
@@ -147,6 +127,8 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
    //     SavedRecipeViewHolder baseViewHolder = (SavedRecipeViewHolder) savedRecipeViewHolder;
     //    baseViewHolder.bind(savedRecipes.get(position));
 
+
+
         savedRecipeViewHolder.mViewContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -154,19 +136,6 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             }
         });
 
-
-
-     /*   if (holder instanceof ItemViewHolderWithRecyclerWidth) {
-            ItemViewHolderWithRecyclerWidth viewHolder = (ItemViewHolderWithRecyclerWidth) holder;
-            viewHolder.mActionViewDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    doDelete(holder.getAdapterPosition());
-                }
-            });
-
-      */
-  //     } else if (holder instanceof ItemSwipeWithActionWidthViewHolder) {
         if (holder instanceof ItemSwipeWithActionWidthViewHolder) {
             ItemSwipeWithActionWidthViewHolder viewHolder = (ItemSwipeWithActionWidthViewHolder) holder;
             viewHolder.mActionViewRefresh.setOnClickListener(
@@ -175,7 +144,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         public void onClick(View view) {
                             Toast.makeText(context, "Refresh Click" + holder.getAdapterPosition()
                                     , Toast.LENGTH_SHORT).show();
-
+                            //.closeOpened();
                         }
                     }
 
@@ -191,6 +160,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             );
         }
 
+
     }
 
 
@@ -203,6 +173,9 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     // NEEDED FOR SWIPE THINGY //
 
     public void move(int from, int to) {
+        SavedRecipeDomain prev = savedRecipes.remove(from);
+        savedRecipes.add(to > from ? to - 1 : to, prev);
+        notifyItemMoved(from, to);
         notifyItemMoved(from, to);
     }
 
@@ -221,17 +194,6 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         notifyItemRemoved(adapterPosition);
     }
 
-    class ItemViewHolderWithRecyclerWidth extends SavedRecipeViewHolder {
-
-        View mActionViewDelete;
-
-        public ItemViewHolderWithRecyclerWidth(View itemView) {
-            super(itemView);
-            mActionViewDelete = itemView.findViewById(R.id.view_list_repo_action_delete);
-        }
-
-    }
-
     class ItemSwipeWithActionWidthViewHolder extends SavedRecipeViewHolder {
 
         View mActionViewDelete;
@@ -244,27 +206,6 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
 
 
-        public float getActionWidth() {
-            return mActionContainer.getWidth();
-        }
-
-
-    }
-
-    class ItemNoSwipeViewHolder extends SavedRecipeViewHolder {
-
-        public ItemNoSwipeViewHolder(View itemView) {
-            super(itemView);
-        }
-    }
-
-    class ItemSwipeWithActionWidthNoSpringViewHolder extends ItemSwipeWithActionWidthViewHolder {
-
-        public ItemSwipeWithActionWidthNoSpringViewHolder(View itemView) {
-            super(itemView);
-        }
-
-        @Override
         public float getActionWidth() {
             return mActionContainer.getWidth();
         }
