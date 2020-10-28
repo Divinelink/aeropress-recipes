@@ -1,10 +1,13 @@
 package aeropresscipe.divinelink.aeropress.savedrecipes;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
+import aeropresscipe.divinelink.aeropress.features.SwipeHelper;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -54,6 +57,8 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView{
 
         presenter.getSavedRecipes(getContext());
 
+        createSwipeHelper();
+
         return v;
     }
 
@@ -85,4 +90,46 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView{
             });
         }
     }
+
+    public void createSwipeHelper() {
+
+        //TODO Fix Height of Buttons
+        //TODO Make it not close swipes when opening another cardView
+        //TODO Edit Button click events
+
+        SwipeHelper swipeHelper = new SwipeHelper(getContext(), savedRecipesRV) {
+            @Override
+            public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        "Delete",
+                        0,
+                        ContextCompat.getColor(getContext(),R.color.red),
+                        new SwipeHelper.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(int pos) {
+                                // TODO: onDelete
+                            }
+                        }
+                ));
+
+                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        "Brew",
+                        0,
+                        ContextCompat.getColor(getContext(),R.color.green),
+                        new SwipeHelper.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(int pos) {
+                                // TODO: OnTransfer
+                            }
+                        }
+                ));
+            }
+        };
+
+        swipeHelper.attachSwipe(getContext());
+    }
+
+
+
+
 }
