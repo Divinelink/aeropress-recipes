@@ -11,6 +11,8 @@ import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import aeropresscipe.divinelink.aeropress.R;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +29,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 
     public static final int BUTTON_WIDTH = 150;
     public static final int TEXT_SIZE = 14;
+
 
     private RecyclerView recyclerView;
     private List<UnderlayButton> buttons;
@@ -35,8 +39,8 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
     private Map<Integer, List<UnderlayButton>> buttonsBuffer;
     private Queue<Integer> recoverQueue;
 
-    private Context mContext;
 
+    private Context mContext;
     private GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener() {
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
@@ -104,6 +108,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
         int pos = viewHolder.getAdapterPosition();
 
+
         if (swipedPos != pos)
             recoverQueue.add(swipedPos);
 
@@ -137,6 +142,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
     @Override
     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         int pos = viewHolder.getAdapterPosition();
+        int margin;
         float translationX = dX;
         View itemView = viewHolder.itemView;
 
@@ -156,9 +162,11 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
                     buffer = buttonsBuffer.get(pos);
                 }
 
-
                 translationX = dX * buffer.size() * BUTTON_WIDTH / itemView.getWidth();
-                drawButtons(c, itemView, buffer, pos, translationX, mContext);
+                // Sets a margin because on our view (CardView) we've set a margin so the items won't be collided.
+                // This margin then goes to the dimensions of the rectange that we draw.
+                margin =  buffer.get(0).getButtonMargin();
+                drawButtons(c, itemView, buffer, pos, translationX, mContext, margin);
             }
         }
 
@@ -169,12 +177,12 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
         while (!recoverQueue.isEmpty()) {
             int pos = recoverQueue.poll();
             if (pos > -1) {
-                recyclerView.getAdapter().notifyItemChanged(pos);
+                recyclerView.getAdapter().notifyItemChanged(pos); //FIXME check this here for swiping another item
             }
         }
     }
 
-    private void drawButtons(Canvas c, View itemView, List<UnderlayButton> buffer, int pos, float dX, Context mContext) {
+    private void drawButtons(Canvas c, View itemView, List<UnderlayButton> buffer, int pos, float dX, Context mContext, int margin) {
         float right = itemView.getRight();
         float dButtonWidth = (-1) * dX / buffer.size();
 
@@ -184,14 +192,13 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
                     c,
                     new RectF(
                             left,
-                            itemView.getTop(),
+                            itemView.getTop() + margin,
                             right,
-                            itemView.getBottom()
+                            itemView.getBottom() - margin
                     ),
                     pos,
                     mContext
             );
-
             right = left;
         }
     }
@@ -209,15 +216,29 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
         private int imageResId;
         private int color;
         private int pos;
+        private int buttonMargin;
         private RectF clickRegion;
         private UnderlayButtonClickListener clickListener;
 
-        public UnderlayButton(String text, int imageResId, int color, UnderlayButtonClickListener clickListener) {
+        public UnderlayButton(String text, int imageResId, int color, UnderlayButtonClickListener clickListener, int buttonMargin) {
+            this.text = text;
+            this.imageResId = imageResId;
+            this.color = color;
+            this.clickListener = clickListener;
+            this.buttonMargin = buttonMargin;
+        }
+
+        public int getButtonMargin() {
+            return buttonMargin;
+        }
+
+        /*    public UnderlayButton(String text, int imageResId, int color, UnderlayButtonClickListener clickListener) {
             this.text = text;
             this.imageResId = imageResId;
             this.color = color;
             this.clickListener = clickListener;
         }
+     */
 
         public boolean onClick(float x, float y) {
             if (clickRegion != null && clickRegion.contains(x, y)) {
@@ -248,7 +269,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
             p.getTextBounds(text, 0, text.length(), r);
             float x = cWidth / 2f - r.width() / 2f - r.left;
             float y = cHeight / 2f + r.height() / 2f - r.bottom;
-            c.drawText(text, rect.left + x, rect.top + y, p);
+            c.drawText(text, rect.left + x, rect.top + y-10, p);
 
             clickRegion = rect;
             this.pos = pos;
@@ -258,6 +279,5 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
     public interface UnderlayButtonClickListener {
         void onClick(int pos);
     }
-
 
 }
