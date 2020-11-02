@@ -47,7 +47,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         View v = inflater.inflate(R.layout.fragment_generate_recipe, container, false);
 
         homeView = (HomeView) getArguments().getSerializable("home_view");
-        recipeRv = (RecyclerView) v.findViewById(R.id.recipe_rv);
+        recipeRv = v.findViewById(R.id.recipe_rv);
         generateRecipeButton = v.findViewById(R.id.generateRecipeButton);
         //FIXME TEMPORARY BUTTON
         timerButton = v.findViewById(R.id.startTimerButton);

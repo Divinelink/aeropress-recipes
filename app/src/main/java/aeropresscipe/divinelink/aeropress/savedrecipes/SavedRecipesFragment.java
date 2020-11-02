@@ -2,6 +2,8 @@ package aeropresscipe.divinelink.aeropress.savedrecipes;
 
 import android.os.Bundle;
 
+import aeropresscipe.divinelink.aeropress.base.HomeView;
+import aeropresscipe.divinelink.aeropress.generaterecipe.DiceUI;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -17,10 +19,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-public class SavedRecipesFragment extends Fragment implements SavedRecipesView{
+public class SavedRecipesFragment extends Fragment implements SavedRecipesView {
 
 
     private SavedRecipesPresenter presenter;
+    private HomeView homeView;
 
     private RecyclerView savedRecipesRV;
     private Toolbar myToolbar;
@@ -32,6 +35,8 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView{
         // Inflate the layout for this fragment
 
         View v = inflater.inflate(R.layout.fragment_saved_recipes, container, false);
+
+        homeView = (HomeView) getArguments().getSerializable("home_view");
 
         savedRecipesRV = (RecyclerView) v.findViewById(R.id.savedRecipesRV);
         myToolbar = (Toolbar) v.findViewById(R.id.toolbar);
@@ -61,10 +66,11 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView{
         super.onCreate(savedInstanceState);
     }
 
-    public static SavedRecipesFragment newInstance() {
+    public static SavedRecipesFragment newInstance(HomeView homeView) {
 
         SavedRecipesFragment fragment = new SavedRecipesFragment();
         Bundle args = new Bundle();
+        args.putSerializable("home_view", homeView);
         fragment.setArguments(args);
         return fragment;
     }
@@ -81,9 +87,29 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView{
                     savedRecipesRV.setAdapter(savedRecipesRvAdapter);
                     savedRecipesRvAdapter.createSwipeHelper();
                     savedRecipesRvAdapter.setPresenter(presenter);
+                    savedRecipesRvAdapter.setHomeView(homeView);
+
                 }
             });
         }
     }
 
+    @Override
+    public void passData(final int bloomTime, final int brewTime, final int bloomWater, final int remainingBrewWater) {
+
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+
+
+                @Override
+                public void run() {
+                    DiceUI diceUI = new DiceUI(bloomTime, brewTime, bloomWater, remainingBrewWater);
+                    diceUI.setNewRecipe(true);
+                    homeView.addTimerFragment(diceUI);
+
+
+                }
+            });
+        }
+    }
 }

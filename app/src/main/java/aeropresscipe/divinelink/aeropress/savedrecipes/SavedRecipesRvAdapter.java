@@ -14,7 +14,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.R;
+import aeropresscipe.divinelink.aeropress.base.HomeView;
 import aeropresscipe.divinelink.aeropress.features.SwipeHelper;
+import aeropresscipe.divinelink.aeropress.generaterecipe.DiceUI;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
@@ -138,7 +140,9 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
-                                // TODO: OnTransfer
+                                //FIXME has a bug where sometimes it saved wrong data
+                                presenter.getSpecificRecipeToStartNewBrew(context, pos);
+
                             }
                         },
                         cardViewMarginForSwipe

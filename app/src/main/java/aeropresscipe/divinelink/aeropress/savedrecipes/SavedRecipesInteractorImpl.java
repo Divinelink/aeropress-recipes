@@ -57,7 +57,22 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
             }
 
         });
+    }
 
+
+    @Override
+    public void getSpecificRecipeFromDB(final OnGetSingleRecipeFromDBFinishListener listener, final Context ctx, final int position) {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                final SavedRecipeDao savedRecipeDao = HomeDatabase.getDatabase(ctx).savedRecipeDao();
+                final List<SavedRecipeDomain> myData = savedRecipeDao.getSavedRecipes();
+
+                listener.onSuccessGetSingleRecipe(myData.get(position));
+            }
+
+        });
 
     }
 }

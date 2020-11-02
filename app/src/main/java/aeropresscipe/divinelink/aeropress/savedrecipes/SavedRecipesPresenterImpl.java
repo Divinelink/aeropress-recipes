@@ -4,15 +4,15 @@ import android.content.Context;
 
 import java.util.List;
 
-public class SavedRecipesPresenterImpl implements SavedRecipesPresenter, SavedRecipesInteractor.OnGetSavedListsFromDBFinishListener {
+public class SavedRecipesPresenterImpl implements SavedRecipesPresenter, SavedRecipesInteractor.OnGetSavedListsFromDBFinishListener, SavedRecipesInteractor.OnGetSingleRecipeFromDBFinishListener {
 
 
-    private SavedRecipesView generateRecipeView;
+    private SavedRecipesView savedRecipesView;
     private SavedRecipesInteractor interactor;
 
 
     public SavedRecipesPresenterImpl(SavedRecipesView recipesView) {
-        this.generateRecipeView = recipesView;
+        this.savedRecipesView = recipesView;
         interactor = new SavedRecipesInteractorImpl();
     }
 
@@ -24,7 +24,7 @@ public class SavedRecipesPresenterImpl implements SavedRecipesPresenter, SavedRe
     @Override
     public void onSuccess(List<SavedRecipeDomain> savedRecipes) {
 
-        generateRecipeView.showSavedRecipes(savedRecipes);
+        savedRecipesView.showSavedRecipes(savedRecipes);
 
     }
 
@@ -37,6 +37,22 @@ public class SavedRecipesPresenterImpl implements SavedRecipesPresenter, SavedRe
 
     @Override
     public void onError() {
+
+    }
+
+    @Override
+    public void getSpecificRecipeToStartNewBrew(Context ctx, int position) {
+        interactor.getSpecificRecipeFromDB(this, ctx, position);
+
+    }
+
+    @Override
+    public void onSuccessGetSingleRecipe(SavedRecipeDomain savedRecipeDomain) {
+
+        savedRecipesView.passData(savedRecipeDomain.getBloomTime(),
+                savedRecipeDomain.getBrewTime(),
+                savedRecipeDomain.getBloomWater(),
+                savedRecipeDomain.getBrewWaterAmount() - savedRecipeDomain.getBloomWater());
 
     }
 }
