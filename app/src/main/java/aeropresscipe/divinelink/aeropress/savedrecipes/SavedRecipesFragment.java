@@ -80,7 +80,7 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView{
                 public void run() {
                     savedRecipesRV.setAdapter(savedRecipesRvAdapter);
                     savedRecipesRvAdapter.createSwipeHelper();
-
+                    savedRecipesRvAdapter.setPresenter(presenter);
                 }
             });
         }

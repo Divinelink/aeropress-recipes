@@ -232,13 +232,13 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
             return buttonMargin;
         }
 
-        /*    public UnderlayButton(String text, int imageResId, int color, UnderlayButtonClickListener clickListener) {
+        public UnderlayButton(String text, int imageResId, int color, UnderlayButtonClickListener clickListener) {
             this.text = text;
             this.imageResId = imageResId;
             this.color = color;
             this.clickListener = clickListener;
         }
-     */
+
 
         public boolean onClick(float x, float y) {
             if (clickRegion != null && clickRegion.contains(x, y)) {

@@ -6,4 +6,6 @@ interface SavedRecipesPresenter {
 
     void getSavedRecipes(Context ctx);
 
+    void deleteRecipe(SavedRecipeDomain savedRecipeDomain, Context ctx);
+
 }

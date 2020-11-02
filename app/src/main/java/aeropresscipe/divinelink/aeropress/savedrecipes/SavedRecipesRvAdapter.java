@@ -1,12 +1,15 @@
 package aeropresscipe.divinelink.aeropress.savedrecipes;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.List;
 
@@ -17,12 +20,14 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAdapter.SavedRecipeViewHolder> {
+public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAdapter.SavedRecipeViewHolder>{
 
     private List<SavedRecipeDomain> savedRecipes;
 
     private Context context;
     private RecyclerView recyclerView;
+
+    SavedRecipesPresenter presenter;
 
     private int cardViewMarginForSwipe;
 
@@ -30,7 +35,10 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
     public SavedRecipesRvAdapter(List<SavedRecipeDomain> savedRecipes, Context context, RecyclerView recyclerView) {
         this.savedRecipes = savedRecipes;
         this.context = context;
-        this.recyclerView =  recyclerView;
+        this.recyclerView = recyclerView;
+    }
+    public void setPresenter(SavedRecipesPresenter presenter) {
+        this.presenter = presenter;
     }
 
     public static class SavedRecipeViewHolder extends RecyclerView.ViewHolder {
@@ -64,7 +72,6 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
                 .inflate(R.layout.saved_recipe_item, viewGroup, false);
         SavedRecipeViewHolder vh = new SavedRecipeViewHolder(v);
 
-
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vh.cardView.getLayoutParams();
         cardViewMarginForSwipe = lp.bottomMargin;
 
@@ -79,7 +86,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
         final int total_time = savedRecipes.get(position).getBloomTime() + savedRecipes.get(position).getBrewTime();
         final int bloomTime = savedRecipes.get(position).getBloomTime();
         final int temp = savedRecipes.get(position).getDiceTemperature();
-        final String grindSize = savedRecipes.get(position).getGroundSize().substring(0,1).toUpperCase() + savedRecipes.get(position).getGroundSize().substring(1).toLowerCase();
+        final String grindSize = savedRecipes.get(position).getGroundSize().substring(0, 1).toUpperCase() + savedRecipes.get(position).getGroundSize().substring(1).toLowerCase();
 
         savedRecipeViewHolder.waterAndTempItem.setText(context.getResources().getString(R.string.SavedWaterAndTempTextView, total_water, temp, temp * 9 / 5 + 32));
         savedRecipeViewHolder.beansWeightItem.setText(context.getResources().getString(R.string.SavedCoffeeWeightTextView, savedRecipes.get(position).getCoffeeAmount()));
@@ -107,17 +114,18 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
         //TODO Make it not close swipes when opening another cardView
         //TODO Edit Button click events
 
-         SwipeHelper swipeHelper = new SwipeHelper(context, recyclerView) {
+        SwipeHelper swipeHelper = new SwipeHelper(context, recyclerView) {
             @Override
             public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
                         "Delete",
                         0,
-                        ContextCompat.getColor(context,R.color.red),
+                        ContextCompat.getColor(context, R.color.red),
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
-                                // TODO: onDelete
+                                //Delete selected item
+                                showDeleteRecipeDialog(pos);
                             }
                         },
                         cardViewMarginForSwipe
@@ -126,7 +134,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
                         "Brew",
                         0,
-                        ContextCompat.getColor(context,R.color.green),
+                        ContextCompat.getColor(context, R.color.green),
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
@@ -137,12 +145,27 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
                 ));
             }
         };
-
         swipeHelper.attachSwipe(context);
     }
 
 
+    public void showDeleteRecipeDialog(final int position){
+        new MaterialAlertDialogBuilder(context)
+                .setTitle(R.string.deleteRecipeDialogTitle)
+                .setMessage(R.string.deleteRecipeDialogMessage)
+                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        presenter.deleteRecipe(savedRecipes.get(position), context);
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
 
-
+                    }
+                })
+                .show();
+    }
 
 }

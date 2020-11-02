@@ -29,9 +29,14 @@ public class SavedRecipesPresenterImpl implements SavedRecipesPresenter, SavedRe
     }
 
     @Override
+    public void deleteRecipe(SavedRecipeDomain recipeDomain, Context ctx) {
+
+        interactor.deleteRecipeFromDB(this, recipeDomain, ctx);
+
+    }
+
+    @Override
     public void onError() {
-
-
 
     }
 }
