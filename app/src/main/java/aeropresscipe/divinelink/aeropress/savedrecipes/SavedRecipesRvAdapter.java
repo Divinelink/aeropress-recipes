@@ -4,13 +4,17 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.R;
+import aeropresscipe.divinelink.aeropress.features.SwipeHelper;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAdapter.SavedRecipeViewHolder> {
@@ -18,10 +22,15 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
     private List<SavedRecipeDomain> savedRecipes;
 
     private Context context;
+    private RecyclerView recyclerView;
 
-    public SavedRecipesRvAdapter(List<SavedRecipeDomain> savedRecipes, Context context) {
+    private int cardViewMarginForSwipe;
+
+
+    public SavedRecipesRvAdapter(List<SavedRecipeDomain> savedRecipes, Context context, RecyclerView recyclerView) {
         this.savedRecipes = savedRecipes;
         this.context = context;
+        this.recyclerView =  recyclerView;
     }
 
     public static class SavedRecipeViewHolder extends RecyclerView.ViewHolder {
@@ -32,6 +41,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
         private TextView brewingMethodItem;
         private TextView timeItem;
         private TextView brewedOnItem;
+        private CardView cardView;
 
 
         public SavedRecipeViewHolder(View v) {
@@ -43,7 +53,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
             this.brewingMethodItem = v.findViewById(R.id.brewMethodTV);
             this.timeItem = v.findViewById(R.id.savedTimeTV);
             this.brewedOnItem = v.findViewById(R.id.brewedOnTV);
-
+            this.cardView = v.findViewById(R.id.card_view);
         }
     }
 
@@ -53,6 +63,10 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.saved_recipe_item, viewGroup, false);
         SavedRecipeViewHolder vh = new SavedRecipeViewHolder(v);
+
+
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vh.cardView.getLayoutParams();
+        cardViewMarginForSwipe = lp.bottomMargin;
 
         return vh;
     }
@@ -80,13 +94,55 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
 
         savedRecipeViewHolder.brewedOnItem.setText(context.getResources().getString(R.string.dateBrewedTextView, savedRecipes.get(position).getDateBrewed()));
 
-
     }
 
     @Override
     public int getItemCount() {
         return savedRecipes.size();
     }
+
+    public void createSwipeHelper() {
+
+
+        //TODO Make it not close swipes when opening another cardView
+        //TODO Edit Button click events
+
+         SwipeHelper swipeHelper = new SwipeHelper(context, recyclerView) {
+            @Override
+            public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        "Delete",
+                        0,
+                        ContextCompat.getColor(context,R.color.red),
+                        new SwipeHelper.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(int pos) {
+                                // TODO: onDelete
+                            }
+                        },
+                        cardViewMarginForSwipe
+                ));
+
+                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        "Brew",
+                        0,
+                        ContextCompat.getColor(context,R.color.green),
+                        new SwipeHelper.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(int pos) {
+                                // TODO: OnTransfer
+                            }
+                        },
+                        cardViewMarginForSwipe
+                ));
+            }
+        };
+
+        swipeHelper.attachSwipe(context);
+    }
+
+
+
 
 
 }
