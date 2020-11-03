@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe;
 
-import java.util.ArrayList;
 
 public interface GenerateRecipeView {
 

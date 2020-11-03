@@ -14,9 +14,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.R;
-import aeropresscipe.divinelink.aeropress.base.HomeView;
 import aeropresscipe.divinelink.aeropress.features.SwipeHelper;
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceUI;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;

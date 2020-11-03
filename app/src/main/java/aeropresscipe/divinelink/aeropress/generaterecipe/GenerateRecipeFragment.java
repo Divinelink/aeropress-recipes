@@ -1,8 +1,5 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.os.Bundle;
 
 import aeropresscipe.divinelink.aeropress.base.HomeView;

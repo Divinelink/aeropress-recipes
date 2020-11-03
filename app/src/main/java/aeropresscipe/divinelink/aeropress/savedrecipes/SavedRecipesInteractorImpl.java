@@ -3,14 +3,10 @@ package aeropresscipe.divinelink.aeropress.savedrecipes;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase;
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
-import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeDao;
 import androidx.annotation.RequiresApi;
 
 public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
