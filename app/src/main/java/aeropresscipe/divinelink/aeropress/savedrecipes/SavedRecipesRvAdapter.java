@@ -82,7 +82,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
     public void onBindViewHolder(@NonNull SavedRecipeViewHolder savedRecipeViewHolder, int i) {
         final int position = i;
 
-        final int total_water = savedRecipes.get(position).getBloomWater() + savedRecipes.get(position).getBrewWaterAmount();
+        final int total_water = savedRecipes.get(position).getBrewWaterAmount();
         final int total_time = savedRecipes.get(position).getBloomTime() + savedRecipes.get(position).getBrewTime();
         final int bloomTime = savedRecipes.get(position).getBloomTime();
         final int temp = savedRecipes.get(position).getDiceTemperature();

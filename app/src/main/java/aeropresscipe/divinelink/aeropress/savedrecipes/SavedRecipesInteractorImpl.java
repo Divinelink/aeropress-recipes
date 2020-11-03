@@ -3,10 +3,13 @@ package aeropresscipe.divinelink.aeropress.savedrecipes;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.util.Log;
 
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase;
+import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
+import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeDao;
 import androidx.annotation.RequiresApi;
 
 public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
@@ -65,6 +68,26 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
                 final SavedRecipeDao savedRecipeDao = HomeDatabase.getDatabase(ctx).savedRecipeDao();
                 final List<SavedRecipeDomain> myData = savedRecipeDao.getSavedRecipes();
 
+                //We also have to update the current recipe, so when we start the timer, the current recipe will be displayed.
+                // Also, when we go back to the starting fragment, the displayed recipe will be the one we select from the favourites.
+                final DiceDomain currentRecipe = new DiceDomain(
+                        myData.get(position).getDiceTemperature(),
+                        myData.get(position).getGroundSize(),
+                        myData.get(position).getBrewTime(),
+                        myData.get(position).getBrewingMethod(),
+                        myData.get(position).getBloomTime(),
+                        myData.get(position).getBloomWater(),
+                        myData.get(position).getBrewWaterAmount(),
+                        myData.get(position).getCoffeeAmount());
+
+                Log.d("getSpecificRecipeFromDB", "Updates the current recipe to the one we selected to brew from favourites.");
+                final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        recipeDao.updateRecipe(currentRecipe);
+                    }
+                });
                 listener.onSuccessGetSingleRecipe(myData.get(position));
             }
 

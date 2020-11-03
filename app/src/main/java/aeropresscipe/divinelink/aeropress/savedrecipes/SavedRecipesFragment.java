@@ -93,7 +93,7 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView {
     }
 
     @Override
-    public void passData(final int bloomTime, final int brewTime, final int bloomWater, final int remainingBrewWater) {
+    public void passData(final int bloomTime, final int brewTime, final int bloomWater, final int brewWater) {
 
         if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
@@ -101,7 +101,7 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView {
 
                 @Override
                 public void run() {
-                    DiceUI diceUI = new DiceUI(bloomTime, brewTime, bloomWater, remainingBrewWater);
+                    DiceUI diceUI = new DiceUI(bloomTime, brewTime, bloomWater, brewWater);
                     diceUI.setNewRecipe(true);
                     homeView.addTimerFragment(diceUI);
 

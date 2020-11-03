@@ -147,6 +147,8 @@ public class TimerInteractorImpl implements TimerInteractor {
                         getCurrentDate()
                         );
 
+                Log.d("Current Recipe: ", currentRecipe.toString());
+
                 if (checkIfCurrentRecipeExistsOnDB(myData, currentRecipe)) {
                     listener.onRecipeFound(true);
                     Log.d("Recipe Exists in DB?", "Yes");

@@ -7,6 +7,6 @@ interface SavedRecipesView {
 
     void showSavedRecipes(List<SavedRecipeDomain> savedRecipes);
 
-    void passData(int bloomTime, int brewTime, int bloomWater, int remainingBrewWater);
+    void passData(int bloomTime, int brewTime, int bloomWater, int brewWater);
 
 }
