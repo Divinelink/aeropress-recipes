@@ -20,7 +20,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAdapter.SavedRecipeViewHolder>{
+public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAdapter.SavedRecipeViewHolder> {
 
     private List<SavedRecipeDomain> savedRecipes;
 
@@ -31,12 +31,12 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
 
     private int cardViewMarginForSwipe;
 
-
     public SavedRecipesRvAdapter(List<SavedRecipeDomain> savedRecipes, Context context, RecyclerView recyclerView) {
         this.savedRecipes = savedRecipes;
         this.context = context;
         this.recyclerView = recyclerView;
     }
+
     public void setPresenter(SavedRecipesPresenter presenter) {
         this.presenter = presenter;
     }
@@ -75,8 +75,10 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vh.cardView.getLayoutParams();
         cardViewMarginForSwipe = lp.bottomMargin;
 
+
         return vh;
     }
+
 
     @Override
     public void onBindViewHolder(@NonNull SavedRecipeViewHolder savedRecipeViewHolder, int i) {
@@ -110,9 +112,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
 
     public void createSwipeHelper() {
 
-
         //TODO Make it not close swipes when opening another cardView
-        //TODO Edit Button click events
 
         SwipeHelper swipeHelper = new SwipeHelper(context, recyclerView) {
             @Override
@@ -140,18 +140,19 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
                             public void onClick(int pos) {
                                 //FIXME has a bug where sometimes it saved wrong data
                                 presenter.getSpecificRecipeToStartNewBrew(context, pos);
-
                             }
                         },
                         cardViewMarginForSwipe
                 ));
             }
         };
+        //FIXME CHECK THIS ONE!!!
         swipeHelper.attachSwipe(context);
     }
 
 
-    public void showDeleteRecipeDialog(final int position){
+
+    public void showDeleteRecipeDialog(final int position) {
         new MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.deleteRecipeDialogTitle)
                 .setMessage(R.string.deleteRecipeDialogMessage)

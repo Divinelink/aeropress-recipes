@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -23,6 +24,7 @@ import java.util.Map;
 import java.util.Queue;
 
 import aeropresscipe.divinelink.aeropress.R;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,6 +44,13 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 
     private ArrayList<Integer> openPositions;
 
+    @Override
+    public void onMoved(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, int fromPos, @NonNull RecyclerView.ViewHolder target, int toPos, int x, int y) {
+        recyclerView.getAdapter().notifyItemRangeChanged(fromPos, toPos);
+        if (openPositions.contains(fromPos))
+            openPositions.remove(openPositions.indexOf(fromPos));
+        super.onMoved(recyclerView, viewHolder, fromPos, target, toPos, x, y);
+    }
 
     private Context mContext;
     private GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener() {
@@ -51,7 +60,6 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
                 if (button.onClick(e.getX(), e.getY()))
                     break;
             }
-
             return true;
         }
     };
@@ -62,24 +70,22 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
         public boolean onTouch(View view, MotionEvent e) {
             if (swipedPos < 0) return false;
             Point point = new Point((int) e.getRawX(), (int) e.getRawY());
-
-            for (int i: openPositions)
-            {
-            RecyclerView.ViewHolder swipedViewHolder = recyclerView.findViewHolderForAdapterPosition(i);
-            View swipedItem = swipedViewHolder.itemView;
-            Rect rect = new Rect();
-            swipedItem.getGlobalVisibleRect(rect);
-
-            if (e.getAction() == MotionEvent.ACTION_DOWN || e.getAction() == MotionEvent.ACTION_UP || e.getAction() == MotionEvent.ACTION_MOVE) {
-                if (rect.top < point.y && rect.bottom > point.y)
-                    gestureDetector.onTouchEvent(e);
-                else {
-      //              recoverQueue.add(swipedPos);
-        //            swipedPos = -1;
-          //          recoverSwipedItem();
+            for (int i : openPositions) {
+                RecyclerView.ViewHolder swipedViewHolder = recyclerView.findViewHolderForAdapterPosition(i);
+                View swipedItem = swipedViewHolder.itemView;
+                Rect rect = new Rect();
+                swipedItem.getGlobalVisibleRect(rect);
+                if (e.getAction() == MotionEvent.ACTION_DOWN || e.getAction() == MotionEvent.ACTION_UP || e.getAction() == MotionEvent.ACTION_MOVE) {
+                    if (rect.top < point.y && rect.bottom > point.y)
+                        gestureDetector.onTouchEvent(e);
+                    else {
+                        recoverQueue.add(swipedPos);
+                        swipedPos = -1;
+                        //  recoverSwipedItem();
+                    }
                 }
             }
-            }
+
 
             return false;
         }
@@ -106,10 +112,11 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
         attachSwipe(context);
     }
 
+    // Figure out how to remove old positions when moving recyclerView
 
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-        return false;
+        return true;
     }
 
     @Override
@@ -117,28 +124,37 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
         int pos = viewHolder.getAdapterPosition();
 
 
-
         if (swipedPos != pos) {
-    //        recoverQueue.add(swipedPos);
-            openPositions.add(pos);
+            recoverQueue.add(swipedPos);
+            //      if (!openPositions.contains(pos))
+            //          openPositions.add(pos);
+
         }
+
+
+        if (!openPositions.contains(pos))
+            openPositions.add(pos);
+
         swipedPos = pos;
 
 
         if (buttonsBuffer.containsKey(swipedPos)) {
             buttons = buttonsBuffer.get(pos);
+        } else {
+
+            buttons.clear();
+            //         openPositions.remove(pos);
         }
 
-        else {
-              buttons.clear();
-            openPositions.remove(pos);
+        if (openPositions.contains(pos)) {
+            Log.d("CONTAINS THAT ", Integer.toString(pos));
+//           openPositions.remove(pos);
         }
 
 
-
-//        buttonsBuffer.clear();
+        buttonsBuffer.clear();
         swipeThreshold = 0.5f * buttons.size() * BUTTON_WIDTH;
-        recoverSwipedItem();
+        //recoverSwipedItem();
     }
 
     @Override
@@ -175,38 +191,44 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
                 if (!buttonsBuffer.containsKey(pos)) {
                     instantiateUnderlayButton(viewHolder, buffer);
                     buttonsBuffer.put(pos, buffer);
+
                     //FIXME this is needed but make it dynamic
-                    buttonsBuffer.put(0, buffer);
-                    buttonsBuffer.put(1, buffer);
-                    buttonsBuffer.put(2, buffer);
-                    openPositions.add(pos);
+                    for (int i : openPositions)
+                        buttonsBuffer.put(i, buffer);
+
+
                 } else {
+
                     buffer = buttonsBuffer.get(pos);
-                    //buffer = openPositions.get(pos);
                 }
 
                 translationX = dX * buffer.size() * BUTTON_WIDTH / itemView.getWidth();
                 // Sets a margin because on our view (CardView) we've set a margin so the items won't be collided.
                 // This margin then goes to the dimensions of the rectange that we draw.
-                margin =  buffer.get(0).getButtonMargin();
+                margin = buffer.get(0).getButtonMargin();
                 drawButtons(c, itemView, buffer, pos, translationX, mContext, margin);
+            } else {
+                if (openPositions.contains(pos))
+                    openPositions.remove(openPositions.indexOf(pos));
             }
+
         }
 
         super.onChildDraw(c, recyclerView, viewHolder, translationX, dY, actionState, isCurrentlyActive);
     }
-
+/*
     private synchronized void recoverSwipedItem() {
         while (!recoverQueue.isEmpty()) {
-  //          int pos = recoverQueue.poll();
+            int pos = recoverQueue.poll();
             //Remove closed buttons
             recoverQueue.poll();
-       //     if (pos > -1) {
-                //recyclerView.getAdapter().notifyItemChanged(pos); //FIXME check this here for swiping another item
-               recyclerView.getAdapter();
-            }
-     //   }
-    }
+            //   if (pos > -1) {
+            //    recyclerView.getAdapter().notifyItemChanged(pos); //FIXME check this here for swiping another item
+            //recyclerView.getAdapter();
+            recyclerView.getAdapter();
+        }
+    }*/
+
 
     private void drawButtons(Canvas c, View itemView, List<UnderlayButton> buffer, int pos, float dX, Context mContext, int margin) {
         float right = itemView.getRight();
@@ -271,7 +293,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 
 
         public boolean onClick(float x, float y) {
-            for (RectF i: clickRegions) {
+            for (RectF i : clickRegions) {
                 if (i != null && i.contains(x, y)) {
                     clickListener.onClick(clickPositions.get(clickRegions.indexOf(i)));
                     return true;
@@ -307,7 +329,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
             p.getTextBounds(text, 0, text.length(), r);
             float x = cWidth / 2f - r.width() / 2f - r.left;
             float y = cHeight / 2f + r.height() / 2f - r.bottom;
-            c.drawText(text, rect.left + x, rect.top + y-10, p);
+            c.drawText(text, rect.left + x, rect.top + y - 10, p);
 
             clickRegion = rect;
             clickRegions.add(clickRegion);
