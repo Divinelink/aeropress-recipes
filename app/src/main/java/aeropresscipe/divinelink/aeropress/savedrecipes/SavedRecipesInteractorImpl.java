@@ -34,7 +34,7 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
     }
 
     @Override
-    public void deleteRecipeFromDB(final OnGetSavedListsFromDBFinishListener listener, final SavedRecipeDomain recipeDomain, final Context ctx) {
+    public void deleteRecipeFromDB(final OnGetRestFavouritesAfterDeletionFinishListener listener, final SavedRecipeDomain recipeDomain, final Context ctx, final int position) {
 
         AsyncTask.execute(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -52,7 +52,7 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
                         recipeDomain.getCoffeeAmount());
 
                 final List<SavedRecipeDomain> myData = savedRecipeDao.getSavedRecipes();
-                listener.onSuccess(myData);
+                listener.onSuccessAfterDeletion(myData, position);
             }
 
         });

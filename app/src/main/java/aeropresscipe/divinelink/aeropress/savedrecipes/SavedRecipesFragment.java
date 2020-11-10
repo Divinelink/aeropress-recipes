@@ -93,6 +93,21 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView {
     }
 
     @Override
+    public void showSavedRecipesAfterDeletion(final List<SavedRecipeDomain> savedRecipes, final int position) {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+             //   SavedRecipesRvAdapter savedRecipesRvAdapter = new SavedRecipesRvAdapter(savedRecipes, getActivity(), savedRecipesRV);
+
+                @Override
+                public void run() {
+
+                }
+            });
+
+        }
+    }
+
+    @Override
     public void passData(final int bloomTime, final int brewTime, final int bloomWater, final int brewWater) {
 
         if (getActivity() != null) {

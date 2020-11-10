@@ -4,7 +4,7 @@ import android.content.Context;
 
 import java.util.List;
 
-public class SavedRecipesPresenterImpl implements SavedRecipesPresenter, SavedRecipesInteractor.OnGetSavedListsFromDBFinishListener, SavedRecipesInteractor.OnGetSingleRecipeFromDBFinishListener {
+public class SavedRecipesPresenterImpl implements SavedRecipesPresenter, SavedRecipesInteractor.OnGetSavedListsFromDBFinishListener, SavedRecipesInteractor.OnGetSingleRecipeFromDBFinishListener, SavedRecipesInteractor.OnGetRestFavouritesAfterDeletionFinishListener {
 
 
     private SavedRecipesView savedRecipesView;
@@ -29,9 +29,9 @@ public class SavedRecipesPresenterImpl implements SavedRecipesPresenter, SavedRe
     }
 
     @Override
-    public void deleteRecipe(SavedRecipeDomain recipeDomain, Context ctx) {
+    public void deleteRecipe(SavedRecipeDomain recipeDomain, Context ctx, int position) {
 
-        interactor.deleteRecipeFromDB(this, recipeDomain, ctx);
+        interactor.deleteRecipeFromDB(this, recipeDomain, ctx, position);
 
     }
 
@@ -54,5 +54,11 @@ public class SavedRecipesPresenterImpl implements SavedRecipesPresenter, SavedRe
                 savedRecipeDomain.getBloomWater(),
                 savedRecipeDomain.getBrewWaterAmount() - savedRecipeDomain.getBloomWater());
 
+    }
+
+    @Override
+    public void onSuccessAfterDeletion(List<SavedRecipeDomain> savedRecipes, int position) {
+
+        savedRecipesView.showSavedRecipesAfterDeletion(savedRecipes, position);
     }
 }

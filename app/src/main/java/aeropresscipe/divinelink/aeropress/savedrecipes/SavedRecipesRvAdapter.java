@@ -140,6 +140,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
                             public void onClick(int pos) {
                                 //FIXME has a bug where sometimes it saved wrong data
                                 presenter.getSpecificRecipeToStartNewBrew(context, pos);
+
                             }
                         },
                         cardViewMarginForSwipe
@@ -159,7 +160,11 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
                 .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        presenter.deleteRecipe(savedRecipes.get(position), context);
+
+                        presenter.deleteRecipe(savedRecipes.get(position), context, position);
+                        notifyDataSetChanged();
+                        savedRecipes.remove(position);
+
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

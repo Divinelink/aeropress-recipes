@@ -8,7 +8,7 @@ interface SavedRecipesInteractor {
 
     void getListsFromDB(SavedRecipesInteractor.OnGetSavedListsFromDBFinishListener listener, Context ctx);
 
-    void deleteRecipeFromDB(SavedRecipesInteractor.OnGetSavedListsFromDBFinishListener listener, SavedRecipeDomain recipeDomain, Context ctx);
+    void deleteRecipeFromDB(SavedRecipesInteractor.OnGetRestFavouritesAfterDeletionFinishListener listener, SavedRecipeDomain recipeDomain, Context ctx, int position);
 
     void getSpecificRecipeFromDB(SavedRecipesInteractor.OnGetSingleRecipeFromDBFinishListener listener, Context ctx, int position);
 
@@ -18,6 +18,15 @@ interface SavedRecipesInteractor {
         void onError();
 
     }
+
+    interface OnGetRestFavouritesAfterDeletionFinishListener{
+
+        void onSuccessAfterDeletion(List<SavedRecipeDomain> savedRecipes, int position);
+        void onError();
+
+    }
+
+
 
     interface OnGetSingleRecipeFromDBFinishListener{
 

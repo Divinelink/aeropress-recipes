@@ -8,6 +8,6 @@ interface SavedRecipesPresenter {
 
     void getSpecificRecipeToStartNewBrew(Context ctx, int position);
 
-    void deleteRecipe(SavedRecipeDomain savedRecipeDomain, Context ctx);
+    void deleteRecipe(SavedRecipeDomain savedRecipeDomain, Context ctx, int position);
 
 }
