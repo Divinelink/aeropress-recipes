@@ -14,6 +14,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.R;
+import aeropresscipe.divinelink.aeropress.features.SharedPreferencesListManager;
 import aeropresscipe.divinelink.aeropress.features.SwipeHelper;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -163,6 +164,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
 
                         presenter.deleteRecipe(savedRecipes.get(position), context, position);
                         notifyDataSetChanged();
+                       // notifyItemRemoved(position);
                         savedRecipes.remove(position);
 
                     }

@@ -5,9 +5,11 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase;
+import aeropresscipe.divinelink.aeropress.features.SharedPreferencesListManager;
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
 import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeDao;
 import androidx.annotation.RequiresApi;
@@ -36,6 +38,9 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
     @Override
     public void deleteRecipeFromDB(final OnGetRestFavouritesAfterDeletionFinishListener listener, final SavedRecipeDomain recipeDomain, final Context ctx, final int position) {
 
+        final SharedPreferencesListManager prefManagerList = new SharedPreferencesListManager();
+        final ArrayList<Integer> openPositions =  prefManagerList.getArrayList("openPositions", ctx);
+
         AsyncTask.execute(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -52,6 +57,18 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
                         recipeDomain.getCoffeeAmount());
 
                 final List<SavedRecipeDomain> myData = savedRecipeDao.getSavedRecipes();
+
+
+
+                //We remove the object from the openPositions list and then we store the updated list and pass it back to the swipe helper.
+                //This object was the one we deleted from the favourites, using the swipe feature.
+                //openPositions.remove(openPositions.indexOf(position));
+
+                //Temporarily make it clear all openPositions
+                //FIXME probably make it to keep the open ones once you delete something.
+                openPositions.clear();
+                prefManagerList.saveArrayList(openPositions, "openPositions", ctx);
+
                 listener.onSuccessAfterDeletion(myData, position);
             }
 
@@ -94,4 +111,29 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
         });
 
     }
+
+/*
+    @Override
+    public ArrayList<String> getArrayList(String key, Context ctx) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        Gson gson = new Gson();
+        String json = prefs.getString(key, null);
+        Type type = new TypeToken<ArrayList<String>>() {
+        }.getType();
+        return gson.fromJson(json, type);
+    }
+
+    @Override
+    public void saveArrayList(ArrayList<String> list, String key, Context ctx) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString(key, json);
+        editor.apply();
+    }
+
+ */
 }
+
+
