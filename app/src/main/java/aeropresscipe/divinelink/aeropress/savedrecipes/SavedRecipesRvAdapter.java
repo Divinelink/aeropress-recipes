@@ -163,8 +163,8 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         presenter.deleteRecipe(savedRecipes.get(position), context, position);
-                        notifyDataSetChanged();
-                       // notifyItemRemoved(position);
+                        //notifyDataSetChanged();
+                        notifyItemRemoved(position);
                         savedRecipes.remove(position);
 
                     }

@@ -5,7 +5,10 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase;
@@ -39,7 +42,7 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
     public void deleteRecipeFromDB(final OnGetRestFavouritesAfterDeletionFinishListener listener, final SavedRecipeDomain recipeDomain, final Context ctx, final int position) {
 
         final SharedPreferencesListManager prefManagerList = new SharedPreferencesListManager();
-        final ArrayList<Integer> openPositions =  prefManagerList.getArrayList("openPositions", ctx);
+        final ArrayList<Integer> openPositions = prefManagerList.getArrayList("openPositions", ctx);
 
         AsyncTask.execute(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -59,20 +62,31 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
                 final List<SavedRecipeDomain> myData = savedRecipeDao.getSavedRecipes();
 
 
-
                 //We remove the object from the openPositions list and then we store the updated list and pass it back to the swipe helper.
                 //This object was the one we deleted from the favourites, using the swipe feature.
-                //openPositions.remove(openPositions.indexOf(position));
+                openPositions.remove(openPositions.indexOf(position));
 
                 //Temporarily make it clear all openPositions
                 //FIXME probably make it to keep the open ones once you delete something.
-                openPositions.clear();
-                prefManagerList.saveArrayList(openPositions, "openPositions", ctx);
+                //  openPositions.clear();
+
+                prefManagerList.saveArrayList(decrementOpenPositions(openPositions, position), "openPositions", ctx);
 
                 listener.onSuccessAfterDeletion(myData, position);
             }
 
         });
+    }
+
+    private ArrayList<Integer> decrementOpenPositions(ArrayList<Integer> mArrayList, int index) {
+
+        Collections.sort(mArrayList);
+
+        for (int i = index ; i <= mArrayList.size()-1; i++) {
+            Integer value = mArrayList.get(i)-1;
+            mArrayList.set(i, value);
+        }
+        return mArrayList;
     }
 
 

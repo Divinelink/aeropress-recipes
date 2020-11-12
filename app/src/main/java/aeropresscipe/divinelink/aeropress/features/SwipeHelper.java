@@ -110,7 +110,6 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
             }
         };
 
-        // Get OpenPositions from SharedPreferences
 
 
         attachSwipe(context);
@@ -185,9 +184,11 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
                     openPositions.add(pos);
                     saveToSharedPreferences();
                 }
+                //FIX ME make it remove buttonsBuffer and reduce openPositions
                 if (!buttonsBuffer.containsKey(pos)) {
                     instantiateUnderlayButton(viewHolder, buffer);
                     //FIXME this is needed but make it dynamic
+                    openPositions = getOpenPositionsFromSharedPreferences();
                     for (int i : openPositions)
                         buttonsBuffer.put(i, buffer);
                 } else {
