@@ -63,29 +63,34 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
     private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent e) {
-            if (swipedPos < 0) return false;
+           // if (swipedPos < 0) return false;
             Point point = new Point((int) e.getRawX(), (int) e.getRawY());
-            //We should reduce the amount of openPositions each time we remove an item.
-            //Figure out how to do that
-
 
             openPositions = getOpenPositionsFromSharedPreferences();
             for (int i : openPositions) {
                 RecyclerView.ViewHolder swipedViewHolder = recyclerView.findViewHolderForAdapterPosition(i);
-                View swipedItem = swipedViewHolder.itemView;
-                Rect rect = new Rect();
-                swipedItem.getGlobalVisibleRect(rect);
+                View swipedItem = null;
+                if (swipedViewHolder != null) {
+                    swipedItem = swipedViewHolder.itemView;
+                    Rect rect = new Rect();
+                    swipedItem.getGlobalVisibleRect(rect);
 
-                if (e.getAction() == MotionEvent.ACTION_DOWN || e.getAction() == MotionEvent.ACTION_UP || e.getAction() == MotionEvent.ACTION_MOVE) {
-                    if (rect.top < point.y && rect.bottom > point.y)
-                        gestureDetector.onTouchEvent(e);
-                    else {
-                        // recoverQueue.add(swipedPos);
-                        // swipedPos = -1;
-                        recoverSwipedItem();
+                    if (e.getAction() == MotionEvent.ACTION_DOWN || e.getAction() == MotionEvent.ACTION_UP || e.getAction() == MotionEvent.ACTION_MOVE) {
+                        if (rect.top < point.y && rect.bottom > point.y)
+                            gestureDetector.onTouchEvent(e);
+                        else {
+                            // recoverQueue.add(swipedPos);
+                            // swipedPos = -1;
+                            recoverSwipedItem();
+                        }
                     }
+                } else { // If it's null then remove it from openPositions
+                    //FIXME
+                    //openPositions.remove(openPositions.indexOf(i));
+                    //saveToSharedPreferences();
                 }
             }
+
             return false;
         }
     };
@@ -98,7 +103,6 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
         this.recyclerView.setOnTouchListener(onTouchListener);
         buttonsBuffer = new HashMap<>();
         this.prefManagerList = new SharedPreferencesListManager();
-        //this.openPositions = prefManagerList.getArrayList("openPositions", context);
         this.openPositions = new ArrayList<>();
         recoverQueue = new LinkedList<Integer>() {
             @Override
@@ -109,13 +113,9 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
                     return super.add(o);
             }
         };
-
-
-
         attachSwipe(context);
     }
 
-    // Figure out how to remove old positions when moving recyclerView
 
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -176,7 +176,6 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
             swipedPos = pos;
             return;
         }
-//Maybe here
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             if (dX < 0) {
                 List<UnderlayButton> buffer = new ArrayList<>();
@@ -223,7 +222,6 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 
         }
     }
-
 
 
     private void drawButtons(Canvas c, View itemView, List<UnderlayButton> buffer, int pos, float dX, Context mContext, int margin) {
@@ -338,11 +336,11 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
         void onClick(int pos);
     }
 
-    private void saveToSharedPreferences(){
-        prefManagerList.saveArrayList(openPositions, "openPositions", this.mContext);
+    private void saveToSharedPreferences() {
+        prefManagerList.saveArrayList(this.openPositions, "openPositions", this.mContext);
     }
 
-    private ArrayList<Integer> getOpenPositionsFromSharedPreferences(){
+    private ArrayList<Integer> getOpenPositionsFromSharedPreferences() {
         return prefManagerList.getArrayList("openPositions", this.mContext);
     }
 
