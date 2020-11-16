@@ -64,13 +64,15 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
 
                 //We remove the object from the openPositions list and then we store the updated list and pass it back to the swipe helper.
                 //This object was the one we deleted from the favourites, using the swipe feature.
-                openPositions.remove(openPositions.indexOf(position));
+                Collections.sort(openPositions);
+                int indexOfRemovedItem = openPositions.indexOf(position);
+                openPositions.remove(indexOfRemovedItem);
 
                 //Temporarily make it clear all openPositions
                 //FIXME probably make it to keep the open ones once you delete something.
                 //  openPositions.clear();
 
-                prefManagerList.saveArrayList(decrementOpenPositions(openPositions, position), "openPositions", ctx);
+                prefManagerList.saveArrayList(decrementOpenPositions(openPositions, indexOfRemovedItem), "openPositions", ctx);
 
                 listener.onSuccessAfterDeletion(myData, position);
             }
@@ -80,7 +82,7 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
 
     private ArrayList<Integer> decrementOpenPositions(ArrayList<Integer> mArrayList, int index) {
 
-        Collections.sort(mArrayList);
+
 
         for (int i = index ; i <= mArrayList.size()-1; i++) {
             Integer value = mArrayList.get(i)-1;
