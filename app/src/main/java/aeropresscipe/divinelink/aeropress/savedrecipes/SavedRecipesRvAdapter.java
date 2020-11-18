@@ -119,7 +119,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
             @Override
             public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
-                        "Delete",
+                        "Delete" + viewHolder.getLayoutPosition(),
                         0,
                         ContextCompat.getColor(context, R.color.red),
                         new SwipeHelper.UnderlayButtonClickListener() {
@@ -141,7 +141,6 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
                             public void onClick(int pos) {
                                 //FIXME has a bug where sometimes it saved wrong data
                                 presenter.getSpecificRecipeToStartNewBrew(context, pos);
-
                             }
                         },
                         cardViewMarginForSwipe
@@ -165,7 +164,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
                         presenter.deleteRecipe(savedRecipes.get(position), context, position);
                         savedRecipes.remove(position);
                         notifyItemRemoved(position);
-                        //notifyDataSetChanged();
+                        //notifyItemRangeChanged(position+1, savedRecipes.size());
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

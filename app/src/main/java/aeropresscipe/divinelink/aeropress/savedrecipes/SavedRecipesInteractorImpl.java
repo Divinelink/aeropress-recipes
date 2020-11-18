@@ -128,28 +128,6 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
 
     }
 
-/*
-    @Override
-    public ArrayList<String> getArrayList(String key, Context ctx) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
-        Gson gson = new Gson();
-        String json = prefs.getString(key, null);
-        Type type = new TypeToken<ArrayList<String>>() {
-        }.getType();
-        return gson.fromJson(json, type);
-    }
-
-    @Override
-    public void saveArrayList(ArrayList<String> list, String key, Context ctx) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
-        SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(list);
-        editor.putString(key, json);
-        editor.apply();
-    }
-
- */
 }
 
 
