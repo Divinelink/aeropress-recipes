@@ -7,30 +7,17 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.os.Build;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Queue;
-import java.util.function.Predicate;
 
-import aeropresscipe.divinelink.aeropress.R;
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -65,7 +52,6 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
                 if (button.onClick(e.getX(), e.getY(), buttons.indexOf(button))) {
                     break;
                 }
-
             }
             return true;
         }
@@ -238,11 +224,8 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
             //Remove closed buttons
             recoverQueue.poll();
             //buttonsBuffer.clear();
-            //   if (pos > -1) {
-            //    recyclerView.getAdapter().notifyItemChanged(pos); //FIXME check this here for swiping another item
             //recyclerView.getAdapter();
             //openPositions.clear();
-
 
         }
     }
@@ -315,7 +298,11 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
         public boolean onClick(float x, float y, int buttonIndex) {
 
             for (Map.Entry<Integer, Map<Integer, RectF>> entry : clickPositionsAndRegions.entrySet())
-
+                // This is how we access the data
+                // entry.getValue() return the values of the clickPositionsAndRegions HashMap
+                // entry.getValue.get() returns a rectangle, that is the coordinates of the button
+                // buttonIndex is either 0 or 1.
+                // If it's 0, It means we clicked the "DELETE" Button. If it's 1, It's  the "BREW" Button.
                 if (entry.getValue().containsKey(buttonIndex) &&
                         entry.getValue().get(buttonIndex).contains(x, y) &&
                         entry.getValue().get(buttonIndex) != null) {
@@ -353,18 +340,22 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 
             buttonRegions.put(buttonIndex, clickRegion);
 
+            // Add as a key, the position of the item view (pos)
+            // and as a value a HashMap that has as
+            // a key the index of the button (index = 0 -> Delete Button, index = 1 -> Brew Button) and as
+            // a value the coordinates of the rectange that is generated.
+            // We access this data when we click on each button
+            // Check UnderlayButton's onClick method
             if (!clickPositionsAndRegions.containsKey(pos))
                 clickPositionsAndRegions.put(pos, buttonRegions);
 
             this.pos = pos;
         }
-
     }
 
 
     public interface UnderlayButtonClickListener {
         void onClick(int pos);
-
     }
 
 
@@ -375,6 +366,4 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
     private ArrayList<Integer> getOpenPositionsFromSharedPreferences() {
         return prefManagerList.getArrayList("openPositions", this.mContext);
     }
-
-
 }
