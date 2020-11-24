@@ -1,45 +1,45 @@
 package aeropresscipe.divinelink.aeropress.savedrecipes;
 
 import android.content.Context;
-import android.util.Log;
+
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.R;
+import aeropresscipe.divinelink.aeropress.features.SwipeHelper;
 import androidx.annotation.NonNull;
-import androidx.core.view.MotionEventCompat;
-import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
-//public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAdapter.SavedRecipeViewHolder> {
+public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<SavedRecipeDomain> savedRecipes;
 
-
     private Context context;
+    private RecyclerView recyclerView;
+    SavedRecipesPresenter presenter;
 
-    private ItemTouchHelper mItemTouchHelper;
+    private int cardViewMarginForSwipe;
 
-
-  //  private ItemTouchHelperExtension mItemTouchHelperExtension;
-  private LayoutInflater getLayoutInflater() {
-      return LayoutInflater.from(context);
-  }
-    public SavedRecipesRvAdapter(List<SavedRecipeDomain> savedRecipes, Context context, ItemTouchHelper mItemTouchHelper) {
+    public SavedRecipesRvAdapter(List<SavedRecipeDomain> savedRecipes, Context context, RecyclerView recyclerView) {
         this.savedRecipes = savedRecipes;
         this.context = context;
-        this.mItemTouchHelper = mItemTouchHelper;
+        this.recyclerView = recyclerView;
     }
 
-
+    public void setPresenter(SavedRecipesPresenter presenter) {
+        this.presenter = presenter;
+    }
 
     class SavedRecipeViewHolder extends RecyclerView.ViewHolder {
 
@@ -49,9 +49,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         private TextView brewingMethodItem;
         private TextView timeItem;
         private TextView brewedOnItem;
-
-        View mViewContent;
-        View mActionContainer;
+        private CardView cardView;
 
 
         public SavedRecipeViewHolder(View v) {
@@ -63,22 +61,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             this.brewingMethodItem = v.findViewById(R.id.brewMethodTV);
             this.timeItem = v.findViewById(R.id.savedTimeTV);
             this.brewedOnItem = v.findViewById(R.id.brewedOnTV);
-
-            mViewContent = v.findViewById(R.id.saved_recipe_item);
-            mActionContainer = v.findViewById(R.id.view_list_repo_action_container);
-        }
-
-        public void bind() {
-
-            itemView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                       mItemTouchHelper.startDrag(SavedRecipeViewHolder.this);
-                    }
-                    return true;
-                }
-            });
+            this.cardView = v.findViewById(R.id.card_view);
         }
 
     }
@@ -86,31 +69,33 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @NonNull
     @Override
     public SavedRecipeViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-      View v = getLayoutInflater().inflate(R.layout.list_item_main, viewGroup, false);
-    //    View v = LayoutInflater.from(viewGroup.getContext())
-      //          .inflate(R.layout.list_item_main, viewGroup, false);
-     //   SavedRecipeViewHolder vh = new SavedRecipeViewHolder(v);
-        return new ItemSwipeWithActionWidthViewHolder(v);
-        //    return vh;
+
+
+        View v = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.saved_recipe_item, viewGroup, false);
+        SavedRecipeViewHolder vh = new SavedRecipeViewHolder(v);
+
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vh.cardView.getLayoutParams();
+        cardViewMarginForSwipe = lp.bottomMargin;
+
+        return vh;
     }
 
+
     @Override
-    //public void onBindViewHolder(@NonNull final SavedRecipeViewHolder savedRecipeViewHolder, int i) {
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int i) {
         SavedRecipeViewHolder savedRecipeViewHolder = (SavedRecipeViewHolder) holder;
-        savedRecipeViewHolder.bind();
-
         final int position = i;
-        final int total_water = savedRecipes.get(position).getBloomWater() + savedRecipes.get(position).getBrewWaterAmount();
+
+        final int total_water = savedRecipes.get(position).getBrewWaterAmount();
+
         final int total_time = savedRecipes.get(position).getBloomTime() + savedRecipes.get(position).getBrewTime();
         final int bloomTime = savedRecipes.get(position).getBloomTime();
         final int temp = savedRecipes.get(position).getDiceTemperature();
-        final String grindSize = savedRecipes.get(position).getGroundSize().substring(0,1).toUpperCase() + savedRecipes.get(position).getGroundSize().substring(1).toLowerCase();
+        final String grindSize = savedRecipes.get(position).getGroundSize().substring(0, 1).toUpperCase() + savedRecipes.get(position).getGroundSize().substring(1).toLowerCase();
 
         savedRecipeViewHolder.waterAndTempItem.setText(context.getResources().getString(R.string.SavedWaterAndTempTextView, total_water, temp, temp * 9 / 5 + 32));
         savedRecipeViewHolder.beansWeightItem.setText(context.getResources().getString(R.string.SavedCoffeeWeightTextView, savedRecipes.get(position).getCoffeeAmount()));
-
-
 
         savedRecipeViewHolder.beansGrindLevelItem.setText(context.getResources().getString(R.string.SavedGrindLevelTextView, grindSize));
         savedRecipeViewHolder.brewingMethodItem.setText(context.getResources().getString(R.string.SavedBrewingMethodTextView, savedRecipes.get(position).getBrewingMethod()));
@@ -122,47 +107,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         savedRecipeViewHolder.brewedOnItem.setText(context.getResources().getString(R.string.dateBrewedTextView, savedRecipes.get(position).getDateBrewed()));
 
-        // Needed for Swipe Thingy //
-
-   //     SavedRecipeViewHolder baseViewHolder = (SavedRecipeViewHolder) savedRecipeViewHolder;
-    //    baseViewHolder.bind(savedRecipes.get(position));
-
-
-
-        savedRecipeViewHolder.mViewContent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "Item Content click: #" + holder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        if (holder instanceof ItemSwipeWithActionWidthViewHolder) {
-            ItemSwipeWithActionWidthViewHolder viewHolder = (ItemSwipeWithActionWidthViewHolder) holder;
-            viewHolder.mActionViewRefresh.setOnClickListener(
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Toast.makeText(context, "Refresh Click" + holder.getAdapterPosition()
-                                    , Toast.LENGTH_SHORT).show();
-                            //.closeOpened();
-                        }
-                    }
-
-            );
-            viewHolder.mActionViewDelete.setOnClickListener(
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            doDelete(holder.getAdapterPosition());
-                        }
-                    }
-
-            );
-        }
-
-
     }
-
 
 
     @Override
@@ -170,45 +115,64 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return savedRecipes.size();
     }
 
-    // NEEDED FOR SWIPE THINGY //
 
-    public void move(int from, int to) {
-        SavedRecipeDomain prev = savedRecipes.remove(from);
-        savedRecipes.add(to > from ? to - 1 : to, prev);
-        notifyItemMoved(from, to);
-        notifyItemMoved(from, to);
+    public void createSwipeHelper() {
+
+        SwipeHelper swipeHelper = new SwipeHelper(context, recyclerView) {
+            @Override
+            public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        "Delete",
+                        0,
+                        ContextCompat.getColor(context, R.color.red),
+                        new SwipeHelper.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(int pos) {
+                                //Delete selected item
+                                showDeleteRecipeDialog(pos);
+                            }
+                        },
+                        cardViewMarginForSwipe
+                ));
+
+                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        "Brew",
+                        0,
+                        ContextCompat.getColor(context, R.color.green),
+                        new SwipeHelper.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(int pos) {
+                                presenter.getSpecificRecipeToStartNewBrew(context, pos);
+                            }
+                        },
+                        cardViewMarginForSwipe
+                ));
+            }
+        };
+        swipeHelper.attachSwipe(context);
     }
 
-    public void setDatas(List<SavedRecipeDomain> datas) {
-        savedRecipes.clear();
-        savedRecipes.addAll(datas);
-    }
 
-    public void updateData(List<SavedRecipeDomain> datas) {
-        setDatas(datas);
-        notifyDataSetChanged();
-    }
+    public void showDeleteRecipeDialog(final int position) {
+        new MaterialAlertDialogBuilder(context)
+                .setTitle(R.string.deleteRecipeDialogTitle)
+                .setMessage(R.string.deleteRecipeDialogMessage)
+                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
 
-    private void doDelete(int adapterPosition) {
-        savedRecipes.remove(adapterPosition);
-        notifyItemRemoved(adapterPosition);
-    }
+                        presenter.deleteRecipe(savedRecipes.get(position), context, position);
+                        savedRecipes.remove(position);
+                        notifyItemRemoved(position);
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
 
-    class ItemSwipeWithActionWidthViewHolder extends SavedRecipeViewHolder {
-
-        View mActionViewDelete;
-        View mActionViewRefresh;
-
-        public ItemSwipeWithActionWidthViewHolder(View itemView) {
-            super(itemView);
-            mActionViewDelete = itemView.findViewById(R.id.view_list_repo_action_delete);
-            mActionViewRefresh = itemView.findViewById(R.id.view_list_repo_action_update);
-        }
-
-
-        public float getActionWidth() {
-            return mActionContainer.getWidth();
-        }
+                    }
+                })
+                .show();
     }
 
 }

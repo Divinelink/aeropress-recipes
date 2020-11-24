@@ -9,7 +9,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -147,6 +146,8 @@ public class TimerInteractorImpl implements TimerInteractor {
                         recipe.getCoffeeAmount(),
                         getCurrentDate()
                         );
+
+                Log.d("Current Recipe: ", currentRecipe.toString());
 
                 if (checkIfCurrentRecipeExistsOnDB(myData, currentRecipe)) {
                     listener.onRecipeFound(true);

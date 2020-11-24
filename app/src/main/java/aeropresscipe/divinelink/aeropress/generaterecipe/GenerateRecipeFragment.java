@@ -1,8 +1,5 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.os.Bundle;
 
 import aeropresscipe.divinelink.aeropress.base.HomeView;
@@ -47,7 +44,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         View v = inflater.inflate(R.layout.fragment_generate_recipe, container, false);
 
         homeView = (HomeView) getArguments().getSerializable("home_view");
-        recipeRv = (RecyclerView) v.findViewById(R.id.recipe_rv);
+        recipeRv = v.findViewById(R.id.recipe_rv);
         generateRecipeButton = v.findViewById(R.id.generateRecipeButton);
         //FIXME TEMPORARY BUTTON
         timerButton = v.findViewById(R.id.startTimerButton);

@@ -41,7 +41,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView{
     public void addSavedRecipesFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.homeRoot, SavedRecipesFragment.newInstance())
+                .replace(R.id.homeRoot, SavedRecipesFragment.newInstance(this))
                 .addToBackStack(null)
                 .commit();
     }

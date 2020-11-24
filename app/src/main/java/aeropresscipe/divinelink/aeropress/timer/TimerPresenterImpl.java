@@ -1,7 +1,6 @@
 package aeropresscipe.divinelink.aeropress.timer;
 
 import android.content.Context;
-import android.util.Log;
 
 public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnStartTimerFinishListener, TimerInteractor.OnSaveLikedRecipeFinishListener {
 

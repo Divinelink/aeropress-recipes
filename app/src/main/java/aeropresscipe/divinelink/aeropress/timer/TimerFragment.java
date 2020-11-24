@@ -38,6 +38,8 @@ public class TimerFragment extends Fragment implements TimerView {
 
     GetPhaseFactory getPhaseFactory = new GetPhaseFactory();
 
+
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,7 +61,6 @@ public class TimerFragment extends Fragment implements TimerView {
                 presenter.saveLikedRecipeOnDB(getContext());
             }
         });
-
 
         //FIXME move it somewhere else
         likeRecipeBtn.setOnTouchListener(new View.OnTouchListener() {

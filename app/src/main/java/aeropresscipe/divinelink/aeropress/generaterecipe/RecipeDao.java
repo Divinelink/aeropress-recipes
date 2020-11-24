@@ -18,7 +18,7 @@ public abstract class RecipeDao {
     abstract void deleteAll();
 
     @Transaction
-    void updateRecipe(DiceDomain diceDomain) {
+    public void updateRecipe(DiceDomain diceDomain) {
         deleteAll();
         insertRecipe(diceDomain);
     }
