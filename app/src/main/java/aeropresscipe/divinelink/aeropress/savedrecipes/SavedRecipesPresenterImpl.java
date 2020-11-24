@@ -7,8 +7,8 @@ import java.util.List;
 public class SavedRecipesPresenterImpl implements SavedRecipesPresenter, SavedRecipesInteractor.OnGetSavedListsFromDBFinishListener, SavedRecipesInteractor.OnGetSingleRecipeFromDBFinishListener, SavedRecipesInteractor.OnGetRestFavouritesAfterDeletionFinishListener {
 
 
-    private SavedRecipesView savedRecipesView;
-    private SavedRecipesInteractor interactor;
+    final private SavedRecipesView savedRecipesView;
+    final private SavedRecipesInteractor interactor;
 
 
     public SavedRecipesPresenterImpl(SavedRecipesView recipesView) {

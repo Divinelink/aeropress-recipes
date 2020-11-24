@@ -23,13 +23,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<SavedRecipeDomain> savedRecipes;
+    final private List<SavedRecipeDomain> savedRecipes;
+    final private Context context;
+    final private RecyclerView recyclerView;
 
-    private Context context;
-    private RecyclerView recyclerView;
-    SavedRecipesPresenter presenter;
-
-    private int cardViewMarginForSwipe;
+    private SavedRecipesPresenter presenter;
+    private int cardViewMarginAttr;
 
     public SavedRecipesRvAdapter(List<SavedRecipeDomain> savedRecipes, Context context, RecyclerView recyclerView) {
         this.savedRecipes = savedRecipes;
@@ -41,20 +40,18 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         this.presenter = presenter;
     }
 
-    class SavedRecipeViewHolder extends RecyclerView.ViewHolder {
+    static class SavedRecipeViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView waterAndTempItem;
-        private TextView beansWeightItem;
-        private TextView beansGrindLevelItem;
-        private TextView brewingMethodItem;
-        private TextView timeItem;
-        private TextView brewedOnItem;
-        private CardView cardView;
-
+        final private TextView waterAndTempItem;
+        final private TextView beansWeightItem;
+        final private TextView beansGrindLevelItem;
+        final private TextView brewingMethodItem;
+        final private TextView timeItem;
+        final private TextView brewedOnItem;
+        final private CardView cardView;
 
         public SavedRecipeViewHolder(View v) {
             super(v);
-
             this.waterAndTempItem = v.findViewById(R.id.waterAndTempTV);
             this.beansWeightItem = v.findViewById(R.id.beansWeightTV);
             this.beansGrindLevelItem = v.findViewById(R.id.beansGrindLevelTV);
@@ -70,13 +67,12 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public SavedRecipeViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
-
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.saved_recipe_item, viewGroup, false);
         SavedRecipeViewHolder vh = new SavedRecipeViewHolder(v);
 
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vh.cardView.getLayoutParams();
-        cardViewMarginForSwipe = lp.bottomMargin;
+        cardViewMarginAttr = lp.bottomMargin;
 
         return vh;
     }
@@ -85,27 +81,24 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int i) {
         SavedRecipeViewHolder savedRecipeViewHolder = (SavedRecipeViewHolder) holder;
-        final int position = i;
 
-        final int total_water = savedRecipes.get(position).getBrewWaterAmount();
-
-        final int total_time = savedRecipes.get(position).getBloomTime() + savedRecipes.get(position).getBrewTime();
-        final int bloomTime = savedRecipes.get(position).getBloomTime();
-        final int temp = savedRecipes.get(position).getDiceTemperature();
-        final String grindSize = savedRecipes.get(position).getGroundSize().substring(0, 1).toUpperCase() + savedRecipes.get(position).getGroundSize().substring(1).toLowerCase();
+        final int total_water = savedRecipes.get(i).getBrewWaterAmount();
+        final int total_time = savedRecipes.get(i).getBloomTime() + savedRecipes.get(i).getBrewTime();
+        final int bloomTime = savedRecipes.get(i).getBloomTime();
+        final int temp = savedRecipes.get(i).getDiceTemperature();
+        final String grindSize = savedRecipes.get(i).getGroundSize().substring(0, 1).toUpperCase() + savedRecipes.get(i).getGroundSize().substring(1).toLowerCase();
 
         savedRecipeViewHolder.waterAndTempItem.setText(context.getResources().getString(R.string.SavedWaterAndTempTextView, total_water, temp, temp * 9 / 5 + 32));
-        savedRecipeViewHolder.beansWeightItem.setText(context.getResources().getString(R.string.SavedCoffeeWeightTextView, savedRecipes.get(position).getCoffeeAmount()));
-
+        savedRecipeViewHolder.beansWeightItem.setText(context.getResources().getString(R.string.SavedCoffeeWeightTextView, savedRecipes.get(i).getCoffeeAmount()));
         savedRecipeViewHolder.beansGrindLevelItem.setText(context.getResources().getString(R.string.SavedGrindLevelTextView, grindSize));
-        savedRecipeViewHolder.brewingMethodItem.setText(context.getResources().getString(R.string.SavedBrewingMethodTextView, savedRecipes.get(position).getBrewingMethod()));
+        savedRecipeViewHolder.brewingMethodItem.setText(context.getResources().getString(R.string.SavedBrewingMethodTextView, savedRecipes.get(i).getBrewingMethod()));
 
         if (bloomTime == 0)
             savedRecipeViewHolder.timeItem.setText(context.getResources().getString(R.string.SavedTotalTimeTextView, total_time));
         else
-            savedRecipeViewHolder.timeItem.setText(context.getResources().getString(R.string.SavedTotalTimeWithBloomTextView, savedRecipes.get(position).getBrewTime(), bloomTime));
+            savedRecipeViewHolder.timeItem.setText(context.getResources().getString(R.string.SavedTotalTimeWithBloomTextView, savedRecipes.get(i).getBrewTime(), bloomTime));
 
-        savedRecipeViewHolder.brewedOnItem.setText(context.getResources().getString(R.string.dateBrewedTextView, savedRecipes.get(position).getDateBrewed()));
+        savedRecipeViewHolder.brewedOnItem.setText(context.getResources().getString(R.string.dateBrewedTextView, savedRecipes.get(i).getDateBrewed()));
 
     }
 
@@ -132,7 +125,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                 showDeleteRecipeDialog(pos);
                             }
                         },
-                        cardViewMarginForSwipe
+                        cardViewMarginAttr
                 ));
 
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
@@ -145,7 +138,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                 presenter.getSpecificRecipeToStartNewBrew(context, pos);
                             }
                         },
-                        cardViewMarginForSwipe
+                        cardViewMarginAttr
                 ));
             }
         };
@@ -164,6 +157,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         presenter.deleteRecipe(savedRecipes.get(position), context, position);
                         savedRecipes.remove(position);
                         notifyItemRemoved(position);
+
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

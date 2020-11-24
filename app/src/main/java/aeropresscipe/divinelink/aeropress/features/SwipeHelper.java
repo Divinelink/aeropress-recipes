@@ -29,8 +29,6 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
     private Map<Integer, RectF> buttonRegions;
     private Map<Integer, Map<Integer, RectF>> clickPositionsAndRegions;
 
-
-
     private RecyclerView recyclerView;
     private List<UnderlayButton> buttons;
     private GestureDetector gestureDetector;
@@ -68,6 +66,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
                 if (recyclerView.findViewHolderForAdapterPosition(i) == null) {
                     openPositions.remove(openPositions.indexOf(i));
                     buttonsBuffer.remove(i);
+                    removeFromClickPositionsAndRegions(i);
                     saveToSharedPreferences();
                     return false;
                 }
@@ -91,6 +90,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
                     if (swipedPos > 0) {
                         openPositions.remove(openPositions.indexOf(i));
                         buttonsBuffer.remove(i);
+                        removeFromClickPositionsAndRegions(i);
                         saveToSharedPreferences();
                     }
 
@@ -204,11 +204,12 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
                 // This margin then goes to the dimensions of the rectange that we draw.
                 margin = buffer.get(0).getButtonMargin();
                 drawButtons(c, itemView, buffer, pos, translationX, mContext, margin);
-            } else {
+            } else { // Close Swipe Action
                 if (openPositions.contains(pos)) {
+                    //TODO Make a method and use it in any place that we use those three lines
                     openPositions.remove(openPositions.indexOf(pos));
                     buttonsBuffer.remove(pos);
-
+                    removeFromClickPositionsAndRegions(pos);
                     saveToSharedPreferences();
                 }
             }
@@ -323,8 +324,6 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
             p.setColor(Color.WHITE);
             float scaledSizeInPixels = TEXT_SIZE * mContext.getResources().getDisplayMetrics().scaledDensity;
             p.setTextSize(scaledSizeInPixels);
-
-
             Rect r = new Rect();
             float cHeight = rect.height();
             float cWidth = rect.width();
@@ -363,5 +362,9 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 
     private ArrayList<Integer> getOpenPositionsFromSharedPreferences() {
         return prefManagerList.getArrayList("openPositions", this.mContext);
+    }
+
+    public void removeFromClickPositionsAndRegions(int position){
+        clickPositionsAndRegions.remove(position);
     }
 }
