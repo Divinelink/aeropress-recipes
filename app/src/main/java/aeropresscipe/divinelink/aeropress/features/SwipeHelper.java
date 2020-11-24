@@ -48,7 +48,6 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
             for (UnderlayButton button : buttons) {
-                //FIXME need to update pos for known bug
                 if (button.onClick(e.getX(), e.getY(), buttons.indexOf(button))) {
                     break;
                 }
@@ -89,7 +88,6 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
                         }
                     }
                 } else { // If it's null then remove it from openPositions
-                    //FIXME
                     if (swipedPos > 0) {
                         openPositions.remove(openPositions.indexOf(i));
                         buttonsBuffer.remove(i);

@@ -14,7 +14,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.R;
-import aeropresscipe.divinelink.aeropress.features.SharedPreferencesListManager;
 import aeropresscipe.divinelink.aeropress.features.SwipeHelper;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -113,13 +112,11 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
 
     public void createSwipeHelper() {
 
-        //TODO Make it not close swipes when opening another cardView
-
         SwipeHelper swipeHelper = new SwipeHelper(context, recyclerView) {
             @Override
             public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
-                        "Delete" + viewHolder.getLayoutPosition(),
+                        "Delete",
                         0,
                         ContextCompat.getColor(context, R.color.red),
                         new SwipeHelper.UnderlayButtonClickListener() {
@@ -139,7 +136,6 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
-                                //FIXME has a bug where sometimes it saved wrong data
                                 presenter.getSpecificRecipeToStartNewBrew(context, pos);
                             }
                         },
@@ -147,7 +143,6 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
                 ));
             }
         };
-        //FIXME CHECK THIS ONE!!!
         swipeHelper.attachSwipe(context);
     }
 
@@ -164,7 +159,6 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<SavedRecipesRvAd
                         presenter.deleteRecipe(savedRecipes.get(position), context, position);
                         savedRecipes.remove(position);
                         notifyItemRemoved(position);
-                        //notifyItemRangeChanged(position+1, savedRecipes.size());
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

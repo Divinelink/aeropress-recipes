@@ -68,10 +68,6 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
                 int indexOfRemovedItem = openPositions.indexOf(position);
                 openPositions.remove(indexOfRemovedItem);
 
-                //Temporarily make it clear all openPositions
-                //FIXME probably make it to keep the open ones once you delete something.
-                //  openPositions.clear();
-
                 prefManagerList.saveArrayList(decrementOpenPositions(openPositions, indexOfRemovedItem), "openPositions", ctx);
 
                 listener.onSuccessAfterDeletion(myData, position);

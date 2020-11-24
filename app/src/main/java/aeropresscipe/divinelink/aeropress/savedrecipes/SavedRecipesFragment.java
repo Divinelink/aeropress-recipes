@@ -51,9 +51,6 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         savedRecipesRV.setLayoutManager(layoutManager);
 
-        //TODO ADD SLIDE DELETE ACTION AND BREW ON RECYCLE VIEW
-
-
         presenter = new SavedRecipesPresenterImpl(this);
 
         presenter.getSavedRecipes(getContext());
@@ -96,8 +93,6 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView {
     public void showSavedRecipesAfterDeletion(final List<SavedRecipeDomain> savedRecipes, final int position) {
         if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
-             //   SavedRecipesRvAdapter savedRecipesRvAdapter = new SavedRecipesRvAdapter(savedRecipes, getActivity(), savedRecipesRV);
-
                 @Override
                 public void run() {
 
@@ -119,8 +114,6 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView {
                     DiceUI diceUI = new DiceUI(bloomTime, brewTime, bloomWater, brewWater);
                     diceUI.setNewRecipe(true);
                     homeView.addTimerFragment(diceUI);
-
-
                 }
             });
         }
