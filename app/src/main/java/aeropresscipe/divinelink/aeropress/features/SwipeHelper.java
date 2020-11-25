@@ -28,6 +28,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 
     private Map<Integer, RectF> buttonRegions;
     private Map<Integer, Map<Integer, RectF>> clickPositionsAndRegions;
+    private Map<Integer, Map<Integer, RectF>> staticStartingPositions;
 
     private RecyclerView recyclerView;
     private List<UnderlayButton> buttons;
@@ -41,6 +42,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
     private SharedPreferencesListManager prefManagerList;
 
     private Context mContext;
+
 
     private GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener() {
         @Override
@@ -111,6 +113,8 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
         this.openPositions = new ArrayList<>();
 
         this.clickPositionsAndRegions = new HashMap<>();
+        this.staticStartingPositions = new HashMap<>();
+
         this.buttonRegions = new HashMap<>();
 
         recoverQueue = new LinkedList<Integer>() {
@@ -128,8 +132,10 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+
         return false;
     }
+
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
@@ -343,8 +349,22 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
             // a value the coordinates of the rectange that is generated.
             // We access this data when we click on each button
             // Check UnderlayButton's onClick method
-            if (!clickPositionsAndRegions.containsKey(pos))
+            if (!clickPositionsAndRegions.containsKey(pos)) {
                 clickPositionsAndRegions.put(pos, buttonRegions);
+                staticStartingPositions.put(pos, buttonRegions);
+            } else {
+                //FIXME find difference and then replace top and bottom.
+                float offSetDifference = clickRegion.top - staticStartingPositions.get(pos).get(0).top;
+
+                final RectF deleteButton = clickPositionsAndRegions.get(pos).get(0);
+                final RectF brewButton = clickPositionsAndRegions.get(pos).get(1);
+
+                final float staticTop = staticStartingPositions.get(pos).get(0).top;
+                final float staticBot = staticStartingPositions.get(pos).get(0).bottom;
+
+                deleteButton.set(deleteButton.left, staticTop + offSetDifference, deleteButton.right, staticBot + offSetDifference);
+                brewButton.set(brewButton.left, staticTop + offSetDifference, brewButton.right, staticBot + offSetDifference);
+            }
 
             this.pos = pos;
         }
@@ -364,7 +384,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
         return prefManagerList.getArrayList("openPositions", this.mContext);
     }
 
-    public void removeFromClickPositionsAndRegions(int position){
+    public void removeFromClickPositionsAndRegions(int position) {
         clickPositionsAndRegions.remove(position);
     }
 }
