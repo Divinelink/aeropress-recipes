@@ -59,7 +59,7 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
                         recipeDomain.getBrewWaterAmount(),
                         recipeDomain.getCoffeeAmount());
 
-                final List<SavedRecipeDomain> myData = savedRecipeDao.getSavedRecipes();
+                final List<SavedRecipeDomain> mSavedRecipes = savedRecipeDao.getSavedRecipes();
 
 
                 //We remove the object from the openPositions list and then we store the updated list and pass it back to the swipe helper.
@@ -70,7 +70,7 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
 
                 prefManagerList.saveArrayList(decrementOpenPositions(openPositions, indexOfRemovedItem), "openPositions", ctx);
 
-                listener.onSuccessAfterDeletion(myData, position);
+                listener.onSuccessAfterDeletion(mSavedRecipes, position);
             }
 
         });
@@ -95,19 +95,19 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
             public void run() {
 
                 final SavedRecipeDao savedRecipeDao = HomeDatabase.getDatabase(ctx).savedRecipeDao();
-                final List<SavedRecipeDomain> myData = savedRecipeDao.getSavedRecipes();
+                final List<SavedRecipeDomain> mSavedRecipes = savedRecipeDao.getSavedRecipes();
 
                 //We also have to update the current recipe, so when we start the timer, the current recipe will be displayed.
                 // Also, when we go back to the starting fragment, the displayed recipe will be the one we select from the favourites.
                 final DiceDomain currentRecipe = new DiceDomain(
-                        myData.get(position).getDiceTemperature(),
-                        myData.get(position).getGroundSize(),
-                        myData.get(position).getBrewTime(),
-                        myData.get(position).getBrewingMethod(),
-                        myData.get(position).getBloomTime(),
-                        myData.get(position).getBloomWater(),
-                        myData.get(position).getBrewWaterAmount(),
-                        myData.get(position).getCoffeeAmount());
+                        mSavedRecipes.get(position).getDiceTemperature(),
+                        mSavedRecipes.get(position).getGroundSize(),
+                        mSavedRecipes.get(position).getBrewTime(),
+                        mSavedRecipes.get(position).getBrewingMethod(),
+                        mSavedRecipes.get(position).getBloomTime(),
+                        mSavedRecipes.get(position).getBloomWater(),
+                        mSavedRecipes.get(position).getBrewWaterAmount(),
+                        mSavedRecipes.get(position).getCoffeeAmount());
 
                 Log.d("getSpecificRecipeFromDB", "Updates the current recipe to the one we selected to brew from favourites.");
                 final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
@@ -117,7 +117,7 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
                         recipeDao.updateRecipe(currentRecipe);
                     }
                 });
-                listener.onSuccessGetSingleRecipe(myData.get(position));
+                listener.onSuccessGetSingleRecipe(mSavedRecipes.get(position));
             }
 
         });
