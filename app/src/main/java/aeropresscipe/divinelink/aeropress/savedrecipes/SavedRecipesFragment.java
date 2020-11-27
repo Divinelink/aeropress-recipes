@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.savedrecipes;
 
-import android.graphics.Canvas;
 import android.os.Bundle;
 
 
@@ -13,11 +12,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.R;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,7 +30,10 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView {
     private HomeView homeView;
 
     private RecyclerView savedRecipesRV;
-    private Toolbar myToolbar;
+    private Toolbar mToolBar;
+    private LinearLayout mEmptyListLL;
+
+    private Animation mFadeAnimation;
 
 
 
@@ -43,9 +47,10 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView {
         homeView = (HomeView) getArguments().getSerializable("home_view");
 
         savedRecipesRV = (RecyclerView) v.findViewById(R.id.savedRecipesRV);
-        myToolbar = (Toolbar) v.findViewById(R.id.toolbar);
+        mToolBar = (Toolbar) v.findViewById(R.id.toolbar);
+        mEmptyListLL = (LinearLayout) v.findViewById(R.id.emptyListLayout);
 
-        myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().onBackPressed();
@@ -84,6 +89,8 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView {
 
                 @Override
                 public void run() {
+                    mFadeAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_favourites);
+                    savedRecipesRV.setAnimation(mFadeAnimation);
                     savedRecipesRV.setAdapter(savedRecipesRvAdapter);
                     savedRecipesRvAdapter.createSwipeHelper();
                     savedRecipesRvAdapter.setPresenter(presenter);
@@ -110,13 +117,30 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView {
 
         if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
-
-
                 @Override
                 public void run() {
                     DiceUI diceUI = new DiceUI(bloomTime, brewTime, bloomWater, brewWater);
                     diceUI.setNewRecipe(true);
                     homeView.addTimerFragment(diceUI);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void showEmptyListMessage() {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    mFadeAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_favourites);
+                    savedRecipesRV.startAnimation(mFadeAnimation);
+                    mFadeAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_favourites);
+                    mEmptyListLL.setAnimation(mFadeAnimation);
+
+                    savedRecipesRV.setVisibility(View.GONE);
+                    mEmptyListLL.setVisibility(LinearLayout.VISIBLE);
                 }
             });
         }

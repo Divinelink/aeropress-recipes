@@ -58,7 +58,11 @@ public class SavedRecipesPresenterImpl implements SavedRecipesPresenter, SavedRe
 
     @Override
     public void onSuccessAfterDeletion(List<SavedRecipeDomain> savedRecipes, int position) {
-
         savedRecipesView.showSavedRecipesAfterDeletion(savedRecipes, position);
+    }
+
+    @Override
+    public void onEmptyList() {
+        savedRecipesView.showEmptyListMessage();
     }
 }

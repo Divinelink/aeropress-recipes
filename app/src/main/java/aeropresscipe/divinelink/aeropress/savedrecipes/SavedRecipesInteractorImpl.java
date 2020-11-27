@@ -29,9 +29,12 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
             public void run() {
 
                 final SavedRecipeDao savedRecipeDao = HomeDatabase.getDatabase(ctx).savedRecipeDao();
-                final List<SavedRecipeDomain> myData = savedRecipeDao.getSavedRecipes();
+                final List<SavedRecipeDomain> mSavedRecipes = savedRecipeDao.getSavedRecipes();
 
-                listener.onSuccess(myData);
+                if (mSavedRecipes.size()!= 0)
+                    listener.onSuccess(mSavedRecipes);
+                else
+                    listener.onEmptyList();
             }
 
         });
@@ -70,9 +73,11 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
 
                 prefManagerList.saveArrayList(decrementOpenPositions(openPositions, indexOfRemovedItem), "openPositions", ctx);
 
-                listener.onSuccessAfterDeletion(mSavedRecipes, position);
+                if (mSavedRecipes.size() != 0)
+                    listener.onSuccessAfterDeletion(mSavedRecipes, position);
+                else
+                    listener.onEmptyList();
             }
-
         });
     }
 

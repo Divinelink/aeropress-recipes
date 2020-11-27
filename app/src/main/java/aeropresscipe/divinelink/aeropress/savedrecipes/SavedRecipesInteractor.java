@@ -15,6 +15,7 @@ interface SavedRecipesInteractor {
     interface OnGetSavedListsFromDBFinishListener{
 
         void onSuccess(List<SavedRecipeDomain> savedRecipes);
+        void onEmptyList();
         void onError();
 
     }
@@ -22,6 +23,7 @@ interface SavedRecipesInteractor {
     interface OnGetRestFavouritesAfterDeletionFinishListener{
 
         void onSuccessAfterDeletion(List<SavedRecipeDomain> savedRecipes, int position);
+        void onEmptyList();
         void onError();
 
     }

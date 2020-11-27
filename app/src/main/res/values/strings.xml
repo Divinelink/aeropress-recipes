@@ -52,7 +52,9 @@
     <string name="SavedBrewingMethodTextView">%s method</string>
     <string name="SavedTotalTimeTextView">%d\"</string>
     <string name="SavedTotalTimeWithBloomTextView">%d\" (+%d\" Bloom)</string>
+
     <string name="favourites">Favourites</string>
+    <string name="emptyFavouritesListText">Your favourite recipes will appear here\nConsider adding a recipe</string>
 
     <string name="deleteRecipeDialogMessage">Are you sure you want to delete this recipe?</string>
     <string name="deleteRecipeDialogTitle">Delete Recipe</string>

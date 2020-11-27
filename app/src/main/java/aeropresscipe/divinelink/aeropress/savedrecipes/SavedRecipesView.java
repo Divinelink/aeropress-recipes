@@ -11,4 +11,5 @@ interface SavedRecipesView {
 
     void showSavedRecipesAfterDeletion(List<SavedRecipeDomain> savedRecipes, int position);
 
+    void showEmptyListMessage();
 }
