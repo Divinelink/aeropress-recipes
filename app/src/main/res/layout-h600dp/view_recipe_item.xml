@@ -1,55 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:id="@+id/recipeContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
     <TextView
         android:id="@+id/tempItem"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" />
+
     <TextView
         android:id="@+id/groundSizeItem"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" />
+
     <TextView
         android:id="@+id/brewingMethodItem"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" />
+
     <TextView
         android:id="@+id/pourInText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:text="@string/pourInCoffee" />
+
     <TextView
         android:id="@+id/bloomTimeItem"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" />
+
     <TextView
         android:id="@+id/bloomWaterItem"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" />
+
     <TextView
         android:id="@+id/brewTimeItem"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" />
+
     <TextView
         android:id="@+id/brewWaterAmountItem"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:visibility="gone" />
+
     <TextView
         android:id="@+id/upsideDownMethodText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:text="@string/upsideDownMethodText"/>
+        android:layout_margin="10dp"
+        android:text="@string/upsideDownMethodText"
+        android:visibility="gone" />
+
     <TextView
         android:id="@+id/coffeeAmountItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/pressText"/>
+        android:layout_margin="10dp"
+        android:text="@string/pressText" />
 </LinearLayout>

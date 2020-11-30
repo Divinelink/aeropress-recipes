@@ -167,7 +167,8 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
                 @Override
                 public void run() {
                     recipeRv.setAdapter(recipeRvAdapter);
-                    resumeBrew.setVisibility(View.GONE);
+                    //FIXME has a small visible bug
+                    resumeBrew.setVisibility(View.INVISIBLE);
                     if (!myFadeInAnimation.hasEnded()) {
                         myFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out);
                         resumeBrew.startAnimation(myFadeInAnimation);

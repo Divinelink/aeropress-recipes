@@ -4,8 +4,8 @@ import android.content.Context;
 
 public class GenerateRecipePresenterImpl implements GenerateRecipePresenter, GenerateRecipeInteractor.OnGenerateRecipeFinishListener {
 
-    private GenerateRecipeView generateRecipeView;
-    private GenerateRecipeInteractor interactor;
+    private final GenerateRecipeView generateRecipeView;
+    private final GenerateRecipeInteractor interactor;
 
 
     public GenerateRecipePresenterImpl(GenerateRecipeView generateRecipeView) {

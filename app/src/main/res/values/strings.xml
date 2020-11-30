@@ -60,5 +60,6 @@
     <string name="deleteRecipeDialogTitle">Delete Recipe</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+    <string name="favorites">Favorites</string>
 
 </resources>

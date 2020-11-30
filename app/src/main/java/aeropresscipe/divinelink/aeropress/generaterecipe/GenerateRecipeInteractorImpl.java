@@ -213,6 +213,11 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor, S
         DiceDomain brewingMethodDice4 = new DiceDomain("Inverted", 0, 0);
         DiceDomain brewingMethodDice5 = new DiceDomain("Inverted", 30, 30);
         DiceDomain brewingMethodDice6 = new DiceDomain("Inverted", 30, 60);
+        DiceDomain brewingMethodDice7 = new DiceDomain("Standard", 45, 30);
+        DiceDomain brewingMethodDice8 = new DiceDomain("Standard", 45, 60);
+        DiceDomain brewingMethodDice9 = new DiceDomain("Inverted", 45, 30);
+        DiceDomain brewingMethodDice10 = new DiceDomain("Inverted", 45, 60);
+
 
         BrewingMethodDice.add(brewingMethodDice1);
         BrewingMethodDice.add(brewingMethodDice2);
@@ -220,6 +225,11 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor, S
         BrewingMethodDice.add(brewingMethodDice4);
         BrewingMethodDice.add(brewingMethodDice5);
         BrewingMethodDice.add(brewingMethodDice6);
+        BrewingMethodDice.add(brewingMethodDice7);
+        BrewingMethodDice.add(brewingMethodDice8);
+        BrewingMethodDice.add(brewingMethodDice9);
+        BrewingMethodDice.add(brewingMethodDice10);
+
 
         return BrewingMethodDice;
     }
