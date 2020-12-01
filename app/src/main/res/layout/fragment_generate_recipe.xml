@@ -7,16 +7,6 @@
     tools:context=".generaterecipe.GenerateRecipeFragment">
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recipe_rv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:overScrollMode="never"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:itemCount="20" />
-
-
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -25,13 +15,15 @@
         app:layout_constraintBottom_toTopOf="@+id/buttonslayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
         <Button
             android:id="@+id/resumeBrewButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/resume_brew"
-            app:layout_constraintTop_toTopOf="@+id/guideline5" />
+            app:layout_constraintTop_toTopOf="@+id/guidelineButtons" />
+
         <Button
             android:id="@+id/showSavedRecipes"
             android:layout_width="wrap_content"
@@ -69,8 +61,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
+                android:gravity="center"
                 android:text="@string/get_another_recipe" />
         </LinearLayout>
 
@@ -92,19 +84,29 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
+                android:gravity="center"
                 android:text="@string/brew"
                 android:textAlignment="center" />
         </LinearLayout>
     </LinearLayout>
 
+
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline5"
+        android:id="@+id/guidelineButtons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.71" />
+        app:layout_constraintGuide_percent="0.7" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recipe_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:overScrollMode="never"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:itemCount="20" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

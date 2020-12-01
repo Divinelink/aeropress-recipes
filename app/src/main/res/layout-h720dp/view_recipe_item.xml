@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="13.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,57 +10,57 @@
         android:id="@+id/tempItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="9dp" />
+        android:layout_margin="13dp" />
 
     <TextView
         android:id="@+id/groundSizeItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="9dp" />
+        android:layout_margin="13dp" />
 
     <TextView
         android:id="@+id/brewingMethodItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="9dp" />
+        android:layout_margin="13dp" />
 
     <TextView
         android:id="@+id/pourInText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="9dp"
+        android:layout_margin="13dp"
         android:text="@string/pourInCoffee" />
 
     <TextView
         android:id="@+id/bloomTimeItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="9dp" />
+        android:layout_margin="13dp" />
 
     <TextView
         android:id="@+id/bloomWaterItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="9dp" />
+        android:layout_margin="13dp" />
 
     <TextView
         android:id="@+id/brewTimeItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="9dp" />
+        android:layout_margin="13dp" />
 
     <TextView
         android:id="@+id/brewWaterAmountItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="9dp"
+        android:layout_margin="13dp"
         android:visibility="gone" />
 
     <TextView
         android:id="@+id/upsideDownMethodText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="9dp"
+        android:layout_margin="13dp"
         android:text="@string/upsideDownMethodText"
         android:visibility="gone" />
 
@@ -68,6 +68,6 @@
         android:id="@+id/coffeeAmountItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="9dp"
+        android:layout_margin="13dp"
         android:text="@string/pressText" />
 </LinearLayout>

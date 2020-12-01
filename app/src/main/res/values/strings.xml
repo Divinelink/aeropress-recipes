@@ -27,7 +27,7 @@
     <string name="upsideDownMethodText">Wet the filter paper, and put the cap on. Place the mug upside-down on the aeropress and flip to be the normal orientation.</string>
 
     <string name="standard">Standard</string>
-    <string name="get_another_recipe">Get another Recipe</string>
+    <string name="get_another_recipe">Get Recipe</string>
 
     <string name="bloomPhase">Bloom Phase!\nPour in %dg of water.</string>
 
@@ -38,7 +38,7 @@
     <string name="enjoyCoffee">Enjoy your coffee!</string>
     <string name="brew">Start Timer</string>
     <string name="resume_brew">Resume Brew</string>
-    <string name="alreadyBrewingDialog"><![CDATA[You\'re already brewing\nPress & Hold to get a new recipe]]></string>
+    <string name="alreadyBrewingDialog"><![CDATA[You\'re already brewing\nHold to get a new recipe]]></string>
     <string name="water_temperature_image">Water Temperature Image</string>
     <string name="beans_weight_image">Beans Weight Image</string>
     <string name="grind_level_image">Grind Level Image</string>
