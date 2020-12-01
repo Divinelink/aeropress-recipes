@@ -7,9 +7,7 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase;
 
@@ -20,7 +18,7 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor, S
 
     @Override
     public void getNewRecipe(final OnGenerateRecipeFinishListener listener, final Context ctx, boolean letGenerate) {
-        // Executed By Pressing "Get Another Recipe Button"
+        // Executed By Pressing "Get Recipe Button"
 
         // Check whether to show generate a new recipe or not.
         // If there's a recipe running already, show a toast that asks the user to long press on the button
@@ -83,9 +81,9 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor, S
             public void run() {
                 final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
                 final DiceDomain recipe = recipeDao.getRecipe();
-                
+                // First time app starts, recipe == null, so we create a new one.
                 if (recipe == null) {
-                    // If it's the first time we run the run, there's no recipe. We generate a new one using the getRandomRecipe() method
+                    // If it's the first time we run the app, there's no recipe. We generate a new one using the getRandomRecipe() method
                     final DiceDomain newRecipe = getRandomRecipe();
                         // When DB is empty, meaning it has no recipe, it automatically saves the current recipe on the DB
                         // And we show it on the fragment.
@@ -94,7 +92,7 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor, S
                             public void run() {
                                 Log.d("getRecipe", "Creates New Recipe when app starts and there's no recipe available.");
                                 recipeDao.updateRecipe(newRecipe);
-                                listener.onSuccessNewRecipe(
+                                listener.onSuccessAppStarts(
                                         newRecipe.getDiceTemperature(),
                                         newRecipe.getGroundSize(),
                                         newRecipe.getBrewTime(),
@@ -107,11 +105,11 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor, S
                             }
                         });
                 } else {
-                    Log.d("Show Recipe!", "Show already existing recipe");
+                    Log.d("Show Recipe", "Show already existing recipe");
                     AsyncTask.execute(new Runnable() {
                         @Override
                         public void run() {
-                            if (isBrewing)
+                            if (isBrewing) // When there's a timer active and app is starting
                                 listener.onSuccess(
                                         recipe.getDiceTemperature(),
                                         recipe.getGroundSize(),
@@ -121,8 +119,8 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor, S
                                         recipe.getBloomWater(),
                                         recipe.getBrewWaterAmount(),
                                         recipe.getCoffeeAmount());
-                            else
-                                listener.onSuccessNewRecipe(
+                            else // When there's no timer active and app is starting
+                                listener.onSuccessAppStarts(
                                         recipe.getDiceTemperature(),
                                         recipe.getGroundSize(),
                                         recipe.getBrewTime(),

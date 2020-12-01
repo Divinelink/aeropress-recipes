@@ -22,7 +22,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/resume_brew"
-            app:layout_constraintTop_toTopOf="@+id/guidelineButtons" />
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="@+id/guidelineButtons"
+            tools:visibility="visible" />
 
         <Button
             android:id="@+id/showSavedRecipes"

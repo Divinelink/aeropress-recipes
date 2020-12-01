@@ -14,33 +14,8 @@ public class GenerateRecipePresenterImpl implements GenerateRecipePresenter, Gen
     }
 
     @Override
-    public void onSuccessNewRecipe(int temp, String groundSize, int brewTime, String brewingMethod, int bloomTime, int bloomWater, int waterAmount, int coffeeAmount) {
-
-        generateRecipeView.showRecipeRemoveResume(temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount);
-        generateRecipeView.passData(bloomTime, brewTime, bloomWater, waterAmount - bloomWater);
-
-    }
-
-    @Override
-    public void onSuccess(int temp,
-                          String groundSize,
-                          int brewTime,
-                          String brewingMethod,
-                          int bloomTime,
-                          int bloomWater,
-                          int waterAmount,
-                          int coffeeAmount) {
-
-        generateRecipeView.showRecipe(temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount);
-        generateRecipeView.passData(bloomTime, brewTime, bloomWater, waterAmount - bloomWater);
-
-    }
-
-    @Override
     public void isAlreadyBrewing() {
-
         generateRecipeView.showIsAlreadyBrewingDialog();
-
     }
 
     @Override
@@ -53,5 +28,23 @@ public class GenerateRecipePresenterImpl implements GenerateRecipePresenter, Gen
         interactor.getRecipe(this, ctx);
     }
 
+    @Override
+    public void onSuccessAppStarts(int temp, String groundSize, int brewTime, String brewingMethod, int bloomTime, int bloomWater, int waterAmount, int coffeeAmount) {
+        generateRecipeView.showRecipeAppStarts(temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount);
+        generateRecipeView.passData(bloomTime, brewTime, bloomWater, waterAmount - bloomWater);
+    }
+
+
+    @Override
+    public void onSuccessNewRecipe(int temp, String groundSize, int brewTime, String brewingMethod, int bloomTime, int bloomWater, int waterAmount, int coffeeAmount) {
+        generateRecipeView.showRecipeRemoveResume(temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount);
+        generateRecipeView.passData(bloomTime, brewTime, bloomWater, waterAmount - bloomWater);
+    }
+
+    @Override
+    public void onSuccess(int temp, String groundSize, int brewTime, String brewingMethod, int bloomTime, int bloomWater, int waterAmount, int coffeeAmount) {
+        generateRecipeView.showRecipe(temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount);
+        generateRecipeView.passData(bloomTime, brewTime, bloomWater, waterAmount - bloomWater);
+    }
 
 }

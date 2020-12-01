@@ -29,9 +29,9 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
 
     RecyclerView recipeRv;
     LinearLayout generateRecipeButton, timerButton;
-    Button resumeBrew, favoritesBtn;
+    Button resumeBrewBtn, favoritesBtn;
 
-    private Animation myFadeInAnimation;
+    private Animation mFadeInAnimation;
     private GenerateRecipePresenter presenter;
     HomeView homeView;
     DiceUI diceUI;
@@ -48,7 +48,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         generateRecipeButton = v.findViewById(R.id.generateRecipeButton);
         //FIXME TEMPORARY BUTTON
         timerButton = v.findViewById(R.id.startTimerButton);
-        resumeBrew = v.findViewById(R.id.resumeBrewButton);
+        resumeBrewBtn = v.findViewById(R.id.resumeBrewButton);
         favoritesBtn = v.findViewById(R.id.showSavedRecipes);
 
 
@@ -76,7 +76,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
             }
         });
 
-        resumeBrew.setOnClickListener(new View.OnClickListener() {
+        resumeBrewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 diceUI.setNewRecipe(false);
@@ -97,8 +97,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         presenter = new GenerateRecipePresenterImpl(this);
         presenter.getRecipe(getContext());
 
-        myFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_out);
-
+        mFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_out);
 
         return v;
     }
@@ -124,16 +123,15 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
 
         if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
-                GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter
+                final GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter
                         (temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount, getActivity());
 
                 @Override
                 public void run() {
                     recipeRv.setAdapter(recipeRvAdapter);
-                    if (!myFadeInAnimation.hasEnded()) {
-                        resumeBrew.startAnimation(myFadeInAnimation);
+                    if (!mFadeInAnimation.hasEnded()) {
+                        resumeBrewBtn.startAnimation(mFadeInAnimation);
                     }
-
                 }
             });
         }
@@ -161,17 +159,16 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
                                        final int coffeeAmount) {
         if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
-                GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter
+                final GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter
                         (temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount, getActivity());
 
                 @Override
                 public void run() {
                     recipeRv.setAdapter(recipeRvAdapter);
-                    //FIXME has a small visible bug
-                    resumeBrew.setVisibility(View.INVISIBLE);
-                    if (!myFadeInAnimation.hasEnded()) {
-                        myFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out);
-                        resumeBrew.startAnimation(myFadeInAnimation);
+                    resumeBrewBtn.setVisibility(View.INVISIBLE);
+                    if (!mFadeInAnimation.hasEnded()) {
+                        mFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out);
+                        resumeBrewBtn.startAnimation(mFadeInAnimation);
                     }
                 }
 
@@ -179,5 +176,19 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         }
     }
 
+    @Override
+    public void showRecipeAppStarts(final int temp, final String groundSize, final int brewTime, final String brewingMethod, final int bloomTime, final int bloomWater, final int waterAmount, final int coffeeAmount) {
 
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                final GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter
+                        (temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount, getActivity());
+
+                @Override
+                public void run() {
+                    recipeRv.setAdapter(recipeRvAdapter);
+                }
+            });
+        }
+    }
 }

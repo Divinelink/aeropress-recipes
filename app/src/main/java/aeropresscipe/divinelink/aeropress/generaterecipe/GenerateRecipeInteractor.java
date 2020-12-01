@@ -29,6 +29,15 @@ public interface GenerateRecipeInteractor {
                                 int waterAmount,
                                 int coffeeAmount);
 
+        void onSuccessAppStarts(int temp,
+                                String groundSize,
+                                int brewTime,
+                                String brewingMethod,
+                                int bloomTime,
+                                int bloomWater,
+                                int waterAmount,
+                                int coffeeAmount);
+
         void isAlreadyBrewing();
     }
 }
