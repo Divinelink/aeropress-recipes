@@ -97,7 +97,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         presenter = new GenerateRecipePresenterImpl(this);
         presenter.getRecipe(getContext());
 
-        mFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_out);
+        mFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.initiliaze_animation);
 
         return v;
     }
@@ -130,6 +130,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
                 public void run() {
                     recipeRv.setAdapter(recipeRvAdapter);
                     if (!mFadeInAnimation.hasEnded()) {
+                        mFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_out);
                         resumeBrewBtn.startAnimation(mFadeInAnimation);
                     }
                 }
@@ -165,13 +166,13 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
                 @Override
                 public void run() {
                     recipeRv.setAdapter(recipeRvAdapter);
-                    resumeBrewBtn.setVisibility(View.INVISIBLE);
+//                    resumeBrewBtn.setVisibility(View.INVISIBLE);
                     if (!mFadeInAnimation.hasEnded()) {
                         mFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out);
                         resumeBrewBtn.startAnimation(mFadeInAnimation);
                     }
-                }
 
+                }
             });
         }
     }
@@ -187,6 +188,8 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
                 @Override
                 public void run() {
                     recipeRv.setAdapter(recipeRvAdapter);
+                    mFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.initiliaze_animation);
+                    resumeBrewBtn.startAnimation(mFadeInAnimation);
                 }
             });
         }
