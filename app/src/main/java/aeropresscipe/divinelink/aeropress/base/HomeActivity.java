@@ -10,6 +10,7 @@ import android.os.Bundle;
 import aeropresscipe.divinelink.aeropress.R;
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeFragment;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 
 public class HomeActivity extends AppCompatActivity implements HomeView{
 
@@ -23,6 +24,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView{
 
             getSupportFragmentManager()
                     .beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .add(R.id.homeRoot, GenerateRecipeFragment.newInstance(this))
                     .commit();
 
@@ -32,6 +34,17 @@ public class HomeActivity extends AppCompatActivity implements HomeView{
     public void addTimerFragment(DiceUI diceUI) {
         getSupportFragmentManager()
                 .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .replace(R.id.homeRoot, TimerFragment.newInstance(diceUI))
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void addTimerFragmentFromResume(DiceUI diceUI) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .replace(R.id.homeRoot, TimerFragment.newInstance(diceUI))
                 .addToBackStack(null)
                 .commit();
@@ -41,6 +54,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView{
     public void addSavedRecipesFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.homeRoot, SavedRecipesFragment.newInstance(this))
                 .addToBackStack(null)
                 .commit();

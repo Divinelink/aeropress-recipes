@@ -80,7 +80,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
             @Override
             public void onClick(View view) {
                 diceUI.setNewRecipe(false);
-                homeView.addTimerFragment(diceUI);
+                homeView.addTimerFragmentFromResume(diceUI);
             }
         });
 
