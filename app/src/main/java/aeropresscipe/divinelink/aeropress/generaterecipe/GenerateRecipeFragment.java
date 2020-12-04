@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
     LinearLayout generateRecipeButton, timerButton;
     Button resumeBrewBtn, favoritesBtn;
 
-    private Animation mFadeInAnimation;
+    private Animation mFadeInAnimation, mAdapterAnimation;
     private GenerateRecipePresenter presenter;
     HomeView homeView;
     DiceUI diceUI;
@@ -165,8 +166,20 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
 
                 @Override
                 public void run() {
-                    recipeRv.setAdapter(recipeRvAdapter);
-//                    resumeBrewBtn.setVisibility(View.INVISIBLE);
+
+                    mAdapterAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.adapter_anim);
+                    recipeRv.startAnimation(mAdapterAnimation);
+                    // We need this so the adapter changes during the animation phase, and not before it.
+                    Handler adapterHandler = new Handler();
+                    Runnable adapterRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            recipeRv.setAdapter(recipeRvAdapter);
+                        }
+                    };
+
+                    adapterHandler.postDelayed(adapterRunnable, 500);
+
                     if (!mFadeInAnimation.hasEnded()) {
                         mFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out);
                         resumeBrewBtn.startAnimation(mFadeInAnimation);
