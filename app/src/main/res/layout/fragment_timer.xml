@@ -7,37 +7,32 @@
     tools:context=".timer.TimerFragment">
 
 
-    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
-        android:id="@+id/progressBar"
-        style="@style/Widget.MaterialProgressBar.ProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:minHeight="306dp"
-        app:mpb_progressTint="@color/white"
-        android:minWidth="306dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.498">
+        app:layout_constraintTop_toBottomOf="@+id/progressBar">
 
-    </me.zhanghai.android.materialprogressbar.MaterialProgressBar>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Enjoying the recipe?\nConsider adding it to your favorites." />
 
-    <TextView
-        android:id="@+id/savedTimeTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:textSize="70sp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="00:10" />
+        <ImageButton
+            android:id="@+id/likeRecipeButton"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="15dp"
+            android:background="@drawable/ic_star_off"
+            android:layout_gravity="center"
+            android:contentDescription="starIcon"
+            android:soundEffectsEnabled="false" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/notificationTV"
@@ -45,21 +40,43 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="XXX Phase!\nPour in Xg amount of water." />
 
-    <ImageButton
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/likeRecipeButton"
-        android:background="@drawable/ic_star_off"
+    <TextView
+        android:id="@+id/savedTimeTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="70sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/notificationTV"
-        android:contentDescription="starIcon"
-        android:soundEffectsEnabled="false"/>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="00:10" />
+
+
+    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.MaterialProgressBar.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:minHeight="306dp"
+        android:minWidth="306dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:mpb_progressTint="@color/white">
+
+    </me.zhanghai.android.materialprogressbar.MaterialProgressBar>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,6 +11,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.AbsoluteSizeSpan;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,7 +40,6 @@ public class TimerFragment extends Fragment implements TimerView {
     DiceUI diceUI;
 
     GetPhaseFactory getPhaseFactory = new GetPhaseFactory();
-
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -107,16 +109,27 @@ public class TimerFragment extends Fragment implements TimerView {
         if (bloomPhase) {
             timerHandler.postDelayed(bloomRunnable, 1000);
             updateCountdownUI();
-            notificationTextView.setText(getString(R.string.bloomPhase, diceUI.getBloomWater()));
+            /*
+            String text = String.format("%s\n%s", getString(R.string.bloomPhase), getString(R.string.bloomPhaseWaterText, diceUI.getBloomWater()));
+            SpannableString TempWater = new SpannableString(text);
+            TempWater.setSpan(
+                    new AbsoluteSizeSpan(25, true),
+                    0,
+                    1 + getString(R.string.bloomPhase).length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            */
+            notificationTextView.setText(String.format("%s\n%s", getString(R.string.bloomPhase), getString(R.string.bloomPhaseWaterText, diceUI.getBloomWater())));
+
         } else {
             timerHandler.postDelayed(brewRunnable, 1000);
             // Checks if there was a bloom or not, and set corresponding text on textView.
             updateCountdownUI();
             if (getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getPhase())
-                //FIXME make notificationTextView fade in and fade out constantly!
-                notificationTextView.setText(getString(R.string.brewPhaseWithBloom, diceUI.getRemainingBrewWater()));
-            else
-                notificationTextView.setText(getString(R.string.brewPhaseNoBloom, diceUI.getRemainingBrewWater()));
+            //FIXME make notificationTextView fade in and fade out constantly!
+            {
+                notificationTextView.setText(String.format("%s\n%s", getString(R.string.brewPhase), getString(R.string.brewPhaseWithBloom, diceUI.getRemainingBrewWater())));
+            } else
+                notificationTextView.setText(String.format("%s\n%s", getString(R.string.brewPhase), getString(R.string.brewPhaseNoBloom, diceUI.getRemainingBrewWater())));
             diceUI.setBloomTime(0);
         }
         // Set max progress bar to be either the max BloomTime or BrewTime.
@@ -229,5 +242,15 @@ public class TimerFragment extends Fragment implements TimerView {
 
             });
         }
+    }
+
+    public void enlargeText(int startingPosition, String text) {
+
+        SpannableString TempWater = new SpannableString(text);
+        TempWater.setSpan(
+                new AbsoluteSizeSpan(25),
+                startingPosition,
+                startingPosition + text.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 }
