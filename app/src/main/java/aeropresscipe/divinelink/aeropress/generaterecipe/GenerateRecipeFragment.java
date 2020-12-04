@@ -178,7 +178,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
                         }
                     };
 
-                    adapterHandler.postDelayed(adapterRunnable, 500);
+                    adapterHandler.postDelayed(adapterRunnable, mAdapterAnimation.getDuration());
 
                     if (!mFadeInAnimation.hasEnded()) {
                         mFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out);
