@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,8 +24,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 
-    public static final int BUTTON_WIDTH = 150;
-    public static final int TEXT_SIZE = 14;
+    private static final float SCREEN_WIDTH_RATIO = 0.175f;
+    private static final int TEXT_SIZE = 14;
+    private float BUTTON_WIDTH;
 
     private Map<Integer, RectF> buttonRegions;
     private final Map<Integer, Map<Integer, RectF>> clickPositionsAndRegions;
@@ -138,7 +140,6 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
         }
         swipedPos = pos;
 
-
         if (buttonsBuffer.containsKey(swipedPos)) {
             buttons = buttonsBuffer.get(pos);
         } else {
@@ -146,7 +147,6 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
         }
 
         buttonsBuffer.clear();
-
         swipeThreshold = 0.5f * buttons.size() * BUTTON_WIDTH;
         recoverSwipedItem();
     }
@@ -196,7 +196,6 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
                 } else {
                     buffer = buttonsBuffer.get(pos);
                 }
-
                 translationX = dX * buffer.size() * BUTTON_WIDTH / itemView.getWidth();
                 // Sets a margin because on our view (CardView) we've set a margin so the items won't be collided.
                 // This margin then goes to the dimensions of the rectange that we draw.
@@ -254,6 +253,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(this);
         itemTouchHelper.attachToRecyclerView(recyclerView);
         this.mContext = ctx;
+        this.BUTTON_WIDTH = mContext.getResources().getDisplayMetrics().widthPixels * SCREEN_WIDTH_RATIO;
         saveToSharedPreferences();
     }
 
