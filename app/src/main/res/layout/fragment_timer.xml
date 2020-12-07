@@ -24,11 +24,12 @@
 
         <ImageButton
             android:id="@+id/likeRecipeButton"
-            android:layout_width="54dp"
-            android:layout_height="54dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_marginStart="15dp"
-            android:background="@drawable/ic_star_off"
+            android:background="@drawable/ic_heart_off"
             android:layout_gravity="center"
+            android:scaleType="fitCenter"
             android:contentDescription="starIcon"
             android:soundEffectsEnabled="false" />
 
