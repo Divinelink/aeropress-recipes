@@ -88,18 +88,27 @@ public class TimerInteractorImpl implements TimerInteractor {
                 final DiceDomain recipe = recipeDao.getRecipe();
                 final List<SavedRecipeDomain> myData = savedRecipeDao.getSavedRecipes();
 
-                SavedRecipeDomain currentRecipe = new SavedRecipeDomain(
-                        recipe.getDiceTemperature(),
-                        recipe.getGroundSize(),
-                        recipe.getBrewTime(),
-                        recipe.getBrewingMethod(),
-                        recipe.getBloomTime(),
-                        recipe.getBloomWater(),
-                        recipe.getBrewWaterAmount(),
-                        recipe.getCoffeeAmount(),
-                        getCurrentDate()
-                        );
+//                SavedRecipeDomain currentRecipe = new SavedRecipeDomain(
+//                        recipe.getId(), // FIXME pass object instead of properties
+//                        recipe.getDiceTemperature(),
+//                        recipe.getGroundSize(),
+//                        recipe.getBrewTime(),
+//                        recipe.getBrewingMethod(),
+//                        recipe.getBloomTime(),
+//                        recipe.getBloomWater(),
+//                        recipe.getBrewWaterAmount(),
+//                        recipe.getCoffeeAmount(),
+//                        getCurrentDate()
+//                        );
+                SavedRecipeDomain currentRecipe = new SavedRecipeDomain(recipe, getCurrentDate());
 
+                if (!myData.contains(currentRecipe)) {
+                    savedRecipeDao.insertLikedRecipe(currentRecipe);
+                    Log.d("Inserted", currentRecipe.toString());
+                    listener.onSuccessSave(true);
+                }
+                else{
+                /*
                 if (!checkIfCurrentRecipeExistsOnDB(myData, currentRecipe)) {
                     // If Recipe Doesn't Exist on DB, then Save It.
                     savedRecipeDao.insertLikedRecipe(currentRecipe);
@@ -107,6 +116,7 @@ public class TimerInteractorImpl implements TimerInteractor {
                     listener.onSuccessSave(true);
                 } else {
                     // Otherwise, if it already exists (and user clicks on the button) then delete it.
+                   /*
                     savedRecipeDao.deleteCurrent(recipe.getDiceTemperature(),
                             recipe.getGroundSize(),
                             recipe.getBrewTime(),
@@ -115,6 +125,10 @@ public class TimerInteractorImpl implements TimerInteractor {
                             recipe.getBloomWater(),
                             recipe.getBrewWaterAmount(),
                             recipe.getCoffeeAmount());
+
+                    */
+                    savedRecipeDao.delete(currentRecipe);
+
                     Log.d("Deleted", currentRecipe.toString());
                     listener.onSuccessSave(false);
                 }
@@ -135,7 +149,9 @@ public class TimerInteractorImpl implements TimerInteractor {
                 final DiceDomain recipe = recipeDao.getRecipe();
                 final List<SavedRecipeDomain> myData = savedRecipeDao.getSavedRecipes();
 
+                /*
                 SavedRecipeDomain currentRecipe = new SavedRecipeDomain(
+                        recipe.getId(), //FIXME  pass object instead of properties
                         recipe.getDiceTemperature(),
                         recipe.getGroundSize(),
                         recipe.getBrewTime(),
@@ -147,8 +163,20 @@ public class TimerInteractorImpl implements TimerInteractor {
                         getCurrentDate()
                         );
 
+                 */
+                SavedRecipeDomain currentRecipe = new SavedRecipeDomain(recipe, getCurrentDate());
+
                 Log.d("Current Recipe: ", currentRecipe.toString());
 
+//                if (myData.contains(currentRecipe))
+//                    listener.onRecipeFound(true);
+//                else
+//                    listener.onRecipeFound(false);
+
+                // returns true if currentRecipe exists on myData DB
+                boolean contains = myData.contains(currentRecipe);
+                listener.onRecipeFound(contains);
+/*
                 if (checkIfCurrentRecipeExistsOnDB(myData, currentRecipe)) {
                     listener.onRecipeFound(true);
                     Log.d("Recipe Exists in DB?", "Yes");
@@ -156,13 +184,21 @@ public class TimerInteractorImpl implements TimerInteractor {
                     listener.onRecipeFound(false);
                     Log.d("Recipe Exists in DB?", "Unlucky");
                 }
+
+ */
             }
         });
     }
 
     public boolean checkIfCurrentRecipeExistsOnDB(List<SavedRecipeDomain> myData, SavedRecipeDomain currentRecipe) {
         boolean recipeFound = false;
+
+        if (myData.contains(currentRecipe)){
+            recipeFound = true;
+        }
+        /*
         for (SavedRecipeDomain dataInDB : myData) {
+            /*
             recipeFound = dataInDB.getDiceTemperature() == currentRecipe.getDiceTemperature() &&
                     dataInDB.getGroundSize().equals(currentRecipe.getGroundSize()) &&
                     dataInDB.getBrewTime() == currentRecipe.getBrewTime() &&
@@ -171,9 +207,16 @@ public class TimerInteractorImpl implements TimerInteractor {
                     dataInDB.getBloomWater() == currentRecipe.getBloomWater() &&
                     dataInDB.getBrewWaterAmount() == currentRecipe.getBrewWaterAmount() &&
                     dataInDB.getCoffeeAmount() == currentRecipe.getCoffeeAmount();
-            if (recipeFound)
-                break;
-        }
+
+             */
+//            if (dataInDB == currentRecipe) {
+//                recipeFound = true;
+//                break;
+//            }
+//            */
+//            if (recipeFound)
+//                break;
+//        }
         return recipeFound;
     }
 
@@ -181,7 +224,6 @@ public class TimerInteractorImpl implements TimerInteractor {
     {
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("d MMMM yyyy");
-
 
         return formatter.format(date.getTime());
     }

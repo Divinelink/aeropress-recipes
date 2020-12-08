@@ -3,11 +3,11 @@ package aeropresscipe.divinelink.aeropress.generaterecipe;
 
 public interface GenerateRecipeView {
 
-    void showRecipe(int temp, String groundSize, int brewTime, String brewingMethod, int bloomTime, int bloomWater, int waterAmount, int coffeeAmount);
+    void showRecipe(DiceDomain randomRecipe);
 
-    void showRecipeAppStarts(int temp, String groundSize, int brewTime, String brewingMethod, int bloomTime, int bloomWater, int waterAmount, int coffeeAmount);
+    void showRecipeAppStarts(DiceDomain randomRecipe);
 
-    void showRecipeRemoveResume(int temp, String groundSize, int brewTime, String brewingMethod, int bloomTime, int bloomWater, int waterAmount, int coffeeAmount);
+    void showRecipeRemoveResume(DiceDomain randomRecipe);
 
     void passData(int bloomTime, int brewTime, int bloomWater, int remainingBrewWater);
 

@@ -18,11 +18,10 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor, S
 
     @Override
     public void getNewRecipe(final OnGenerateRecipeFinishListener listener, final Context ctx, boolean letGenerate) {
-        // Executed By Pressing "Get Recipe Button"
+        // Executed By Pressing "New Recipe Button"
 
         // Check whether to show generate a new recipe or not.
-        // If there's a recipe running already, show a toast that asks the user to long press on the button
-        // in order to get a new recipe.
+        // If there's a recipe running already, show a toast that asks the user to long press on the button in order to get a new recipe.
         // When long-pressing, letGenerate is true, and isBrewing becomes false, then the model passes the new recipe on the presenter etc.
         boolean isBrewing = IsItBrewingAlready(ctx);
 
@@ -47,16 +46,7 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor, S
                         @Override
                         public void run() {
                             recipeDao.updateRecipe(newRecipe);
-                            listener.onSuccessNewRecipe(
-                                    newRecipe.getDiceTemperature(),
-                                    newRecipe.getGroundSize(),
-                                    newRecipe.getBrewTime(),
-                                    newRecipe.getBrewingMethod(),
-                                    newRecipe.getBloomTime(),
-                                    newRecipe.getBloomWater(),
-                                    newRecipe.getBrewWaterAmount(),
-                                    newRecipe.getCoffeeAmount()
-                            );
+                            listener.onSuccessNewRecipe(newRecipe);
                         }
                     });
 
@@ -75,13 +65,12 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor, S
 
         final boolean isBrewing = IsItBrewingAlready(ctx);
 
-
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
                 final DiceDomain recipe = recipeDao.getRecipe();
-                // First time app starts, recipe == null, so we create a new one.
+
                 if (recipe == null) {
                     // If it's the first time we run the app, there's no recipe. We generate a new one using the getRandomRecipe() method
                     final DiceDomain newRecipe = getRandomRecipe();
@@ -92,16 +81,7 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor, S
                             public void run() {
                                 Log.d("getRecipe", "Creates New Recipe when app starts and there's no recipe available.");
                                 recipeDao.updateRecipe(newRecipe);
-                                listener.onSuccessAppStarts(
-                                        newRecipe.getDiceTemperature(),
-                                        newRecipe.getGroundSize(),
-                                        newRecipe.getBrewTime(),
-                                        newRecipe.getBrewingMethod(),
-                                        newRecipe.getBloomTime(),
-                                        newRecipe.getBloomWater(),
-                                        newRecipe.getBrewWaterAmount(),
-                                        newRecipe.getCoffeeAmount()
-                                );
+                                listener.onSuccessAppStarts(newRecipe);
                             }
                         });
                 } else {
@@ -110,25 +90,9 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor, S
                         @Override
                         public void run() {
                             if (isBrewing) // When there's a timer active and app is starting
-                                listener.onSuccess(
-                                        recipe.getDiceTemperature(),
-                                        recipe.getGroundSize(),
-                                        recipe.getBrewTime(),
-                                        recipe.getBrewingMethod(),
-                                        recipe.getBloomTime(),
-                                        recipe.getBloomWater(),
-                                        recipe.getBrewWaterAmount(),
-                                        recipe.getCoffeeAmount());
+                                listener.onSuccess(recipe);
                             else // When there's no timer active and app is starting
-                                listener.onSuccessAppStarts(
-                                        recipe.getDiceTemperature(),
-                                        recipe.getGroundSize(),
-                                        recipe.getBrewTime(),
-                                        recipe.getBrewingMethod(),
-                                        recipe.getBloomTime(),
-                                        recipe.getBloomWater(),
-                                        recipe.getBrewWaterAmount(),
-                                        recipe.getCoffeeAmount());
+                                listener.onSuccessAppStarts(recipe);
                         }
                     });
                 }
@@ -136,6 +100,7 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor, S
         });
     }
 
+    //TODO make class to generate recipe
     private DiceDomain getRandomRecipe() {
         ArrayList<DiceDomain> tempDice = addTemperatureDiceProperties();
         ArrayList<DiceDomain> groundSizeDice = addGroundSizeDiceProperties();
@@ -162,6 +127,7 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor, S
         return new DiceDomain(temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount);
     }
 
+    //FIXME make a db
     private ArrayList<DiceDomain> addTemperatureDiceProperties() {
 
         ArrayList<DiceDomain> TemperatureDice = new ArrayList<>();

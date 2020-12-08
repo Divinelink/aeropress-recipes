@@ -3,6 +3,7 @@ package aeropresscipe.divinelink.aeropress.savedrecipes;
 import java.util.List;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -20,6 +21,11 @@ public abstract class SavedRecipeDao {
     @Query("DELETE FROM SavedRecipes")
     abstract void deleteAll();
 
+    @Delete
+    public abstract void delete(SavedRecipeDomain recipeDomain);
+
+
+    /*
     @Query("DELETE FROM SavedRecipes WHERE diceTemperature = :diceTemperature AND" +
             " groundSize = :groundSize AND" +
             " brewTime = :brewTime AND" +
@@ -28,7 +34,6 @@ public abstract class SavedRecipeDao {
             " bloomWater = :bloomWater AND" +
             " brewWaterAmount = :brewWaterAmount AND" +
             " coffeeAmount = :coffeeAmount")
-
     public abstract void deleteCurrent(int diceTemperature,
                              String groundSize,
                              int brewTime,
@@ -37,6 +42,8 @@ public abstract class SavedRecipeDao {
                              int bloomWater,
                              int brewWaterAmount,
                              int coffeeAmount);
+
+     */
 
 
 

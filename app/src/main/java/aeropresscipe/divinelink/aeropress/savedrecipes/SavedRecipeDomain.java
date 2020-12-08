@@ -1,22 +1,42 @@
 package aeropresscipe.divinelink.aeropress.savedrecipes;
 
-import androidx.annotation.NonNull;
+import java.io.Serializable;
+
+import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "SavedRecipes")
 public class SavedRecipeDomain {
 
     @PrimaryKey(autoGenerate = true)
-    @NonNull
     private int id;
 
-    private String groundSize, brewingMethod;
     private int diceTemperature, brewTime, bloomTime, bloomWater, coffeeAmount, brewWaterAmount;
+    private String groundSize, brewingMethod;
     private String dateBrewed;
 
+//FIXME figure out how to remove diceDomain field from DB
+    private DiceDomain diceDomain;
 
-    public SavedRecipeDomain(int diceTemperature,
+    public SavedRecipeDomain(DiceDomain diceDomain, String dateBrewed) {
+        this.diceDomain = diceDomain;
+        this.id = diceDomain.getId();
+        this.diceTemperature = diceDomain.getDiceTemperature();
+        this.groundSize = diceDomain.getGroundSize();
+        this.brewTime = diceDomain.getBrewTime();
+        this.brewingMethod = diceDomain.getBrewingMethod();
+        this.bloomTime = diceDomain.getBloomTime();
+        this.bloomWater = diceDomain.getBloomWater();
+        this.brewWaterAmount = diceDomain.getBrewWaterAmount();
+        this.coffeeAmount = diceDomain.getCoffeeAmount();
+        this.dateBrewed = dateBrewed;
+    }
+
+    @Ignore
+    public SavedRecipeDomain(int id,
+                             int diceTemperature,
                              String groundSize,
                              int brewTime,
                              String brewingMethod,
@@ -25,6 +45,7 @@ public class SavedRecipeDomain {
                              int brewWaterAmount,
                              int coffeeAmount,
                              String dateBrewed) {
+        this.id = id;
         this.diceTemperature = diceTemperature;
         this.groundSize = groundSize;
         this.brewTime = brewTime;
@@ -34,6 +55,14 @@ public class SavedRecipeDomain {
         this.brewWaterAmount = brewWaterAmount;
         this.coffeeAmount = coffeeAmount;
         this.dateBrewed = dateBrewed;
+    }
+
+    public DiceDomain getDiceDomain() {
+        return diceDomain;
+    }
+
+    public void setDiceDomain(DiceDomain diceDomain) {
+        this.diceDomain = diceDomain;
     }
 
     public String getDateBrewed() {

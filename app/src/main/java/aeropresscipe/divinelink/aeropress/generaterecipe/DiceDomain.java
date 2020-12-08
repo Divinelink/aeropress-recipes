@@ -8,8 +8,9 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "Recipe")
 public class DiceDomain {
 
-    @PrimaryKey
-    @NonNull
+    @PrimaryKey (autoGenerate = true)
+    private int id;
+
     private int diceTemperature;
     private String GroundSize;
     private int brewTime;
@@ -22,6 +23,18 @@ public class DiceDomain {
 
     public DiceDomain(){};
 
+    public DiceDomain(int id, int diceTemperature, String groundSize, int brewTime, String brewingMethod, int bloomTime, int bloomWater, int brewWaterAmount, int coffeeAmount) {
+        this.id = id;
+        this.diceTemperature = diceTemperature;
+        this.GroundSize = groundSize;
+        this.brewTime = brewTime;
+        this.brewingMethod = brewingMethod;
+        this.bloomTime = bloomTime;
+        this.bloomWater = bloomWater;
+        this.brewWaterAmount = brewWaterAmount;
+        this.coffeeAmount = coffeeAmount;
+    }
+    @Ignore
     public DiceDomain(int diceTemperature, String groundSize, int brewTime, String brewingMethod, int bloomTime, int bloomWater, int brewWaterAmount, int coffeeAmount) {
         this.diceTemperature = diceTemperature;
         this.GroundSize = groundSize;
@@ -32,6 +45,7 @@ public class DiceDomain {
         this.brewWaterAmount = brewWaterAmount;
         this.coffeeAmount = coffeeAmount;
     }
+
     @Ignore
     public DiceDomain( String groundSize, int brewTime) {
         this.GroundSize = groundSize;
@@ -52,6 +66,14 @@ public class DiceDomain {
         this.brewingMethod = brewingMethod;
         this.bloomTime = bloomTime;
         this.bloomWater = bloomWater;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getBrewWaterAmount() {

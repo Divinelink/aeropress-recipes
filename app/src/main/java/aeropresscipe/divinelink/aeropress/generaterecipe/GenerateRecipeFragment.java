@@ -113,19 +113,11 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
     }
 
     @Override
-    public void showRecipe(final int temp,
-                           final String groundSize,
-                           final int brewTime,
-                           final String brewingMethod,
-                           final int bloomTime,
-                           final int bloomWater,
-                           final int waterAmount,
-                           final int coffeeAmount) {
+    public void showRecipe(final DiceDomain randomRecipe) {
 
         if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
-                final GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter
-                        (temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount, getActivity());
+                final GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter(randomRecipe, getActivity());
 
                 @Override
                 public void run() {
@@ -151,18 +143,10 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
     }
 
     @Override
-    public void showRecipeRemoveResume(final int temp,
-                                       final String groundSize,
-                                       final int brewTime,
-                                       final String brewingMethod,
-                                       final int bloomTime,
-                                       final int bloomWater,
-                                       final int waterAmount,
-                                       final int coffeeAmount) {
+    public void showRecipeRemoveResume(final DiceDomain randomRecipe) {
         if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
-                final GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter
-                        (temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount, getActivity());
+                final GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter(randomRecipe, getActivity());
 
                 @Override
                 public void run() {
@@ -191,12 +175,11 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
     }
 
     @Override
-    public void showRecipeAppStarts(final int temp, final String groundSize, final int brewTime, final String brewingMethod, final int bloomTime, final int bloomWater, final int waterAmount, final int coffeeAmount) {
+    public void showRecipeAppStarts(final DiceDomain randomRecipe) {
 
         if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
-                final GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter
-                        (temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount, getActivity());
+                final GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter(randomRecipe, getActivity());
 
                 @Override
                 public void run() {

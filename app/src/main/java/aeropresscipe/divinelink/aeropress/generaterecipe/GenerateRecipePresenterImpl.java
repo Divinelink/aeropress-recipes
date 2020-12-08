@@ -29,22 +29,34 @@ public class GenerateRecipePresenterImpl implements GenerateRecipePresenter, Gen
     }
 
     @Override
-    public void onSuccessAppStarts(int temp, String groundSize, int brewTime, String brewingMethod, int bloomTime, int bloomWater, int waterAmount, int coffeeAmount) {
-        generateRecipeView.showRecipeAppStarts(temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount);
-        generateRecipeView.passData(bloomTime, brewTime, bloomWater, waterAmount - bloomWater);
+    public void onSuccessAppStarts(DiceDomain randomRecipe) {
+        generateRecipeView.showRecipeAppStarts(randomRecipe);
+
+        generateRecipeView.passData(randomRecipe.getBloomTime(),
+                randomRecipe.getBrewTime(),
+                randomRecipe.getBloomWater(),
+                randomRecipe.getBrewWaterAmount() - randomRecipe.getBloomWater());
     }
 
 
     @Override
-    public void onSuccessNewRecipe(int temp, String groundSize, int brewTime, String brewingMethod, int bloomTime, int bloomWater, int waterAmount, int coffeeAmount) {
-        generateRecipeView.showRecipeRemoveResume(temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount);
-        generateRecipeView.passData(bloomTime, brewTime, bloomWater, waterAmount - bloomWater);
+    public void onSuccessNewRecipe(DiceDomain randomRecipe) {
+        generateRecipeView.showRecipeRemoveResume(randomRecipe);
+
+        generateRecipeView.passData(randomRecipe.getBloomTime(),
+                randomRecipe.getBrewTime(),
+                randomRecipe.getBloomWater(),
+                randomRecipe.getBrewWaterAmount() - randomRecipe.getBloomWater());
     }
 
     @Override
-    public void onSuccess(int temp, String groundSize, int brewTime, String brewingMethod, int bloomTime, int bloomWater, int waterAmount, int coffeeAmount) {
-        generateRecipeView.showRecipe(temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount);
-        generateRecipeView.passData(bloomTime, brewTime, bloomWater, waterAmount - bloomWater);
+    public void onSuccess(DiceDomain randomRecipe) {
+        generateRecipeView.showRecipe(randomRecipe);
+
+        generateRecipeView.passData(randomRecipe.getBloomTime(),
+                randomRecipe.getBrewTime(),
+                randomRecipe.getBloomWater(),
+                randomRecipe.getBrewWaterAmount() - randomRecipe.getBloomWater());
     }
 
 }

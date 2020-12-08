@@ -27,7 +27,7 @@
     <string name="upsideDownMethodText">Wet the filter paper, and put the cap on. Place the mug upside-down on the aeropress and flip to be the normal orientation.</string>
 
     <string name="standard">Standard</string>
-    <string name="get_another_recipe">Get Recipe</string>
+    <string name="get_another_recipe">New Recipe</string>
 
     <string name="bloomPhase">Bloom Phase!</string>
     <string name="bloomPhaseWaterText">Pour in %dg of water.</string>

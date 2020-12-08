@@ -109,15 +109,6 @@ public class TimerFragment extends Fragment implements TimerView {
         if (bloomPhase) {
             timerHandler.postDelayed(bloomRunnable, 1000);
             updateCountdownUI();
-            /*
-            String text = String.format("%s\n%s", getString(R.string.bloomPhase), getString(R.string.bloomPhaseWaterText, diceUI.getBloomWater()));
-            SpannableString TempWater = new SpannableString(text);
-            TempWater.setSpan(
-                    new AbsoluteSizeSpan(25, true),
-                    0,
-                    1 + getString(R.string.bloomPhase).length(),
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            */
             notificationTextView.setText(String.format("%s\n%s", getString(R.string.bloomPhase), getString(R.string.bloomPhaseWaterText, diceUI.getBloomWater())));
 
         } else {
@@ -242,15 +233,5 @@ public class TimerFragment extends Fragment implements TimerView {
 
             });
         }
-    }
-
-    public void enlargeText(int startingPosition, String text) {
-
-        SpannableString TempWater = new SpannableString(text);
-        TempWater.setSpan(
-                new AbsoluteSizeSpan(25),
-                startingPosition,
-                startingPosition + text.length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 }
