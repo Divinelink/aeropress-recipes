@@ -2,6 +2,7 @@ package aeropresscipe.divinelink.aeropress.savedrecipes;
 
 import java.util.List;
 
+import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -18,6 +19,9 @@ public abstract class SavedRecipeDao {
     @Query("SELECT * FROM SavedRecipes")
     public abstract List<SavedRecipeDomain> getSavedRecipes();
 
+    @Query("SELECT EXISTS (SELECT 1 FROM SavedRecipes WHERE  id= :id)")
+    public abstract boolean recipeExists(int id);
+
     @Query("DELETE FROM SavedRecipes")
     abstract void deleteAll();
 
@@ -25,7 +29,7 @@ public abstract class SavedRecipeDao {
     public abstract void delete(SavedRecipeDomain recipeDomain);
 
 
-    /*
+/*
     @Query("DELETE FROM SavedRecipes WHERE diceTemperature = :diceTemperature AND" +
             " groundSize = :groundSize AND" +
             " brewTime = :brewTime AND" +

@@ -79,15 +79,17 @@ public class TimerInteractorImpl implements TimerInteractor {
     public void saveLikedRecipe(final OnSaveLikedRecipeFinishListener listener, final Context ctx) {
 
         AsyncTask.execute(new Runnable() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void run() {
                 final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
                 final SavedRecipeDao savedRecipeDao = HomeDatabase.getDatabase(ctx).savedRecipeDao();
 
                 final DiceDomain recipe = recipeDao.getRecipe();
-                final List<SavedRecipeDomain> myData = savedRecipeDao.getSavedRecipes();
+                final SavedRecipeDomain currentRecipe = new SavedRecipeDomain(recipe, getCurrentDate());
 
+                final boolean recipeExists = savedRecipeDao.recipeExists(recipe.getId());
+
+//                final List<SavedRecipeDomain> myData = savedRecipeDao.getSavedRecipes();
 //                SavedRecipeDomain currentRecipe = new SavedRecipeDomain(
 //                        recipe.getId(), // FIXME pass object instead of properties
 //                        recipe.getDiceTemperature(),
@@ -100,14 +102,15 @@ public class TimerInteractorImpl implements TimerInteractor {
 //                        recipe.getCoffeeAmount(),
 //                        getCurrentDate()
 //                        );
-                SavedRecipeDomain currentRecipe = new SavedRecipeDomain(recipe, getCurrentDate());
 
-                if (!myData.contains(currentRecipe)) {
-                    savedRecipeDao.insertLikedRecipe(currentRecipe);
+
+                listener.onRecipeFound(recipeExists);
+//                if (!myData.contains(currentRecipe.getDiceDomain())) {
+                if (!recipeExists) {
                     Log.d("Inserted", currentRecipe.toString());
+                    savedRecipeDao.insertLikedRecipe(currentRecipe);
                     listener.onSuccessSave(true);
-                }
-                else{
+                } else {
                 /*
                 if (!checkIfCurrentRecipeExistsOnDB(myData, currentRecipe)) {
                     // If Recipe Doesn't Exist on DB, then Save It.
@@ -127,9 +130,8 @@ public class TimerInteractorImpl implements TimerInteractor {
                             recipe.getCoffeeAmount());
 
                     */
-                    savedRecipeDao.delete(currentRecipe);
-
                     Log.d("Deleted", currentRecipe.toString());
+                    savedRecipeDao.delete(currentRecipe);
                     listener.onSuccessSave(false);
                 }
             }
@@ -140,16 +142,17 @@ public class TimerInteractorImpl implements TimerInteractor {
     public void checkIfRecipeIsLikedAndSavedOnDB(final OnSaveLikedRecipeFinishListener listener, final Context ctx) {
 
         AsyncTask.execute(new Runnable() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void run() {
                 final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
                 final SavedRecipeDao savedRecipeDao = HomeDatabase.getDatabase(ctx).savedRecipeDao();
 
                 final DiceDomain recipe = recipeDao.getRecipe();
+                final SavedRecipeDomain currentRecipe = new SavedRecipeDomain(recipe, getCurrentDate());
+                final boolean recipeExists = savedRecipeDao.recipeExists(recipe.getId()); //Checks whether current recipe exists on DB
+/*
                 final List<SavedRecipeDomain> myData = savedRecipeDao.getSavedRecipes();
-
-                /*
+                final boolean exists = savedRecipeDao.recipeExists(recipe);
                 SavedRecipeDomain currentRecipe = new SavedRecipeDomain(
                         recipe.getId(), //FIXME  pass object instead of properties
                         recipe.getDiceTemperature(),
@@ -161,21 +164,16 @@ public class TimerInteractorImpl implements TimerInteractor {
                         recipe.getBrewWaterAmount(),
                         recipe.getCoffeeAmount(),
                         getCurrentDate()
-                        );
-
-                 */
-                SavedRecipeDomain currentRecipe = new SavedRecipeDomain(recipe, getCurrentDate());
-
-                Log.d("Current Recipe: ", currentRecipe.toString());
-
+                );
+*/
 //                if (myData.contains(currentRecipe))
 //                    listener.onRecipeFound(true);
 //                else
 //                    listener.onRecipeFound(false);
 
                 // returns true if currentRecipe exists on myData DB
-                boolean contains = myData.contains(currentRecipe);
-                listener.onRecipeFound(contains);
+//                boolean contains = myData.contains(currentRecipe);
+//                listener.onRecipeFound(checkIfCurrentRecipeExistsOnDB(myData, currentRecipe));
 /*
                 if (checkIfCurrentRecipeExistsOnDB(myData, currentRecipe)) {
                     listener.onRecipeFound(true);
@@ -184,21 +182,18 @@ public class TimerInteractorImpl implements TimerInteractor {
                     listener.onRecipeFound(false);
                     Log.d("Recipe Exists in DB?", "Unlucky");
                 }
-
- */
+*/
+                Log.d("Current Recipe: ", currentRecipe.toString());
+                listener.onRecipeFound(recipeExists);
             }
         });
     }
-
+/*
     public boolean checkIfCurrentRecipeExistsOnDB(List<SavedRecipeDomain> myData, SavedRecipeDomain currentRecipe) {
         boolean recipeFound = false;
 
-        if (myData.contains(currentRecipe)){
-            recipeFound = true;
-        }
-        /*
         for (SavedRecipeDomain dataInDB : myData) {
-            /*
+
             recipeFound = dataInDB.getDiceTemperature() == currentRecipe.getDiceTemperature() &&
                     dataInDB.getGroundSize().equals(currentRecipe.getGroundSize()) &&
                     dataInDB.getBrewTime() == currentRecipe.getBrewTime() &&
@@ -208,7 +203,11 @@ public class TimerInteractorImpl implements TimerInteractor {
                     dataInDB.getBrewWaterAmount() == currentRecipe.getBrewWaterAmount() &&
                     dataInDB.getCoffeeAmount() == currentRecipe.getCoffeeAmount();
 
-             */
+            if (recipeFound)
+                break;
+        }
+        */
+
 //            if (dataInDB == currentRecipe) {
 //                recipeFound = true;
 //                break;
@@ -217,11 +216,10 @@ public class TimerInteractorImpl implements TimerInteractor {
 //            if (recipeFound)
 //                break;
 //        }
-        return recipeFound;
-    }
+//        return recipeFound;
+//    }
 
-    public String getCurrentDate()
-    {
+    public String getCurrentDate() {
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("d MMMM yyyy");
 

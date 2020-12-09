@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -11,22 +10,15 @@ public class DiceDomain {
     @PrimaryKey (autoGenerate = true)
     private int id;
 
-    private int diceTemperature;
-    private String GroundSize;
-    private int brewTime;
-    private String brewingMethod;
-    private int bloomTime;
-    private int bloomWater;
-
-    private int coffeeAmount;
-    private int brewWaterAmount;
+    private int diceTemperature, brewTime, bloomTime, bloomWater, coffeeAmount, brewWaterAmount;
+    private String groundSize, brewingMethod;
 
     public DiceDomain(){};
 
     public DiceDomain(int id, int diceTemperature, String groundSize, int brewTime, String brewingMethod, int bloomTime, int bloomWater, int brewWaterAmount, int coffeeAmount) {
         this.id = id;
         this.diceTemperature = diceTemperature;
-        this.GroundSize = groundSize;
+        this.groundSize = groundSize;
         this.brewTime = brewTime;
         this.brewingMethod = brewingMethod;
         this.bloomTime = bloomTime;
@@ -37,7 +29,7 @@ public class DiceDomain {
     @Ignore
     public DiceDomain(int diceTemperature, String groundSize, int brewTime, String brewingMethod, int bloomTime, int bloomWater, int brewWaterAmount, int coffeeAmount) {
         this.diceTemperature = diceTemperature;
-        this.GroundSize = groundSize;
+        this.groundSize = groundSize;
         this.brewTime = brewTime;
         this.brewingMethod = brewingMethod;
         this.bloomTime = bloomTime;
@@ -48,7 +40,7 @@ public class DiceDomain {
 
     @Ignore
     public DiceDomain( String groundSize, int brewTime) {
-        this.GroundSize = groundSize;
+        this.groundSize = groundSize;
         this.brewTime = brewTime;
     }
     @Ignore
@@ -85,7 +77,7 @@ public class DiceDomain {
     }
 
     public String getGroundSize() {
-        return GroundSize;
+        return groundSize;
     }
 
     public int getBrewTime() {
@@ -115,7 +107,7 @@ public class DiceDomain {
 
 
     public void setGroundSize(String groundSize) {
-        GroundSize = groundSize;
+        this.groundSize = groundSize;
     }
 
     public void setBrewTime(int brewTime) {
