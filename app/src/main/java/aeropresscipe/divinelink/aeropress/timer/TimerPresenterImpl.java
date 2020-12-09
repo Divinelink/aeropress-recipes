@@ -55,14 +55,8 @@ public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnSta
     }
 
     @Override
-    public void onSuccessSave(boolean isSaved) {
+    public void onSavedRecipe(boolean isSaved) {
         timerView.addToLiked(isSaved);
-
-    }
-
-    @Override
-    public void onRecipeFound(boolean isLiked) {
-        timerView.addToLiked(isLiked);
     }
 
     @Override

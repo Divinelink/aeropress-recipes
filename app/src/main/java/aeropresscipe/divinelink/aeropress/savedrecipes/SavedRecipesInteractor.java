@@ -28,8 +28,6 @@ interface SavedRecipesInteractor {
 
     }
 
-
-
     interface OnGetSingleRecipeFromDBFinishListener{
 
         void onSuccessGetSingleRecipe(SavedRecipeDomain savedRecipeDomain);

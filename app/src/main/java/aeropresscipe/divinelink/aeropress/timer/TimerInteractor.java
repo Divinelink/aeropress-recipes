@@ -20,8 +20,7 @@ public interface TimerInteractor {
     }
 
     interface OnSaveLikedRecipeFinishListener{
-        void onSuccessSave(boolean isSaved);
-        void onRecipeFound(boolean isLiked);
+        void onSavedRecipe(boolean isSaved);
         void onError();
     }
 }

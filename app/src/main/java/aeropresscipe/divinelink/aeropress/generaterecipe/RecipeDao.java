@@ -1,5 +1,6 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe;
 
+import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -22,6 +23,5 @@ public abstract class RecipeDao {
         deleteAll();
         insertRecipe(diceDomain);
     }
-
 
 }

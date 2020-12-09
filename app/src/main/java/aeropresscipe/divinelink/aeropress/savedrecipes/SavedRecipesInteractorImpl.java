@@ -31,7 +31,7 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
                 final SavedRecipeDao savedRecipeDao = HomeDatabase.getDatabase(ctx).savedRecipeDao();
                 final List<SavedRecipeDomain> mSavedRecipes = savedRecipeDao.getSavedRecipes();
 
-                if (mSavedRecipes.size()!= 0)
+                if (mSavedRecipes.size() != 0)
                     listener.onSuccess(mSavedRecipes);
                 else
                     listener.onEmptyList();
@@ -52,17 +52,7 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
             @Override
             public void run() {
                 final SavedRecipeDao savedRecipeDao = HomeDatabase.getDatabase(ctx).savedRecipeDao();
-                /*
-                savedRecipeDao.deleteCurrent(recipeDomain.getDiceTemperature(),
-                        recipeDomain.getGroundSize(),
-                        recipeDomain.getBrewTime(),
-                        recipeDomain.getBrewingMethod(),
-                        recipeDomain.getBloomTime(),
-                        recipeDomain.getBloomWater(),
-                        recipeDomain.getBrewWaterAmount(),
-                        recipeDomain.getCoffeeAmount());
 
-                 */
                 savedRecipeDao.delete(recipeDomain);
 
                 final List<SavedRecipeDomain> mSavedRecipes = savedRecipeDao.getSavedRecipes();
@@ -86,8 +76,8 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
 
     private ArrayList<Integer> decrementOpenPositions(ArrayList<Integer> mArrayList, int index) {
 
-        for (int i = index ; i <= mArrayList.size()-1; i++) {
-            Integer value = mArrayList.get(i)-1;
+        for (int i = index; i <= mArrayList.size() - 1; i++) {
+            Integer value = mArrayList.get(i) - 1;
             mArrayList.set(i, value);
         }
         return mArrayList;
@@ -102,28 +92,18 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
 
                 final SavedRecipeDao savedRecipeDao = HomeDatabase.getDatabase(ctx).savedRecipeDao();
                 final List<SavedRecipeDomain> mSavedRecipes = savedRecipeDao.getSavedRecipes();
-//                mSavedRecipes.get(position);
+// final SavedRecipeDomain currentRecipe = savedRecipeDao.getSingleRecipe(position);
+// FIXME find a way to get only a single SavedRecipeDomain from query
+
+
                 //We also have to update the current recipe, so when we start the timer, the current recipe will be displayed.
                 // Also, when we go back to the starting fragment, the displayed recipe will be the one we select from the favourites.
-
-                final DiceDomain currentRecipe = new DiceDomain(
-                        mSavedRecipes.get(position).getId(), //FIXME pass object instead of properties
-                        mSavedRecipes.get(position).getDiceTemperature(),
-                        mSavedRecipes.get(position).getGroundSize(),
-                        mSavedRecipes.get(position).getBrewTime(),
-                        mSavedRecipes.get(position).getBrewingMethod(),
-                        mSavedRecipes.get(position).getBloomTime(),
-                        mSavedRecipes.get(position).getBloomWater(),
-                        mSavedRecipes.get(position).getBrewWaterAmount(),
-                        mSavedRecipes.get(position).getCoffeeAmount());
-
                 Log.d("getSpecificRecipeFromDB", "Updates the current recipe to the one we selected to brew from favourites.");
                 final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
                 AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {
-//                        recipeDao.updateRecipe(mSavedRecipes.get(position)); //FIXME this is the correct method but there's a bug that id = null
-                        recipeDao.updateRecipe(currentRecipe);
+                        recipeDao.updateRecipe(mSavedRecipes.get(position).getDiceDomain());
                     }
                 });
                 listener.onSuccessGetSingleRecipe(mSavedRecipes.get(position));

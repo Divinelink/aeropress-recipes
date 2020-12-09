@@ -23,18 +23,12 @@ import aeropresscipe.divinelink.aeropress.R;
 
 public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipeRvAdapter.RecipeViewHolder> {
 
-    private DiceDomain randomRecipe;
+    final private DiceDomain randomRecipe;
 
-    private int temp;
-    private String groundSize;
-    private int brewTime;
-    private String brewingMethod;
-    private int bloomTime;
-    private int bloomWater;
-    private int waterAmount;
-    private int coffeeAmount;
+    final private int temp, brewTime, bloomTime, bloomWater, waterAmount, coffeeAmount;
+    final private String groundSize, brewingMethod;
 
-    private Context context;
+    final private Context context;
 
     public GenerateRecipeRvAdapter(DiceDomain mRandomRecipe, Context mContext) {
         this.randomRecipe = mRandomRecipe;
@@ -90,13 +84,21 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder recipeViewHolder, int i) {
 
+        final int minutes = brewTime / 60;
+        final int seconds = brewTime % 60;
+
         final String heatWaterText = context.getResources().getString(R.string.heatWaterText, waterAmount, temp, temp * 9 / 5 + 32);
+        final String grindCoffeeText = context.getResources().getString(R.string.grindCoffeeText, coffeeAmount, groundSize);
+
+        final String finalTime = String.format(Locale.ENGLISH, "%d:%02d", minutes, seconds);
+        final String timeToBrew = context.getResources().getString(R.string.waitToBrewText, finalTime, (minutes == 1 && seconds == 0) ? "minute" : "minutes");
 
         /*In API 24 and above, we can use <b> </b> format in strings.xml in order to bold the text
         instead of using SpannableString like below.
         https://developer.android.com/guide/topics/resources/string-resource
         But we'll keep on going with this solution for now.
         */
+        // WATER TEMPERATURE ITEM
         SpannableString TempWater = new SpannableString(heatWaterText);
         TempWater.setSpan(
                 new StyleSpan(Typeface.BOLD_ITALIC),
@@ -112,15 +114,11 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
                 6 + Integer.toString(waterAmount).length() + 13 + Integer.toString(temp).length() + 10,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-
         recipeViewHolder.tempItem.setText(TempWater);
 
-        final String grindCoffeeText = context.getResources().getString(R.string.grindCoffeeText, coffeeAmount, groundSize);
-
+        // COFFEE GRIND ITEM
         SpannableString CoffeeGrind = new SpannableString(grindCoffeeText);
-
         CoffeeGrind.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), 6, 7 + Integer.toString(coffeeAmount).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
 
         if (brewingMethod.equals(context.getResources().getString(R.string.standard)))
             recipeViewHolder.brewingMethodItem.setText(R.string.normal_orientation_text);
@@ -128,9 +126,9 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
             recipeViewHolder.brewingMethodItem.setText(R.string.inverted_orientation_text);
             recipeViewHolder.upsideDownMethodText.setVisibility(View.VISIBLE);
         }
-
         recipeViewHolder.groundSizeItem.setText(CoffeeGrind);
 
+        // BLOOM ITEM
         if (bloomTime != 0) {
             // BREWING WITH BLOOM
             final String bloomText = context.getResources().getString(R.string.addWaterText, bloomWater, bloomTime);
@@ -145,7 +143,6 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
             recipeViewHolder.bloomTimeItem.setText(Bloom);
 
             final String remainingWater = context.getResources().getString(R.string.addRemainingWater, (waterAmount - bloomWater));
-
             SpannableStringBuilder water = new SpannableStringBuilder(remainingWater);
             water.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), 17, 19 + Integer.toString(waterAmount - bloomWater).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
@@ -161,12 +158,8 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
             recipeViewHolder.bloomWaterItem.setText(water);
         }
 
-        final int minutes = brewTime / 60;
-        final int seconds = brewTime % 60;
-        final String finalTime = String.format(Locale.ENGLISH, "%d:%02d", minutes, seconds);
 
-        final String timeToBrew = context.getResources().getString(R.string.waitToBrewText, finalTime, (minutes == 1 && seconds == 0) ? "minute" : "minutes");
-
+        // BREW TIME ITEM
         SpannableStringBuilder spannableTimeToBrew = new SpannableStringBuilder(timeToBrew);
         spannableTimeToBrew.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), 5, Integer.toString(brewTime).length() + 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 

@@ -17,7 +17,7 @@ public class SavedRecipeDomain {
     private String groundSize, brewingMethod;
     private String dateBrewed;
 
-//FIXME figure out how to remove diceDomain field from DB
+    //FIXME figure out how to remove diceDomain field from DB
     private DiceDomain diceDomain;
 
     public SavedRecipeDomain(DiceDomain diceDomain, String dateBrewed) {
@@ -116,7 +116,6 @@ public class SavedRecipeDomain {
     public void setDiceTemperature(int diceTemperature) {
         this.diceTemperature = diceTemperature;
     }
-
 
     public void setGroundSize(String groundSize) {
         this.groundSize = groundSize;

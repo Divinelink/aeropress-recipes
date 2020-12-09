@@ -27,27 +27,11 @@ public abstract class SavedRecipeDao {
 
     @Delete
     public abstract void delete(SavedRecipeDomain recipeDomain);
-
-
+    
 /*
-    @Query("DELETE FROM SavedRecipes WHERE diceTemperature = :diceTemperature AND" +
-            " groundSize = :groundSize AND" +
-            " brewTime = :brewTime AND" +
-            " brewingMethod = :brewingMethod AND" +
-            " bloomTime = :bloomTime AND" +
-            " bloomWater = :bloomWater AND" +
-            " brewWaterAmount = :brewWaterAmount AND" +
-            " coffeeAmount = :coffeeAmount")
-    public abstract void deleteCurrent(int diceTemperature,
-                             String groundSize,
-                             int brewTime,
-                             String brewingMethod,
-                             int bloomTime,
-                             int bloomWater,
-                             int brewWaterAmount,
-                             int coffeeAmount);
-
-     */
+    @Query("SELECT * FROM SavedRecipes WHERE Rowid=:position")
+    public abstract SavedRecipeDomain getSingleRecipe(int position);
+ */
 
 
 
