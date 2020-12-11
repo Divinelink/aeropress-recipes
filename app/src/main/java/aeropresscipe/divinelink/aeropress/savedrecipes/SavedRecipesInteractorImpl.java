@@ -90,16 +90,17 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
             @Override
             public void run() {
 
+                final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
                 final SavedRecipeDao savedRecipeDao = HomeDatabase.getDatabase(ctx).savedRecipeDao();
                 final List<SavedRecipeDomain> mSavedRecipes = savedRecipeDao.getSavedRecipes();
-// final SavedRecipeDomain currentRecipe = savedRecipeDao.getSingleRecipe(position);
-// FIXME find a way to get only a single SavedRecipeDomain from query
+                
+                // final SavedRecipeDomain currentRecipe = savedRecipeDao.getSingleRecipe(position);
+                // FIXME find a way to get only a single SavedRecipeDomain from query
 
 
                 //We also have to update the current recipe, so when we start the timer, the current recipe will be displayed.
                 // Also, when we go back to the starting fragment, the displayed recipe will be the one we select from the favourites.
                 Log.d("getSpecificRecipeFromDB", "Updates the current recipe to the one we selected to brew from favourites.");
-                final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
                 AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {

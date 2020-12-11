@@ -27,11 +27,11 @@ public abstract class SavedRecipeDao {
 
     @Delete
     public abstract void delete(SavedRecipeDomain recipeDomain);
-    
-/*
-    @Query("SELECT * FROM SavedRecipes WHERE Rowid=:position")
-    public abstract SavedRecipeDomain getSingleRecipe(int position);
- */
+
+
+//    @Query("SELECT * FROM SavedRecipes WHERE RowID=:position")
+//    public abstract SavedRecipeDomain getSingleRecipe(int position);
+
 
 
 
