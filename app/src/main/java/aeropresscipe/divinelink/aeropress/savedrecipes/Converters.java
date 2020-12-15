@@ -4,13 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
 import androidx.room.TypeConverter;
 
 public class Converters {
-    @TypeConverter // note this annotation
+    @TypeConverter
     public String fromOptionValuesList(DiceDomain recipe) {
         if (recipe == null) {
             return (null);
@@ -22,7 +21,7 @@ public class Converters {
         return json;
     }
 
-    @TypeConverter // note this annotation
+    @TypeConverter
     public DiceDomain toOptionValuesList(String optionValuesString) {
         if (optionValuesString == null) {
             return (null);

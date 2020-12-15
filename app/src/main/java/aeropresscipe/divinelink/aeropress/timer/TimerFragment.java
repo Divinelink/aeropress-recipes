@@ -11,14 +11,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.AbsoluteSizeSpan;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -28,19 +28,18 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class TimerFragment extends Fragment implements TimerView {
 
-    TextView timerTextView;
-    TextView notificationTextView;
-    MaterialProgressBar progressBar;
-    ImageButton likeRecipeBtn;
+    private TextView timerTextView, notificationTextView;
+    private LinearLayout mLikeRecipeLayout;
+    private MaterialProgressBar progressBar;
+    private ImageButton likeRecipeBtn;
 
     private TimerPresenter presenter;
 
     private int secondsRemaining = 0;
 
-    DiceUI diceUI;
+    private DiceUI diceUI;
 
-    GetPhaseFactory getPhaseFactory = new GetPhaseFactory();
-
+    private final GetPhaseFactory getPhaseFactory = new GetPhaseFactory();
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -56,6 +55,7 @@ public class TimerFragment extends Fragment implements TimerView {
         progressBar = (MaterialProgressBar) v.findViewById(R.id.progressBar);
         notificationTextView = (TextView) v.findViewById(R.id.notificationTV);
         likeRecipeBtn = (ImageButton) v.findViewById(R.id.likeRecipeButton);
+        mLikeRecipeLayout = (LinearLayout) v.findViewById(R.id.likeRecipeLayout);
 
         likeRecipeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -209,7 +209,16 @@ public class TimerFragment extends Fragment implements TimerView {
         //TODO make it show a button that returns to starting screen
         timerTextView.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
+
+
+        Animation mFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_timer);
+        notificationTextView.startAnimation(mFadeInAnimation);
         notificationTextView.setText(R.string.enjoyCoffee);
+
+
+        startMoveAnimation(notificationTextView, 300f);
+        startMoveAnimation(mLikeRecipeLayout, -300f);
+
 
         // Temporary Fix?
         diceUI.setBloomTime(0);
@@ -232,5 +241,11 @@ public class TimerFragment extends Fragment implements TimerView {
                 }
             });
         }
+    }
+
+    private void startMoveAnimation(View view, float value){
+        ObjectAnimator animation = ObjectAnimator.ofFloat(view, "translationY", value);
+        animation.setDuration(1000);
+        animation.start();
     }
 }

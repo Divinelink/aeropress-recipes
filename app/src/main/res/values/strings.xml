@@ -37,7 +37,7 @@
     <string name="brewPhaseWithBloom">Pour in the remaining %dg of water. </string>
     <string name="brewPhaseNoBloom">Pour in %dg of water.</string>
 
-    <string name="enjoyCoffee">Enjoy your coffee!</string>
+    <string name="enjoyCoffee">Press and enjoy your coffee!</string>
     <string name="brew">Start Timer</string>
     <string name="resume_brew">Resume Brew</string>
     <string name="alreadyBrewingDialog">You\'re already brewing\nHold to get a new recipe</string>
