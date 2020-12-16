@@ -113,9 +113,9 @@ public class TimerFragment extends Fragment implements TimerView {
             diceUI.setRecipeHadBloom(true);
         } else {
             timerHandler.postDelayed(brewRunnable, 1000);
-            updateCountdownUI();
             // Checks if there was a bloom or not, and set corresponding text on textView.
-            if (diceUI.recipeHadBloom()) {
+            updateCountdownUI();
+            if (getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getPhase() || diceUI.recipeHadBloom()) {
                 notificationTextView.setText(String.format("%s\n%s", getString(R.string.brewPhase), getString(R.string.brewPhaseWithBloom, diceUI.getRemainingBrewWater())));
             } else
                 notificationTextView.setText(String.format("%s\n%s", getString(R.string.brewPhase), getString(R.string.brewPhaseNoBloom, diceUI.getRemainingBrewWater())));
@@ -192,8 +192,8 @@ public class TimerFragment extends Fragment implements TimerView {
     @Override
     public void onResume() {
         super.onResume();
+        // if resuming from recipe without bloom isNewRecipe == false
         // FIXME after the brew is finished, make it unable to resume brew.
-
         if (diceUI.isNewRecipe()) // if it's a new recipe, dont call returnValuesOnResume
             presenter.getNumbersForTimer(
                     getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getTime(),
