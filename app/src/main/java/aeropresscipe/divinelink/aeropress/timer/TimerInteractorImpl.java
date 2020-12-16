@@ -60,7 +60,6 @@ public class TimerInteractorImpl implements TimerInteractor {
 
                 endTime = (int) minutes * 60 + (int) seconds;
                 if (endTime < 0) // Brew Also Finished before resuming
-                    //TODO add message to ask user either to go back or "Possible Feature": Add recipe to Liked Recipes.
                     listener.onBrewFinished();
                 else
                     listener.onSuccess(endTime, isBloomTimer);

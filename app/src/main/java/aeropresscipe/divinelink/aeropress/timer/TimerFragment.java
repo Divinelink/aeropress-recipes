@@ -110,14 +110,12 @@ public class TimerFragment extends Fragment implements TimerView {
             timerHandler.postDelayed(bloomRunnable, 1000);
             updateCountdownUI();
             notificationTextView.setText(String.format("%s\n%s", getString(R.string.bloomPhase), getString(R.string.bloomPhaseWaterText, diceUI.getBloomWater())));
-
+            diceUI.setRecipeHadBloom(true);
         } else {
             timerHandler.postDelayed(brewRunnable, 1000);
-            // Checks if there was a bloom or not, and set corresponding text on textView.
             updateCountdownUI();
-            if (getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getPhase())
-            //FIXME make notificationTextView fade in and fade out constantly!
-            {
+            // Checks if there was a bloom or not, and set corresponding text on textView.
+            if (diceUI.recipeHadBloom()) {
                 notificationTextView.setText(String.format("%s\n%s", getString(R.string.brewPhase), getString(R.string.brewPhaseWithBloom, diceUI.getRemainingBrewWater())));
             } else
                 notificationTextView.setText(String.format("%s\n%s", getString(R.string.brewPhase), getString(R.string.brewPhaseNoBloom, diceUI.getRemainingBrewWater())));
@@ -178,21 +176,24 @@ public class TimerFragment extends Fragment implements TimerView {
         super.onStop();
 
         // Basically when both getBloomTime and getBrewTime are equal to 0, then don't proceed.
+        diceUI.setNewRecipe(false);
         if (getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getTime() != 0) {
             final boolean isBloomPhase = getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getPhase();
 
             timerHandler.removeCallbacks(bloomRunnable);
             timerHandler.removeCallbacks(brewRunnable);
 
+
             presenter.saveValuesOnPause(getContext(), secondsRemaining, diceUI.getBrewTime(), isBloomPhase);
         }
+        //ON STOP, if recipe is over make it remove resumeBtn
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
         // FIXME after the brew is finished, make it unable to resume brew.
+
         if (diceUI.isNewRecipe()) // if it's a new recipe, dont call returnValuesOnResume
             presenter.getNumbersForTimer(
                     getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getTime(),
@@ -243,7 +244,7 @@ public class TimerFragment extends Fragment implements TimerView {
         }
     }
 
-    private void startMoveAnimation(View view, float value){
+    private void startMoveAnimation(View view, float value) {
         ObjectAnimator animation = ObjectAnimator.ofFloat(view, "translationY", value);
         animation.setDuration(1000);
         animation.start();

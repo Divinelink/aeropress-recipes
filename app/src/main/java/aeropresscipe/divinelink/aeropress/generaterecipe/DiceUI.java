@@ -6,7 +6,7 @@ import android.os.Parcelable;
 public class DiceUI implements Parcelable {
 
     private int bloomTime, brewTime, bloomWater, remainingBrewWater;
-    private boolean isNewRecipe;
+    private boolean isNewRecipe, recipeHadBloom;
 
     public DiceUI(int bloomTime, int brewTime, int bloomWater, int remainingBrewWater) {
         this.bloomTime = bloomTime;
@@ -37,6 +37,14 @@ public class DiceUI implements Parcelable {
 
     public void setNewRecipe(boolean newRecipe) {
         isNewRecipe = newRecipe;
+    }
+
+    public boolean recipeHadBloom() {
+        return recipeHadBloom;
+    }
+
+    public void setRecipeHadBloom(boolean recipeHadBloom) {
+        this.recipeHadBloom = recipeHadBloom;
     }
 
     public void setBloomWater(int bloomWater) {
