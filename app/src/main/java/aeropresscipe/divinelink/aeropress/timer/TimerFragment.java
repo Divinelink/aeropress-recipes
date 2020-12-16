@@ -4,6 +4,7 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceUI;
@@ -11,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -185,6 +187,13 @@ public class TimerFragment extends Fragment implements TimerView {
 
 
             presenter.saveValuesOnPause(getContext(), secondsRemaining, diceUI.getBrewTime(), isBloomPhase);
+        } else {
+            // When leaving Timer and it is over, set isBrewing boolean to false, meaning that brewing process is over
+            // which removes the resume button on Generate Recipe Fragment.
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("isBrewing", false);
+            editor.apply();
         }
         //ON STOP, if recipe is over make it remove resumeBtn
     }
@@ -193,7 +202,6 @@ public class TimerFragment extends Fragment implements TimerView {
     public void onResume() {
         super.onResume();
         // if resuming from recipe without bloom isNewRecipe == false
-        // FIXME after the brew is finished, make it unable to resume brew.
         if (diceUI.isNewRecipe()) // if it's a new recipe, dont call returnValuesOnResume
             presenter.getNumbersForTimer(
                     getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getTime(),
