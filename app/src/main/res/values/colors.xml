@@ -6,6 +6,16 @@
     <color name="backgroundColor">#0A6588</color>
     <color name="white">#FFFFFFFF</color>
 
+
+    <color name="colorPrimaryVariant">#FFFFFFFF</color>
+    <color name="colorSecondaryVariant">#FFFFFFFF</color>
+    <color name="colorSurface">#FFFFFFFF</color>
+    <color name="colorOnPrimary">#FFFFFFFF</color>
+    <color name="colorOnSecondary">#FFFFFFFF</color>
+    <color name="colorOnBackground">#FFFFFFFF</color>
+    <color name="colorOnError">#FFFFFFFF</color>
+    <color name="colorOnSurface">#FFFFFFFF</color>
+
     <color name="red">#dc4a38</color>
     <color name="green">#3b996f</color>
 

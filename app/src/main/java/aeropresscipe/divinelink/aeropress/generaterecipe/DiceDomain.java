@@ -13,6 +13,7 @@ public class DiceDomain {
     private int diceTemperature, brewTime, bloomTime, bloomWater, coffeeAmount, brewWaterAmount;
     private String groundSize, brewingMethod;
 
+    @Ignore
     public DiceDomain(){};
 
     public DiceDomain(int id, int diceTemperature, String groundSize, int brewTime, String brewingMethod, int bloomTime, int bloomWater, int brewWaterAmount, int coffeeAmount) {

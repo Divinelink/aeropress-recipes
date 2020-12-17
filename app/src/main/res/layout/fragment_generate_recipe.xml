@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="?android:attr/actionBarSize"
     tools:context=".generaterecipe.GenerateRecipeFragment">
 
 
@@ -15,7 +16,6 @@
         app:layout_constraintBottom_toTopOf="@+id/buttonslayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-
         <Button
             android:id="@+id/resumeBrewButton"
             android:layout_width="wrap_content"
@@ -25,14 +25,6 @@
             android:visibility="invisible"
             app:layout_constraintTop_toTopOf="@+id/guidelineButtons"
             tools:visibility="visible" />
-
-        <Button
-            android:id="@+id/showSavedRecipes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="4dp"
-            android:text="@string/favorites" />
     </LinearLayout>
 
 
@@ -45,6 +37,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
 
         <LinearLayout
             android:id="@+id/generateRecipeButton"
@@ -99,7 +92,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.7" />
+        app:layout_constraintGuide_percent="0.77" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipe_rv"
@@ -109,6 +102,8 @@
         android:overScrollMode="never"
         app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="20" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

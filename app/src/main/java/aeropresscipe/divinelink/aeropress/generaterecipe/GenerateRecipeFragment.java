@@ -25,12 +25,12 @@ import aeropresscipe.divinelink.aeropress.R;
  * Use the {@link GenerateRecipeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GenerateRecipeFragment extends Fragment implements GenerateRecipeView {
+public class GenerateRecipeFragment extends Fragment implements GenerateRecipeView{
 
 
     RecyclerView recipeRv;
     LinearLayout generateRecipeButton, timerButton;
-    Button resumeBrewBtn, favoritesBtn;
+    Button resumeBrewBtn;
 
     private Animation mFadeInAnimation, mAdapterAnimation;
     private GenerateRecipePresenter presenter;
@@ -50,7 +50,6 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         //FIXME TEMPORARY BUTTON
         timerButton = v.findViewById(R.id.startTimerButton);
         resumeBrewBtn = v.findViewById(R.id.resumeBrewButton);
-        favoritesBtn = v.findViewById(R.id.showSavedRecipes);
 
 
         //TODO ADD FADE-IN ANIMATION WHEN GENERATING NEW RECIPE
@@ -82,13 +81,6 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
             public void onClick(View view) {
                 diceUI.setNewRecipe(false);
                 homeView.addTimerFragmentFromResume(diceUI);
-            }
-        });
-
-        favoritesBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                homeView.addSavedRecipesFragment();
             }
         });
 

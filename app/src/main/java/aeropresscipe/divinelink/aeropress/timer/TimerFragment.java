@@ -24,6 +24,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+import java.io.Serializable;
+
 import aeropresscipe.divinelink.aeropress.R;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
