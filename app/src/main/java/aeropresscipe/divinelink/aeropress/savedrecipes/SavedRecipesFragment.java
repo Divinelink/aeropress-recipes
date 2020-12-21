@@ -123,7 +123,8 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView {
                 public void run() {
                     DiceUI diceUI = new DiceUI(bloomTime, brewTime, bloomWater, brewWater);
                     diceUI.setNewRecipe(true);
-                    homeView.addTimerFragment(diceUI);
+//                    homeView.addTimerFragment(diceUI);
+                    homeView.startTimerActivity(diceUI);
                 }
             });
         }

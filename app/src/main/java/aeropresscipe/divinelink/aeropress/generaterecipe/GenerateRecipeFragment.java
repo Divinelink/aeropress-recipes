@@ -25,7 +25,7 @@ import aeropresscipe.divinelink.aeropress.R;
  * Use the {@link GenerateRecipeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GenerateRecipeFragment extends Fragment implements GenerateRecipeView{
+public class GenerateRecipeFragment extends Fragment implements GenerateRecipeView {
 
 
     RecyclerView recipeRv;
@@ -72,7 +72,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
             @Override
             public void onClick(View view) {
                 diceUI.setNewRecipe(true);
-                homeView.addTimerFragment(diceUI);
+                homeView.startTimerActivity(diceUI);
             }
         });
 
@@ -80,7 +80,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
             @Override
             public void onClick(View view) {
                 diceUI.setNewRecipe(false);
-                homeView.addTimerFragmentFromResume(diceUI);
+                homeView.startTimerActivity(diceUI);
             }
         });
 
@@ -88,9 +88,9 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         recipeRv.setLayoutManager(layoutManager);
 
         presenter = new GenerateRecipePresenterImpl(this);
+        mFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.initiliaze_animation);
         presenter.getRecipe(getContext());
 
-        mFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.initiliaze_animation);
 
         return v;
     }

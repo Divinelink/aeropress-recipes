@@ -1,7 +1,10 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe;
 
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import androidx.annotation.RequiresApi;
 
 public class DiceUI implements Parcelable {
 
@@ -73,11 +76,18 @@ public class DiceUI implements Parcelable {
         brewTime = in.readInt();
         bloomWater = in.readInt();
         remainingBrewWater = in.readInt();
+        isNewRecipe = in.readInt() == 1;
+        recipeHadBloom = in.readInt() == 1;
     }
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-
+        parcel.writeInt(bloomTime);
+        parcel.writeInt(brewTime);
+        parcel.writeInt(bloomWater);
+        parcel.writeInt(remainingBrewWater);
+        parcel.writeInt(isNewRecipe ? 1 : 0);
+        parcel.writeInt(recipeHadBloom ? 1 : 0);
     }
 
     @SuppressWarnings("unused")

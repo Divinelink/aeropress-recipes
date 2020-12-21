@@ -2,10 +2,11 @@ package aeropresscipe.divinelink.aeropress.base;
 
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceUI;
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipesFragment;
-import aeropresscipe.divinelink.aeropress.timer.TimerFragment;
+import aeropresscipe.divinelink.aeropress.timer.TimerActivity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -21,7 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 public class HomeActivity extends AppCompatActivity implements HomeView, Parcelable {
     //FIXME make sure Parcelable is absolutely necessary, otherwise remove it and try to fix the bug it creates where app crashes when closing the app.
-    BottomNavigationView bottomNavigationView;
+    BottomNavigationView mBottomNavigationView;
 
 
     @Override
@@ -31,16 +32,15 @@ public class HomeActivity extends AppCompatActivity implements HomeView, Parcela
 
 
         //TODO make it also change the bottomNav menu options when changing fragment from backbuttons.
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-        bottomNavigationView.setOnNavigationItemReselectedListener(navigationItemReSelectedListener);
+        mBottomNavigationView = findViewById(R.id.bottom_navigation);
+        mBottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+        mBottomNavigationView.setOnNavigationItemReselectedListener(navigationItemReSelectedListener);
 
         getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .add(R.id.homeRoot, GenerateRecipeFragment.newInstance(this))
+                .replace(R.id.homeRoot, GenerateRecipeFragment.newInstance(this))
                 .commit();
-
 
     }
 
@@ -51,26 +51,27 @@ public class HomeActivity extends AppCompatActivity implements HomeView, Parcela
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.homeRoot, GenerateRecipeFragment.newInstance(this))
+                .addToBackStack(null)
                 .commit();
     }
 
     @Override
-    public void addTimerFragment(DiceUI diceUI) {
+    public void startTimerActivity(DiceUI diceUI) {
+        Intent timerIntent = new Intent(this, TimerActivity.class);
+        timerIntent.putExtra("timer", diceUI);
+        startActivity(timerIntent);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        // When leaving from Timer Activity, set bottomNavigation to be the recipe button
+        // and restart the fragment, so we can see the resume button flashing.
+        mBottomNavigationView.setSelectedItemId(R.id.recipe);
         getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.homeRoot, TimerFragment.newInstance(diceUI))
-                .addToBackStack(null)
-                .commit();
-    }
-
-    @Override
-    public void addTimerFragmentFromResume(DiceUI diceUI) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .replace(R.id.homeRoot, TimerFragment.newInstance(diceUI))
-                .addToBackStack(null)
+                .replace(R.id.homeRoot, GenerateRecipeFragment.newInstance(this))
                 .commit();
     }
 
@@ -83,7 +84,6 @@ public class HomeActivity extends AppCompatActivity implements HomeView, Parcela
                 .addToBackStack(null)
                 .commit();
     }
-
 
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -119,6 +119,17 @@ public class HomeActivity extends AppCompatActivity implements HomeView, Parcela
                     }
                 }
             };
+
+
+    @Override
+    public void onBackPressed() {
+        if (mBottomNavigationView.getSelectedItemId() == R.id.recipe) {
+            super.onBackPressed();
+            finish();
+        } else {
+            mBottomNavigationView.setSelectedItemId(R.id.recipe);
+        }
+    }
 
     @Override
     public int describeContents() {

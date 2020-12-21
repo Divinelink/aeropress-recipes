@@ -176,10 +176,11 @@ public class TimerFragment extends Fragment implements TimerView {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        // Use OnPause instead of OnStop, because onStop is called after we go back to HomeActivity,
+        // and in this case we don't get the isBrewing boolean in time
+        super.onPause();
 
-        // Basically when both getBloomTime and getBrewTime are equal to 0, then don't proceed.
         diceUI.setNewRecipe(false);
         if (getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getTime() != 0) {
             final boolean isBloomPhase = getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getPhase();
@@ -197,7 +198,6 @@ public class TimerFragment extends Fragment implements TimerView {
             editor.putBoolean("isBrewing", false);
             editor.apply();
         }
-        //ON STOP, if recipe is over make it remove resumeBtn
     }
 
     @Override

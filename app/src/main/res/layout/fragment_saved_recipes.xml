@@ -8,6 +8,17 @@
     android:orientation="vertical"
     tools:context=".savedrecipes.SavedRecipesFragment">
 
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorAccent"
+        android:minHeight="?attr/actionBarSize"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:theme="@style/ToolbarTheme"
+        app:title="@string/favourites" />
+
     <LinearLayout
         android:id="@+id/emptyListLayout"
         android:layout_width="match_parent"
@@ -34,15 +45,6 @@
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorAccent"
-        android:minHeight="?attr/actionBarSize"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        app:theme="@style/ToolbarTheme"
-        app:title="@string/favourites" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/savedRecipesRV"
