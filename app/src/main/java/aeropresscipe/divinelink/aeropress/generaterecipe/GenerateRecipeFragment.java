@@ -88,8 +88,8 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         recipeRv.setLayoutManager(layoutManager);
 
         presenter = new GenerateRecipePresenterImpl(this);
-        mFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.initiliaze_animation);
         presenter.getRecipe(getContext());
+        mFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.initiliaze_animation);
 
 
         return v;

@@ -63,17 +63,18 @@ public class HomeActivity extends AppCompatActivity implements HomeView, Parcela
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        // When leaving from Timer Activity, set bottomNavigation to be the recipe button
-        // and restart the fragment, so we can see the resume button flashing.
+    protected void onResume() {
+        super.onResume();
         mBottomNavigationView.setSelectedItemId(R.id.recipe);
         getSupportFragmentManager()
                 .beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .setTransition(FragmentTransaction.TRANSIT_NONE)
                 .replace(R.id.homeRoot, GenerateRecipeFragment.newInstance(this))
                 .commit();
+        // When leaving from Timer Activity, set bottomNavigation to be the recipe button
+        // and restart the fragment, so we can see the resume button flashing.
     }
+
 
     @Override
     public void addSavedRecipesFragment() {

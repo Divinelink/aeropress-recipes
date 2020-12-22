@@ -12,7 +12,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {DiceDomain.class, SavedRecipeDomain.class}, version = 6, exportSchema = false)
+@Database(entities = {DiceDomain.class, SavedRecipeDomain.class}, version = 7, exportSchema = false)
 @TypeConverters(Converters.class)
 abstract public class HomeDatabase extends RoomDatabase {
 
