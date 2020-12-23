@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-
 import aeropresscipe.divinelink.aeropress.R;
 
 /**
@@ -115,7 +114,11 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
                 public void run() {
                     recipeRv.setAdapter(recipeRvAdapter);
                     if (!mFadeInAnimation.hasEnded()) {
-                        mFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_out);
+                        try { //FIXME Maybe this isn't the best solution. Basically, there's a problem where if you're using Fragment Transition animation, and you also want to load the following animation on the button, app crashes.
+                            //So I used this try catch method and app waits until UI loads.
+                            mFadeInAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in_out);
+                        } catch (Exception ignore) {
+                        }
                         resumeBrewBtn.startAnimation(mFadeInAnimation);
                     }
                 }
@@ -176,7 +179,9 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
                 @Override
                 public void run() {
                     recipeRv.setAdapter(recipeRvAdapter);
-                    mFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.initiliaze_animation);
+                    //         mFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.initiliaze_animation);
+                    if (mFadeInAnimation == null)
+                        mFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.initiliaze_animation);
                     resumeBrewBtn.startAnimation(mFadeInAnimation);
                 }
             });
