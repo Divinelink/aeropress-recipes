@@ -104,6 +104,4 @@
         tools:itemCount="20" />
 
 
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package aeropresscipe.divinelink.aeropress.base;
 
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceUI;
+import aeropresscipe.divinelink.aeropress.history.HistoryFragment;
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipesFragment;
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity;
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import aeropresscipe.divinelink.aeropress.R;
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeFragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 
@@ -44,6 +46,25 @@ public class HomeActivity extends AppCompatActivity implements HomeView, Parcela
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // When leaving from Timer Activity, set bottomNavigation to be the recipe button
+        // and restart the fragment, so we can see the resume button flashing.
+        mBottomNavigationView.setSelectedItemId(R.id.recipe);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_NONE)
+                .replace(R.id.homeRoot, GenerateRecipeFragment.newInstance(this))
+                .commit();
+    }
+
+    @Override
+    public void startTimerActivity(DiceUI diceUI) {
+        Intent timerIntent = new Intent(this, TimerActivity.class);
+        timerIntent.putExtra("timer", diceUI);
+        startActivity(timerIntent);
+    }
 
     @Override
     public void addGenerateRecipeFragment() {
@@ -56,32 +77,21 @@ public class HomeActivity extends AppCompatActivity implements HomeView, Parcela
     }
 
     @Override
-    public void startTimerActivity(DiceUI diceUI) {
-        Intent timerIntent = new Intent(this, TimerActivity.class);
-        timerIntent.putExtra("timer", diceUI);
-        startActivity(timerIntent);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mBottomNavigationView.setSelectedItemId(R.id.recipe);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_NONE)
-                .replace(R.id.homeRoot, GenerateRecipeFragment.newInstance(this))
-                .commit();
-        // When leaving from Timer Activity, set bottomNavigation to be the recipe button
-        // and restart the fragment, so we can see the resume button flashing.
-    }
-
-
-    @Override
     public void addSavedRecipesFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.homeRoot, SavedRecipesFragment.newInstance(this))
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void addHistoryFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .replace(R.id.homeRoot, HistoryFragment.newInstance(this))
                 .addToBackStack(null)
                 .commit();
     }
@@ -98,7 +108,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView, Parcela
                             addSavedRecipesFragment();
                             return true;
                         case R.id.history:
-//                            openFragment(NotificationFragment.newInstance("", ""));
+                            addHistoryFragment();
                             return true;
                     }
                     return false;

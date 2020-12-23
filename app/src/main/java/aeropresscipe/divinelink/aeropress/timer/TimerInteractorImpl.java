@@ -80,7 +80,7 @@ public class TimerInteractorImpl implements TimerInteractor {
                 final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
                 final SavedRecipeDao savedRecipeDao = HomeDatabase.getDatabase(ctx).savedRecipeDao();
 
-                final DiceDomain recipe = recipeDao.getRecipe();
+                final DiceDomain recipe = recipeDao.getSingleRecipe();
                 final SavedRecipeDomain currentRecipe = new SavedRecipeDomain(recipe, getCurrentDate());
 
                 final boolean recipeExists = savedRecipeDao.recipeExists(recipe.getId());
@@ -110,7 +110,7 @@ public class TimerInteractorImpl implements TimerInteractor {
                 final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
                 final SavedRecipeDao savedRecipeDao = HomeDatabase.getDatabase(ctx).savedRecipeDao();
 
-                final DiceDomain recipe = recipeDao.getRecipe();
+                final DiceDomain recipe = recipeDao.getSingleRecipe();
                 final SavedRecipeDomain currentRecipe = new SavedRecipeDomain(recipe, getCurrentDate());
                 final boolean recipeExists = savedRecipeDao.recipeExists(recipe.getId()); //Checks whether current recipe exists on DB
 

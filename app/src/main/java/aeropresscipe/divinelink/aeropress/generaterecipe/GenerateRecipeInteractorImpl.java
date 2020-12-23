@@ -70,7 +70,7 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor, S
             @Override
             public void run() {
                 final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
-                final DiceDomain recipe = recipeDao.getRecipe();
+                final DiceDomain recipe = recipeDao.getSingleRecipe();
 
                 if (recipe == null) {
                     // If it's the first time we run the app, there's no recipe. We generate a new one using the getRandomRecipe() method

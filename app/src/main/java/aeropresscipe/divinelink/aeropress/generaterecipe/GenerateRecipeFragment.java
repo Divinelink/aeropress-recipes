@@ -116,6 +116,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
                     if (!mFadeInAnimation.hasEnded()) {
                         try { //FIXME Maybe this isn't the best solution. Basically, there's a problem where if you're using Fragment Transition animation, and you also want to load the following animation on the button, app crashes.
                             //So I used this try catch method and app waits until UI loads.
+                            //This happens because, getContext() is null since there are parts of the lifecycle where this will return null.
                             mFadeInAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in_out);
                         } catch (Exception ignore) {
                         }

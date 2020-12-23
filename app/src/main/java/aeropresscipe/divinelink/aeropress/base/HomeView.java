@@ -16,5 +16,7 @@ public interface HomeView extends Serializable {
 
     void addGenerateRecipeFragment();
 
+    void addHistoryFragment();
+
 
 }
