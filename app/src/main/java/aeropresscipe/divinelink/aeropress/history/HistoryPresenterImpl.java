@@ -5,6 +5,7 @@ import android.content.Context;
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
+import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain;
 
 public class HistoryPresenterImpl implements IHistoryPresenter, IHistoryInteractor.OnGetHistoryFromDBFinishListener {
 

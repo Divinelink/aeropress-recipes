@@ -347,14 +347,16 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
                 //Change the top and bottom position of each button as you scroll through the recycle view.
                 float offSetDifference = clickRegion.top - staticInitialPositions.get(pos).get(0).top;
 
-                final RectF deleteButton = clickPositionsAndRegions.get(pos).get(0);
-                final RectF brewButton = clickPositionsAndRegions.get(pos).get(1);
+
 
                 final float staticTop = staticInitialPositions.get(pos).get(0).top;
                 final float staticBot = staticInitialPositions.get(pos).get(0).bottom;
 
-                deleteButton.set(deleteButton.left, staticTop + offSetDifference, deleteButton.right, staticBot + offSetDifference);
-                brewButton.set(brewButton.left, staticTop + offSetDifference, brewButton.right, staticBot + offSetDifference);
+                //The Loop is needed because SwipeHelper is implemented twice, both on History and Favourites, and we have different amount of buttons created on each one.
+                for (int i = 0; i <  clickPositionsAndRegions.get(pos).size(); i++) {
+                    RectF button = clickPositionsAndRegions.get(pos).get(i);
+                    button.set(button.left, staticTop + offSetDifference, button.right, staticBot + offSetDifference);
+                }
             }
 
             this.pos = pos;
