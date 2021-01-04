@@ -33,9 +33,10 @@ public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnSta
     }
 
     @Override
-    public void getNumbersForTimer(int time, boolean bloomPhase, Context ctx) {
+    public void startBrewing(int time, boolean bloomPhase, Context ctx) {
         timerView.showTimer(time, bloomPhase);
         interactor.checkIfRecipeIsLikedAndSavedOnDB(this, ctx);
+        interactor.addRecipeToHistory(ctx);
     }
 
     @Override

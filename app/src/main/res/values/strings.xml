@@ -65,7 +65,7 @@
 
     <string name="recipe">Recipe</string>
     <string name="history">History</string>
-    <string name="emptyHistoryListText">Your brewing history will appear here\n</string>
+    <string name="emptyHistoryListText">Your brewing history will appear here</string>
 
 
 </resources>

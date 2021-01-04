@@ -18,7 +18,7 @@ public class HistoryPresenterImpl implements IHistoryPresenter, IHistoryInteract
     }
 
     @Override
-    public void onSuccess(List<DiceDomain> historyRecipes) {
+    public void onSuccess(List<HistoryDomain> historyRecipes) {
             historyView.showHistory(historyRecipes);
     }
 

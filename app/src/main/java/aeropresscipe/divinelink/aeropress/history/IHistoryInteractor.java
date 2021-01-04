@@ -17,7 +17,7 @@ interface IHistoryInteractor {
 
     interface OnGetHistoryFromDBFinishListener{
 
-        void onSuccess(List<DiceDomain> historyRecipes);
+        void onSuccess(List<HistoryDomain> historyRecipes);
         void onEmptyList();
         void onError();
 

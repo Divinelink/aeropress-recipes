@@ -4,6 +4,8 @@ import android.content.Context;
 
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
 import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeDao;
+import aeropresscipe.divinelink.aeropress.history.HistoryDao;
+import aeropresscipe.divinelink.aeropress.history.HistoryDomain;
 import aeropresscipe.divinelink.aeropress.savedrecipes.Converters;
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDao;
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain;
@@ -12,13 +14,15 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {DiceDomain.class, SavedRecipeDomain.class}, version = 7, exportSchema = false)
+@Database(entities = {DiceDomain.class, SavedRecipeDomain.class, HistoryDomain.class}, version = 9, exportSchema = false)
 @TypeConverters(Converters.class)
 abstract public class HomeDatabase extends RoomDatabase {
 
     public abstract RecipeDao recipeDao();
 
     public abstract SavedRecipeDao savedRecipeDao();
+
+    public abstract HistoryDao historyDao();
 
     static private HomeDatabase INSTANCE;
 

@@ -1,4 +1,4 @@
-package aeropresscipe.divinelink.aeropress.savedrecipes;
+package aeropresscipe.divinelink.aeropress.history;
 
 
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
@@ -6,8 +6,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "SavedRecipes")
-public class SavedRecipeDomain {
+@Entity(tableName = "HistoryRecipes")
+public class HistoryDomain {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -19,7 +19,7 @@ public class SavedRecipeDomain {
     //FIXME figure out how to remove diceDomain field from DB
     private DiceDomain diceDomain;
 
-    public SavedRecipeDomain(DiceDomain diceDomain, String dateBrewed) {
+    public HistoryDomain(DiceDomain diceDomain, String dateBrewed) {
         this.diceDomain = diceDomain;
         this.id = diceDomain.getId();
         this.diceTemperature = diceDomain.getDiceTemperature();
@@ -34,16 +34,16 @@ public class SavedRecipeDomain {
     }
 
     @Ignore
-    public SavedRecipeDomain(int id,
-                             int diceTemperature,
-                             String groundSize,
-                             int brewTime,
-                             String brewingMethod,
-                             int bloomTime,
-                             int bloomWater,
-                             int brewWaterAmount,
-                             int coffeeAmount,
-                             String dateBrewed) {
+    public HistoryDomain(int id,
+                         int diceTemperature,
+                         String groundSize,
+                         int brewTime,
+                         String brewingMethod,
+                         int bloomTime,
+                         int bloomWater,
+                         int brewWaterAmount,
+                         int coffeeAmount,
+                         String dateBrewed) {
         this.id = id;
         this.diceTemperature = diceTemperature;
         this.groundSize = groundSize;

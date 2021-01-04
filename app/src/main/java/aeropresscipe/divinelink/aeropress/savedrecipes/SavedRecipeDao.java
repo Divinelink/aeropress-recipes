@@ -2,7 +2,6 @@ package aeropresscipe.divinelink.aeropress.savedrecipes;
 
 import java.util.List;
 
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;

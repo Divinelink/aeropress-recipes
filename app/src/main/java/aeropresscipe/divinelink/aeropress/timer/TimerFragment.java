@@ -24,8 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
-import java.io.Serializable;
-
 import aeropresscipe.divinelink.aeropress.R;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
@@ -139,7 +137,7 @@ public class TimerFragment extends Fragment implements TimerView {
         @Override
         public void run() {
             if (secondsRemaining == 1 || secondsRemaining == 0) {
-                presenter.getNumbersForTimer(
+                presenter.startBrewing(
                         getPhaseFactory.findPhase(0, diceUI.getBrewTime()).getTime(),
                         false,
                         getContext());
@@ -205,7 +203,7 @@ public class TimerFragment extends Fragment implements TimerView {
         super.onResume();
         // if resuming from recipe without bloom isNewRecipe == false
         if (diceUI.isNewRecipe()) // if it's a new recipe, dont call returnValuesOnResume
-            presenter.getNumbersForTimer(
+            presenter.startBrewing(
                     getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getTime(),
                     getPhaseFactory.findPhase(diceUI.getBloomTime(), diceUI.getBrewTime()).getPhase(),
                     getContext());

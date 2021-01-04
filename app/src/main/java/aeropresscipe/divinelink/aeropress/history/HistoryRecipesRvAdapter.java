@@ -8,13 +8,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.R;
 import aeropresscipe.divinelink.aeropress.features.SwipeHelper;
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
+import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
@@ -22,14 +21,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    final private List<DiceDomain> historyRecipes;
+    final private List<HistoryDomain> historyRecipes;
     final private Context context;
     final private RecyclerView recyclerView;
 
     private IHistoryPresenter presenter;
     private int cardViewMarginAttr;
 
-    public HistoryRecipesRvAdapter(List<DiceDomain> historyRecipes, Context context, RecyclerView recyclerView) {
+    public HistoryRecipesRvAdapter(List<HistoryDomain> historyRecipes, Context context, RecyclerView recyclerView) {
         this.historyRecipes = historyRecipes;
         this.context = context;
         this.recyclerView = recyclerView;
@@ -97,7 +96,7 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
         else
             savedRecipeViewHolder.timeItem.setText(context.getResources().getString(R.string.SavedTotalTimeWithBloomTextView, historyRecipes.get(i).getBrewTime(), bloomTime));
 
-//        savedRecipeViewHolder.brewedOnItem.setText(context.getResources().getString(R.string.dateBrewedTextView, historyRecipes.get(i).getDateBrewed()));
+        savedRecipeViewHolder.brewedOnItem.setText(context.getResources().getString(R.string.dateBrewedTextView, historyRecipes.get(i).getDateBrewed()));
 
     }
 

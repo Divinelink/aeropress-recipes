@@ -13,6 +13,8 @@ import java.util.Date;
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase;
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
 import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeDao;
+import aeropresscipe.divinelink.aeropress.history.HistoryDao;
+import aeropresscipe.divinelink.aeropress.history.HistoryDomain;
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDao;
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain;
 
@@ -120,6 +122,22 @@ public class TimerInteractorImpl implements TimerInteractor {
         });
     }
 
+    @Override
+    public void addRecipeToHistory(final Context ctx) {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                final HistoryDao historyDao = HomeDatabase.getDatabase(ctx).historyDao();
+                final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
+
+                final DiceDomain recipe = recipeDao.getSingleRecipe();
+                final HistoryDomain currentRecipe = new HistoryDomain(recipe, getCurrentDate());
+
+                historyDao.insertRecipeToHistory(currentRecipe);
+            }
+        });
+    }
 
     public String getCurrentDate() {
         Date date = new Date();

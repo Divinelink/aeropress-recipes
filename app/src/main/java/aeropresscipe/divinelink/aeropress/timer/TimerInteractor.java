@@ -14,6 +14,8 @@ public interface TimerInteractor {
 
     void checkIfRecipeIsLikedAndSavedOnDB(OnSaveLikedRecipeFinishListener listener, Context ctx);
 
+    void addRecipeToHistory(Context ctx);
+
     interface OnStartTimerFinishListener{
         void onSuccess(int time, boolean bloomPhase);
         void onBrewFinished();

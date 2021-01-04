@@ -72,7 +72,7 @@ public class HistoryFragment extends Fragment implements IHistoryView {
     }
 
     @Override
-    public void showHistory(final List<DiceDomain> savedRecipes) {
+    public void showHistory(final List<HistoryDomain> savedRecipes) {
 
 
         if (getActivity() != null) {

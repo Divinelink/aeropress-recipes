@@ -7,7 +7,7 @@ import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain;
 
 interface IHistoryView {
 
-    void showHistory(List<DiceDomain> savedRecipes);
+    void showHistory(List<HistoryDomain> savedRecipes);
 
     void showEmptyListMessage();
 }

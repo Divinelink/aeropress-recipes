@@ -21,8 +21,8 @@ public class HistoryInteractorImpl implements IHistoryInteractor {
             @Override
             public void run() {
 
-                final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
-                final List<DiceDomain> mHistoryRecipes = recipeDao.getRecipeHistory();
+                final HistoryDao recipeDao = HomeDatabase.getDatabase(ctx).historyDao();
+                final List<HistoryDomain> mHistoryRecipes = recipeDao.getHistoryRecipes();
 
 
                 if (mHistoryRecipes.size() != 0)
