@@ -4,9 +4,6 @@ import android.content.Context;
 
 import java.util.List;
 
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain;
-
 public class HistoryPresenterImpl implements IHistoryPresenter, IHistoryInteractor.OnGetHistoryFromDBFinishListener {
 
     final private IHistoryView historyView;
@@ -19,7 +16,17 @@ public class HistoryPresenterImpl implements IHistoryPresenter, IHistoryInteract
 
     @Override
     public void onSuccess(List<HistoryDomain> historyRecipes) {
-            historyView.showHistory(historyRecipes);
+        historyView.showHistory(historyRecipes);
+    }
+
+    @Override
+    public void onSuccessSingleRecipe(HistoryDomain historyDomain) {
+
+        historyView.passData(historyDomain.getBloomTime(),
+                historyDomain.getBrewTime(),
+                historyDomain.getBloomWater(),
+                historyDomain.getBrewWaterAmount() - historyDomain.getBloomWater());
+
     }
 
     @Override
@@ -39,6 +46,8 @@ public class HistoryPresenterImpl implements IHistoryPresenter, IHistoryInteract
 
     @Override
     public void getSpecificRecipeToStartNewBrew(Context ctx, int position) {
+
+        interactor.getSpecificRecipeFromDB(this, ctx, position);
 
     }
 

@@ -67,5 +67,8 @@
     <string name="history">History</string>
     <string name="emptyHistoryListText">Your brewing history will appear here</string>
 
+    <string name="action_delete">Delete History</string>
+    <string name="deleteHistoryMessage">Are you sure you want to delete your history?</string>
+
 
 </resources>

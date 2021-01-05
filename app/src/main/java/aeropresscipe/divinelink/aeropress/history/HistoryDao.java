@@ -20,4 +20,8 @@ public abstract class HistoryDao {
     abstract void deleteAll();
 
 
+    //TODO make history only keep in DB the last 20 recipes
+
+
+
 }

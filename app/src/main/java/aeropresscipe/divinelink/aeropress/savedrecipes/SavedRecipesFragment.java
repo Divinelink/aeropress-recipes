@@ -1,10 +1,12 @@
 package aeropresscipe.divinelink.aeropress.savedrecipes;
 
+import android.opengl.Visibility;
 import android.os.Bundle;
 
 
 import aeropresscipe.divinelink.aeropress.base.HomeView;
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceUI;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -19,6 +21,7 @@ import android.widget.LinearLayout;
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.R;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,7 +37,6 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView {
     private LinearLayout mEmptyListLL;
 
     private Animation mFadeAnimation;
-
 
 
     @Override
@@ -79,7 +81,6 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView {
         fragment.setArguments(args);
         return fragment;
     }
-
 
 
     @Override
@@ -137,15 +138,17 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView {
                 @Override
                 public void run() {
 
-                    mFadeAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_favourites);
-                    savedRecipesRV.startAnimation(mFadeAnimation);
-                    mFadeAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_favourites);
-                    mEmptyListLL.setAnimation(mFadeAnimation);
+                    beginFading(savedRecipesRV, AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_favourites), 8);
+                    beginFading(mEmptyListLL, AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_favourites), 0);
 
-                    savedRecipesRV.setVisibility(View.GONE);
-                    mEmptyListLL.setVisibility(LinearLayout.VISIBLE);
                 }
             });
         }
+    }
+
+    public void beginFading(View view, Animation animation, int visibility) {
+        // 0 = View.VISIBLE, 4 = View.INVISIBLE, 8 = View.GONE
+        view.startAnimation(animation);
+        view.setVisibility(visibility);
     }
 }

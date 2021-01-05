@@ -1,30 +1,35 @@
 package aeropresscipe.divinelink.aeropress.history;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import aeropresscipe.divinelink.aeropress.base.HomeView;
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain;
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipesFragment;
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipesRvAdapter;
+import aeropresscipe.divinelink.aeropress.generaterecipe.DiceUI;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.R;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-public class HistoryFragment extends Fragment implements IHistoryView {
+public class HistoryFragment extends Fragment implements IHistoryView, ISharedPrefHistoryManager {
 
     private IHistoryPresenter presenter;
     private HomeView homeView;
@@ -33,17 +38,22 @@ public class HistoryFragment extends Fragment implements IHistoryView {
     private Toolbar mToolBar;
     private LinearLayout mEmptyListLL;
     private Animation mFadeAnimation;
+    private TextView mHistoryTV;
+
+    private boolean mHistoryIsEmpty;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_history, container, false);
+        View v = inflater.inflate(R.layout.fragment_history, container, false);
 
         homeView = (HomeView) getArguments().getSerializable("home_view");
 
         historyRecipesRV = (RecyclerView) v.findViewById(R.id.historyRV);
+        mHistoryTV = (TextView) v.findViewById(R.id.historyTV);
         mToolBar = (Toolbar) v.findViewById(R.id.toolbar);
+        mToolBar.setOnMenuItemClickListener(toolbarMenuClickListener);
         mEmptyListLL = (LinearLayout) v.findViewById(R.id.emptyListLayout);
 
         mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -52,6 +62,7 @@ public class HistoryFragment extends Fragment implements IHistoryView {
                 getActivity().onBackPressed();
             }
         });
+
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         historyRecipesRV.setLayoutManager(layoutManager);
@@ -94,8 +105,84 @@ public class HistoryFragment extends Fragment implements IHistoryView {
     @Override
     public void showEmptyListMessage() {
 
-        historyRecipesRV.setVisibility(View.GONE);
-        mEmptyListLL.setVisibility(LinearLayout.VISIBLE);
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
 
+                    beginFading(historyRecipesRV, AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_favourites), 8);
+                    beginFading(mHistoryTV, AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_favourites), 8);
+                    beginFading(mEmptyListLL, AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in), 0);
+
+                    setIsHistoryEmptyBool(getContext(), true);
+
+                }
+            });
+        }
+    }
+
+    public void beginFading(View view, Animation animation, int visibility) {
+        // 0 = View.VISIBLE, 4 = View.INVISIBLE, 8 = View.GONE
+        view.startAnimation(animation);
+        view.setVisibility(visibility);
+    }
+
+    @Override
+    public void passData(final int bloomTime, final int brewTime, final int bloomWater,
+                         final int brewWater) {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    DiceUI diceUI = new DiceUI(bloomTime, brewTime, bloomWater, brewWater);
+                    diceUI.setNewRecipe(true);
+                    homeView.startTimerActivity(diceUI);
+                }
+            });
+        }
+    }
+
+    Toolbar.OnMenuItemClickListener toolbarMenuClickListener = new Toolbar.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_delete_history:
+
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    mHistoryIsEmpty = preferences.getBoolean("isHistoryEmpty", false);
+                    //TODO Make button unavailable when History is empty.
+                    if (!mHistoryIsEmpty)
+                        showDeleteHistoryDialog();
+
+                    return true;
+                default:
+                    return false;
+            }
+        }
+    };
+
+    public void showDeleteHistoryDialog() {
+        new MaterialAlertDialogBuilder(getContext())
+                .setTitle(R.string.action_delete)
+                .setMessage(R.string.deleteHistoryMessage)
+                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        presenter.clearHistory(getContext());
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {}
+                })
+                .show();
+    }
+
+    @Override
+    public void setIsHistoryEmptyBool(Context ctx, boolean bool) {
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+        final SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("isHistoryEmpty", bool);
+        editor.apply();
     }
 }

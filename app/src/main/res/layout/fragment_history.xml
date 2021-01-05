@@ -15,8 +15,11 @@
         android:background="?attr/colorAccent"
         android:minHeight="?attr/actionBarSize"
         app:navigationIcon="?attr/homeAsUpIndicator"
+        app:menu="@menu/history_toolbar_menu"
         app:theme="@style/ToolbarTheme"
         app:title="@string/history" />
+
+
 
     <LinearLayout
         android:id="@+id/emptyListLayout"
@@ -45,6 +48,13 @@
     </LinearLayout>
 
     <!--TODO ADD DELETE ALL HISTORY BUTTON -->
+
+    <TextView
+        android:id="@+id/historyTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Most Recent Brewed Recipes"
+        android:gravity="center"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/historyRV"

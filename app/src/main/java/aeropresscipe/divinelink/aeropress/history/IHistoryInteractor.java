@@ -4,9 +4,6 @@ import android.content.Context;
 
 import java.util.List;
 
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain;
-
 interface IHistoryInteractor {
 
 
@@ -14,10 +11,13 @@ interface IHistoryInteractor {
 
     void deleteHistory(OnGetHistoryFromDBFinishListener listener, Context ctx);
 
+    void getSpecificRecipeFromDB(IHistoryInteractor.OnGetHistoryFromDBFinishListener listener, Context ctx, int position);
+
 
     interface OnGetHistoryFromDBFinishListener{
 
         void onSuccess(List<HistoryDomain> historyRecipes);
+        void onSuccessSingleRecipe(HistoryDomain historyDomain);
         void onEmptyList();
         void onError();
 
