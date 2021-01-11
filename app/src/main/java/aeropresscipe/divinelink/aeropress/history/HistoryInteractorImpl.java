@@ -21,8 +21,13 @@ public class HistoryInteractorImpl implements IHistoryInteractor, ISharedPrefHis
             public void run() {
 
                 final HistoryDao recipeDao = HomeDatabase.getDatabase(ctx).historyDao();
-                final List<HistoryDomain> mHistoryRecipes = recipeDao.getHistoryRecipes();
+                List<HistoryDomain> mHistoryRecipes = recipeDao.getHistoryRecipes();
 
+
+                if (mHistoryRecipes.size() >= 10) {
+                    recipeDao.deleteSurplus();
+                    mHistoryRecipes = recipeDao.getHistoryRecipes();
+                }
 
                 if (mHistoryRecipes.size() != 0) {
                     setIsHistoryEmptyBool(ctx, false);

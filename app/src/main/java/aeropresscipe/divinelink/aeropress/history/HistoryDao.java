@@ -2,6 +2,7 @@ package aeropresscipe.divinelink.aeropress.history;
 
 import java.util.List;
 
+import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -19,9 +20,8 @@ public abstract class HistoryDao {
     @Query("DELETE FROM HistoryRecipes")
     abstract void deleteAll();
 
-
-    //TODO make history only keep in DB the last 20 recipes
-
+    @Query("DELETE FROM HistoryRecipes where id NOT IN (SELECT id from HistoryRecipes ORDER BY id DESC LIMIT 10)")
+    abstract void deleteSurplus();
 
 
 }

@@ -46,12 +46,10 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         homeView = (HomeView) getArguments().getSerializable("home_view");
         recipeRv = v.findViewById(R.id.recipe_rv);
         generateRecipeButton = v.findViewById(R.id.generateRecipeButton);
-        //FIXME TEMPORARY BUTTON
         timerButton = v.findViewById(R.id.startTimerButton);
         resumeBrewBtn = v.findViewById(R.id.resumeBrewButton);
 
 
-        //TODO ADD FADE-IN ANIMATION WHEN GENERATING NEW RECIPE
         generateRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
