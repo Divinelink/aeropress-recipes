@@ -15,11 +15,12 @@ public class HistoryDomain {
     private int diceTemperature, brewTime, bloomTime, bloomWater, coffeeAmount, brewWaterAmount;
     private String groundSize, brewingMethod;
     private String dateBrewed;
+    private boolean recipeLiked;
 
     //FIXME figure out how to remove diceDomain field from DB
     private DiceDomain diceDomain;
 
-    public HistoryDomain(DiceDomain diceDomain, String dateBrewed) {
+    public HistoryDomain(DiceDomain diceDomain, String dateBrewed, boolean recipeLiked) {
         this.diceDomain = diceDomain;
         this.id = diceDomain.getId();
         this.diceTemperature = diceDomain.getDiceTemperature();
@@ -31,6 +32,7 @@ public class HistoryDomain {
         this.brewWaterAmount = diceDomain.getBrewWaterAmount();
         this.coffeeAmount = diceDomain.getCoffeeAmount();
         this.dateBrewed = dateBrewed;
+        this.recipeLiked = recipeLiked;
     }
 
     @Ignore
@@ -54,6 +56,14 @@ public class HistoryDomain {
         this.brewWaterAmount = brewWaterAmount;
         this.coffeeAmount = coffeeAmount;
         this.dateBrewed = dateBrewed;
+    }
+
+    public void setRecipeLiked(boolean recipeLiked) {
+        this.recipeLiked = recipeLiked;
+    }
+
+    public boolean isRecipeLiked() {
+        return recipeLiked;
     }
 
     public DiceDomain getDiceDomain() {

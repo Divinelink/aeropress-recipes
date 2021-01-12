@@ -12,4 +12,6 @@ interface IHistoryView {
     void passData(int bloomTime, int brewTime, int bloomWater, int brewWater);
 
     void showEmptyListMessage();
+
+    void setRecipeLiked(boolean isLiked);
 }

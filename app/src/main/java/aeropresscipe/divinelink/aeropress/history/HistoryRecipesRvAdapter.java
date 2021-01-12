@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -47,6 +48,7 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
         final private TextView timeItem;
         final private TextView brewedOnItem;
         final private CardView cardView;
+        final private ImageButton addFavourite;
 
         public SavedRecipeViewHolder(View v) {
             super(v);
@@ -57,6 +59,8 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
             this.timeItem = v.findViewById(R.id.savedTimeTV);
             this.brewedOnItem = v.findViewById(R.id.brewedOnTV);
             this.cardView = v.findViewById(R.id.card_view);
+            this.addFavourite = v.findViewById(R.id.likeRecipeButton);
+
         }
 
     }
@@ -72,6 +76,13 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vh.cardView.getLayoutParams();
         cardViewMarginAttr = lp.bottomMargin;
 
+        vh.addFavourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.addRecipeToFavourites(context);
+            }
+        });
+
         return vh;
     }
 
@@ -85,6 +96,7 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
         final int bloomTime = historyRecipes.get(i).getBloomTime();
         final int temp = historyRecipes.get(i).getDiceTemperature();
         final String grindSize = historyRecipes.get(i).getGroundSize().substring(0, 1).toUpperCase() + historyRecipes.get(i).getGroundSize().substring(1).toLowerCase();
+        final boolean isRecipeLiked = historyRecipes.get(i).isRecipeLiked();
 
         savedRecipeViewHolder.waterAndTempItem.setText(context.getResources().getString(R.string.SavedWaterAndTempTextView, total_water, temp, temp * 9 / 5 + 32));
         savedRecipeViewHolder.beansWeightItem.setText(context.getResources().getString(R.string.SavedCoffeeWeightTextView, historyRecipes.get(i).getCoffeeAmount()));
@@ -97,6 +109,11 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
             savedRecipeViewHolder.timeItem.setText(context.getResources().getString(R.string.SavedTotalTimeWithBloomTextView, historyRecipes.get(i).getBrewTime(), bloomTime));
 
         savedRecipeViewHolder.brewedOnItem.setText(context.getResources().getString(R.string.dateBrewedTextView, historyRecipes.get(i).getDateBrewed()));
+
+        if (isRecipeLiked)
+            savedRecipeViewHolder.addFavourite.setImageResource(R.drawable.ic_heart_on);
+        else
+            savedRecipeViewHolder.addFavourite.setImageResource(R.drawable.ic_heart_off);
 
     }
 
@@ -128,6 +145,7 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
         };
         swipeHelper.attachSwipe(context);
     }
+
 
 
 }

@@ -47,8 +47,6 @@
 
     </LinearLayout>
 
-    <!--TODO ADD DELETE ALL HISTORY BUTTON -->
-
     <TextView
         android:id="@+id/historyTV"
         android:layout_width="match_parent"

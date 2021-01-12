@@ -4,6 +4,8 @@ import android.content.Context;
 
 import java.util.List;
 
+import aeropresscipe.divinelink.aeropress.timer.TimerInteractor;
+
 interface IHistoryInteractor {
 
 
@@ -11,8 +13,9 @@ interface IHistoryInteractor {
 
     void deleteHistory(OnGetHistoryFromDBFinishListener listener, Context ctx);
 
-    void getSpecificRecipeFromDB(IHistoryInteractor.OnGetHistoryFromDBFinishListener listener, Context ctx, int position);
+    void getSpecificRecipeFromDB(OnGetHistoryFromDBFinishListener listener, Context ctx, int position);
 
+    void addRecipeToFavourites(OnSaveRecipeToDBFinishListener listener, Context ctx);
 
     interface OnGetHistoryFromDBFinishListener{
 
@@ -22,5 +25,11 @@ interface IHistoryInteractor {
         void onError();
 
     }
+
+    interface OnSaveRecipeToDBFinishListener{
+        void onSavedRecipe();
+    }
+
+
 
 }

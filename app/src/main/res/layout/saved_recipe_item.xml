@@ -5,8 +5,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/saved_recipe_item"
     android:orientation="vertical"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="@layout/list_item_main">
+    xmlns:tools="http://schemas.android.com/tools">
 
 
     <androidx.cardview.widget.CardView
@@ -21,7 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
 
             <TextView
                 android:id="@+id/brewedOnTV"
@@ -124,6 +122,26 @@
                             android:id="@+id/savedTimeTV"
                             style="@style/SavedRecipeItemTextViewStyle"
                             tools:text="Time" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/AddToFavouritesLL"
+                        style="@style/SavedRecipeLinearLayoutForViewsStyle">
+
+                        <ImageButton
+                            android:id="@+id/likeRecipeButton"
+                            style="@style/SavedRecipeImageViewStyle"
+                            android:background="@drawable/ic_heart_off"
+                            android:src="@drawable/ic_heart_off"
+                            android:scaleType="fitXY"
+                            android:contentDescription="heartIcon"
+                            android:soundEffectsEnabled="false" />
+
+                        <TextView
+                            android:id="@+id/AddToFavourites"
+                            style="@style/SavedRecipeItemTextViewStyle"
+                            android:text="Add Favourite"
+                            tools:text="Add Favourite" />
 
                     </LinearLayout>
                 </LinearLayout>

@@ -111,9 +111,8 @@ public class HistoryFragment extends Fragment implements IHistoryView, ISharedPr
                 public void run() {
 
                     beginFading(historyRecipesRV, AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_favourites), 8);
-                    beginFading(mHistoryTV, AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_favourites), 8);
-                    beginFading(mEmptyListLL, AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in), 0);
-
+                    mHistoryTV.setVisibility(View.GONE);
+                    beginFading(mEmptyListLL, AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_favourites), 0);
                     setIsHistoryEmptyBool(getContext(), true);
 
                 }
@@ -173,7 +172,8 @@ public class HistoryFragment extends Fragment implements IHistoryView, ISharedPr
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {}
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
                 })
                 .show();
     }
@@ -184,5 +184,12 @@ public class HistoryFragment extends Fragment implements IHistoryView, ISharedPr
         final SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("isHistoryEmpty", bool);
         editor.apply();
+    }
+
+    @Override
+    public void setRecipeLiked(boolean isLiked) {
+
+
+
     }
 }

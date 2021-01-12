@@ -85,18 +85,20 @@ public class TimerInteractorImpl implements TimerInteractor {
                 final DiceDomain recipe = recipeDao.getSingleRecipe();
                 final SavedRecipeDomain currentRecipe = new SavedRecipeDomain(recipe, getCurrentDate());
 
+                final HistoryDao historyDao = HomeDatabase.getDatabase(ctx).historyDao();
+
                 final boolean recipeExists = savedRecipeDao.recipeExists(recipe.getId());
-
-
 
                 if (!recipeExists) {
                     Log.d("Inserted", currentRecipe.toString());
                     savedRecipeDao.insertLikedRecipe(currentRecipe);
+                    historyDao.updateRecipe(new HistoryDomain(recipe, getCurrentDate(), true));
                     listener.onSavedRecipe(true);
                 } else {
 
                     Log.d("Deleted", currentRecipe.toString());
                     savedRecipeDao.delete(currentRecipe);
+                    historyDao.updateRecipe(new HistoryDomain(recipe, getCurrentDate(), false));
                     listener.onSavedRecipe(false);
                 }
             }
@@ -116,7 +118,10 @@ public class TimerInteractorImpl implements TimerInteractor {
                 final SavedRecipeDomain currentRecipe = new SavedRecipeDomain(recipe, getCurrentDate());
                 final boolean recipeExists = savedRecipeDao.recipeExists(recipe.getId()); //Checks whether current recipe exists on DB
 
+                final HistoryDao historyDao = HomeDatabase.getDatabase(ctx).historyDao();
+
                 Log.d("Current Recipe: ", currentRecipe.toString());
+                historyDao.updateRecipe(new HistoryDomain(recipe, getCurrentDate(), recipeExists));
                 listener.onSavedRecipe(recipeExists);
             }
         });
@@ -132,7 +137,7 @@ public class TimerInteractorImpl implements TimerInteractor {
                 final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
 
                 final DiceDomain recipe = recipeDao.getSingleRecipe();
-                final HistoryDomain currentRecipe = new HistoryDomain(recipe, getCurrentDate());
+                final HistoryDomain currentRecipe = new HistoryDomain(recipe, getCurrentDate(), false);
 
                 historyDao.insertRecipeToHistory(currentRecipe);
             }

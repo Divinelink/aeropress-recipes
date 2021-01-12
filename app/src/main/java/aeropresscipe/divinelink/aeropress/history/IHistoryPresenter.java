@@ -12,4 +12,6 @@ interface IHistoryPresenter {
 
     void clearHistory(Context ctx);
 
+    void addRecipeToFavourites(Context ctx);
+
 }

@@ -3,15 +3,22 @@ package aeropresscipe.divinelink.aeropress.history;
 import android.content.Context;
 
 import java.util.List;
+import java.util.Timer;
 
-public class HistoryPresenterImpl implements IHistoryPresenter, IHistoryInteractor.OnGetHistoryFromDBFinishListener {
+import aeropresscipe.divinelink.aeropress.timer.TimerInteractor;
+import aeropresscipe.divinelink.aeropress.timer.TimerInteractorImpl;
+
+public class HistoryPresenterImpl implements IHistoryPresenter, IHistoryInteractor.OnGetHistoryFromDBFinishListener, IHistoryInteractor.OnSaveRecipeToDBFinishListener, TimerInteractor.OnSaveLikedRecipeFinishListener {
 
     final private IHistoryView historyView;
     final private HistoryInteractorImpl interactor;
+    final private TimerInteractorImpl timerInteractor;
+
 
     public HistoryPresenterImpl(IHistoryView historyView) {
         this.historyView = historyView;
         interactor = new HistoryInteractorImpl();
+        timerInteractor = new TimerInteractorImpl();
     }
 
     @Override
@@ -26,7 +33,6 @@ public class HistoryPresenterImpl implements IHistoryPresenter, IHistoryInteract
                 historyDomain.getBrewTime(),
                 historyDomain.getBloomWater(),
                 historyDomain.getBrewWaterAmount() - historyDomain.getBloomWater());
-
     }
 
     @Override
@@ -41,20 +47,32 @@ public class HistoryPresenterImpl implements IHistoryPresenter, IHistoryInteract
 
     @Override
     public void getHistoryRecipes(Context ctx) {
+        timerInteractor.checkIfRecipeIsLikedAndSavedOnDB(this, ctx);
         interactor.getHistoryFromDB(this, ctx);
     }
 
     @Override
     public void getSpecificRecipeToStartNewBrew(Context ctx, int position) {
-
         interactor.getSpecificRecipeFromDB(this, ctx, position);
-
     }
 
     @Override
     public void clearHistory(Context ctx) {
-
         interactor.deleteHistory(this, ctx);
+    }
+
+    @Override
+    public void addRecipeToFavourites(Context ctx) {
+        interactor.addRecipeToFavourites(this, ctx);
+    }
+
+    @Override
+    public void onSavedRecipe() {
+
+    }
+
+    @Override
+    public void onSavedRecipe(boolean isSaved) {
 
     }
 }
