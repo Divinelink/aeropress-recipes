@@ -125,17 +125,19 @@
 
                     </LinearLayout>
                     <LinearLayout
-                        android:id="@+id/AddToFavouritesLL"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:id="@+id/likeRecipeLayout"
                         style="@style/SavedRecipeLinearLayoutForViewsStyle">
 
                         <ImageButton
                             android:id="@+id/likeRecipeButton"
                             style="@style/SavedRecipeImageViewStyle"
                             android:background="@drawable/ic_heart_off"
-                            android:src="@drawable/ic_heart_off"
-                            android:scaleType="fitXY"
                             android:contentDescription="heartIcon"
-                            android:soundEffectsEnabled="false" />
+                            android:scaleType="fitXY"
+                            android:soundEffectsEnabled="false"
+                            android:src="@drawable/ic_heart_off" />
 
                         <TextView
                             android:id="@+id/AddToFavourites"

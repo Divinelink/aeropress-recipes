@@ -4,8 +4,6 @@ import android.content.Context;
 
 import java.util.List;
 
-import aeropresscipe.divinelink.aeropress.timer.TimerInteractor;
-
 interface IHistoryInteractor {
 
 
@@ -27,7 +25,7 @@ interface IHistoryInteractor {
     }
 
     interface OnSaveRecipeToDBFinishListener{
-        void onSavedRecipe();
+        void onSaveRecipe();
     }
 
 

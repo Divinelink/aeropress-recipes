@@ -9,10 +9,6 @@ import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase;
 import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeDao;
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDao;
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain;
-import aeropresscipe.divinelink.aeropress.timer.TimerInteractor;
-
 public class HistoryInteractorImpl implements IHistoryInteractor, ISharedPrefHistoryManager {
 
 

@@ -5,16 +5,15 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase;
 import aeropresscipe.divinelink.aeropress.features.SharedPreferencesListManager;
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
 import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeDao;
+import aeropresscipe.divinelink.aeropress.history.HistoryDao;
+import aeropresscipe.divinelink.aeropress.history.HistoryDomain;
 import androidx.annotation.RequiresApi;
 
 public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
@@ -52,8 +51,11 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
             @Override
             public void run() {
                 final SavedRecipeDao savedRecipeDao = HomeDatabase.getDatabase(ctx).savedRecipeDao();
+                final HistoryDao historyDao = HomeDatabase.getDatabase(ctx).historyDao();
 
                 savedRecipeDao.delete(recipeDomain);
+                //Updates history DB, turn corresponding entry's Like Button off.
+                historyDao.updateRecipe(new HistoryDomain(recipeDomain.getDiceDomain(), recipeDomain.getDateBrewed(), false));
 
                 final List<SavedRecipeDomain> mSavedRecipes = savedRecipeDao.getSavedRecipes();
 

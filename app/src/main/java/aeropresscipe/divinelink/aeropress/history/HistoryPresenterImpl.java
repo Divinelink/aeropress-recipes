@@ -3,22 +3,15 @@ package aeropresscipe.divinelink.aeropress.history;
 import android.content.Context;
 
 import java.util.List;
-import java.util.Timer;
 
-import aeropresscipe.divinelink.aeropress.timer.TimerInteractor;
-import aeropresscipe.divinelink.aeropress.timer.TimerInteractorImpl;
-
-public class HistoryPresenterImpl implements IHistoryPresenter, IHistoryInteractor.OnGetHistoryFromDBFinishListener, IHistoryInteractor.OnSaveRecipeToDBFinishListener, TimerInteractor.OnSaveLikedRecipeFinishListener {
+public class HistoryPresenterImpl implements IHistoryPresenter, IHistoryInteractor.OnGetHistoryFromDBFinishListener, IHistoryInteractor.OnSaveRecipeToDBFinishListener {
 
     final private IHistoryView historyView;
     final private HistoryInteractorImpl interactor;
-    final private TimerInteractorImpl timerInteractor;
-
 
     public HistoryPresenterImpl(IHistoryView historyView) {
         this.historyView = historyView;
         interactor = new HistoryInteractorImpl();
-        timerInteractor = new TimerInteractorImpl();
     }
 
     @Override
@@ -47,7 +40,6 @@ public class HistoryPresenterImpl implements IHistoryPresenter, IHistoryInteract
 
     @Override
     public void getHistoryRecipes(Context ctx) {
-        timerInteractor.checkIfRecipeIsLikedAndSavedOnDB(this, ctx);
         interactor.getHistoryFromDB(this, ctx);
     }
 
@@ -67,12 +59,7 @@ public class HistoryPresenterImpl implements IHistoryPresenter, IHistoryInteract
     }
 
     @Override
-    public void onSavedRecipe() {
-
-    }
-
-    @Override
-    public void onSavedRecipe(boolean isSaved) {
+    public void onSaveRecipe() {
 
     }
 }

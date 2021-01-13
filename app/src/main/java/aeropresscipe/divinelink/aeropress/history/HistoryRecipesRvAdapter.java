@@ -1,7 +1,6 @@
 package aeropresscipe.divinelink.aeropress.history;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.R;
 import aeropresscipe.divinelink.aeropress.features.SwipeHelper;
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
@@ -48,7 +46,8 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
         final private TextView timeItem;
         final private TextView brewedOnItem;
         final private CardView cardView;
-        final private ImageButton addFavourite;
+        final private ImageButton likeRecipeBtn;
+        final private LinearLayout likeRecipeLayout;
 
         public SavedRecipeViewHolder(View v) {
             super(v);
@@ -59,10 +58,9 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
             this.timeItem = v.findViewById(R.id.savedTimeTV);
             this.brewedOnItem = v.findViewById(R.id.brewedOnTV);
             this.cardView = v.findViewById(R.id.card_view);
-            this.addFavourite = v.findViewById(R.id.likeRecipeButton);
-
+            this.likeRecipeBtn = v.findViewById(R.id.likeRecipeButton);
+            this.likeRecipeLayout = v.findViewById(R.id.likeRecipeLayout);
         }
-
     }
 
     @NonNull
@@ -76,7 +74,7 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vh.cardView.getLayoutParams();
         cardViewMarginAttr = lp.bottomMargin;
 
-        vh.addFavourite.setOnClickListener(new View.OnClickListener() {
+        vh.likeRecipeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 presenter.addRecipeToFavourites(context);
@@ -110,10 +108,11 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         savedRecipeViewHolder.brewedOnItem.setText(context.getResources().getString(R.string.dateBrewedTextView, historyRecipes.get(i).getDateBrewed()));
 
+        savedRecipeViewHolder.likeRecipeLayout.setVisibility(View.VISIBLE);
         if (isRecipeLiked)
-            savedRecipeViewHolder.addFavourite.setImageResource(R.drawable.ic_heart_on);
+            savedRecipeViewHolder.likeRecipeBtn.setImageResource(R.drawable.ic_heart_on);
         else
-            savedRecipeViewHolder.addFavourite.setImageResource(R.drawable.ic_heart_off);
+            savedRecipeViewHolder.likeRecipeBtn.setImageResource(R.drawable.ic_heart_off);
 
     }
 

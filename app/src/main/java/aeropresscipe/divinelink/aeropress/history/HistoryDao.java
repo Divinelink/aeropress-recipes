@@ -29,8 +29,6 @@ public abstract class HistoryDao {
     @Query("DELETE FROM HistoryRecipes WHERE id=:id")
     abstract void delete(int id);
 
-
-
     @Transaction
     public void updateRecipe(HistoryDomain historyDomain) {
         delete(historyDomain.getId());
