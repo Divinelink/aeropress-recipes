@@ -187,9 +187,16 @@ public class HistoryFragment extends Fragment implements IHistoryView, ISharedPr
     }
 
     @Override
-    public void setRecipeLiked(boolean isLiked) {
+    public void setRecipeLiked(final boolean isLiked) {
 
-
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    historyRecipesRV.getAdapter().notifyItemChanged(0, isLiked);
+                }
+            });
+        }
 
     }
 }

@@ -1,7 +1,11 @@
 package aeropresscipe.divinelink.aeropress.history;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -64,8 +68,9 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     @NonNull
+    @SuppressLint("ClickableViewAccessibility")
     @Override
-    public SavedRecipeViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public SavedRecipeViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, final int i) {
 
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.saved_recipe_item, viewGroup, false);
@@ -77,16 +82,23 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
         vh.likeRecipeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.addRecipeToFavourites(context);
+                presenter.addRecipeToFavourites(context, i);
             }
         });
+
+        vh.likeRecipeBtn.setOnTouchListener(likeRecipeBtnTouchListener);
 
         return vh;
     }
 
-
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int i) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
+    }
+    
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i, @NonNull List<Object> payloads) {
+
         SavedRecipeViewHolder savedRecipeViewHolder = (SavedRecipeViewHolder) holder;
 
         final int total_water = historyRecipes.get(i).getBrewWaterAmount();
@@ -94,7 +106,7 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
         final int bloomTime = historyRecipes.get(i).getBloomTime();
         final int temp = historyRecipes.get(i).getDiceTemperature();
         final String grindSize = historyRecipes.get(i).getGroundSize().substring(0, 1).toUpperCase() + historyRecipes.get(i).getGroundSize().substring(1).toLowerCase();
-        final boolean isRecipeLiked = historyRecipes.get(i).isRecipeLiked();
+        boolean isLiked;
 
         savedRecipeViewHolder.waterAndTempItem.setText(context.getResources().getString(R.string.SavedWaterAndTempTextView, total_water, temp, temp * 9 / 5 + 32));
         savedRecipeViewHolder.beansWeightItem.setText(context.getResources().getString(R.string.SavedCoffeeWeightTextView, historyRecipes.get(i).getCoffeeAmount()));
@@ -109,18 +121,27 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
         savedRecipeViewHolder.brewedOnItem.setText(context.getResources().getString(R.string.dateBrewedTextView, historyRecipes.get(i).getDateBrewed()));
 
         savedRecipeViewHolder.likeRecipeLayout.setVisibility(View.VISIBLE);
-        if (isRecipeLiked)
+
+        // When we want to change some data in our recycle view items, we pass a Payload. This list can have many different properties.
+        // In our situation, we only have a boolean which checks whether the recipe is liked or not, and changed the ImageButton resource correspondingly.
+        if (payloads.size() > 0)
+            isLiked = (boolean) payloads.get(0);
+        else
+            isLiked = historyRecipes.get(i).isRecipeLiked();
+
+        if (isLiked)
             savedRecipeViewHolder.likeRecipeBtn.setImageResource(R.drawable.ic_heart_on);
         else
             savedRecipeViewHolder.likeRecipeBtn.setImageResource(R.drawable.ic_heart_off);
 
+        super.onBindViewHolder(holder, i, payloads);
     }
-
 
     @Override
     public int getItemCount() {
         return historyRecipes.size();
     }
+
 
     public void createSwipeHelper() {
 
@@ -145,6 +166,21 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
         swipeHelper.attachSwipe(context);
     }
 
+    View.OnTouchListener likeRecipeBtnTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                AnimatorSet reducer = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.reduce_size);
+                reducer.setTarget(view);
+                reducer.start();
 
+            } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                AnimatorSet regainer = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.regain_size);
+                regainer.setTarget(view);
+                regainer.start();
+            }
+            return false;
+        }
+    };
 
 }
