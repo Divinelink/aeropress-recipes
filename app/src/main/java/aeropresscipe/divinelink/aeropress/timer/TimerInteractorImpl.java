@@ -74,7 +74,7 @@ public class TimerInteractorImpl implements TimerInteractor {
     }
 
     @Override
-    public void saveLikedRecipe(final OnSaveLikedRecipeFinishListener listener, final Context ctx) {
+    public void saveLikedRecipe(final OnSaveLikedRecipeFinishListener listener, final Context ctx, final Integer pos) {
 
         AsyncTask.execute(new Runnable() {
             @Override
@@ -92,12 +92,12 @@ public class TimerInteractorImpl implements TimerInteractor {
                     Log.d("Inserted", currentRecipe.toString());
                     savedRecipeDao.insertLikedRecipe(currentRecipe);
                     historyDao.updateRecipe(new HistoryDomain(recipe, getCurrentDate(), true));
-                    listener.onSavedRecipe(true);
+                    listener.onSavedRecipe(true, pos);
                 } else {
                     Log.d("Deleted", currentRecipe.toString());
                     savedRecipeDao.delete(currentRecipe);
                     historyDao.updateRecipe(new HistoryDomain(recipe, getCurrentDate(), false));
-                    listener.onSavedRecipe(false);
+                    listener.onSavedRecipe(false, pos);
                 }
             }
         });
@@ -120,7 +120,7 @@ public class TimerInteractorImpl implements TimerInteractor {
                 historyDao.updateRecipe(new HistoryDomain(recipe, getCurrentDate(), recipeExists)); // Updates History's Like Button Status
 
                 Log.d("Current Recipe: ", currentRecipe.toString());
-                listener.onSavedRecipe(recipeExists);
+                listener.onSavedRecipe(recipeExists, null);
             }
         });
     }

@@ -52,11 +52,11 @@ public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnSta
 
     @Override
     public void saveLikedRecipeOnDB(Context ctx) {
-        interactor.saveLikedRecipe(this, ctx);
+        interactor.saveLikedRecipe(this, ctx, null);
     }
 
     @Override
-    public void onSavedRecipe(boolean isSaved) {
+    public void onSavedRecipe(boolean isSaved, Integer pos) {
         timerView.addToLiked(isSaved);
     }
 

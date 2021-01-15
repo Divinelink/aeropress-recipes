@@ -60,7 +60,7 @@ public class HistoryPresenterImpl implements IHistoryPresenter, IHistoryInteract
 
     @Override
     public void addRecipeToFavourites(Context ctx, int pos) {
-        timerInteractor.saveLikedRecipe(this, ctx);
+        timerInteractor.saveLikedRecipe(this, ctx, pos);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class HistoryPresenterImpl implements IHistoryPresenter, IHistoryInteract
     }
 
     @Override
-    public void onSavedRecipe(boolean isSaved) {
-        historyView.setRecipeLiked(isSaved);
+    public void onSavedRecipe(boolean isSaved, Integer pos) {
+        historyView.setRecipeLiked(isSaved, pos);
     }
 }

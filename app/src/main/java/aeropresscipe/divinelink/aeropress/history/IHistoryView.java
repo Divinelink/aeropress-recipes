@@ -13,5 +13,5 @@ interface IHistoryView {
 
     void showEmptyListMessage();
 
-    void setRecipeLiked(boolean isLiked);
+    void setRecipeLiked(boolean isLiked, Integer pos);
 }

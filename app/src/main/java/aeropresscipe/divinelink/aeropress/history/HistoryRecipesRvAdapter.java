@@ -74,15 +74,18 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.saved_recipe_item, viewGroup, false);
-        SavedRecipeViewHolder vh = new SavedRecipeViewHolder(v);
+        final SavedRecipeViewHolder vh = new SavedRecipeViewHolder(v);
 
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vh.cardView.getLayoutParams();
         cardViewMarginAttr = lp.bottomMargin;
 
+
+
         vh.likeRecipeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.addRecipeToFavourites(context, i);
+
+                presenter.addRecipeToFavourites(context, vh.getLayoutPosition());
             }
         });
 
