@@ -84,8 +84,7 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
         vh.likeRecipeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                presenter.addRecipeToFavourites(context, vh.getLayoutPosition());
+                presenter.addRecipeToFavourites(context, vh.getLayoutPosition(), historyRecipes.get(vh.getLayoutPosition()).getId());
             }
         });
 
@@ -98,7 +97,7 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
     }
-    
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i, @NonNull List<Object> payloads) {
 

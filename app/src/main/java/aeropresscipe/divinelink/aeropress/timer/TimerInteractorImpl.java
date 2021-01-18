@@ -9,6 +9,7 @@ import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase;
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
@@ -74,7 +75,7 @@ public class TimerInteractorImpl implements TimerInteractor {
     }
 
     @Override
-    public void saveLikedRecipe(final OnSaveLikedRecipeFinishListener listener, final Context ctx, final Integer pos) {
+    public void saveLikedRecipe(final OnSaveLikedRecipeFinishListener listener, final Context ctx) {
 
         AsyncTask.execute(new Runnable() {
             @Override
@@ -90,14 +91,14 @@ public class TimerInteractorImpl implements TimerInteractor {
 
                 if (!recipeExists) {
                     Log.d("Inserted", currentRecipe.toString());
+                    historyDao.updateRecipe(new HistoryDomain(recipe, getCurrentDate(), true)); // Updates History's corresponding entry's Like Button
                     savedRecipeDao.insertLikedRecipe(currentRecipe);
-                    historyDao.updateRecipe(new HistoryDomain(recipe, getCurrentDate(), true));
-                    listener.onSavedRecipe(true, pos);
+                    listener.onSavedRecipe(true);
                 } else {
                     Log.d("Deleted", currentRecipe.toString());
-                    savedRecipeDao.delete(currentRecipe);
                     historyDao.updateRecipe(new HistoryDomain(recipe, getCurrentDate(), false));
-                    listener.onSavedRecipe(false, pos);
+                    savedRecipeDao.delete(currentRecipe);
+                    listener.onSavedRecipe(false);
                 }
             }
         });
@@ -120,7 +121,7 @@ public class TimerInteractorImpl implements TimerInteractor {
                 historyDao.updateRecipe(new HistoryDomain(recipe, getCurrentDate(), recipeExists)); // Updates History's Like Button Status
 
                 Log.d("Current Recipe: ", currentRecipe.toString());
-                listener.onSavedRecipe(recipeExists, null);
+                listener.onSavedRecipe(recipeExists);
             }
         });
     }

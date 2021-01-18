@@ -13,7 +13,7 @@ interface IHistoryInteractor {
 
     void getSpecificRecipeFromDB(OnGetHistoryFromDBFinishListener listener, Context ctx, int position);
 
-    void addRecipeToFavourites(OnSaveRecipeToDBFinishListener listener, Context ctx);
+    void addRecipeToFavourites(OnSaveRecipeToDBFinishListener listener, Context ctx, int pos, int id);
 
     interface OnGetHistoryFromDBFinishListener{
 
@@ -25,7 +25,7 @@ interface IHistoryInteractor {
     }
 
     interface OnSaveRecipeToDBFinishListener{
-        void onSaveRecipe();
+        void onSaveRecipe(boolean isSaved, int pos);
     }
 
 

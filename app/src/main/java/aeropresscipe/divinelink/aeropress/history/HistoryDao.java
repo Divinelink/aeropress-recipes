@@ -19,8 +19,14 @@ public abstract class HistoryDao {
     @Query("SELECT * FROM HistoryRecipes")
     public abstract List<HistoryDomain> getHistoryRecipes();
 
+    @Query("SELECT DiceDomain FROM HistoryRecipes WHERE  id= :id")
+    public abstract DiceDomain getSpecificRecipe(int id);
+
     @Query("DELETE FROM HistoryRecipes")
     abstract void deleteAll();
+
+    @Query("SELECT EXISTS (SELECT 1 FROM HistoryRecipes WHERE  id= :id)")
+    public abstract boolean historyRecipeExists(int id);
 
     @Query("DELETE FROM HistoryRecipes where id NOT IN (SELECT id from HistoryRecipes ORDER BY id DESC LIMIT 10)")
     abstract void deleteSurplus();

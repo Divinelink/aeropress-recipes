@@ -5,10 +5,17 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase;
+import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
 import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeDao;
+import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDao;
+import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain;
+import aeropresscipe.divinelink.aeropress.timer.TimerInteractorImpl;
+
 public class HistoryInteractorImpl implements IHistoryInteractor, ISharedPrefHistoryManager {
 
 
@@ -69,7 +76,6 @@ public class HistoryInteractorImpl implements IHistoryInteractor, ISharedPrefHis
                 final HistoryDao historyDao = HomeDatabase.getDatabase(ctx).historyDao();
                 final List<HistoryDomain> mSavedRecipes = historyDao.getHistoryRecipes();
 
-
                 if (mSavedRecipes.size() != 0) {
                     historyDao.deleteAll();
                     setIsHistoryEmptyBool(ctx, true);
@@ -82,10 +88,29 @@ public class HistoryInteractorImpl implements IHistoryInteractor, ISharedPrefHis
         });
     }
 
-
     @Override
-    public void addRecipeToFavourites(OnSaveRecipeToDBFinishListener listener, Context ctx) {
+    public void addRecipeToFavourites(final OnSaveRecipeToDBFinishListener listener, final Context ctx, final int pos, final int id) {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
 
+                final SavedRecipeDao savedRecipeDao = HomeDatabase.getDatabase(ctx).savedRecipeDao();
+                final HistoryDao historyDao = HomeDatabase.getDatabase(ctx).historyDao();
+
+                final DiceDomain recipe = historyDao.getSpecificRecipe(id);
+                final boolean recipeExists = savedRecipeDao.recipeExists(id);
+
+                if (!recipeExists) {
+                    historyDao.updateRecipe(new HistoryDomain(recipe, getCurrentDate(), true));
+                    savedRecipeDao.insertLikedRecipe(new SavedRecipeDomain(recipe, getCurrentDate()));
+                    listener.onSaveRecipe(true, pos);
+                } else {
+                    historyDao.updateRecipe(new HistoryDomain(recipe, getCurrentDate(), false));
+                    savedRecipeDao.delete(new SavedRecipeDomain(recipe, getCurrentDate()));
+                    listener.onSaveRecipe(false, pos);
+                }
+            }
+        });
     }
 
     @Override
@@ -94,5 +119,12 @@ public class HistoryInteractorImpl implements IHistoryInteractor, ISharedPrefHis
         final SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("isHistoryEmpty", bool);
         editor.apply();
+    }
+
+    public String getCurrentDate() {
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("d MMMM yyyy");
+
+        return formatter.format(date.getTime());
     }
 }

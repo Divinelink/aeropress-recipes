@@ -55,8 +55,9 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
 
                 savedRecipeDao.delete(recipeDomain);
                 //Updates history DB, turn corresponding entry's Like Button off.
-                historyDao.updateRecipe(new HistoryDomain(recipeDomain.getDiceDomain(), recipeDomain.getDateBrewed(), false));
-
+                if (historyDao.historyRecipeExists(recipeDomain.getId())) {
+                    historyDao.updateRecipe(new HistoryDomain(recipeDomain.getDiceDomain(), recipeDomain.getDateBrewed(), false));
+                }
                 final List<SavedRecipeDomain> mSavedRecipes = savedRecipeDao.getSavedRecipes();
 
 

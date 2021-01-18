@@ -7,16 +7,14 @@ import java.util.List;
 import aeropresscipe.divinelink.aeropress.timer.TimerInteractor;
 import aeropresscipe.divinelink.aeropress.timer.TimerInteractorImpl;
 
-public class HistoryPresenterImpl implements IHistoryPresenter, IHistoryInteractor.OnGetHistoryFromDBFinishListener, IHistoryInteractor.OnSaveRecipeToDBFinishListener, TimerInteractor.OnSaveLikedRecipeFinishListener  {
+public class HistoryPresenterImpl implements IHistoryPresenter, IHistoryInteractor.OnGetHistoryFromDBFinishListener, IHistoryInteractor.OnSaveRecipeToDBFinishListener {
 
     final private IHistoryView historyView;
     final private HistoryInteractorImpl interactor;
-    final private TimerInteractor timerInteractor;
 
     public HistoryPresenterImpl(IHistoryView historyView) {
         this.historyView = historyView;
         interactor = new HistoryInteractorImpl();
-        timerInteractor = new TimerInteractorImpl();
     }
 
     @Override
@@ -59,17 +57,12 @@ public class HistoryPresenterImpl implements IHistoryPresenter, IHistoryInteract
     }
 
     @Override
-    public void addRecipeToFavourites(Context ctx, int pos) {
-        timerInteractor.saveLikedRecipe(this, ctx, pos);
+    public void addRecipeToFavourites(Context ctx, int pos, int recipeID) {
+        interactor.addRecipeToFavourites(this, ctx, pos, recipeID);
     }
 
     @Override
-    public void onSaveRecipe() {
-
-    }
-
-    @Override
-    public void onSavedRecipe(boolean isSaved, Integer pos) {
+    public void onSaveRecipe(boolean isSaved, int pos) {
         historyView.setRecipeLiked(isSaved, pos);
     }
 }

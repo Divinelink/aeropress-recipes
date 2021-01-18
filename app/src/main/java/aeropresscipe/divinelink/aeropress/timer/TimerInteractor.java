@@ -10,7 +10,7 @@ public interface TimerInteractor {
 
     void returnValues(OnStartTimerFinishListener listener, Context ctx);
 
-    void saveLikedRecipe(OnSaveLikedRecipeFinishListener listener, Context ctx, Integer pos);
+    void saveLikedRecipe(OnSaveLikedRecipeFinishListener listener, Context ctx);
 
     void checkIfRecipeIsLikedAndSavedOnDB(OnSaveLikedRecipeFinishListener listener, Context ctx);
 
@@ -22,7 +22,7 @@ public interface TimerInteractor {
     }
 
     interface OnSaveLikedRecipeFinishListener{
-        void onSavedRecipe(boolean isSaved, Integer pos);
+        void onSavedRecipe(boolean isSaved);
         void onError();
     }
 }
