@@ -133,10 +133,11 @@
                         <ImageButton
                             android:id="@+id/likeRecipeButton"
                             style="@style/SavedRecipeImageViewStyle"
-                            android:background="@drawable/ic_heart_off"
+                            android:background="@color/transparent"
                             android:contentDescription="heartIcon"
-                            android:scaleType="fitXY"
+                            android:scaleType="fitCenter"
                             android:soundEffectsEnabled="false"
+                            android:layout_gravity="center"
                             android:src="@drawable/ic_heart_off" />
 
                         <TextView
