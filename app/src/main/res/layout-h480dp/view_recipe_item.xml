@@ -10,50 +10,58 @@
         android:id="@+id/tempItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp" />
+        android:layout_margin="3dp"
+        android:textSize="@dimen/text_size" />
 
     <TextView
         android:id="@+id/groundSizeItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp" />
+        android:layout_margin="3dp"
+        android:textSize="@dimen/text_size" />
 
     <TextView
         android:id="@+id/brewingMethodItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp" />
+        android:layout_margin="3dp"
+        android:textSize="@dimen/text_size" />
 
     <TextView
         android:id="@+id/pourInText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
-        android:text="@string/pourInCoffee" />
+        android:text="@string/pourInCoffee"
+        android:textSize="@dimen/text_size" />
 
     <TextView
         android:id="@+id/bloomTimeItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp" />
+        android:layout_margin="3dp"
+        android:textSize="@dimen/text_size" />
 
     <TextView
         android:id="@+id/bloomWaterItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp" />
+        android:layout_margin="3dp"
+        android:textSize="@dimen/text_size" />
 
     <TextView
         android:id="@+id/brewTimeItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp" />
+        android:layout_margin="3dp"
+        android:textSize="@dimen/text_size" />
 
     <TextView
         android:id="@+id/brewWaterAmountItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
+        android:textSize="@dimen/text_size"
         android:visibility="gone" />
 
     <TextView
@@ -62,6 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
         android:text="@string/upsideDownMethodText"
+        android:textSize="@dimen/text_size"
         android:visibility="gone" />
 
     <TextView
@@ -69,5 +78,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
-        android:text="@string/pressText" />
+        android:text="@string/pressText"
+        android:textSize="@dimen/text_size" />
 </LinearLayout>

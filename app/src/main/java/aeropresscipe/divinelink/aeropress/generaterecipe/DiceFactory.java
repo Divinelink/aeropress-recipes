@@ -41,6 +41,7 @@ class GroundSizeDice extends Dice {
         dice.add(new DiceDomain("medium-fine", 90));
         dice.add(new DiceDomain("medium", 120));
         dice.add(new DiceDomain("coarse", 240));
+//        dice.add(new DiceDomain("lel", 5));
     }
 
     public GroundSizeDice() {
@@ -63,6 +64,10 @@ class BrewMethodDice extends Dice {
         dice.add(new DiceDomain("Standard", 45, 60));
         dice.add(new DiceDomain("Inverted", 45, 30));
         dice.add(new DiceDomain("Inverted", 45, 60));
+
+//        dice.add(new DiceDomain("TestNoBloom", 0, 0));
+
+//        dice.add(new DiceDomain("Test", 1, 0));
 
     }
 

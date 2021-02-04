@@ -74,7 +74,9 @@
 
                     </LinearLayout>
 
-                    <LinearLayout style="@style/SavedRecipeLinearLayoutForViewsStyle">
+                    <LinearLayout
+                        style="@style/SavedRecipeLinearLayoutForViewsStyle"
+                        android:layout_marginBottom="2dp">
 
                         <ImageView
                             android:id="@+id/beansGrindLevel"
@@ -128,7 +130,8 @@
                         android:visibility="gone"
                         tools:visibility="visible"
                         android:id="@+id/likeRecipeLayout"
-                        style="@style/SavedRecipeLinearLayoutForViewsStyle">
+                        style="@style/SavedRecipeLinearLayoutForViewsStyle"
+                        android:layout_marginBottom="2dp">
 
                         <ImageButton
                             android:id="@+id/likeRecipeButton"
