@@ -133,7 +133,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
 
     @Override
     public void showIsAlreadyBrewingDialog() {
-        Toast.makeText(getActivity(), R.string.alreadyBrewingDialog, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), R.string.alreadyBrewingDialog, Toast.LENGTH_SHORT).show();
     }
 
     @Override

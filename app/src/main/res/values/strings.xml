@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Aeropress Recipe</string>
+    <string name="app_name">Aeropress Recipes</string>
 
     <!-- In API 24 and above, we can use <b> </b> in order to bold the text, instead of using
   https://developer.android.com/guide/topics/resources/string-resource
