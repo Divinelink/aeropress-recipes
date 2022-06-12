@@ -16,6 +16,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Collections;
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.R;
@@ -35,6 +39,8 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView {
 
     private Animation mFadeAnimation;
 
+    @Nullable private SavedRecipesAdapter recipesAdapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,6 +52,20 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView {
         if (getArguments() != null) {
             homeView = (HomeView) getArguments().getSerializable("home_view");
         }
+
+        recipesAdapter = new SavedRecipesAdapter(requireContext(),
+            new SavedRecipesAdapterDelegate() {
+                @Override
+                public void brewItem(int position) {
+                    presenter.getSpecificRecipeToStartNewBrew(requireContext(), position);
+                }
+
+                @Override
+                public void deleteItem(@NotNull SavedRecipeDomain recipe, int position) {
+                    presenter.deleteRecipe(recipe, requireContext(), position);
+                }
+            }
+        );
 
         savedRecipesRV = (RecyclerView) v.findViewById(R.id.savedRecipesRV);
         mToolBar = (Toolbar) v.findViewById(R.id.toolbar);
@@ -75,19 +95,15 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView {
 
     @Override
     public void showSavedRecipes(final List<SavedRecipeDomain> savedRecipes) {
-
         if (getActivity() != null) {
-            getActivity().runOnUiThread(new Runnable() {
-                SavedRecipesRvAdapter savedRecipesRvAdapter = new SavedRecipesRvAdapter(savedRecipes, getActivity(), savedRecipesRV);
-
-                @Override
-                public void run() {
-                    mFadeAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_favourites);
-                    savedRecipesRV.setAnimation(mFadeAnimation);
-                    savedRecipesRV.setAdapter(savedRecipesRvAdapter);
-                    savedRecipesRvAdapter.createSwipeHelper();
-                    savedRecipesRvAdapter.setPresenter(presenter);
+            getActivity().runOnUiThread(() -> {
+                mFadeAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_favourites);
+                savedRecipesRV.setAnimation(mFadeAnimation);
+                savedRecipesRV.setAdapter(recipesAdapter);
+                if (recipesAdapter != null) {
+                    recipesAdapter.submitList(savedRecipes);
                 }
+                recipesAdapter.createSwipeHelper(savedRecipesRV);
             });
         }
     }
@@ -95,13 +111,11 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView {
     @Override
     public void showSavedRecipesAfterDeletion(final List<SavedRecipeDomain> savedRecipes, final int position) {
         if (getActivity() != null) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-
+            getActivity().runOnUiThread(() -> {
+                if (recipesAdapter != null) {
+                    recipesAdapter.submitList(savedRecipes);
                 }
             });
-
         }
     }
 
@@ -109,14 +123,10 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView {
     public void passData(final int bloomTime, final int brewTime, final int bloomWater, final int brewWater) {
 
         if (getActivity() != null) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    DiceUI diceUI = new DiceUI(bloomTime, brewTime, bloomWater, brewWater);
-                    diceUI.setNewRecipe(true);
-//                    homeView.addTimerFragment(diceUI);
-                    homeView.startTimerActivity(diceUI);
-                }
+            getActivity().runOnUiThread(() -> {
+                DiceUI diceUI = new DiceUI(bloomTime, brewTime, bloomWater, brewWater);
+                diceUI.setNewRecipe(true);
+                homeView.startTimerActivity(diceUI);
             });
         }
     }
@@ -124,14 +134,9 @@ public class SavedRecipesFragment extends Fragment implements SavedRecipesView {
     @Override
     public void showEmptyListMessage() {
         if (getActivity() != null) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-
-                    beginFading(savedRecipesRV, AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_favourites), 8);
-                    beginFading(mEmptyListLL, AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_favourites), 0);
-
-                }
+            getActivity().runOnUiThread(() -> {
+                beginFading(savedRecipesRV, AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_favourites), 8);
+                beginFading(mEmptyListLL, AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_favourites), 0);
             });
         }
     }
