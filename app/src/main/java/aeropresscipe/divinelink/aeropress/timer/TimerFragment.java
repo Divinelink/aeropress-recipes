@@ -4,7 +4,6 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import aeropresscipe.divinelink.aeropress.base.BaseApplication;
@@ -15,14 +14,12 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -213,7 +210,7 @@ public class TimerFragment extends Fragment implements TimerView {
     }
 
     private void initViews(View v) {
-        timerTextView = (TextView) v.findViewById(R.id.savedTimeTV);
+        timerTextView = (TextView) v.findViewById(R.id.brewingTimeTextView);
         progressBar = (MaterialProgressBar) v.findViewById(R.id.progressBar);
         notificationTextView = (TextView) v.findViewById(R.id.notificationTV);
         likeRecipeBtn = (ImageButton) v.findViewById(R.id.likeRecipeButton);
