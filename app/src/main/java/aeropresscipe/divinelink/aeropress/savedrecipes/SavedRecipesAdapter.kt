@@ -161,9 +161,6 @@ class SavedRecipesAdapter(
             .setMessage(R.string.deleteRecipeDialogMessage)
             .setPositiveButton(R.string.delete) { _, _ ->
                 delegate.deleteItem(currentList[position] as SavedRecipeDomain, position)
-//                presenter!!.deleteRecipe(savedRecipes[position], context, position)
-//                savedRecipes.removeAt(position)
-//                notifyItemRemoved(position)
             }
             .setNegativeButton(R.string.cancel) { _, _ -> }
             .show()
