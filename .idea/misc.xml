@@ -11,6 +11,7 @@
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.7836134453781513" />
         <entry key="app/src/main/res/layout/activity_timer.xml" value="0.7836134453781513" />
         <entry key="app/src/main/res/layout/fragment_timer.xml" value="0.22323303222656254" />
+        <entry key="app/src/main/res/layout/saved_recipe_item.xml" value="1.5109008645787485" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="1.5147058823529411" />
         <entry key="app/src/main/res/menu/history_toolbar_menu.xml" value="0.2574074074074074" />
       </map>

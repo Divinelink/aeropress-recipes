@@ -49,7 +49,7 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
         final private TextView brewingMethodItem;
         final private TextView timeItem;
         final private TextView brewedOnItem;
-        final private CardView cardView;
+//        final private CardView cardView;
         final private ImageButton likeRecipeBtn;
         final private LinearLayout likeRecipeLayout;
 
@@ -61,7 +61,7 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
             this.brewingMethodItem = v.findViewById(R.id.brewMethodTV);
             this.timeItem = v.findViewById(R.id.savedTimeTV);
             this.brewedOnItem = v.findViewById(R.id.brewedOnTV);
-            this.cardView = v.findViewById(R.id.card_view);
+//            this.cardView = v.findViewById(R.id.card_view);
             this.likeRecipeBtn = v.findViewById(R.id.likeRecipeButton);
             this.likeRecipeLayout = v.findViewById(R.id.likeRecipeLayout);
         }
@@ -76,8 +76,8 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
                 .inflate(R.layout.saved_recipe_item, viewGroup, false);
         final SavedRecipeViewHolder vh = new SavedRecipeViewHolder(v);
 
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vh.cardView.getLayoutParams();
-        cardViewMarginAttr = lp.bottomMargin;
+//        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vh.cardView.getLayoutParams();
+//        cardViewMarginAttr = lp.bottomMargin;
 
 
 

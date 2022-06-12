@@ -48,7 +48,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         final private TextView brewingMethodItem;
         final private TextView timeItem;
         final private TextView brewedOnItem;
-        final private CardView cardView;
+//        final private CardView cardView;
 
         public SavedRecipeViewHolder(View v) {
             super(v);
@@ -58,7 +58,7 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             this.brewingMethodItem = v.findViewById(R.id.brewMethodTV);
             this.timeItem = v.findViewById(R.id.savedTimeTV);
             this.brewedOnItem = v.findViewById(R.id.brewedOnTV);
-            this.cardView = v.findViewById(R.id.card_view);
+//            this.cardView = v.findViewById(R.id.card_view);
         }
 
     }
@@ -71,8 +71,8 @@ public class SavedRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 .inflate(R.layout.saved_recipe_item, viewGroup, false);
         SavedRecipeViewHolder vh = new SavedRecipeViewHolder(v);
 
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vh.cardView.getLayoutParams();
-        cardViewMarginAttr = lp.bottomMargin;
+//        CardView.LayoutParams lp = (CardView.LayoutParams) vh.cardView.getLayoutParams();
+//        cardViewMarginAttr = lp.bottomMargin;
 
         return vh;
     }
