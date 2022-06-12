@@ -2,12 +2,9 @@ package aeropresscipe.divinelink.aeropress.generaterecipe;
 
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
-import java.util.ArrayList;
 
 import aeropresscipe.divinelink.aeropress.base.BaseApplication;
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase;
