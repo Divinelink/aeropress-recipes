@@ -12,6 +12,7 @@ import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDao
 import aeropresscipe.divinelink.aeropress.history.HistoryDao
 import android.content.Context
 import androidx.room.Room
+import kotlin.coroutines.CoroutineContext
 
 @Database(
     entities = [DiceDomain::class, SavedRecipeDomain::class, HistoryDomain::class],
@@ -22,23 +23,27 @@ import androidx.room.Room
     Converters::class
 )
 abstract class HomeDatabase : RoomDatabase() {
-    abstract fun recipeDao(): RecipeDao?
-    abstract fun savedRecipeDao(): SavedRecipeDao?
-    abstract fun historyDao(): HistoryDao?
+
+    abstract fun recipeDao(): RecipeDao
+    abstract fun savedRecipeDao(): SavedRecipeDao
+    abstract fun historyDao(): HistoryDao
 
     companion object {
         private var INSTANCE: HomeDatabase? = null
+        private const val DB_NAME = "Home_Database"
+
         @JvmStatic
-        fun getDatabase(ctx: Context): HomeDatabase? {
+        fun getDatabase(ctx: Context): HomeDatabase {
             if (INSTANCE == null) {
                 INSTANCE = Room.databaseBuilder(
                     ctx.applicationContext,
-                    HomeDatabase::class.java, "Home_Database"
+                    HomeDatabase::class.java,
+                    DB_NAME
                 )
                     .fallbackToDestructiveMigration()
                     .build()
             }
-            return INSTANCE
+            return INSTANCE!!
         }
     }
 }
