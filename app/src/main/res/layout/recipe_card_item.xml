@@ -1,163 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:card_view="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:id="@+id/saved_recipe_item"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:layout_marginEnd="8dp"
   android:layout_marginStart="8dp"
   android:layout_marginTop="8dp"
-  android:clickable="true"
-  android:focusable="true"
-  android:foreground="?attr/selectableItemBackgroundBorderless"
-  card_view:cardBackgroundColor="@color/colorPrimary"
-  card_view:cardCornerRadius="8dp">
+  android:backgroundTint="@color/colorPrimary"
+  app:cardCornerRadius="8dp">
 
-  <androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+  <gr.divinelink.core.util.swipe.SwipeToActionLayout
+    android:id="@+id/saved_recipe_item"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:sal_gravity="right"
+    app:sal_isFullActionSupported="false"
+    app:sal_items="@menu/swipe_to_action_menu"
+    app:sal_shouldVibrateOnQuickAction="false">
 
-    <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_marginTop="4dp"
-      android:baselineAligned="false"
-      android:orientation="horizontal"
-      card_view:layout_constraintBottom_toBottomOf="parent"
-      card_view:layout_constraintEnd_toEndOf="parent"
-      card_view:layout_constraintStart_toStartOf="parent"
-      card_view:layout_constraintTop_toBottomOf="@+id/recipe_title">
-
-      <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <LinearLayout style="@style/SavedRecipeLinearLayoutForViewsStyle">
-
-          <ImageView
-            android:id="@+id/waterAmountImageView"
-            style="@style/SavedRecipeImageViewStyle"
-            android:contentDescription="@string/water_temperature_image"
-            android:src="@drawable/ic_kettlebyxnimrodx" />
-
-          <TextView
-            android:id="@+id/waterAndTempTV"
-            style="@style/SavedRecipeItemTextViewStyle"
-            tools:text="Water and Temp" />
-
-        </LinearLayout>
-
-
-        <LinearLayout style="@style/SavedRecipeLinearLayoutForViewsStyle">
-
-          <ImageView
-            android:id="@+id/beansWeight"
-            style="@style/SavedRecipeImageViewStyle"
-            android:contentDescription="@string/beans_weight_image"
-            android:src="@drawable/ic_weightbyphoto3idea_studio" />
-
-          <TextView
-            android:id="@+id/beansWeightTV"
-            style="@style/SavedRecipeItemTextViewStyle"
-            tools:text="Beans Weight" />
-
-        </LinearLayout>
-
-        <LinearLayout
-          style="@style/SavedRecipeLinearLayoutForViewsStyle">
-
-          <ImageView
-            android:id="@+id/beansGrindLevel"
-            style="@style/SavedRecipeImageViewStyle"
-            android:contentDescription="@string/grind_level_image"
-            android:src="@drawable/ic_coffee_grinderbypongsakornred" />
-
-          <TextView
-            android:id="@+id/beansGrindLevelTV"
-            style="@style/SavedRecipeItemTextViewStyle"
-            tools:text="Beans Grind" />
-        </LinearLayout>
-
-      </LinearLayout>
-
-      <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <LinearLayout style="@style/SavedRecipeLinearLayoutForViewsStyle">
-
-          <ImageView
-            android:id="@+id/brewingMethodImage"
-            style="@style/SavedRecipeImageViewStyle"
-            android:contentDescription="@string/brew_method_image"
-            android:src="@drawable/ic_aeropressbyxnimrodx" />
-
-          <TextView
-            android:id="@+id/brewingMethodTextView"
-            style="@style/SavedRecipeItemTextViewStyle"
-            tools:text="Brew Method" />
-        </LinearLayout>
-
-        <LinearLayout style="@style/SavedRecipeLinearLayoutForViewsStyle">
-
-          <ImageView
-            android:id="@+id/time"
-            style="@style/SavedRecipeImageViewStyle"
-            android:contentDescription="@string/brew_time_image"
-            android:src="@drawable/ic_chronometerbyfreepik" />
-
-          <TextView
-            android:id="@+id/brewingTimeTextView"
-            style="@style/SavedRecipeItemTextViewStyle"
-            tools:text="Time" />
-
-        </LinearLayout>
-
-        <LinearLayout
-          android:id="@+id/likeRecipeLayout"
-          style="@style/SavedRecipeLinearLayoutForViewsStyle"
-          android:layout_marginBottom="4dp"
-          android:visibility="gone"
-          tools:visibility="visible">
-
-          <ImageButton
-            android:id="@+id/likeRecipeButton"
-            style="@style/SavedRecipeImageViewStyle"
-            android:layout_gravity="center"
-            android:background="@color/transparent"
-            android:contentDescription="heartIcon"
-            android:scaleType="fitCenter"
-            android:soundEffectsEnabled="false"
-            android:src="@drawable/ic_heart_off" />
-
-          <TextView
-            android:id="@+id/AddToFavourites"
-            style="@style/SavedRecipeItemTextViewStyle"
-            android:text="Add Favourite"
-            tools:text="Add Favourite" />
-
-        </LinearLayout>
-      </LinearLayout>
-    </LinearLayout>
-
-    <TextView
-      android:id="@+id/recipe_title"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_margin="4dp"
-      android:textAlignment="center"
-      card_view:layout_constraintEnd_toEndOf="parent"
-      card_view:layout_constraintStart_toStartOf="parent"
-      card_view:layout_constraintTop_toTopOf="parent"
-      tools:text="Brewed On: DATE HERE">
-
-    </TextView>
-
-  </androidx.constraintlayout.widget.ConstraintLayout>
+    <include
+      android:id="@+id/card"
+      layout="@layout/card_layout"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content" />
+  </gr.divinelink.core.util.swipe.SwipeToActionLayout>
 
 </androidx.cardview.widget.CardView>
