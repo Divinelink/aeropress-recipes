@@ -58,9 +58,9 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
             this.waterAndTempItem = v.findViewById(R.id.waterAndTempTV);
             this.beansWeightItem = v.findViewById(R.id.beansWeightTV);
             this.beansGrindLevelItem = v.findViewById(R.id.beansGrindLevelTV);
-            this.brewingMethodItem = v.findViewById(R.id.brewMethodTV);
-            this.timeItem = v.findViewById(R.id.savedTimeTV);
-            this.brewedOnItem = v.findViewById(R.id.brewedOnTV);
+            this.brewingMethodItem = v.findViewById(R.id.brewingMethodTextView);
+            this.timeItem = v.findViewById(R.id.brewingTimeTextView);
+            this.brewedOnItem = v.findViewById(R.id.recipe_title);
 //            this.cardView = v.findViewById(R.id.card_view);
             this.likeRecipeBtn = v.findViewById(R.id.likeRecipeButton);
             this.likeRecipeLayout = v.findViewById(R.id.likeRecipeLayout);
@@ -73,7 +73,7 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
     public SavedRecipeViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, final int i) {
 
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.saved_recipe_item, viewGroup, false);
+                .inflate(R.layout.recipe_card_item, viewGroup, false);
         final SavedRecipeViewHolder vh = new SavedRecipeViewHolder(v);
 
 //        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vh.cardView.getLayoutParams();
