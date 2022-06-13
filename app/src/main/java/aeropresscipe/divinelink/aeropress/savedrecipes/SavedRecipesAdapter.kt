@@ -17,14 +17,8 @@ import java.util.Locale
 
 typealias OnActionClicked = (recipe: SavedRecipeDomain, action: SwipeAction) -> Unit
 
-interface SavedRecipesAdapterDelegate {
-    fun brewItem(position: Int)
-    fun deleteItem(recipe: SavedRecipeDomain, position: Int)
-}
-
 class SavedRecipesAdapter(
     private val context: Context,
-    private val delegate: SavedRecipesAdapterDelegate,
     private val onActionClicked: OnActionClicked
 ) : ListAdapter<Any, RecyclerView.ViewHolder>(
     object : DiffUtil.ItemCallback<Any>() {
