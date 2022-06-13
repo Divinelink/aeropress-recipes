@@ -31,8 +31,8 @@ public class SavedRecipesPresenterImpl implements SavedRecipesPresenter, SavedRe
 
 
     @Override
-    public void deleteRecipe(SavedRecipeDomain recipeDomain, Context ctx) {
-        interactor.deleteRecipeFromDB(this, recipeDomain, ctx);
+    public void deleteRecipe(Context ctx, SavedRecipeDomain recipe) {
+        interactor.deleteRecipeFromDB(this, recipe, ctx);
     }
 
     @Override
@@ -41,8 +41,8 @@ public class SavedRecipesPresenterImpl implements SavedRecipesPresenter, SavedRe
     }
 
     @Override
-    public void getSpecificRecipeToStartNewBrew(Context ctx, int position) {
-        interactor.getSpecificRecipeFromDB(this, ctx, position);
+    public void startBrew(Context ctx, SavedRecipeDomain recipe) {
+        interactor.getSpecificRecipeFromDB(this, ctx, recipe);
 
     }
 
