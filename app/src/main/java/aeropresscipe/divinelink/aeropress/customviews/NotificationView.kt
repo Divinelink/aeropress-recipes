@@ -12,18 +12,20 @@ class NotificationView : FrameLayout, ContentViewCallback {
     private var binding = ViewNotificationBinding.inflate(LayoutInflater.from(context), this, false)
 
     override fun animateContentIn(delay: Int, duration: Int) {
-        // todo animation
+        // Intentionally Empty
     }
 
     override fun animateContentOut(delay: Int, duration: Int) {
-        // todo animation
+        // Intentionally Empty
     }
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context,
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
         attrs,
-        defStyleAttr) {
+        defStyleAttr
+    ) {
 
         addView(binding.root)
     }
@@ -34,10 +36,5 @@ class NotificationView : FrameLayout, ContentViewCallback {
 
     fun setText(text: CharSequence) {
         binding.notificationText.text = text
-    }
-
-    companion object {
-        private const val SHORT_DELAY = 3000L
-        private const val LONG_DELAY = 5000L
     }
 }

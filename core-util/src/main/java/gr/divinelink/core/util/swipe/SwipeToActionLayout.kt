@@ -118,12 +118,9 @@ class SwipeToActionLayout @JvmOverloads constructor(
         typedArray.recycle()
 
         inProgressStateProcessor.onReleaseStateChanged = { state ->
-            when (state) {
-                QuickActionsStates.FULL_OPENED -> {
-                    menuListener?.onFullyOpened(this, actions.last())
-                }
+            if (state == QuickActionsStates.FULL_OPENED) {
+                menuListener?.onFullyOpened(this, actions.last())
             }
-
         }
 
         inProgressStateProcessor.onProgressiveStateChanged = { state ->

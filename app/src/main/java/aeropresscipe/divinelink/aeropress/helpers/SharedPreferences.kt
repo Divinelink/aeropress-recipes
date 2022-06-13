@@ -5,7 +5,11 @@ import android.content.SharedPreferences
 
 class SharedPreferences(context: Context) {
 
-    private val preferences: SharedPreferences = context.getSharedPreferences(context.packageName + "_preferences", Context.MODE_PRIVATE)
+    private val preferences: SharedPreferences =
+        context.getSharedPreferences(
+            context.packageName + "_preferences",
+            Context.MODE_PRIVATE
+        )
 
     var isBrewing: Boolean
         get() = preferences.getBoolean(IS_BREWING, false)
