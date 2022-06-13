@@ -9,7 +9,7 @@ interface SavedRecipesView {
 
     void passData(int bloomTime, int brewTime, int bloomWater, int brewWater);
 
-    void showSavedRecipesAfterDeletion(List<SavedRecipeDomain> savedRecipes, int position);
+    void showSavedRecipesAfterDeletion(List<SavedRecipeDomain> savedRecipes);
 
     void showEmptyListMessage();
 }

@@ -36,11 +36,7 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
     }
 
     @Override
-    public void deleteRecipeFromDB(final OnGetRestFavouritesAfterDeletionFinishListener listener, final SavedRecipeDomain recipeDomain, final Context ctx, final int position) {
-
-        final SharedPreferencesListManager prefManagerList = new SharedPreferencesListManager();
-        final ArrayList<Integer> openPositions = prefManagerList.getArrayList("openPositions", ctx);
-
+    public void deleteRecipeFromDB(final OnGetRestFavouritesAfterDeletionFinishListener listener, final SavedRecipeDomain recipeDomain, final Context ctx) {
         AsyncTask.execute(() -> {
             final SavedRecipeDao savedRecipeDao = HomeDatabase.getDatabase(ctx).savedRecipeDao();
             final HistoryDao historyDao = HomeDatabase.getDatabase(ctx).historyDao();
@@ -55,14 +51,11 @@ public class SavedRecipesInteractorImpl implements SavedRecipesInteractor {
 
             //We remove the object from the openPositions list and then we store the updated list and pass it back to the swipe helper.
             //This object was the one we deleted from the favourites, using the swipe feature.
-            Collections.sort(openPositions);
-            int indexOfRemovedItem = openPositions.indexOf(position);
-            openPositions.remove(indexOfRemovedItem);
 
-            prefManagerList.saveArrayList(decrementOpenPositions(openPositions, indexOfRemovedItem), "openPositions", ctx);
 
             if (mSavedRecipes.size() != 0) {
-                listener.onSuccessAfterDeletion(mSavedRecipes, position);
+                Log.d("Recipes Interactor", "Successfully deleted recipe: " + recipeDomain);
+                listener.onSuccessAfterDeletion(mSavedRecipes);
             }
             else {
                 listener.onEmptyList();

@@ -28,16 +28,16 @@ public class SavedRecipesPresenterImpl implements SavedRecipesPresenter, SavedRe
 
     }
 
+
+
     @Override
-    public void deleteRecipe(SavedRecipeDomain recipeDomain, Context ctx, int position) {
-
-        interactor.deleteRecipeFromDB(this, recipeDomain, ctx, position);
-
+    public void deleteRecipe(SavedRecipeDomain recipeDomain, Context ctx) {
+        interactor.deleteRecipeFromDB(this, recipeDomain, ctx);
     }
 
     @Override
     public void onError() {
-
+      // Intentionally Empty
     }
 
     @Override
@@ -57,8 +57,8 @@ public class SavedRecipesPresenterImpl implements SavedRecipesPresenter, SavedRe
     }
 
     @Override
-    public void onSuccessAfterDeletion(List<SavedRecipeDomain> savedRecipes, int position) {
-        savedRecipesView.showSavedRecipesAfterDeletion(savedRecipes, position);
+    public void onSuccessAfterDeletion(List<SavedRecipeDomain> savedRecipes) {
+        savedRecipesView.showSavedRecipesAfterDeletion(savedRecipes);
     }
 
     @Override
