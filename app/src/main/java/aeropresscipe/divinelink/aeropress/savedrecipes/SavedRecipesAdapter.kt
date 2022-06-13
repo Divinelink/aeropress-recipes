@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import gr.divinelink.core.util.swipe.ActionBindHelper
 import gr.divinelink.core.util.swipe.SwipeAction
 import gr.divinelink.core.util.swipe.SwipeMenuListener
@@ -145,18 +144,7 @@ class SavedRecipesAdapter(
         }
 
         override fun onActionClicked(view: View, action: SwipeAction) {
-            // empty
+            onActionClicked(currentList[layoutPosition] as SavedRecipeDomain, action)
         }
-    }
-
-    fun showDeleteRecipeDialog(position: Int) {
-        MaterialAlertDialogBuilder(context)
-            .setTitle(R.string.deleteRecipeDialogTitle)
-            .setMessage(R.string.deleteRecipeDialogMessage)
-            .setPositiveButton(R.string.delete) { _, _ ->
-                delegate.deleteItem(currentList[position] as SavedRecipeDomain, position)
-            }
-            .setNegativeButton(R.string.cancel) { _, _ -> }
-            .show()
     }
 }
