@@ -2,17 +2,21 @@ package aeropresscipe.divinelink.aeropress.savedrecipes
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.databinding.RecipeCardItemBinding
-import aeropresscipe.divinelink.aeropress.features.SwipeHelper
 import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.content.Context
-import androidx.core.content.ContextCompat
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import java.util.*
+import gr.divinelink.core.util.swipe.ActionBindHelper
+import gr.divinelink.core.util.swipe.SwipeAction
+import gr.divinelink.core.util.swipe.SwipeMenuListener
+import java.util.Locale
+
+typealias OnActionClicked = (recipe: SavedRecipeDomain, action: SwipeAction) -> Unit
 
 interface SavedRecipesAdapterDelegate {
     fun brewItem(position: Int)
@@ -22,6 +26,7 @@ interface SavedRecipesAdapterDelegate {
 class SavedRecipesAdapter(
     private val context: Context,
     private val delegate: SavedRecipesAdapterDelegate,
+    private val onActionClicked: OnActionClicked
 ) : ListAdapter<Any, RecyclerView.ViewHolder>(
     object : DiffUtil.ItemCallback<Any>() {
         override fun areItemsTheSame(oldItem: Any, newItem: Any) =
@@ -34,6 +39,8 @@ class SavedRecipesAdapter(
         }
     }
 ) {
+
+    private val actionsBindHelper = ActionBindHelper()
 
     companion object {
         const val Type_Recipe = 0
@@ -75,6 +82,7 @@ class SavedRecipesAdapter(
         val item = currentList[position]
         if (holder is RecipeViewHolder) {
             holder.updateView(item as SavedRecipeDomain)
+            actionsBindHelper.bind(item.id.toString(), holder.binding.savedRecipeItem)
         }
 
         holder.itemView.setOnClickListener {
@@ -83,9 +91,12 @@ class SavedRecipesAdapter(
     }
 
     inner class RecipeViewHolder(var binding: RecipeCardItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root), SwipeMenuListener {
+
+        private val swipeToAction = binding.savedRecipeItem
 
         fun updateView(item: SavedRecipeDomain) {
+            swipeToAction.menuListener = this
             val totalWater = item.brewWaterAmount
             val totalTime = item.bloomTime + item.brewTime
             val bloomTime = item.bloomTime
@@ -94,65 +105,48 @@ class SavedRecipesAdapter(
                 .uppercase(Locale.getDefault()) + item.groundSize.substring(1).lowercase(
                 Locale.getDefault()
             )
-            binding.recipeTitle.text =
+            binding.card.recipeTitle.text =
                 context.resources.getString(R.string.dateBrewedTextView, item.dateBrewed)
-            binding.waterAndTempTV.text = context.resources.getString(
+            binding.card.waterAndTempTV.text = context.resources.getString(
                 R.string.SavedWaterAndTempTextView,
                 totalWater,
                 temp,
                 temp * 9 / 5 + 32
             )
-            binding.beansWeightTV.text =
+            binding.card.beansWeightTV.text =
                 context.resources.getString(R.string.SavedCoffeeWeightTextView, item.coffeeAmount)
-            binding.beansGrindLevelTV.text =
+            binding.card.beansGrindLevelTV.text =
                 context.resources.getString(R.string.SavedGrindLevelTextView, grindSize)
-            binding.brewingMethodTextView.text =
+            binding.card.brewingMethodTextView.text =
                 context.resources.getString(R.string.SavedBrewingMethodTextView, item.brewingMethod)
 
             if (bloomTime == 0) {
-                binding.brewingTimeTextView.text = context.resources.getString(
+                binding.card.brewingTimeTextView.text = context.resources.getString(
                     R.string.SavedTotalTimeTextView, totalTime
                 )
             } else {
-                binding.brewingTimeTextView.text = context.resources.getString(
+                binding.card.brewingTimeTextView.text = context.resources.getString(
                     R.string.SavedTotalTimeWithBloomTextView, item.brewTime, bloomTime
                 )
             }
-
         }
-    }
 
-    fun createSwipeHelper(recyclerView: RecyclerView) {
-        val swipeHelper: SwipeHelper = object : SwipeHelper(context, recyclerView) {
-            override fun instantiateUnderlayButton(
-                viewHolder: RecyclerView.ViewHolder,
-                underlayButtons: MutableList<UnderlayButton>
-            ) {
-                underlayButtons.add(
-                    UnderlayButton(
-                        "Delete",
-                        0,
-                        ContextCompat.getColor(context, R.color.red),
-                        { pos -> // Delete selected item
-                            showDeleteRecipeDialog(pos)
-                        },
-                        4
-                    )
-                )
-                underlayButtons.add(
-                    UnderlayButton(
-                        "Brew",
-                        0,
-                        ContextCompat.getColor(context, R.color.green),
-                        { pos ->
-                            delegate.brewItem(pos)
-                        },
-                        4
-                    )
-                )
-            }
+        override fun onClosed(view: View) {
+            // empty
         }
-        swipeHelper.attachSwipe(context)
+
+        override fun onOpened(view: View) {
+            val recipe = currentList[layoutPosition] as SavedRecipeDomain
+            actionsBindHelper.closeOtherThan(recipe.id.toString())
+        }
+
+        override fun onFullyOpened(view: View, quickAction: SwipeAction) {
+            // empty
+        }
+
+        override fun onActionClicked(view: View, action: SwipeAction) {
+            // empty
+        }
     }
 
     fun showDeleteRecipeDialog(position: Int) {
