@@ -24,18 +24,11 @@ class SavedRecipesFragment : Fragment(), SavedRecipesView {
     private var mFadeAnimation: Animation? = null
 
     private val recipesAdapter by lazy {
-        SavedRecipesAdapter(requireContext(),
-            object : SavedRecipesAdapterDelegate {
-                override fun brewItem(position: Int) {
-                    presenter?.getSpecificRecipeToStartNewBrew(requireContext(), position)
-                }
-
-                override fun deleteItem(recipe: SavedRecipeDomain, position: Int) {
-                    presenter?.deleteRecipe(recipe, requireContext())
-                }
-            }) { recipe: SavedRecipeDomain?, swipeAction: SwipeAction ->
+        SavedRecipesAdapter(requireContext()
+        ) { recipe: SavedRecipeDomain?, swipeAction: SwipeAction ->
             when (swipeAction.actionId) {
                 R.id.delete -> showDeleteRecipeDialog(recipe)
+                R.id.brew -> presenter?.startBrew(requireContext(), recipe)
             }
         }
     }
@@ -118,7 +111,7 @@ class SavedRecipesFragment : Fragment(), SavedRecipesView {
             .setTitle(R.string.deleteRecipeDialogTitle)
             .setMessage(R.string.deleteRecipeDialogMessage)
             .setPositiveButton(R.string.delete) { _, _ ->
-                presenter?.deleteRecipe(recipe, requireContext())
+                presenter?.deleteRecipe(requireContext(), recipe)
             }
             .setNegativeButton(R.string.cancel) { _, _ -> }
             .show()
