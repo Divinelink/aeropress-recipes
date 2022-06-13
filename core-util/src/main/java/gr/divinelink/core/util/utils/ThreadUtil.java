@@ -1,4 +1,4 @@
-package aeropresscipe.divinelink.aeropress.util;
+package gr.divinelink.core.util.utils;
 
 
 import android.os.Handler;

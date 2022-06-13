@@ -1,6 +1,5 @@
 package gr.divinelink.core.util.swipe.utils
 
-import android.content.Context
 import android.util.LayoutDirection
 import android.view.View
 import androidx.core.text.TextUtilsCompat
