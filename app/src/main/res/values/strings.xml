@@ -74,6 +74,7 @@
 
     <string name="save_recipe_notification">Saved to %s.</string>
     <string name="remove_recipe_notification">Removed from %s.</string>
+    <string name="add_favourite">Add Favourite</string>
 
 
 </resources>
