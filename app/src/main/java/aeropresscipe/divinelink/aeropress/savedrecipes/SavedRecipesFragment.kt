@@ -46,8 +46,9 @@ class SavedRecipesFragment : Fragment(),
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSavedRecipesBinding.inflate(inflater, container, false)
-        homeView = arguments?.getSerializable("home_view") as HomeView?
         val view = binding?.root
+        binding?.toolbar?.setNavigationOnClickListener { activity?.onBackPressed() }
+        homeView = arguments?.getSerializable("home_view") as HomeView?
 
         viewModelFactory = SavedRecipesViewModelFactory(
             app = requireActivity().application,
