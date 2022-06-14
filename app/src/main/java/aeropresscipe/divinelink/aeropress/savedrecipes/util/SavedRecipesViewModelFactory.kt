@@ -11,8 +11,9 @@ import java.lang.ref.WeakReference
 class SavedRecipesViewModelFactory(
     private val app: Application,
     private var delegate: WeakReference<ISavedRecipesViewModel>?,
-    private val repository: SavedRecipesRepository)
-    : ViewModelProvider.AndroidViewModelFactory(app) {
+    private val repository: SavedRecipesRepository
+) :
+    ViewModelProvider.AndroidViewModelFactory(app) {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
 
         if (modelClass.isAssignableFrom(SavedRecipesViewModel::class.java)) {

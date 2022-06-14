@@ -9,4 +9,3 @@ abstract class BaseViewModel<T : Any> : MVIBaseView {
         delegate = null
     }
 }
-

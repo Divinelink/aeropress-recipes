@@ -23,9 +23,7 @@ public class SavedRecipesPresenterImpl implements SavedRecipesPresenter, SavedRe
 
     @Override
     public void onSuccess(List<SavedRecipeDomain> savedRecipes) {
-
         savedRecipesView.showSavedRecipes(savedRecipes);
-
     }
 
 

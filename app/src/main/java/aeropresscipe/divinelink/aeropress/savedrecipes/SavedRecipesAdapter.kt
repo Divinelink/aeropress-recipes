@@ -2,14 +2,13 @@ package aeropresscipe.divinelink.aeropress.savedrecipes
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.databinding.RecipeCardItemBinding
-import android.view.ViewGroup
-import android.view.LayoutInflater
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView
-
+import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import gr.divinelink.core.util.swipe.ActionBindHelper
 import gr.divinelink.core.util.swipe.SwipeAction
 import gr.divinelink.core.util.swipe.SwipeMenuListener
@@ -36,6 +35,7 @@ class SavedRecipesAdapter(
     private val actionsBindHelper = ActionBindHelper()
 
     companion object {
+        // TODO: Add EmptyList State that shows that list is empty.
         const val Type_Recipe = 0
         const val Type_History = 1
     }

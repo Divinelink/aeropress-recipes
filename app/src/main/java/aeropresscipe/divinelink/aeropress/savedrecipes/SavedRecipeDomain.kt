@@ -1,8 +1,8 @@
 package aeropresscipe.divinelink.aeropress.savedrecipes
 
-import androidx.room.PrimaryKey
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "SavedRecipes")
 data class SavedRecipeDomain(
