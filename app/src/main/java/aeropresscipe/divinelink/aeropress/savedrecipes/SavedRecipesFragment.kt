@@ -1,27 +1,24 @@
 package aeropresscipe.divinelink.aeropress.savedrecipes
 
-import aeropresscipe.divinelink.aeropress.base.HomeView
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.os.Bundle
 import aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.base.HomeView
 import aeropresscipe.divinelink.aeropress.databinding.FragmentSavedRecipesBinding
-import gr.divinelink.core.util.swipe.SwipeAction
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceUI
 import aeropresscipe.divinelink.aeropress.savedrecipes.util.SavedRecipesViewModelFactory
+import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import gr.divinelink.core.util.swipe.SwipeAction
 import java.lang.ref.WeakReference
 
-
 class SavedRecipesFragment : Fragment(),
-    SavedRecipesView,
     SavedRecipesStateHandler,
     ISavedRecipesViewModel {
     private var binding: FragmentSavedRecipesBinding? = null
@@ -29,23 +26,23 @@ class SavedRecipesFragment : Fragment(),
     private lateinit var viewModel: SavedRecipesViewModel
     private lateinit var viewModelFactory: SavedRecipesViewModelFactory
 
-    private var presenter: SavedRecipesPresenter? = null
     private var homeView: HomeView? = null
     private var mFadeAnimation: Animation? = null
 
     private val recipesAdapter by lazy {
         SavedRecipesAdapter(
             requireContext()
-        ) { recipe: SavedRecipeDomain?, swipeAction: SwipeAction ->
+        ) { recipe: SavedRecipeDomain, swipeAction: SwipeAction ->
             when (swipeAction.actionId) {
                 R.id.delete -> showDeleteRecipeDialog(recipe)
-                R.id.brew -> presenter?.startBrew(requireContext(), recipe)
+                R.id.brew -> viewModel.startBrew(recipe)
             }
         }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSavedRecipesBinding.inflate(inflater, container, false)
@@ -61,11 +58,9 @@ class SavedRecipesFragment : Fragment(),
 
         val layoutManager = LinearLayoutManager(activity)
         binding?.savedRecipesRV?.layoutManager = layoutManager
-        presenter = SavedRecipesPresenterImpl(this)
         viewModel.getSavedRecipes()
 
         return view
-
     }
 
     override fun updateState(state: SavedRecipesState) {
@@ -76,19 +71,29 @@ class SavedRecipesFragment : Fragment(),
             is SavedRecipesState.LoadingState -> handleLoadingState()
             is SavedRecipesState.RecipesState -> handleRecipesState(state)
             is SavedRecipesState.EmptyRecipesState -> handleEmptyRecipesState()
+            is SavedRecipesState.RecipeDeletedState -> handleRecipeDeletedState(state)
+            is SavedRecipesState.StartNewBrewState -> handleStartNewBrew(state)
         }
     }
 
     override fun handleInitialState() {
-//        TODO("Not yet implemented")
+        // Intentionally Blank.
     }
 
     override fun handleLoadingState() {
-//        TODO("Not yet implemented")
+        // Intentionally Blank.
     }
 
     override fun handleErrorState() {
-//        TODO("Not yet implemented")
+        // Intentionally Blank.
+    }
+
+    override fun handleRecipeDeletedState(state: SavedRecipesState.RecipeDeletedState) {
+        recipesAdapter.submitList(state.recipes)
+    }
+
+    override fun handleStartNewBrew(state: SavedRecipesState.StartNewBrewState) {
+        homeView?.startTimerActivity(state.recipe)
     }
 
     override fun handleEmptyRecipesState() {
@@ -111,59 +116,17 @@ class SavedRecipesFragment : Fragment(),
         recipesAdapter.submitList(state.recipes)
     }
 
-    override fun showSavedRecipes(savedRecipes: List<SavedRecipeDomain>) {
-        activity?.runOnUiThread {
-            mFadeAnimation = AnimationUtils.loadAnimation(activity, R.anim.fade_in_favourites)
-            binding?.savedRecipesRV?.animation = mFadeAnimation
-            binding?.savedRecipesRV?.adapter = recipesAdapter
-            recipesAdapter.submitList(savedRecipes)
-        }
-    }
-
-    override fun showSavedRecipesAfterDeletion(
-        savedRecipes: List<SavedRecipeDomain>,
-    ) {
-        activity?.runOnUiThread {
-            recipesAdapter.submitList(savedRecipes)
-        }
-    }
-
-    override fun passData(bloomTime: Int, brewTime: Int, bloomWater: Int, brewWater: Int) {
-        activity?.runOnUiThread {
-            val diceUI = DiceUI(bloomTime, brewTime, bloomWater, brewWater)
-            diceUI.isNewRecipe = true
-            homeView?.startTimerActivity(diceUI)
-        }
-    }
-
-
-    override fun showEmptyListMessage() {
-        activity?.runOnUiThread {
-            beginFading(
-                binding?.savedRecipesRV,
-                AnimationUtils.loadAnimation(activity, R.anim.fade_out_favourites),
-                View.GONE
-            )
-            beginFading(
-                binding?.emptyListLayout,
-                AnimationUtils.loadAnimation(activity, R.anim.fade_in_favourites),
-                View.VISIBLE
-            )
-        }
-    }
-
     private fun beginFading(view: View?, animation: Animation, visibility: Int) {
         view?.startAnimation(animation)
         view?.visibility = visibility
     }
 
-
-    private fun showDeleteRecipeDialog(recipe: SavedRecipeDomain?) {
+    private fun showDeleteRecipeDialog(recipe: SavedRecipeDomain) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.deleteRecipeDialogTitle)
             .setMessage(R.string.deleteRecipeDialogMessage)
             .setPositiveButton(R.string.delete) { _, _ ->
-                presenter?.deleteRecipe(requireContext(), recipe)
+                viewModel.deleteRecipe(recipe)
             }
             .setNegativeButton(R.string.cancel) { _, _ -> }
             .show()
