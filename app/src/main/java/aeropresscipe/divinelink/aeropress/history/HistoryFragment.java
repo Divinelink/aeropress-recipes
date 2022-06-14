@@ -124,8 +124,7 @@ public class HistoryFragment extends Fragment implements IHistoryView, ISharedPr
                          final int brewWater) {
         if (getActivity() != null) {
             getActivity().runOnUiThread(() -> {
-                DiceUI diceUI = new DiceUI(bloomTime, brewTime, bloomWater, brewWater);
-                diceUI.setNewRecipe(true);
+                DiceUI diceUI = new DiceUI(bloomTime, brewTime, bloomWater, brewWater, true);
                 homeView.startTimerActivity(diceUI);
             });
         }

@@ -7,9 +7,9 @@ class DiceUI(
     var brewTime: Int,
     var bloomWater: Int,
     var remainingBrewWater: Int,
+    var isNewRecipe: Boolean = false
 ) : Serializable {
 
-    var isNewRecipe = false
     private var recipeHadBloom = false
 
     fun recipeHadBloom(): Boolean {
