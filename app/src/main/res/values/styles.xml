@@ -15,6 +15,8 @@
         <item name="android:textColorSecondaryInverse">#FFFFFFFF</item>
 
         <item name="android:windowBackground">@color/backgroundColor</item>
+
+        <item name="fontFamily">@font/montserrat_regular</item>
     </style>
 
     <style name="SavedRecipeItemTextViewStyle">
@@ -40,9 +42,16 @@
 
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
         <!-- Customize color of navigation drawer icon and back arrow -->
-
+        <item name="fontFamily">@font/montserrat_medium</item>
     </style>
 
+    <style name="Body_High_Importance">
+        <item name="fontFamily">@font/montserrat_medium</item>
+    </style>
+
+    <style name="Body_Normal_Importance">
+        <item name="fontFamily">@font/montserrat_regular</item>
+    </style>
 
 
 </resources>
