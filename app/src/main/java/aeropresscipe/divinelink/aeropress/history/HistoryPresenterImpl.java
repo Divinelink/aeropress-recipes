@@ -24,11 +24,7 @@ public class HistoryPresenterImpl implements IHistoryPresenter, IHistoryInteract
 
     @Override
     public void onSuccessSingleRecipe(HistoryDomain historyDomain) {
-
-        historyView.passData(historyDomain.getBloomTime(),
-                historyDomain.getBrewTime(),
-                historyDomain.getBloomWater(),
-                historyDomain.getBrewWaterAmount() - historyDomain.getBloomWater());
+        historyView.passData(historyDomain.getDiceDomain());
     }
 
     @Override

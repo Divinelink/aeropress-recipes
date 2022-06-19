@@ -1,6 +1,7 @@
 package aeropresscipe.divinelink.aeropress.timer;
 
 import aeropresscipe.divinelink.aeropress.R;
+import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceUI;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -19,12 +20,12 @@ public class TimerActivity extends AppCompatActivity {
         Toolbar mToolBar = findViewById(R.id.toolbar);
         mToolBar.setNavigationOnClickListener(v1 -> onBackPressed());
 
-        DiceUI diceUI = (DiceUI) getIntent().getSerializableExtra("timer");
+        DiceDomain dice = (DiceDomain) getIntent().getSerializableExtra("timer");
 
         getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.timerRoot, TimerFragment.newInstance(diceUI))
+                .replace(R.id.timerRoot, TimerFragment.newInstance(dice))
                 .commit();
     }
 

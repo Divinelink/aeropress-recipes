@@ -34,6 +34,8 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
     private HomeView homeView;
     private DiceUI diceUI;
 
+    private DiceDomain diceDomain;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,13 +72,13 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         });
 
         timerButton.setOnClickListener(view -> {
-            diceUI.setNewRecipe(true);
-            homeView.startTimerActivity(diceUI);
+            diceDomain.setNewRecipe(true);
+            homeView.startTimerActivity(diceDomain);
         });
 
         resumeBrewBtn.setOnClickListener(view -> {
-            diceUI.setNewRecipe(false);
-            homeView.startTimerActivity(diceUI);
+            diceDomain.setNewRecipe(false);
+            homeView.startTimerActivity(diceDomain);
         });
     }
 
@@ -85,7 +87,6 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
                 final GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter(randomRecipe, getActivity());
-
                 @Override
                 public void run() {
                     recipeRv.setAdapter(recipeRvAdapter);
@@ -106,9 +107,8 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
     }
 
     @Override
-    public void passData(int bloomTime, int brewTime, int bloomWater, int remainingBrewWater) {
-        // Set bloom time and brewtime. Needed for Timer
-        diceUI = new DiceUI(bloomTime, brewTime, bloomWater, remainingBrewWater, false);
+    public void passData(DiceDomain dice) {
+        diceDomain = dice;
     }
 
     @Override
@@ -147,7 +147,6 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
                 final GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter(randomRecipe, getActivity());
-
                 @Override
                 public void run() {
                     recipeRv.setAdapter(recipeRvAdapter);

@@ -2,6 +2,7 @@ package aeropresscipe.divinelink.aeropress.savedrecipes
 
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseAndroidViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
+import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceUI
 import android.app.Application
 import java.lang.ref.WeakReference
@@ -41,14 +42,9 @@ class SavedRecipesViewModel(
                 state = if (selectedRecipe == null) {
                     SavedRecipesState.ErrorState("Something went wrong!") // //TODO 15/6/22 divinelink: Fix Error State
                 } else {
-                    val newRecipe = DiceUI(
-                        selectedRecipe.bloomTime,
-                        selectedRecipe.brewTime,
-                        selectedRecipe.bloomWater,
-                        selectedRecipe.brewWaterAmount,
-                        isNewRecipe = true
-                    )
-                    SavedRecipesState.StartNewBrewState(newRecipe)
+                    val newRecipe = recipe.diceDomain
+                    newRecipe.isNewRecipe = true
+                    SavedRecipesState.StartNewBrewState(recipe.diceDomain)
                 }
             }
         )
@@ -89,7 +85,7 @@ sealed class SavedRecipesState {
     object EmptyRecipesState : SavedRecipesState()
     data class RecipesState(val recipes: List<SavedRecipeDomain>) : SavedRecipesState()
     data class RecipeDeletedState(val recipes: List<SavedRecipeDomain>) : SavedRecipesState()
-    data class StartNewBrewState(val recipe: DiceUI) : SavedRecipesState()
+    data class StartNewBrewState(val recipe: DiceDomain) : SavedRecipesState()
 }
 
 interface SavedRecipesStateHandler {

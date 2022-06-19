@@ -9,7 +9,7 @@ interface IHistoryView {
 
     void showHistory(List<HistoryDomain> savedRecipes);
 
-    void passData(int bloomTime, int brewTime, int bloomWater, int brewWater);
+    void passData(DiceDomain diceDomain);
 
     void showEmptyListMessage();
 

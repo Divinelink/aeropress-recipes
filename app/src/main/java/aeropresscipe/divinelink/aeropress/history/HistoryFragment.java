@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import aeropresscipe.divinelink.aeropress.base.HomeView;
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceUI;
+import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
@@ -120,12 +120,11 @@ public class HistoryFragment extends Fragment implements IHistoryView, ISharedPr
     }
 
     @Override
-    public void passData(final int bloomTime, final int brewTime, final int bloomWater,
-                         final int brewWater) {
+    public void passData(DiceDomain diceDomain) {
         if (getActivity() != null) {
             getActivity().runOnUiThread(() -> {
-                DiceUI diceUI = new DiceUI(bloomTime, brewTime, bloomWater, brewWater, true);
-                homeView.startTimerActivity(diceUI);
+                diceDomain.setNewRecipe(true);
+                homeView.startTimerActivity(diceDomain);
             });
         }
     }
