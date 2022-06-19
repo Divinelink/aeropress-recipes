@@ -9,7 +9,7 @@ public interface GenerateRecipeView {
 
     void showRecipeRemoveResume(DiceDomain randomRecipe);
 
-    void passData(int bloomTime, int brewTime, int bloomWater, int remainingBrewWater);
+    void passData(DiceDomain dice);
 
     void showIsAlreadyBrewingDialog();
 
