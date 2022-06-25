@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import java.lang.ref.WeakReference
 
+@Suppress("UNCHECKED_CAST")
 class TimerViewModelFactory(
     private val app: Application,
     private var delegate: WeakReference<ITimerViewModel>?,
