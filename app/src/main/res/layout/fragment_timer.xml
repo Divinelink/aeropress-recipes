@@ -7,7 +7,8 @@
     tools:context=".timer.TimerFragment">
 
     <TextView
-        android:id="@+id/notificationTV"
+        android:id="@+id/timer_header"
+        style="@style/Body_High_Importance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -17,7 +18,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="XXX Phase!\nPour in Xg amount of water." />
+        tools:text="XXX Phase!" />
+
+    <TextView
+        android:id="@+id/water_description"
+        style="@style/Body_Normal_Importance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timer_header"
+        tools:text="Pour in Xg amount of water." />
 
     <TextView
         android:id="@+id/brewingTimeTextView"
@@ -30,7 +44,7 @@
         app:layout_constraintBottom_toTopOf="@id/likeRecipeLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/notificationTV"
+        app:layout_constraintTop_toBottomOf="@id/timer_header"
         tools:text="00:10" />
 
 
@@ -45,7 +59,7 @@
         app:layout_constraintBottom_toTopOf="@id/likeRecipeLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/notificationTV"
+        app:layout_constraintTop_toBottomOf="@id/timer_header"
         app:mpb_progressTint="@color/white">
 
     </me.zhanghai.android.materialprogressbar.MaterialProgressBar>
