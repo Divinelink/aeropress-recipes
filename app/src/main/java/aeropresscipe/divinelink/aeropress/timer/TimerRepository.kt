@@ -33,4 +33,10 @@ class TimerRepository(
         completionBlock: () -> Unit
     ) = performTransaction(completionBlock) { dbRemote.addToHistory(recipe, brewDate, context) }
 
+    fun isRecipeSaved(
+        recipe: DiceDomain?,
+        context: Context,
+        completionBlock: (Boolean) -> Unit
+    ) = performTransaction(completionBlock) { dbRemote.isRecipeSaved(recipe, context) }
+
 }
