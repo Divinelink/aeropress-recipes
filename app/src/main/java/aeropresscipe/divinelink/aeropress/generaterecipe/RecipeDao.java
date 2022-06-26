@@ -9,7 +9,7 @@ import androidx.room.Transaction;
 @Dao
 public abstract class RecipeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract void insertRecipe(DiceDomain diceDomain);
+    abstract void insertRecipe(DiceDomain recipe);
 
     @Query("SELECT * FROM Recipe ORDER BY id DESC LIMIT  1")
     public abstract DiceDomain getSingleRecipe();
@@ -19,9 +19,8 @@ public abstract class RecipeDao {
     abstract void deleteAll();
 
     @Transaction
-    public void updateRecipe(DiceDomain diceDomain) {
+    public void updateRecipe(Recipe recipe) {
         deleteAll();
-        insertRecipe(diceDomain);
+        insertRecipe(new DiceDomain(recipe));
     }
-
 }

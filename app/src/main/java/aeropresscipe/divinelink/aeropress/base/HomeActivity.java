@@ -1,6 +1,6 @@
 package aeropresscipe.divinelink.aeropress.base;
 
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
+import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe;
 import aeropresscipe.divinelink.aeropress.history.HistoryFragment;
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipesFragment;
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity;
@@ -57,9 +57,9 @@ public class HomeActivity extends AppCompatActivity implements HomeView, Parcela
     }
 
     @Override
-    public void startTimerActivity(DiceDomain dice) {
+    public void startTimerActivity(Recipe recipe) {
         Intent timerIntent = new Intent(this, TimerActivity.class);
-        timerIntent.putExtra("timer", dice);
+        timerIntent.putExtra("timer", recipe);
         startActivity(timerIntent);
     }
 
