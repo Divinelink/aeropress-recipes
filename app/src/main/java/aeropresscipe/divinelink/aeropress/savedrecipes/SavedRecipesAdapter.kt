@@ -90,12 +90,12 @@ class SavedRecipesAdapter(
 
         fun updateView(item: SavedRecipeDomain) {
             swipeToAction.menuListener = this
-            val totalWater = item.brewWaterAmount
-            val totalTime = item.bloomTime + item.brewTime
-            val bloomTime = item.bloomTime
-            val temp = item.diceTemperature
-            val grindSize = item.groundSize.substring(0, 1)
-                .uppercase(Locale.getDefault()) + item.groundSize.substring(1).lowercase(
+            val totalWater = item.recipe.brewWaterAmount
+            val totalTime = item.recipe.bloomTime + item.recipe.brewTime
+            val bloomTime = item.recipe.bloomTime
+            val temp = item.recipe.diceTemperature
+            val grindSize = item.recipe.groundSize.substring(0, 1)
+                .uppercase(Locale.getDefault()) + item.recipe.groundSize.substring(1).lowercase(
                 Locale.getDefault()
             )
             binding.card.recipeTitle.text =
@@ -107,11 +107,11 @@ class SavedRecipesAdapter(
                 temp * 9 / 5 + 32
             )
             binding.card.beansWeightTV.text =
-                context.resources.getString(R.string.SavedCoffeeWeightTextView, item.coffeeAmount)
+                context.resources.getString(R.string.SavedCoffeeWeightTextView, item.recipe.coffeeAmount)
             binding.card.beansGrindLevelTV.text =
                 context.resources.getString(R.string.SavedGrindLevelTextView, grindSize)
             binding.card.brewingMethodTextView.text =
-                context.resources.getString(R.string.SavedBrewingMethodTextView, item.brewingMethod)
+                context.resources.getString(R.string.SavedBrewingMethodTextView, item.recipe.brewingMethod)
 
             if (bloomTime == 0) {
                 binding.card.brewingTimeTextView.text = context.resources.getString(
@@ -119,7 +119,7 @@ class SavedRecipesAdapter(
                 )
             } else {
                 binding.card.brewingTimeTextView.text = context.resources.getString(
-                    R.string.SavedTotalTimeWithBloomTextView, item.brewTime, bloomTime
+                    R.string.SavedTotalTimeWithBloomTextView, item.recipe.brewTime, bloomTime
                 )
             }
         }

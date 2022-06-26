@@ -3,7 +3,7 @@ package aeropresscipe.divinelink.aeropress.savedrecipes
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseAndroidViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceUI
+import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
 import android.app.Application
 import java.lang.ref.WeakReference
 
@@ -34,7 +34,7 @@ class SavedRecipesViewModel(
         )
     }
 
-    override fun startBrew(recipe: SavedRecipeDomain) {
+    override fun startBrew(recipe: Recipe) {
         dbRepository.startBrew(
             recipe = recipe,
             context = getApplication(),
@@ -42,9 +42,9 @@ class SavedRecipesViewModel(
                 state = if (selectedRecipe == null) {
                     SavedRecipesState.ErrorState("Something went wrong!") // //TODO 15/6/22 divinelink: Fix Error State
                 } else {
-                    val newRecipe = recipe.diceDomain
+                    val newRecipe = recipe
                     newRecipe.isNewRecipe = true
-                    SavedRecipesState.StartNewBrewState(recipe.diceDomain)
+                    SavedRecipesState.StartNewBrewState(recipe)
                 }
             }
         )
@@ -73,7 +73,7 @@ interface ISavedRecipesViewModel {
 
 interface SavedRecipesIntents : MVIBaseView {
     fun getSavedRecipes()
-    fun startBrew(recipe: SavedRecipeDomain)
+    fun startBrew(recipe: Recipe)
     fun deleteRecipe(recipe: SavedRecipeDomain)
 }
 
@@ -85,7 +85,7 @@ sealed class SavedRecipesState {
     object EmptyRecipesState : SavedRecipesState()
     data class RecipesState(val recipes: List<SavedRecipeDomain>) : SavedRecipesState()
     data class RecipeDeletedState(val recipes: List<SavedRecipeDomain>) : SavedRecipesState()
-    data class StartNewBrewState(val recipe: DiceDomain) : SavedRecipesState()
+    data class StartNewBrewState(val recipe: Recipe) : SavedRecipesState()
 }
 
 interface SavedRecipesStateHandler {

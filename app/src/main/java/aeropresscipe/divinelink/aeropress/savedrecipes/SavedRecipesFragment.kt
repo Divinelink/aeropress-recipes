@@ -35,7 +35,7 @@ class SavedRecipesFragment : Fragment(),
         ) { recipe: SavedRecipeDomain, swipeAction: SwipeAction ->
             when (swipeAction.actionId) {
                 R.id.delete -> showDeleteRecipeDialog(recipe)
-                R.id.brew -> viewModel.startBrew(recipe)
+                R.id.brew -> viewModel.startBrew(recipe.recipe)
             }
         }
     }

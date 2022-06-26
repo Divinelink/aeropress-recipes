@@ -3,7 +3,7 @@ package aeropresscipe.divinelink.aeropress.timer
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseAndroidViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain
+import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import aeropresscipe.divinelink.aeropress.timer.util.BrewPhase
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
@@ -36,7 +36,7 @@ class TimerViewModel(
 
     override fun init(transferableModel: TimerTransferableModel) {
         this.transferableModel = transferableModel
-        dbRepository.isRecipeSaved(transferableModel.dice, getApplication()) { saved ->
+        dbRepository.isRecipeSaved(transferableModel.recipe, getApplication()) { saved ->
             val image = when (saved) {
                 true -> R.drawable.ic_heart_on
                 false -> R.drawable.ic_heart_off
@@ -46,12 +46,12 @@ class TimerViewModel(
     }
 
     override fun startBrew(transferableModel: TimerTransferableModel?) {
-        if (transferableModel?.dice == null) {
+        if (transferableModel?.recipe == null) {
             state = TimerState.ErrorState("Something went wrong!")
         } else {
             // Initialise Timer
             dbRepository.addToHistory(
-                recipe = transferableModel.dice!!,
+                recipe = transferableModel.recipe!!,
                 brewDate = getCurrentDate(),
                 context = getApplication(),
                 completionBlock = {
@@ -68,12 +68,12 @@ class TimerViewModel(
     private fun startTimers(transferableModel: TimerTransferableModel?) {
         val brewPhase = BrewPhase.Builder()
             .withCurrentPhase(getCorrectPhase())
-            .brewTime(transferableModel?.dice?.brewTime?.toLong())
-            .brewWater(transferableModel?.dice?.brewWaterAmount)
-            .bloomTime(transferableModel?.dice?.bloomTime?.toLong())
-            .bloomWater(transferableModel?.dice?.bloomWater)
-            .withBloom(transferableModel?.dice?.withBloom)
-            .remainingWater(transferableModel?.dice?.remainingWater)
+            .brewTime(transferableModel?.recipe?.brewTime?.toLong())
+            .brewWater(transferableModel?.recipe?.brewWaterAmount)
+            .bloomTime(transferableModel?.recipe?.bloomTime?.toLong())
+            .bloomWater(transferableModel?.recipe?.bloomWater)
+            .withBloom(transferableModel?.recipe?.withBloom)
+            .remainingWater(transferableModel?.recipe?.remainingWater)
             .build()
 
         state = TimerState.StartTimer(
@@ -88,7 +88,7 @@ class TimerViewModel(
         )
     }
 
-    override fun saveRecipe(recipe: DiceDomain?) {
+    override fun saveRecipe(recipe: Recipe?) {
         if (recipe == null) {
             state = TimerState.ErrorState("Something went wrong!") // Fixme
         } else {
@@ -113,7 +113,7 @@ class TimerViewModel(
     }
 
     private fun getCorrectPhase(): Phase {
-        return if (transferableModel?.dice?.bloomTime == 0) {
+        return if (transferableModel?.recipe?.bloomTime == 0) {
             Phase.BREW
         } else {
             Phase.BLOOM
@@ -146,7 +146,7 @@ interface ITimerViewModel {
 interface TimerIntents : MVIBaseView {
     fun init(transferableModel: TimerTransferableModel)
     fun startBrew(transferableModel: TimerTransferableModel?)
-    fun saveRecipe(recipe: DiceDomain?)
+    fun saveRecipe(recipe: Recipe?)
 
     fun updateTimer(phase: Phase, transferableModel: TimerTransferableModel)
 }

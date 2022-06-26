@@ -8,6 +8,8 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe;
+
 
 @Dao
 public abstract class SavedRecipeDao {
@@ -18,14 +20,18 @@ public abstract class SavedRecipeDao {
     @Query("SELECT * FROM SavedRecipes")
     public abstract List<SavedRecipeDomain> getSavedRecipes();
 
-    @Query("SELECT EXISTS (SELECT 1 FROM SavedRecipes WHERE  id= :id)")
-    public abstract boolean recipeExists(int id);
+    @Query("SELECT EXISTS (SELECT 1 FROM SavedRecipes WHERE  recipe= :recipe)")
+    public abstract boolean recipeExists(Recipe recipe);
 
     @Query("DELETE FROM SavedRecipes")
     abstract void deleteAll();
 
-    @Delete
-    public abstract void delete(SavedRecipeDomain recipeDomain);
+//    @Delete
+//    public abstract void delete(SavedRecipeDomain recipeDomain);
+
+    @Query("DELETE FROM SavedRecipes WHERE recipe=:recipe")
+    public abstract void delete(Recipe recipe);
+
 
 
 //    @Query("SELECT * FROM SavedRecipes WHERE RowID=:position")

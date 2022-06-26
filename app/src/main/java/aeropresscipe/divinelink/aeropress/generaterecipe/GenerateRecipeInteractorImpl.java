@@ -32,7 +32,7 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor, S
             AsyncTask.execute(() -> {
                 final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
 
-                final DiceDomain newRecipe = new GenerateRecipe().getFinalRecipe();
+                final Recipe newRecipe = new GenerateRecipe().getFinalRecipe();
 
                 // When Using AsyncTask, we also need to use .runOnUiThread(new Runnable()) where we set the adapter
                 // That updates the UI. In this case, on the fragment, on showRecipe() method.
@@ -59,9 +59,9 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor, S
             final DiceDomain recipe = recipeDao.getSingleRecipe();
 
             if (recipe == null) {
-                // If it's the first time we run the app, there's no recipe. We generate a new one using the getRandomRecipe() method
+                // If it's the first brewTime we run the app, there's no recipe. We generate a new one using the getRandomRecipe() method
 
-                final DiceDomain newRecipe = new GenerateRecipe().getFinalRecipe();
+                final Recipe newRecipe = new GenerateRecipe().getFinalRecipe();
 
                 // When DB is empty, meaning it has no recipe, it automatically saves the current recipe on the DB
                 // And we show it on the fragment.
@@ -74,9 +74,9 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor, S
                 Log.d("Show Recipe", "Show already existing recipe");
                 AsyncTask.execute(() -> {
                     if (isBrewing) // When there's a timer active and app is starting
-                        listener.onSuccess(recipe);
+                        listener.onSuccess(recipe.getRecipe());
                     else // When there's no timer active and app is starting
-                        listener.onSuccessAppStarts(recipe);
+                        listener.onSuccessAppStarts(recipe.getRecipe());
                 });
             }
         });

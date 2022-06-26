@@ -2,7 +2,7 @@ package aeropresscipe.divinelink.aeropress.history;
 
 import android.content.Context;
 
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain;
+import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe;
 
 interface IHistoryPresenter {
 
@@ -12,6 +12,6 @@ interface IHistoryPresenter {
 
     void clearHistory(Context ctx);
 
-    void addRecipeToFavourites(Context ctx, int pos, int historyID);
+    void addRecipeToFavourites(Context ctx, int pos, Recipe recipe);
 
 }

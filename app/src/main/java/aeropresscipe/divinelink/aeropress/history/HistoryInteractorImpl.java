@@ -10,11 +10,10 @@ import java.util.Date;
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase;
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
+import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe;
 import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeDao;
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDao;
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain;
-import aeropresscipe.divinelink.aeropress.timer.TimerInteractorImpl;
 
 public class HistoryInteractorImpl implements IHistoryInteractor, ISharedPrefHistoryManager {
 
@@ -22,48 +21,37 @@ public class HistoryInteractorImpl implements IHistoryInteractor, ISharedPrefHis
     @Override
     public void getHistoryFromDB(final OnGetHistoryFromDBFinishListener listener, final Context ctx) {
 
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
+        AsyncTask.execute(() -> {
 
-                final HistoryDao recipeDao = HomeDatabase.getDatabase(ctx).historyDao();
-                List<HistoryDomain> mHistoryRecipes = recipeDao.getHistoryRecipes();
+            final HistoryDao recipeDao = HomeDatabase.getDatabase(ctx).historyDao();
+            List<History> mHistoryRecipes = recipeDao.getHistoryRecipes();
 
-                if (mHistoryRecipes.size() >= 10) {
-                    recipeDao.deleteSurplus();
-                    mHistoryRecipes = recipeDao.getHistoryRecipes();
-                }
+            if (mHistoryRecipes.size() >= 10) {
+                recipeDao.deleteSurplus();
+                mHistoryRecipes = recipeDao.getHistoryRecipes();
+            }
 
-                if (mHistoryRecipes.size() != 0) {
-                    setIsHistoryEmptyBool(ctx, false);
-                    listener.onSuccess(mHistoryRecipes);
-                } else {
-                    setIsHistoryEmptyBool(ctx, true);
-                    listener.onEmptyList();
-                }
+            if (mHistoryRecipes.size() != 0) {
+                setIsHistoryEmptyBool(ctx, false);
+                listener.onSuccess(mHistoryRecipes);
+            } else {
+                setIsHistoryEmptyBool(ctx, true);
+                listener.onEmptyList();
             }
         });
     }
 
     @Override
     public void getSpecificRecipeFromDB(final OnGetHistoryFromDBFinishListener listener, final Context ctx, final int position) {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
-                final HistoryDao historyDao = HomeDatabase.getDatabase(ctx).historyDao();
-                final List<HistoryDomain> mSavedRecipes = historyDao.getHistoryRecipes();
+        AsyncTask.execute(() -> {
+            final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
+            final HistoryDao historyDao = HomeDatabase.getDatabase(ctx).historyDao();
+            final List<History> mSavedRecipes = historyDao.getHistoryRecipes();
 
-                AsyncTask.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        recipeDao.updateRecipe(mSavedRecipes.get(position).getDiceDomain());
-                    }
-                });
+            AsyncTask.execute(() -> recipeDao.updateRecipe(mSavedRecipes.get(position).getRecipe()));
 
-                listener.onSuccessSingleRecipe(mSavedRecipes.get(position));
+            listener.onSuccessSingleRecipe(mSavedRecipes.get(position));
 
-            }
         });
     }
 
@@ -74,7 +62,7 @@ public class HistoryInteractorImpl implements IHistoryInteractor, ISharedPrefHis
             @Override
             public void run() {
                 final HistoryDao historyDao = HomeDatabase.getDatabase(ctx).historyDao();
-                final List<HistoryDomain> mSavedRecipes = historyDao.getHistoryRecipes();
+                final List<History> mSavedRecipes = historyDao.getHistoryRecipes();
 
                 if (mSavedRecipes.size() != 0) {
                     historyDao.deleteAll();
@@ -89,26 +77,27 @@ public class HistoryInteractorImpl implements IHistoryInteractor, ISharedPrefHis
     }
 
     @Override
-    public void addRecipeToFavourites(final OnSaveRecipeToDBFinishListener listener, final Context ctx, final int pos, final int id) {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
+    public void addRecipeToFavourites(final OnSaveRecipeToDBFinishListener listener, final Context ctx, final int pos, final Recipe rcp) {
+        AsyncTask.execute(() -> {
 
-                final SavedRecipeDao savedRecipeDao = HomeDatabase.getDatabase(ctx).savedRecipeDao();
-                final HistoryDao historyDao = HomeDatabase.getDatabase(ctx).historyDao();
+            final SavedRecipeDao savedRecipeDao = HomeDatabase.getDatabase(ctx).savedRecipeDao();
+            final HistoryDao historyDao = HomeDatabase.getDatabase(ctx).historyDao();
 
-                final DiceDomain recipe = historyDao.getSpecificRecipe(id);
-                final boolean recipeExists = savedRecipeDao.recipeExists(id);
 
-                if (!recipeExists) {
-                    historyDao.updateRecipe(new HistoryDomain(recipe, getCurrentDate(), true));
-                    savedRecipeDao.insertLikedRecipe(new SavedRecipeDomain(recipe, getCurrentDate()));
-                    listener.onSaveRecipe(true, pos);
-                } else {
-                    historyDao.updateRecipe(new HistoryDomain(recipe, getCurrentDate(), false));
-                    savedRecipeDao.delete(new SavedRecipeDomain(recipe, getCurrentDate()));
-                    listener.onSaveRecipe(false, pos);
-                }
+            final Recipe recipe = historyDao.getSpecificRecipe(rcp);
+            History history = historyDao.getHistoryRecipe(recipe);
+            final boolean recipeExists = savedRecipeDao.recipeExists(recipe);
+
+            if (!recipeExists) {
+                history.setRecipeLiked(true);
+                historyDao.updateRecipe(history);
+                savedRecipeDao.insertLikedRecipe(new SavedRecipeDomain(recipe, getCurrentDate()));
+                listener.onSaveRecipe(true, pos);
+            } else {
+                history.setRecipeLiked(false);
+                historyDao.updateRecipe(history);
+                savedRecipeDao.delete(recipe);
+                listener.onSaveRecipe(false, pos);
             }
         });
     }

@@ -12,10 +12,10 @@ import java.util.Date;
 
 import aeropresscipe.divinelink.aeropress.base.BaseApplication;
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase;
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
+import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe;
 import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeDao;
 import aeropresscipe.divinelink.aeropress.history.HistoryDao;
-import aeropresscipe.divinelink.aeropress.history.HistoryDomain;
+import aeropresscipe.divinelink.aeropress.history.History;
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDao;
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain;
 
@@ -81,21 +81,21 @@ public class TimerInteractorImpl implements TimerInteractor {
             final SavedRecipeDao savedRecipeDao = HomeDatabase.getDatabase(ctx).savedRecipeDao();
             final HistoryDao historyDao = HomeDatabase.getDatabase(ctx).historyDao();
 
-            final DiceDomain recipe = recipeDao.getSingleRecipe();
+            final Recipe recipe = recipeDao.getSingleRecipe().getRecipe();
             final SavedRecipeDomain currentRecipe = new SavedRecipeDomain(recipe, getCurrentDate());
 
-            final boolean recipeExists = savedRecipeDao.recipeExists(recipe.getId());
+            final boolean recipeExists = savedRecipeDao.recipeExists(recipe);
 
-            if (!recipeExists) {
+            if (recipeExists) {
+                Log.d("Deleted", currentRecipe.toString());
+                historyDao.updateRecipe(new History(recipe, getCurrentDate(), false));
+                savedRecipeDao.delete(currentRecipe.getRecipe());
+                listener.onSavedRecipe(false);
+            } else {
                 Log.d("Inserted", currentRecipe.toString());
-                historyDao.updateRecipe(new HistoryDomain(recipe, getCurrentDate(), true)); // Updates History's corresponding entry's Like Button
+                historyDao.updateRecipe(new History(recipe, getCurrentDate(), true)); // Updates History's corresponding entry's Like Button
                 savedRecipeDao.insertLikedRecipe(currentRecipe);
                 listener.onSavedRecipe(true);
-            } else {
-                Log.d("Deleted", currentRecipe.toString());
-                historyDao.updateRecipe(new HistoryDomain(recipe, getCurrentDate(), false));
-                savedRecipeDao.delete(currentRecipe);
-                listener.onSavedRecipe(false);
             }
         });
     }
@@ -107,12 +107,17 @@ public class TimerInteractorImpl implements TimerInteractor {
             final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
             final SavedRecipeDao savedRecipeDao = HomeDatabase.getDatabase(ctx).savedRecipeDao();
             final HistoryDao historyDao = HomeDatabase.getDatabase(ctx).historyDao();
+            final Recipe recipe = recipeDao.getSingleRecipe().getRecipe();
 
-            final DiceDomain recipe = recipeDao.getSingleRecipe();
             final SavedRecipeDomain currentRecipe = new SavedRecipeDomain(recipe, getCurrentDate());
-            final boolean recipeExists = savedRecipeDao.recipeExists(recipe.getId()); //Checks whether current recipe exists on DB
+            final boolean recipeExists = savedRecipeDao.recipeExists(recipe); //Checks whether current recipe exists on DB
 
-            historyDao.updateRecipe(new HistoryDomain(recipe, getCurrentDate(), recipeExists)); // Updates History's Like Button Status
+            History currentHistoryRecipe = historyDao.getHistoryRecipe(recipe);
+            currentHistoryRecipe.setRecipeLiked(recipeExists);
+//            historyDao.updateRecipe(currentHistoryRecipe);
+
+            historyDao.updateHistory(currentHistoryRecipe);
+//            historyDao.updateRecipe(new HistoryDomain(recipe, getCurrentDate(), recipeExists)); // Updates History's Like Button Status
 
             Log.d("Current Recipe: ", currentRecipe.toString());
             listener.onSavedRecipe(recipeExists);
@@ -125,11 +130,10 @@ public class TimerInteractorImpl implements TimerInteractor {
             final HistoryDao historyDao = HomeDatabase.getDatabase(ctx).historyDao();
             final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
             final SavedRecipeDao savedRecipeDao = HomeDatabase.getDatabase(ctx).savedRecipeDao();
+            final Recipe recipe = recipeDao.getSingleRecipe().getRecipe();
 
-            final DiceDomain recipe = recipeDao.getSingleRecipe();
-            final boolean recipeExists = savedRecipeDao.recipeExists(recipe.getId()); //Checks whether current recipe exists on DB
-
-            final HistoryDomain currentRecipe = new HistoryDomain(recipe, getCurrentDate(), recipeExists);
+            final boolean recipeExists = savedRecipeDao.recipeExists(recipe); //Checks whether current recipe exists on DB
+            final History currentRecipe = new History(recipe, getCurrentDate(), recipeExists);
 
             historyDao.insertRecipeToHistory(currentRecipe);
         });

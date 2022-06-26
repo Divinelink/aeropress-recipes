@@ -1,6 +1,8 @@
 package aeropresscipe.divinelink.aeropress.savedrecipes
 
 import aeropresscipe.divinelink.aeropress.base.mvi.logic.BaseRepository
+import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain
+import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
@@ -22,8 +24,8 @@ class SavedRecipesRepository(
     ) = performTransaction(completionBlock) { dbRemote.deleteRecipe(recipe, context) }
 
     fun startBrew(
-        recipe: SavedRecipeDomain,
+        recipe: Recipe,
         context: Context,
-        completionBlock: (SavedRecipeDomain?) -> Unit
+        completionBlock: (Recipe?) -> Unit
     ) = performTransaction(completionBlock) { dbRemote.getSingleRecipe(recipe, context) }
 }

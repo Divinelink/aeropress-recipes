@@ -32,10 +32,8 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
     private Animation mAdapterAnimation;
     private GenerateRecipePresenter presenter;
     private HomeView homeView;
-    private DiceUI diceUI;
 
-    private DiceDomain diceDomain;
-
+    private Recipe recipe;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,18 +70,18 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         });
 
         timerButton.setOnClickListener(view -> {
-            diceDomain.setNewRecipe(true);
-            homeView.startTimerActivity(diceDomain);
+            recipe.setNewRecipe(true);
+            homeView.startTimerActivity(recipe);
         });
 
         resumeBrewBtn.setOnClickListener(view -> {
-            diceDomain.setNewRecipe(false);
-            homeView.startTimerActivity(diceDomain);
+            recipe.setNewRecipe(false);
+            homeView.startTimerActivity(recipe);
         });
     }
 
     @Override
-    public void showRecipe(final DiceDomain randomRecipe) {
+    public void showRecipe(final Recipe randomRecipe) {
         if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
                 final GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter(randomRecipe, getActivity());
@@ -107,8 +105,8 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
     }
 
     @Override
-    public void passData(DiceDomain dice) {
-        diceDomain = dice;
+    public void passData(Recipe recipe) {
+        this.recipe = recipe;
     }
 
     @Override
@@ -117,7 +115,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
     }
 
     @Override
-    public void showRecipeRemoveResume(final DiceDomain randomRecipe) {
+    public void showRecipeRemoveResume(final Recipe randomRecipe) {
         if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
                 final GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter(randomRecipe, getActivity());
@@ -143,7 +141,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
     }
 
     @Override
-    public void showRecipeAppStarts(final DiceDomain randomRecipe) {
+    public void showRecipeAppStarts(final Recipe randomRecipe) {
         if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
                 final GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter(randomRecipe, getActivity());

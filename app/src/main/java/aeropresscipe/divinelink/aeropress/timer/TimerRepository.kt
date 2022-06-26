@@ -2,6 +2,7 @@ package aeropresscipe.divinelink.aeropress.timer
 
 import aeropresscipe.divinelink.aeropress.base.mvi.logic.BaseRepository
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain
+import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +20,7 @@ class TimerRepository(
     ) = performTransaction(completionBlock) { dbRemote.likeCurrentRecipe(recipe, context) }
 
     fun updateHistory(
-        recipe: DiceDomain,
+        recipe: Recipe,
         brewDate: String,
         isLiked: Boolean,
         context: Context,
@@ -27,14 +28,14 @@ class TimerRepository(
     ) = performTransaction(completionBlock) { dbRemote.updateHistory(recipe, brewDate, isLiked, context) }
 
     fun addToHistory(
-        recipe: DiceDomain,
+        recipe: Recipe,
         brewDate: String,
         context: Context,
         completionBlock: () -> Unit
     ) = performTransaction(completionBlock) { dbRemote.addToHistory(recipe, brewDate, context) }
 
     fun isRecipeSaved(
-        recipe: DiceDomain?,
+        recipe: Recipe?,
         context: Context,
         completionBlock: (Boolean) -> Unit
     ) = performTransaction(completionBlock) { dbRemote.isRecipeSaved(recipe, context) }

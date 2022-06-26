@@ -6,32 +6,30 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 
 import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
+import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe;
+
 import androidx.room.TypeConverter;
 
 public class Converters {
     @TypeConverter
-    public String fromOptionValuesList(DiceDomain recipe) {
+    public String fromOptionValuesList(Recipe recipe) {
         if (recipe == null) {
             return (null);
         }
         Gson gson = new Gson();
-        Type type = new TypeToken<DiceDomain>() {
+        Type type = new TypeToken<Recipe>() {
         }.getType();
-        String json = gson.toJson(recipe, type);
-        return json;
+        return gson.toJson(recipe, type);
     }
 
     @TypeConverter
-    public DiceDomain toOptionValuesList(String optionValuesString) {
+    public Recipe toOptionValuesList(String optionValuesString) {
         if (optionValuesString == null) {
             return (null);
         }
         Gson gson = new Gson();
-        Type type = new TypeToken<DiceDomain>() {
+        Type type = new TypeToken<Recipe>() {
         }.getType();
-        DiceDomain productCategoriesList = gson.fromJson(optionValuesString, type);
-        return productCategoriesList;
+        return gson.fromJson(optionValuesString, type);
     }
-
 }
-

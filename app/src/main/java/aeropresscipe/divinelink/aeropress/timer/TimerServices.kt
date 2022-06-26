@@ -1,24 +1,21 @@
 package aeropresscipe.divinelink.aeropress.timer
 
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain
-import aeropresscipe.divinelink.aeropress.history.HistoryDomain
+import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
+import aeropresscipe.divinelink.aeropress.history.History
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import android.content.Context
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.math.BigDecimal
-import java.math.BigDecimal.ZERO
-import kotlin.Float.Companion.NaN
 
 
 interface ITimerServices {
     suspend fun likeCurrentRecipe(recipe: SavedRecipeDomain, context: Context): Boolean
     suspend fun removeCurrentRecipe(recipe: SavedRecipeDomain, context: Context)
-    suspend fun updateHistory(recipe: DiceDomain, brewDate: String, isLiked: Boolean, context: Context)
-    suspend fun addToHistory(recipe: DiceDomain, brewDate: String, context: Context)
-    suspend fun isRecipeSaved(recipe: DiceDomain?, context: Context): Boolean
+    suspend fun updateHistory(recipe: Recipe, brewDate: String, isLiked: Boolean, context: Context)
+    suspend fun addToHistory(recipe: Recipe, brewDate: String, context: Context)
+    suspend fun isRecipeSaved(recipe: Recipe?, context: Context): Boolean
 }
 
 class TimerServices(
@@ -30,8 +27,8 @@ class TimerServices(
         return database.let { db ->
             withContext(dispatcher) {
                 val recipesDao = db.savedRecipeDao()
-                if (recipesDao.recipeExists(recipe.id)) {
-                    recipesDao.delete(recipe)
+                if (recipesDao.recipeExists(recipe.recipe)) {
+                    recipesDao.delete(recipe.recipe)
                     return@withContext false
                 } else {
                     recipesDao.insertLikedRecipe(recipe)
@@ -46,13 +43,13 @@ class TimerServices(
         return database.let { db ->
             withContext(dispatcher) {
                 val recipesDao = db.savedRecipeDao()
-                recipesDao.delete(recipe)
+                recipesDao.delete(recipe.recipe)
             }
         }
     }
 
     override suspend fun updateHistory(
-        recipe: DiceDomain,
+        recipe: Recipe,
         brewDate: String,
         isLiked: Boolean,
         context: Context
@@ -61,13 +58,13 @@ class TimerServices(
         return database.let { db ->
             withContext(dispatcher) {
                 val historyDao = db.historyDao()
-                historyDao.updateRecipe(HistoryDomain(recipe, brewDate, isLiked))
+                historyDao.updateRecipe(History(recipe = recipe, dateBrewed =  brewDate, isRecipeLiked = isLiked))
             }
         }
     }
 
     override suspend fun addToHistory(
-        recipe: DiceDomain,
+        recipe: Recipe,
         brewDate: String,
         context: Context
     ) {
@@ -75,20 +72,20 @@ class TimerServices(
         return database.let { db ->
             withContext(dispatcher) {
                 val historyDao = db.historyDao()
-                val isLiked = db.savedRecipeDao().recipeExists(recipe.id)
-                historyDao.insertRecipeToHistory(HistoryDomain(recipe, brewDate, isLiked))
+                val isLiked = db.savedRecipeDao().recipeExists(recipe)
+                historyDao.updateRecipe(History(recipe, brewDate, isLiked))
             }
         }
     }
 
     override suspend fun isRecipeSaved(
-        recipe: DiceDomain?,
+        recipe: Recipe?,
         context: Context
     ): Boolean {
         val database = HomeDatabase.getDatabase(context)
         return database.let { db ->
             withContext(dispatcher) {
-                return@withContext db.savedRecipeDao().recipeExists(recipe?.id ?: -1)
+                return@withContext db.savedRecipeDao().recipeExists(recipe)
             }
         }
     }
