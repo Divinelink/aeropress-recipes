@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 abstract class Dice {
 
-    protected ArrayList<DiceDomain> dice;
+    protected ArrayList<Object> dice;
 
     abstract void setDice();
 
-    public DiceDomain rollDice() {
+    public Object rollDice() {
         setDice();
 
         int randomIndex = (int) (Math.random() * this.dice.size());
@@ -17,53 +17,54 @@ abstract class Dice {
 }
 
 
-class TemperatureDice extends Dice {
+class Temperature extends Dice {
 
     @Override
     public void setDice() {
-        dice.add(new DiceDomain(80));
-        dice.add(new DiceDomain(85));
-        dice.add(new DiceDomain(90));
-        dice.add(new DiceDomain(95));
-        dice.add(new DiceDomain(100));
+        dice.add(new TemperatureDice(80));
+        dice.add(new TemperatureDice(85));
+        dice.add(new TemperatureDice(90));
+        dice.add(new TemperatureDice(95));
+        dice.add(new TemperatureDice(100));
     }
 
-    public TemperatureDice() {
+    public Temperature() {
         this.dice = new ArrayList<>();
     }
 }
 
-class GroundSizeDice extends Dice {
+class GroundSize extends Dice {
 
     @Override
     public void setDice() {
-        dice.add(new DiceDomain("fine", 60));
-        dice.add(new DiceDomain("medium-fine", 90));
-        dice.add(new DiceDomain("medium", 120));
-        dice.add(new DiceDomain("coarse", 240));
+        dice.add(new GroundSizeDice("fine", 60));
+        dice.add(new GroundSizeDice("medium-fine", 90));
+        dice.add(new GroundSizeDice("medium", 120));
+        dice.add(new GroundSizeDice("coarse", 240));
 //        dice.add(new DiceDomain("lel", 5));
     }
 
-    public GroundSizeDice() {
+    public GroundSize() {
         this.dice = new ArrayList<>();
     }
 
 }
+
 
 class BrewMethodDice extends Dice {
 
     @Override
     public void setDice() {
-        dice.add(new DiceDomain("Standard", 0, 0));
-        dice.add(new DiceDomain("Standard", 30, 30));
-        dice.add(new DiceDomain("Standard", 30, 60));
-        dice.add(new DiceDomain("Inverted", 0, 0));
-        dice.add(new DiceDomain("Inverted", 30, 30));
-        dice.add(new DiceDomain("Inverted", 30, 60));
-        dice.add(new DiceDomain("Standard", 45, 30));
-        dice.add(new DiceDomain("Standard", 45, 60));
-        dice.add(new DiceDomain("Inverted", 45, 30));
-        dice.add(new DiceDomain("Inverted", 45, 60));
+        dice.add(new MethodDice("Standard", 0, 0));
+        dice.add(new MethodDice("Standard", 30, 30));
+        dice.add(new MethodDice("Standard", 30, 60));
+        dice.add(new MethodDice("Inverted", 0, 0));
+        dice.add(new MethodDice("Inverted", 30, 30));
+        dice.add(new MethodDice("Inverted", 30, 60));
+        dice.add(new MethodDice("Standard", 45, 30));
+        dice.add(new MethodDice("Standard", 45, 60));
+        dice.add(new MethodDice("Inverted", 45, 30));
+        dice.add(new MethodDice("Inverted", 45, 60));
 
 //        dice.add(new DiceDomain("TestNoBloom", 0, 0));
 
@@ -81,12 +82,12 @@ class BrewWaterAmountDice extends Dice {
 
     @Override
     public void setDice() {
-        dice.add(new DiceDomain(12, 200));
-        dice.add(new DiceDomain(15, 200));
-        dice.add(new DiceDomain(15, 250));
-        dice.add(new DiceDomain(20, 200));
-        dice.add(new DiceDomain(20, 250));
-        dice.add(new DiceDomain(23, 300));
+        dice.add(new BrewWaterDice(12, 200));
+        dice.add(new BrewWaterDice(15, 200));
+        dice.add(new BrewWaterDice(20, 200));
+        dice.add(new BrewWaterDice(15, 250));
+        dice.add(new BrewWaterDice(20, 250));
+        dice.add(new BrewWaterDice(23, 250));
     }
 
     public BrewWaterAmountDice() {
@@ -94,21 +95,18 @@ class BrewWaterAmountDice extends Dice {
     }
 }
 
-class GetRecipeFactory{
-    public DiceDomain getRecipe(String diceType){
-        if(diceType == null){
+class GetRecipeFactory {
+    public Object getRecipe(String diceType) {
+        if (diceType == null) {
             return null;
         }
-        if(diceType.equalsIgnoreCase("Temperature")) {
-            return new TemperatureDice().rollDice();
-        }
-        else if(diceType.equalsIgnoreCase("GroundSize")){
-            return new GroundSizeDice().rollDice();
-        }
-        else if(diceType.equalsIgnoreCase("BrewMethod")) {
+        if (diceType.equalsIgnoreCase("Temperature")) {
+            return new Temperature().rollDice();
+        } else if (diceType.equalsIgnoreCase("GroundSize")) {
+            return new GroundSize().rollDice();
+        } else if (diceType.equalsIgnoreCase("BrewMethod")) {
             return new BrewMethodDice().rollDice();
-        }
-        else if(diceType.equalsIgnoreCase("BrewWaterAmount")){
+        } else if (diceType.equalsIgnoreCase("BrewWaterAmount")) {
             return new BrewWaterAmountDice().rollDice();
         }
         return null;
@@ -119,15 +117,15 @@ class GenerateRecipe {
 
     GetRecipeFactory getRecipeFactory = new GetRecipeFactory();
 
-    public DiceDomain getFinalRecipe() {
+    public Recipe getFinalRecipe() {
 
-        DiceDomain tempDice = getRecipeFactory.getRecipe("Temperature");
-        DiceDomain groundSizeDice = getRecipeFactory.getRecipe("GroundSize");
-        DiceDomain brewMethod = getRecipeFactory.getRecipe("BrewMethod");
-        DiceDomain brewWater = getRecipeFactory.getRecipe("BrewWaterAmount");
+        TemperatureDice tempDice = (TemperatureDice) getRecipeFactory.getRecipe("Temperature");
+        GroundSizeDice groundSizeDice = (GroundSizeDice) getRecipeFactory.getRecipe("GroundSize");
+        MethodDice brewMethod = (MethodDice) getRecipeFactory.getRecipe("BrewMethod");
+        BrewWaterDice brewWater = (BrewWaterDice) getRecipeFactory.getRecipe("BrewWaterAmount");
 
 
-        final int temp = tempDice.getDiceTemperature();
+        final int temp = tempDice.getTemperature();
 
         final String groundSize = groundSizeDice.getGroundSize();
         final int brewTime = groundSizeDice.getBrewTime();
@@ -136,10 +134,22 @@ class GenerateRecipe {
         final int bloomTime = brewMethod.getBloomTime();
         final int bloomWater = brewMethod.getBloomWater();
 
-        final int waterAmount = brewWater.getBrewWaterAmount();
+        final int waterAmount = brewWater.getBrewWater();
         final int coffeeAmount = brewWater.getCoffeeAmount();
 
-        return new DiceDomain(temp, groundSize, brewTime, brewingMethod, bloomTime, bloomWater, waterAmount, coffeeAmount);
+        return new Recipe(
+                temp,
+                brewTime,
+                bloomTime,
+                bloomWater,
+                coffeeAmount,
+                waterAmount,
+                groundSize,
+                brewingMethod,
+                false,
+                false,
+                0
+        );
     }
 }
 
