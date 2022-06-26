@@ -76,8 +76,6 @@ class TimerViewModel(
             .remainingWater(transferableModel?.dice?.remainingWater)
             .build()
 
-//        brewPhase.phases
-
         state = TimerState.StartTimer(
             water = brewPhase.water(),
             title = brewPhase.title(),
@@ -103,11 +101,9 @@ class TimerViewModel(
                     if (recipeLiked) {
                         state = TimerState.RecipeSavedState
                         dbRepository.updateHistory(recipe, getCurrentDate(), recipeLiked, getApplication()) { /* Intentionally Blank. */ }
-//                        recipe.recipeSaved = true
                     } else {
                         state = TimerState.RecipeRemovedState
                         dbRepository.updateHistory(recipe, getCurrentDate(), recipeLiked, getApplication()) { /* Intentionally Blank. */ }
-//                        recipe.recipeSaved = false
                     }
                 }
             )

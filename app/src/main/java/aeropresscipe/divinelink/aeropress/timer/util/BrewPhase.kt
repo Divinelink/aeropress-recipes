@@ -64,7 +64,7 @@ class BrewPhase private constructor(
     fun water(): Int {
         return when (currentPhase) {
             Phase.BLOOM -> bloomWater
-            Phase.BREW -> if (withBloom) brewWater else remainingWater
+            Phase.BREW -> if (withBloom) remainingWater else brewWater
         }
     }
 
