@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="MyTheme.App" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="MyTheme.App" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -40,8 +40,8 @@
         <item name="android:orientation">horizontal</item>
     </style>
 
-    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
-        <!-- Customize color of navigation drawer icon and back arrow -->
+    <style name="ToolbarTheme" parent="@style/Widget.Material3.Light.ActionBar.Solid">
+        <item name="navigationIconTint">@color/white</item>
         <item name="fontFamily">@font/montserrat_medium</item>
     </style>
 

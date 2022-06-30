@@ -9,7 +9,7 @@
     tools:context=".savedrecipes.SavedRecipesFragment">
 
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,11 +48,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/savedRecipesRV"
-        android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
         android:paddingTop="8dp"
-        android:paddingBottom="16dp"/>
+        android:paddingBottom="16dp" />
 
 
 </LinearLayout>
