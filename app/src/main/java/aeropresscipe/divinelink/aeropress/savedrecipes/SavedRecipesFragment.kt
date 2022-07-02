@@ -1,9 +1,10 @@
 package aeropresscipe.divinelink.aeropress.savedrecipes
 
 import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.base.HomeView
 import aeropresscipe.divinelink.aeropress.databinding.FragmentSavedRecipesBinding
 import aeropresscipe.divinelink.aeropress.savedrecipes.util.SavedRecipesViewModelFactory
+import aeropresscipe.divinelink.aeropress.timer.TimerActivity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,7 +27,6 @@ class SavedRecipesFragment : Fragment(),
     private lateinit var viewModel: SavedRecipesViewModel
     private lateinit var viewModelFactory: SavedRecipesViewModelFactory
 
-    private var homeView: HomeView? = null
     private var mFadeAnimation: Animation? = null
 
     private val recipesAdapter by lazy {
@@ -48,7 +48,6 @@ class SavedRecipesFragment : Fragment(),
         binding = FragmentSavedRecipesBinding.inflate(inflater, container, false)
         val view = binding?.root
         binding?.toolbar?.setNavigationOnClickListener { activity?.onBackPressed() }
-        homeView = arguments?.getSerializable("home_view") as HomeView?
 
         viewModelFactory = SavedRecipesViewModelFactory(
             app = requireActivity().application,
@@ -94,7 +93,7 @@ class SavedRecipesFragment : Fragment(),
     }
 
     override fun handleStartNewBrew(state: SavedRecipesState.StartNewBrewState) {
-        homeView?.startTimerActivity(state.recipe)
+        startActivity(TimerActivity.newIntent(requireContext(), state.recipe))
     }
 
     override fun handleEmptyRecipesState() {
@@ -135,10 +134,9 @@ class SavedRecipesFragment : Fragment(),
 
     companion object {
         @JvmStatic
-        fun newInstance(homeView: HomeView?): SavedRecipesFragment {
+        fun newInstance(): SavedRecipesFragment {
             val fragment = SavedRecipesFragment()
             val args = Bundle()
-            args.putSerializable("home_view", homeView)
             fragment.arguments = args
             return fragment
         }
