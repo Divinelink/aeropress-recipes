@@ -6,6 +6,7 @@ import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
 import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import aeropresscipe.divinelink.aeropress.timer.util.BrewPhase
+import aeropresscipe.divinelink.aeropress.timer.util.Phase
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
 import android.annotation.SuppressLint
 import android.app.Application
@@ -61,13 +62,25 @@ class TimerViewModel(
         }
     }
 
-    override fun updateTimer(phase: Phase, transferableModel: TimerTransferableModel) {
-
+    override fun updateTimer() {
+        transferableModel?.brew?.removeCurrentPhase()
+        transferableModel?.brew?.let { brew ->
+            if (brew.getCurrentPhase() == Phase.FINISHED) {
+                state = TimerState.FinishState
+            } else {
+                state = TimerState.StartTimer(
+                    water = brew.water(),
+                    title = brew.title(),
+                    description = brew.description()
+                )
+                state = TimerState.StartProgressBar(timeInMilliseconds = brew.time().inMilliseconds())
+            }
+        }
     }
 
     private fun startTimers(transferableModel: TimerTransferableModel?) {
         val brewPhase = BrewPhase.Builder()
-            .withCurrentPhase(getCorrectPhase())
+            .phases(transferableModel?.recipe?.getPhases())
             .brewTime(transferableModel?.recipe?.brewTime?.toLong())
             .brewWater(transferableModel?.recipe?.brewWaterAmount)
             .bloomTime(transferableModel?.recipe?.bloomTime?.toLong())
@@ -76,16 +89,15 @@ class TimerViewModel(
             .remainingWater(transferableModel?.recipe?.remainingWater)
             .build()
 
+        transferableModel?.brew = brewPhase
+
         state = TimerState.StartTimer(
             water = brewPhase.water(),
             title = brewPhase.title(),
             description = brewPhase.description()
         )
 
-        state = TimerState.StartProgressBar(
-            timeInMilliseconds = brewPhase.time().inMilliseconds(),
-            phase = brewPhase.currentPhase
-        )
+        state = TimerState.StartProgressBar(timeInMilliseconds = brewPhase.time().inMilliseconds())
     }
 
     override fun saveRecipe(recipe: Recipe?) {
@@ -107,16 +119,6 @@ class TimerViewModel(
                     }
                 }
             )
-
-
-        }
-    }
-
-    private fun getCorrectPhase(): Phase {
-        return if (transferableModel?.recipe?.bloomTime == 0) {
-            Phase.BREW
-        } else {
-            Phase.BLOOM
         }
     }
 
@@ -148,7 +150,7 @@ interface TimerIntents : MVIBaseView {
     fun startBrew(transferableModel: TimerTransferableModel?)
     fun saveRecipe(recipe: Recipe?)
 
-    fun updateTimer(phase: Phase, transferableModel: TimerTransferableModel)
+    fun updateTimer()
 }
 
 sealed class TimerState {
@@ -161,8 +163,15 @@ sealed class TimerState {
 
     data class UpdateSavedIndicator(@DrawableRes val image: Int) : TimerState()
 
-    data class StartTimer(val water: Int, @StringRes val title: Int, @StringRes val description: Int) : TimerState()
-    data class StartProgressBar(val timeInMilliseconds: Long, val phase: Phase) : TimerState()
+    data class StartTimer(
+        val water: Int,
+        @StringRes val title: Int,
+        @StringRes val description: Int
+    ) : TimerState()
+
+    data class StartProgressBar(val timeInMilliseconds: Long) : TimerState()
+
+    object FinishState : TimerState()
 }
 
 interface TimerStateHandler {
@@ -177,9 +186,6 @@ interface TimerStateHandler {
 
     fun handleStartTimer(state: TimerState.StartTimer)
     fun handleStartProgressBar(state: TimerState.StartProgressBar)
-}
 
-enum class Phase {
-    BLOOM,
-    BREW,
+    fun handleFinishState()
 }

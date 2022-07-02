@@ -1,13 +1,17 @@
 package aeropresscipe.divinelink.aeropress.timer.util
 
 import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.timer.Phase
 import androidx.annotation.StringRes
 
+enum class Phase {
+    BLOOM,
+    BREW,
+    FINISHED
+}
 
 class BrewPhase private constructor(
-//    var phases: MutableList<Phase>,
-    var currentPhase: Phase,
+    var phases: MutableList<Phase>,
+//    var currentPhase: Phase,
     var brewTime: Long,
     var bloomTime: Long,
     var brewWater: Int,
@@ -26,7 +30,6 @@ class BrewPhase private constructor(
         var withBloom: Boolean? = null,
     ) {
         fun phases(phases: MutableList<Phase>?) = apply { this.phases = phases }
-        fun withCurrentPhase(phase: Phase?) = apply { this.currentPhase = phase }
         fun brewTime(time: Long?) = apply { this.brewTime = time }
         fun brewWater(water: Int?) = apply { this.brewWater = water }
         fun bloomTime(time: Long?) = apply { this.bloomTime = time }
@@ -34,44 +37,55 @@ class BrewPhase private constructor(
         fun withBloom(withBloom: Boolean?) = apply { this.withBloom = withBloom }
         fun remainingWater(remainingWater: Int?) = apply { this.remainingWater = remainingWater }
         fun build() = BrewPhase(
-//            phases = phases!!,
-            currentPhase = currentPhase!!,
+            phases = phases!!,
             brewTime = brewTime!!,
             bloomTime = bloomTime!!,
             brewWater = brewWater!!,
             bloomWater = bloomWater!!,
             remainingWater = remainingWater!!,
-            withBloom = withBloom!!
+            withBloom = withBloom!!,
         )
     }
 
     @StringRes
     fun title(): Int {
-        return when (currentPhase) {
+        return when (getCurrentPhase()) {
             Phase.BLOOM -> R.string.bloomPhase
             Phase.BREW -> R.string.brewPhase
+            else -> 0
         }
     }
 
     @StringRes
     fun description(): Int {
-        return when (currentPhase) {
+        return when (getCurrentPhase()) {
             Phase.BLOOM -> R.string.bloomPhaseWaterText
             Phase.BREW -> if (this.withBloom) R.string.brewPhaseWithBloom else R.string.brewPhaseNoBloom
+            else -> 0
         }
     }
 
     fun water(): Int {
-        return when (currentPhase) {
+        return when (getCurrentPhase()) {
             Phase.BLOOM -> bloomWater
             Phase.BREW -> if (withBloom) remainingWater else brewWater
+            else -> 0
         }
     }
 
     fun time(): Long {
-        return when (currentPhase) {
+        return when (getCurrentPhase()) {
             Phase.BLOOM -> bloomTime
             Phase.BREW -> brewTime
+            else -> 0
         }
+    }
+
+    fun getCurrentPhase(): Phase? {
+        return phases.firstOrNull()
+    }
+
+    fun removeCurrentPhase() {
+        phases.removeFirstOrNull()
     }
 }

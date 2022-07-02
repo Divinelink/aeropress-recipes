@@ -116,7 +116,7 @@ class TimerFragment : Fragment(),
 
     override fun onResume() {
         super.onResume()
-        // if resuming from recipe without bloom isNewRecipe == false
+//         if resuming from recipe without bloom isNewRecipe == false
 //        if (diceUI?.isNewRecipe == true) { // if it's a new recipe, dont call returnValuesOnResume
 //            presenter?.startBrewing(
 //                GetPhaseFactory().findPhase(diceUI.bloomTime, diceUI?.brewTime).brewTime,
@@ -212,6 +212,7 @@ class TimerFragment : Fragment(),
 
             is TimerState.StartProgressBar -> handleStartProgressBar(state)
             is TimerState.StartTimer -> handleStartTimer(state)
+            is TimerState.FinishState -> handleFinishState()
         }
     }
 
@@ -248,15 +249,19 @@ class TimerFragment : Fragment(),
 
         Timer(
             millisInFuture = millisecondsRemaining,
-            countDownInterval = 10,
+            countDownInterval = REDUCE_RATE,
             runAtStart = true,
-            onFinish = { viewModel.updateTimer(state.phase, transferableModel) },
+            onFinish = { viewModel.updateTimer() },
             onTick = {
                 ThreadUtil.runOnMain {
                     updateCountdownUI(millisecondsRemaining)
                 }
             }
         )
+    }
+
+    override fun handleFinishState() {
+        // to do
     }
 
     override fun handleUpdateSavedIndicator(state: TimerState.UpdateSavedIndicator) {
@@ -270,7 +275,8 @@ class TimerFragment : Fragment(),
         val timeLeft = time.getPairOfMinutesSeconds()
         binding?.brewingTimeTextView?.text = String.format("%d:%02d", timeLeft.first, timeLeft.second)
         binding?.progressBar?.progress = timeInMilliseconds.toInt()
-        millisecondsRemaining -= 10
+        millisecondsRemaining -= REDUCE_RATE
     }
+
 
 }
