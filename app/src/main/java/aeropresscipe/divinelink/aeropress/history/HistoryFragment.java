@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import aeropresscipe.divinelink.aeropress.base.HomeView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
@@ -22,6 +21,7 @@ import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.R;
 import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe;
+import aeropresscipe.divinelink.aeropress.timer.TimerActivity;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +31,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 public class HistoryFragment extends Fragment implements IHistoryView, ISharedPrefHistoryManager {
 
     private IHistoryPresenter presenter;
-    private HomeView homeView;
 
     private RecyclerView historyRecipesRV;
     private Toolbar mToolBar;
@@ -46,10 +45,6 @@ public class HistoryFragment extends Fragment implements IHistoryView, ISharedPr
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_history, container, false);
-
-        if (getArguments() != null) {
-            homeView = (HomeView) getArguments().getSerializable("home_view");
-        }
 
         historyRecipesRV = (RecyclerView) v.findViewById(R.id.historyRV);
         mHistoryTV = (TextView) v.findViewById(R.id.historyTV);
@@ -69,11 +64,9 @@ public class HistoryFragment extends Fragment implements IHistoryView, ISharedPr
         return v;
     }
 
-    public static HistoryFragment newInstance(HomeView homeView) {
-
+    public static HistoryFragment newInstance() {
         HistoryFragment fragment = new HistoryFragment();
         Bundle args = new Bundle();
-        args.putSerializable("home_view", homeView);
         fragment.setArguments(args);
         return fragment;
     }
@@ -124,7 +117,7 @@ public class HistoryFragment extends Fragment implements IHistoryView, ISharedPr
         if (getActivity() != null) {
             getActivity().runOnUiThread(() -> {
                 recipe.setNewRecipe(true);
-                homeView.startTimerActivity(recipe);
+                startActivity(TimerActivity.newIntent(requireContext(), recipe));
             });
         }
     }

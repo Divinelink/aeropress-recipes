@@ -2,7 +2,6 @@ package aeropresscipe.divinelink.aeropress.generaterecipe;
 
 import android.os.Bundle;
 
-import aeropresscipe.divinelink.aeropress.base.HomeView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +19,7 @@ import android.widget.LinearLayout;
 
 import aeropresscipe.divinelink.aeropress.R;
 import aeropresscipe.divinelink.aeropress.customviews.Notification;
+import aeropresscipe.divinelink.aeropress.timer.TimerActivity;
 
 public class GenerateRecipeFragment extends Fragment implements GenerateRecipeView {
 
@@ -31,7 +31,6 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
     private Animation mFadeInAnimation;
     private Animation mAdapterAnimation;
     private GenerateRecipePresenter presenter;
-    private HomeView homeView;
 
     private Recipe recipe;
 
@@ -40,9 +39,6 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_generate_recipe, container, false);
 
-        if (getArguments() != null) {
-            homeView = (HomeView) getArguments().getSerializable("home_view");
-        }
         recipeRv = v.findViewById(R.id.recipe_rv);
         generateRecipeButton = v.findViewById(R.id.generateRecipeButton);
         timerButton = v.findViewById(R.id.startTimerButton);
@@ -71,12 +67,12 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
 
         timerButton.setOnClickListener(view -> {
             recipe.setNewRecipe(true);
-            homeView.startTimerActivity(recipe);
+            startActivity(TimerActivity.newIntent(requireContext(), recipe));
         });
 
         resumeBrewBtn.setOnClickListener(view -> {
             recipe.setNewRecipe(false);
-            homeView.startTimerActivity(recipe);
+            startActivity(TimerActivity.newIntent(requireContext(), recipe));
         });
     }
 
@@ -156,10 +152,9 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         }
     }
 
-    public static GenerateRecipeFragment newInstance(HomeView homeView) {
+    public static GenerateRecipeFragment newInstance() {
         Bundle args = new Bundle();
         GenerateRecipeFragment fragment = new GenerateRecipeFragment();
-        args.putSerializable("home_view", homeView);
         fragment.setArguments(args);
         return fragment;
     }

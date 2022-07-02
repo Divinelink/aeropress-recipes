@@ -22,8 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 
 
-public class HomeActivity extends AppCompatActivity implements HomeView, Parcelable {
-    //FIXME make sure Parcelable is absolutely necessary, otherwise remove it and try to fix the bug it creates where app crashes when closing the app.
+public class HomeActivity extends AppCompatActivity {
     private BottomNavigationView mBottomNavigationView;
 
     @Override
@@ -38,7 +37,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView, Parcela
         getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.homeRoot, GenerateRecipeFragment.newInstance(this))
+                .replace(R.id.homeRoot, GenerateRecipeFragment.newInstance())
                 .commit();
 
     }
@@ -52,43 +51,37 @@ public class HomeActivity extends AppCompatActivity implements HomeView, Parcela
         getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_NONE)
-                .replace(R.id.homeRoot, GenerateRecipeFragment.newInstance(this))
+                .replace(R.id.homeRoot, GenerateRecipeFragment.newInstance())
                 .commit();
     }
 
-    @Override
-    public void startTimerActivity(Recipe recipe) {
-        Intent timerIntent = new Intent(this, TimerActivity.class);
-        timerIntent.putExtra("timer", recipe);
-        startActivity(timerIntent);
-    }
 
-    @Override
+//    @Override
     public void addGenerateRecipeFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.homeRoot, GenerateRecipeFragment.newInstance(this))
+                .replace(R.id.homeRoot, GenerateRecipeFragment.newInstance())
                 .addToBackStack(null)
                 .commit();
     }
 
-    @Override
+//    @Override
     public void addSavedRecipesFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.homeRoot, SavedRecipesFragment.newInstance(this))
+                .replace(R.id.homeRoot, SavedRecipesFragment.newInstance())
                 .addToBackStack(null)
                 .commit();
     }
 
-    @Override
+//    @Override
     public void addHistoryFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.homeRoot, HistoryFragment.newInstance(this))
+                .replace(R.id.homeRoot, HistoryFragment.newInstance())
                 .addToBackStack(null)
                 .commit();
     }
@@ -129,15 +122,5 @@ public class HomeActivity extends AppCompatActivity implements HomeView, Parcela
         } else {
             mBottomNavigationView.setSelectedItemId(R.id.recipe);
         }
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        // do nothing
     }
 }
