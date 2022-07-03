@@ -11,21 +11,20 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foreground="?attr/selectableItemBackground"
+        style="@style/customSnackBarStyle"
         app:cardCornerRadius="8dp">
 
         <TextView
             android:id="@+id/notification_text"
+            style="@style/Text.BodySmall"
+            android:textColor="@color/colorOnPrimaryContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/startEndMargin"
             android:layout_marginEnd="@dimen/startEndMargin"
             android:gravity="center"
             android:padding="8dp"
-            android:textAlignment="center"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/Body_Normal_Importance"
-            tools:text="@string/alreadyBrewingDialog" />
+            tools:text="Custom SnackBar Title" />
 
     </androidx.cardview.widget.CardView>
 

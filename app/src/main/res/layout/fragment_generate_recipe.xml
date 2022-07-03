@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="?android:attr/actionBarSize"
+    android:layout_marginBottom="?attr/actionBarSize"
     tools:context=".generaterecipe.GenerateRecipeFragment">
 
     <LinearLayout
@@ -63,29 +63,34 @@
                 android:textAlignment="center" />
         </LinearLayout>
 
-        <LinearLayout
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/startTimerButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginStart="25dp"
-            android:gravity="center|bottom"
-            android:orientation="vertical">
+            android:text="@string/brew" />
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/startTimerButton"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="bottom"-->
+        <!--            android:layout_marginStart="25dp"-->
+        <!--            android:gravity="center|bottom"-->
+        <!--            android:orientation="vertical">-->
 
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="@drawable/ic_aeropress"
-                android:contentDescription="aeropress1" />
+<!--                    <ImageView-->
+<!--                        android:layout_width="80dp"-->
+<!--                        android:layout_height="80dp"-->
+<!--                        android:background="@drawable/ic_aeropress"-->
+<!--                        android:contentDescription="aeropress1" />-->
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:text="@string/brew"
-                android:textAlignment="center" />
-        </LinearLayout>
+        <!--            <TextView-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:layout_marginBottom="10dp"-->
+        <!--                android:gravity="center"-->
+        <!--                android:text="@string/brew"-->
+        <!--                android:textAlignment="center" />-->
+        <!--        </LinearLayout>-->
     </LinearLayout>
 
 
@@ -94,13 +99,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.79" />
+        app:layout_constraintGuide_percent="0.74" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipe_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="16dp"
         android:overScrollMode="never"
         app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="20" />

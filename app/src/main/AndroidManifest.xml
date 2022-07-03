@@ -9,12 +9,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/MyTheme.App">
-        <activity android:name=".timer.TimerActivity"/>
+        android:theme="@style/Aeropress.App.Theme">
+        <activity android:name=".timer.TimerActivity" />
         <activity
             android:name=".base.HomeActivity"
-            android:screenOrientation="portrait"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Aeropress.App.Theme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
