@@ -73,7 +73,10 @@ class TimerViewModel(
                     title = brew.getCurrentState().title,
                     description = brew.getCurrentState().description
                 )
-                state = TimerState.StartProgressBar(timeInMilliseconds = brew.getCurrentState().brewTime.inMilliseconds())
+                state = TimerState.StartProgressBar(
+                    timeInMilliseconds = brew.getCurrentState().brewTime.inMilliseconds(),
+                    animate = true
+                )
             }
         }
     }
@@ -92,7 +95,10 @@ class TimerViewModel(
             description = brewPhase.brewState.description
         )
 
-        state = TimerState.StartProgressBar(timeInMilliseconds = brewPhase.brewState.brewTime.inMilliseconds())
+        state = TimerState.StartProgressBar(
+            timeInMilliseconds = brewPhase.brewState.brewTime.inMilliseconds(),
+            animate = false
+        )
     }
 
     override fun saveRecipe(recipe: Recipe?) {
@@ -164,7 +170,7 @@ sealed class TimerState {
         @StringRes val description: Int
     ) : TimerState()
 
-    data class StartProgressBar(val timeInMilliseconds: Long) : TimerState()
+    data class StartProgressBar(val timeInMilliseconds: Long, val animate: Boolean) : TimerState()
 
     object FinishState : TimerState()
 }

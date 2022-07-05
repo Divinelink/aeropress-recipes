@@ -132,41 +132,6 @@ class TimerFragment : Fragment(),
         binding = null
     }
 
-//    var timerHandler = Handler(Looper.getMainLooper())
-//    var runnable: Runnable = object : Runnable {
-//        override fun run() {
-//            if (millisecondsRemaining == 1L || millisecondsRemaining == 0L) {
-////                presenter?.startBrewing( GetPhaseFactory().findPhase(0, diceUI?.brewTime ?: 0).brewTime, false, context)
-//                timerHandler.removeCallbacks(this)
-//            } else {
-//                timerHandler.postDelayed(this, 10)
-//                millisecondsRemaining -= 10
-////                updateCountdownUI()
-//            }
-//        }
-//    }
-
-//    override fun showMessage() {
-//        //TODO make it show a button that returns to starting screen
-//        binding?.brewingTimeTextView?.visibility = View.INVISIBLE
-//        binding?.progressBar?.visibility = View.INVISIBLE
-//        val mFadeInAnimation = AnimationUtils.loadAnimation(activity, R.anim.fade_in_timer)
-//        binding?.timerHeader?.startAnimation(mFadeInAnimation)
-//        binding?.timerHeader?.setText(R.string.enjoyCoffee)
-//        startMoveAnimation(binding?.timerHeader, 300f)
-//        startMoveAnimation(binding?.likeRecipeLayout, -300f)
-//
-//
-//        // Temporary Fix?
-//        diceUI?.bloomTime = 0
-//        diceUI?.brewTime = 0
-//    }
-
-    private fun startMoveAnimation(view: View?, value: Float) {
-        val animation = ObjectAnimator.ofFloat(view, "translationY", value)
-        animation.duration = 1000
-        animation.start()
-    }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initListeners() {
@@ -245,6 +210,16 @@ class TimerFragment : Fragment(),
     override fun handleStartProgressBar(state: TimerState.StartProgressBar) {
         binding?.progressBar?.max = state.timeInMilliseconds.toInt()
         millisecondsRemaining = state.timeInMilliseconds
+
+        if (state.animate) {
+            ObjectAnimator
+                .ofInt(
+                    binding?.progressBar, "progress",
+                    state.timeInMilliseconds.toInt()
+                )
+                .setDuration(300)
+                .start()
+        }
 
         Timer(
             millisInFuture = millisecondsRemaining,
