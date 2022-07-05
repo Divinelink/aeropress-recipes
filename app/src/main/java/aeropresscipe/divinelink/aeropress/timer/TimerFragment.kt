@@ -18,7 +18,6 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import gr.divinelink.core.util.timer.Timer
-import gr.divinelink.core.util.utils.ThreadUtil
 import java.lang.ref.WeakReference
 
 
@@ -253,9 +252,7 @@ class TimerFragment : Fragment(),
             runAtStart = true,
             onFinish = { viewModel.updateTimer() },
             onTick = {
-                ThreadUtil.runOnMain {
-                    updateCountdownUI(millisecondsRemaining)
-                }
+                updateCountdownUI(millisecondsRemaining)
             }
         )
     }
