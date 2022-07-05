@@ -17,7 +17,7 @@ enum class PlayerMode {
 }
 
 class Timer(
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.Main,
     val millisInFuture: Long,
     val countDownInterval: Long = 1000L,
     runAtStart: Boolean = false,
