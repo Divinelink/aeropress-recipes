@@ -56,31 +56,25 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-//    @Override
     public void addGenerateRecipeFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.homeRoot, GenerateRecipeFragment.newInstance())
                 .addToBackStack(null)
                 .commit();
     }
 
-//    @Override
     public void addSavedRecipesFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.homeRoot, SavedRecipesFragment.newInstance())
                 .addToBackStack(null)
                 .commit();
     }
 
-//    @Override
     public void addHistoryFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.homeRoot, HistoryFragment.newInstance())
                 .addToBackStack(null)
                 .commit();
