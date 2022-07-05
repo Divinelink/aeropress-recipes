@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -48,7 +49,7 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
         final private TextView timeItem;
         final private TextView brewedOnItem;
 //        final private CardView cardView;
-        final private ImageButton likeRecipeBtn;
+        final private ImageView likeRecipeBtn;
         final private LinearLayout likeRecipeLayout;
 
         public SavedRecipeViewHolder(View v) {
