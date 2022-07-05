@@ -6,7 +6,7 @@ import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
 import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import aeropresscipe.divinelink.aeropress.timer.util.BrewPhase
-import aeropresscipe.divinelink.aeropress.timer.util.Phase
+import aeropresscipe.divinelink.aeropress.timer.util.BrewState
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
 import android.annotation.SuppressLint
 import android.app.Application
@@ -65,39 +65,34 @@ class TimerViewModel(
     override fun updateTimer() {
         transferableModel?.brew?.removeCurrentPhase()
         transferableModel?.brew?.let { brew ->
-            if (brew.getCurrentPhase() == Phase.FINISHED) {
+            if (brew.getCurrentState() == BrewState.Finished) {
                 state = TimerState.FinishState
             } else {
                 state = TimerState.StartTimer(
-                    water = brew.water(),
-                    title = brew.title(),
-                    description = brew.description()
+                    water = brew.getCurrentState().brewWater,
+                    title = brew.getCurrentState().title,
+                    description = brew.getCurrentState().description
                 )
-                state = TimerState.StartProgressBar(timeInMilliseconds = brew.time().inMilliseconds())
+                state = TimerState.StartProgressBar(timeInMilliseconds = brew.getCurrentState().brewTime.inMilliseconds())
             }
         }
     }
 
     private fun startTimers(transferableModel: TimerTransferableModel?) {
         val brewPhase = BrewPhase.Builder()
-            .phases(transferableModel?.recipe?.getPhases())
-            .brewTime(transferableModel?.recipe?.brewTime?.toLong())
-            .brewWater(transferableModel?.recipe?.brewWaterAmount)
-            .bloomTime(transferableModel?.recipe?.bloomTime?.toLong())
-            .bloomWater(transferableModel?.recipe?.bloomWater)
-            .withBloom(transferableModel?.recipe?.withBloom)
-            .remainingWater(transferableModel?.recipe?.remainingWater)
+            .brewStates(transferableModel?.recipe?.getBrewStates())
+            .brewState(transferableModel?.recipe?.getBrewStates()?.firstOrNull())
             .build()
 
         transferableModel?.brew = brewPhase
 
         state = TimerState.StartTimer(
-            water = brewPhase.water(),
-            title = brewPhase.title(),
-            description = brewPhase.description()
+            water = brewPhase.brewState.brewWater,
+            title = brewPhase.brewState.title,
+            description = brewPhase.brewState.description
         )
 
-        state = TimerState.StartProgressBar(timeInMilliseconds = brewPhase.time().inMilliseconds())
+        state = TimerState.StartProgressBar(timeInMilliseconds = brewPhase.brewState.brewTime.inMilliseconds())
     }
 
     override fun saveRecipe(recipe: Recipe?) {

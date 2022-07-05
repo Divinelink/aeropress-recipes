@@ -1,6 +1,6 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe
 
-import aeropresscipe.divinelink.aeropress.timer.util.Phase
+import aeropresscipe.divinelink.aeropress.timer.util.BrewState
 import androidx.room.Ignore
 import java.io.Serializable
 
@@ -22,22 +22,15 @@ data class Recipe(
     @Ignore
     var remainingWater: Int = brewWaterAmount - bloomWater
 
-
-    fun getCurrentPhase(): Phase {
-        return if (bloomTime == 0) {
-            Phase.BREW
-        } else {
-            Phase.BLOOM
-        }
-    }
-
-    fun getPhases(): MutableList<Phase> {
-        val phases: MutableList<Phase> = mutableListOf()
+    fun getBrewStates(): MutableList<BrewState> {
+        val brewStates: MutableList<BrewState> = mutableListOf()
         if (withBloom) {
-            phases.add(Phase.BLOOM)
+            brewStates.add(BrewState.Bloom(water = bloomWater, time = bloomTime.toLong()))
+            brewStates.add(BrewState.BrewWithBloom(water = remainingWater, time = brewTime.toLong()))
+        } else {
+            brewStates.add(BrewState.Brew(water = brewWaterAmount, time = brewTime.toLong()))
         }
-        phases.add(Phase.BREW)
-        phases.add(Phase.FINISHED)
-        return phases
+        brewStates.add(BrewState.Finished)
+        return brewStates
     }
 }

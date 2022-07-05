@@ -3,89 +3,39 @@ package aeropresscipe.divinelink.aeropress.timer.util
 import aeropresscipe.divinelink.aeropress.R
 import androidx.annotation.StringRes
 
-enum class Phase {
-    BLOOM,
-    BREW,
-    FINISHED
-}
-
 class BrewPhase private constructor(
-    var phases: MutableList<Phase>,
-//    var currentPhase: Phase,
-    var brewTime: Long,
-    var bloomTime: Long,
-    var brewWater: Int,
-    var bloomWater: Int,
-    var remainingWater: Int,
-    var withBloom: Boolean,
+    var brewStates: MutableList<BrewState>,
+    val brewState: BrewState,
 ) {
     data class Builder(
-        var phases: MutableList<Phase>? = null,
-        var currentPhase: Phase? = null,
-        var brewTime: Long? = null,
-        var bloomTime: Long? = null,
-        var brewWater: Int? = null,
-        var bloomWater: Int? = null,
-        var remainingWater: Int? = null,
-        var withBloom: Boolean? = null,
+        var brewStates: MutableList<BrewState>? = null,
+        var brewState: BrewState? = null,
     ) {
-        fun phases(phases: MutableList<Phase>?) = apply { this.phases = phases }
-        fun brewTime(time: Long?) = apply { this.brewTime = time }
-        fun brewWater(water: Int?) = apply { this.brewWater = water }
-        fun bloomTime(time: Long?) = apply { this.bloomTime = time }
-        fun bloomWater(water: Int?) = apply { this.bloomWater = water }
-        fun withBloom(withBloom: Boolean?) = apply { this.withBloom = withBloom }
-        fun remainingWater(remainingWater: Int?) = apply { this.remainingWater = remainingWater }
+        fun brewStates(brewStates: MutableList<BrewState>?) = apply { this.brewStates = brewStates }
+        fun brewState(brewState: BrewState?) = apply { this.brewState = brewState }
         fun build() = BrewPhase(
-            phases = phases!!,
-            brewTime = brewTime!!,
-            bloomTime = bloomTime!!,
-            brewWater = brewWater!!,
-            bloomWater = bloomWater!!,
-            remainingWater = remainingWater!!,
-            withBloom = withBloom!!,
+            brewStates = brewStates!!,
+            brewState = brewState!!,
         )
     }
 
-    @StringRes
-    fun title(): Int {
-        return when (getCurrentPhase()) {
-            Phase.BLOOM -> R.string.bloomPhase
-            Phase.BREW -> R.string.brewPhase
-            else -> 0
-        }
-    }
-
-    @StringRes
-    fun description(): Int {
-        return when (getCurrentPhase()) {
-            Phase.BLOOM -> R.string.bloomPhaseWaterText
-            Phase.BREW -> if (this.withBloom) R.string.brewPhaseWithBloom else R.string.brewPhaseNoBloom
-            else -> 0
-        }
-    }
-
-    fun water(): Int {
-        return when (getCurrentPhase()) {
-            Phase.BLOOM -> bloomWater
-            Phase.BREW -> if (withBloom) remainingWater else brewWater
-            else -> 0
-        }
-    }
-
-    fun time(): Long {
-        return when (getCurrentPhase()) {
-            Phase.BLOOM -> bloomTime
-            Phase.BREW -> brewTime
-            else -> 0
-        }
-    }
-
-    fun getCurrentPhase(): Phase? {
-        return phases.firstOrNull()
+    fun getCurrentState(): BrewState {
+        return brewStates.firstOrNull() ?: BrewState.Finished
     }
 
     fun removeCurrentPhase() {
-        phases.removeFirstOrNull()
+        brewStates.removeFirstOrNull()
     }
+}
+
+sealed class BrewState(
+    @StringRes open val title: Int,
+    @StringRes open val description: Int,
+    open val brewWater: Int,
+    open val brewTime: Long,
+) {
+    data class Bloom(val water: Int, val time: Long) : BrewState(title = R.string.bloomPhase, description = R.string.bloomPhaseWaterText, water, time)
+    data class Brew(val water: Int, val time: Long) : BrewState(title = R.string.brewPhase, description = R.string.brewPhaseNoBloom, water, time)
+    data class BrewWithBloom(val water: Int, val time: Long) : BrewState(title = R.string.brewPhase, description = R.string.brewPhaseWithBloom, water, time)
+    object Finished : BrewState(title = 0, description = 0, brewWater = 0, brewTime = 0)
 }
