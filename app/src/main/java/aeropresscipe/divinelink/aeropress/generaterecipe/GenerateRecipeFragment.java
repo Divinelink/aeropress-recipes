@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 
+import com.google.android.material.button.MaterialButton;
+
 import aeropresscipe.divinelink.aeropress.R;
 import aeropresscipe.divinelink.aeropress.customviews.Notification;
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity;
@@ -24,8 +26,8 @@ import aeropresscipe.divinelink.aeropress.timer.TimerActivity;
 public class GenerateRecipeFragment extends Fragment implements GenerateRecipeView {
 
     private RecyclerView recipeRv;
-    private LinearLayout generateRecipeButton;
-    private LinearLayout timerButton;
+    private MaterialButton generateRecipeButton;
+    private MaterialButton timerButton;
     private Button resumeBrewBtn;
 
     private Animation mFadeInAnimation;
