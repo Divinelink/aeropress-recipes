@@ -24,7 +24,6 @@ public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnSta
         // And return them on the view.
         interactor.returnValues(this, ctx);
         interactor.checkIfRecipeIsLikedAndSavedOnDB(this, ctx);
-
     }
 
     @Override
@@ -34,7 +33,7 @@ public class TimerPresenterImpl implements TimerPresenter, TimerInteractor.OnSta
 
     @Override
     public void startBrewing(int time, boolean bloomPhase, Context ctx) {
-        timerView.showTimer(time, bloomPhase);
+        timerView.showTimer(time * 1000, bloomPhase); // fix this, should pass through interactor first
         interactor.checkIfRecipeIsLikedAndSavedOnDB(this, ctx);
         interactor.addRecipeToHistory(ctx);
     }

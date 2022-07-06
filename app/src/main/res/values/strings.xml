@@ -29,13 +29,13 @@
     <string name="standard">Standard</string>
     <string name="get_another_recipe">New Recipe</string>
 
-    <string name="bloomPhase">Bloom Phase!</string>
-    <string name="bloomPhaseWaterText">Pour in %dg of water.</string>
+    <string name="bloomPhase">Blooming Phase</string>
+    <string name="bloomPhaseWaterText">Pour in %dg of water</string>
 
-    <string name="brewPhase">Brew Phase!</string>
+    <string name="brewPhase">Brewing Phase</string>
 
-    <string name="brewPhaseWithBloom">Pour in the remaining %dg of water. </string>
-    <string name="brewPhaseNoBloom">Pour in %dg of water.</string>
+    <string name="brewPhaseWithBloom">Pour in the remaining %dg of water</string>
+    <string name="brewPhaseNoBloom">Pour in %dg of water</string>
 
     <string name="enjoyCoffee">Press and enjoy your coffee!</string>
     <string name="brew">Start Timer</string>
@@ -65,6 +65,7 @@
 
     <string name="recipe">Recipe</string>
     <string name="history">History</string>
+    <string name="history_subtitle">Recently brewed recipes</string>
     <string name="emptyHistoryListText">Your brewing history will appear here</string>
 
     <string name="action_delete">Delete History</string>

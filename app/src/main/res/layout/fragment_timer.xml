@@ -7,30 +7,44 @@
     tools:context=".timer.TimerFragment">
 
     <TextView
-        android:id="@+id/notificationTV"
+        android:id="@+id/timer_header"
+        style="@style/TextAppearance.Material3.TitleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:textSize="22sp"
         app:layout_constraintBottom_toTopOf="@+id/progressBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="XXX Phase!\nPour in Xg amount of water." />
+        tools:text="XXX Phase!" />
+
+    <TextView
+        android:id="@+id/water_description"
+        style="@style/Text.TitleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timer_header"
+        tools:text="Pour in Xg amount of water" />
 
     <TextView
         android:id="@+id/brewingTimeTextView"
+        style="@style/TextAppearance.Material3.DisplayLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="10dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="70sp"
         app:layout_constraintBottom_toTopOf="@id/likeRecipeLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/notificationTV"
+        app:layout_constraintTop_toBottomOf="@id/timer_header"
         tools:text="00:10" />
 
 
@@ -45,21 +59,20 @@
         app:layout_constraintBottom_toTopOf="@id/likeRecipeLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/notificationTV"
-        app:mpb_progressTint="@color/white">
-
-    </me.zhanghai.android.materialprogressbar.MaterialProgressBar>
+        app:layout_constraintTop_toBottomOf="@id/timer_header"
+        app:mpb_progressTint="@color/colorPrimary" />
 
     <LinearLayout
         android:id="@+id/likeRecipeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="68dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
+            style="@style/Text.BodyMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -68,10 +81,10 @@
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/likeRecipeButton"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_gravity="center"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="16dp"
             android:background="@drawable/ic_heart_off"
             android:scaleType="fitCenter"
             android:soundEffectsEnabled="false"

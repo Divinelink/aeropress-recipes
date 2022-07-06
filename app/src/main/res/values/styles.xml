@@ -1,21 +1,22 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Base application theme. -->
-    <style name="MyTheme.App" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-
-        <item name="android:editTextColor">#FFFFFFFF</item>
-        <item name="android:textColorPrimary">#FFFFFFFF</item>
-        <item name="android:textColorTertiary">#FFFFFFFF</item>
-        <item name="android:textColorPrimaryInverse">#FFFFFFFF</item>
-        <item name="android:textColorTertiaryInverse">#FFFFFFFF</item>
-        <item name="android:textColorSecondaryInverse">#FFFFFFFF</item>
-
-        <item name="android:windowBackground">@color/backgroundColor</item>
+    <style name="TextAppearance.MyApp.DisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="fontFamily">@font/montserrat_regular</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">64sp</item>
+        <item name="android:letterSpacing">0</item>
     </style>
+
+    <!--    textAppearanceTitleLarge	Regular 22sp-->
+    <!--    textAppearanceTitleMedium	Medium 16sp-->
+    <!--    textAppearanceTitleSmall	Medium 14sp-->
+    <!--    textAppearanceBodyLarge	Regular 16sp-->
+    <!--    textAppearanceBodyMedium	Regular 14sp-->
+    <!--    textAppearanceBodySmall	Regular 12sp-->
+    <!--    textAppearanceLabelLarge	Medium 14sp-->
+    <!--    textAppearanceLabelMedium	Medium 12sp-->
+    <!--    textAppearanceLabelSmall	Medium 11sp-->
 
     <style name="SavedRecipeItemTextViewStyle">
         <item name="android:layout_width">0dp</item>
@@ -38,11 +39,30 @@
         <item name="android:orientation">horizontal</item>
     </style>
 
-    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
-        <!-- Customize color of navigation drawer icon and back arrow -->
-
+    <style name="customSnackBarStyle">
+        <item name="android:backgroundTint">@color/colorPrimaryContainer</item>
     </style>
 
+    <style name="ToolbarTheme" parent="@style/Widget.Material3.Light.ActionBar.Solid">
+        <!--        <item name="navigationIconTint">@color/white</item>-->
+        <!--        <item name="fontFamily">@font/montserrat_medium</item>-->
+    </style>
+
+    <style name="BottomNavigationStyle" parent="Widget.Material3.BottomNavigationView">
+        <item name="itemPaddingBottom">4dp</item>
+        <item name="itemPaddingTop">4dp</item>
+        <item name="android:layout_height">?android:attr/actionBarSize</item>
+        <item name="itemRippleColor">@color/transparent</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="Body_High_Importance">
+        <item name="fontFamily">@font/montserrat_medium</item>
+    </style>
+
+    <style name="Body_Normal_Importance">
+        <item name="fontFamily">@font/montserrat_regular</item>
+    </style>
 
 
 </resources>

@@ -2,14 +2,13 @@ package aeropresscipe.divinelink.aeropress.history;
 
 import java.util.List;
 
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain;
+import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe;
 
 interface IHistoryView {
 
-    void showHistory(List<HistoryDomain> savedRecipes);
+    void showHistory(List<History> savedRecipes);
 
-    void passData(int bloomTime, int brewTime, int bloomWater, int brewWater);
+    void passData(Recipe recipe);
 
     void showEmptyListMessage();
 

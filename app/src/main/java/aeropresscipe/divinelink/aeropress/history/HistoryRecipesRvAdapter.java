@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,20 +19,18 @@ import java.util.List;
 import aeropresscipe.divinelink.aeropress.R;
 import aeropresscipe.divinelink.aeropress.features.SwipeHelper;
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    final private List<HistoryDomain> historyRecipes;
+    final private List<History> historyRecipes;
     final private Context context;
     final private RecyclerView recyclerView;
 
     private IHistoryPresenter presenter;
-    private int cardViewMarginAttr;
 
-    public HistoryRecipesRvAdapter(List<HistoryDomain> historyRecipes, Context context, RecyclerView recyclerView) {
+    public HistoryRecipesRvAdapter(List<History> historyRecipes, Context context, RecyclerView recyclerView) {
         this.historyRecipes = historyRecipes;
         this.context = context;
         this.recyclerView = recyclerView;
@@ -50,7 +49,7 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
         final private TextView timeItem;
         final private TextView brewedOnItem;
 //        final private CardView cardView;
-        final private ImageButton likeRecipeBtn;
+        final private ImageView likeRecipeBtn;
         final private LinearLayout likeRecipeLayout;
 
         public SavedRecipeViewHolder(View v) {
@@ -76,17 +75,7 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
                 .inflate(R.layout.recipe_card_item, viewGroup, false);
         final SavedRecipeViewHolder vh = new SavedRecipeViewHolder(v);
 
-//        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vh.cardView.getLayoutParams();
-//        cardViewMarginAttr = lp.bottomMargin;
-
-
-
-        vh.likeRecipeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.addRecipeToFavourites(context, vh.getLayoutPosition(), historyRecipes.get(vh.getLayoutPosition()).getId());
-            }
-        });
+        vh.likeRecipeBtn.setOnClickListener(view -> presenter.addRecipeToFavourites(context, vh.getLayoutPosition(), historyRecipes.get(vh.getLayoutPosition()).getRecipe()));
 
         vh.likeRecipeBtn.setOnTouchListener(likeRecipeBtnTouchListener);
 
@@ -103,22 +92,22 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         SavedRecipeViewHolder savedRecipeViewHolder = (SavedRecipeViewHolder) holder;
 
-        final int total_water = historyRecipes.get(i).getBrewWaterAmount();
-        final int total_time = historyRecipes.get(i).getBloomTime() + historyRecipes.get(i).getBrewTime();
-        final int bloomTime = historyRecipes.get(i).getBloomTime();
-        final int temp = historyRecipes.get(i).getDiceTemperature();
-        final String grindSize = historyRecipes.get(i).getGroundSize().substring(0, 1).toUpperCase() + historyRecipes.get(i).getGroundSize().substring(1).toLowerCase();
+        final int total_water = historyRecipes.get(i).getRecipe().getBrewWaterAmount();
+        final int total_time = historyRecipes.get(i).getRecipe().getBloomTime() + historyRecipes.get(i).getRecipe().getBrewTime();
+        final int bloomTime = historyRecipes.get(i).getRecipe().getBloomTime();
+        final int temp = historyRecipes.get(i).getRecipe().getDiceTemperature();
+        final String grindSize = historyRecipes.get(i).getRecipe().getGroundSize().substring(0, 1).toUpperCase() + historyRecipes.get(i).getRecipe().getGroundSize().substring(1).toLowerCase();
         boolean isLiked;
 
         savedRecipeViewHolder.waterAndTempItem.setText(context.getResources().getString(R.string.SavedWaterAndTempTextView, total_water, temp, temp * 9 / 5 + 32));
-        savedRecipeViewHolder.beansWeightItem.setText(context.getResources().getString(R.string.SavedCoffeeWeightTextView, historyRecipes.get(i).getCoffeeAmount()));
+        savedRecipeViewHolder.beansWeightItem.setText(context.getResources().getString(R.string.SavedCoffeeWeightTextView, historyRecipes.get(i).getRecipe().getCoffeeAmount()));
         savedRecipeViewHolder.beansGrindLevelItem.setText(context.getResources().getString(R.string.SavedGrindLevelTextView, grindSize));
-        savedRecipeViewHolder.brewingMethodItem.setText(context.getResources().getString(R.string.SavedBrewingMethodTextView, historyRecipes.get(i).getBrewingMethod()));
+        savedRecipeViewHolder.brewingMethodItem.setText(context.getResources().getString(R.string.SavedBrewingMethodTextView, historyRecipes.get(i).getRecipe().getBrewingMethod()));
 
         if (bloomTime == 0)
             savedRecipeViewHolder.timeItem.setText(context.getResources().getString(R.string.SavedTotalTimeTextView, total_time));
         else
-            savedRecipeViewHolder.timeItem.setText(context.getResources().getString(R.string.SavedTotalTimeWithBloomTextView, historyRecipes.get(i).getBrewTime(), bloomTime));
+            savedRecipeViewHolder.timeItem.setText(context.getResources().getString(R.string.SavedTotalTimeWithBloomTextView, historyRecipes.get(i).getRecipe().getBrewTime(), bloomTime));
 
         savedRecipeViewHolder.brewedOnItem.setText(context.getResources().getString(R.string.dateBrewedTextView, historyRecipes.get(i).getDateBrewed()));
 
@@ -155,13 +144,7 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
                         "Brew",
                         0,
                         ContextCompat.getColor(context, R.color.green),
-                        new SwipeHelper.UnderlayButtonClickListener() {
-                            @Override
-                            public void onClick(int pos) {
-                                presenter.getSpecificRecipeToStartNewBrew(context, pos);
-                            }
-                        },
-                        cardViewMarginAttr
+                        pos -> presenter.getSpecificRecipeToStartNewBrew(context, pos), 5
                 ));
             }
         };

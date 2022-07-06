@@ -1,29 +1,26 @@
 package aeropresscipe.divinelink.aeropress.base;
 
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceUI;
+import aeropresscipe.divinelink.aeropress.R;
 import aeropresscipe.divinelink.aeropress.history.HistoryFragment;
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipesFragment;
-import aeropresscipe.divinelink.aeropress.timer.TimerActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 
-import aeropresscipe.divinelink.aeropress.R;
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeFragment;
+import gr.divinelink.core.util.utils.WindowUtil;
+
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 
 
-public class HomeActivity extends AppCompatActivity implements HomeView, Parcelable {
-    //FIXME make sure Parcelable is absolutely necessary, otherwise remove it and try to fix the bug it creates where app crashes when closing the app.
+public class HomeActivity extends AppCompatActivity {
     private BottomNavigationView mBottomNavigationView;
 
     @Override
@@ -35,10 +32,12 @@ public class HomeActivity extends AppCompatActivity implements HomeView, Parcela
         mBottomNavigationView.setOnItemSelectedListener(onItemSelectedListener);
         mBottomNavigationView.setOnItemReselectedListener(onItemReselectedListener);
 
+        WindowUtil.INSTANCE.setNavigationBarColor(this, ContextCompat.getColor(this, R.color.colorSurface2));
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.homeRoot, GenerateRecipeFragment.newInstance(this))
+                .replace(R.id.fragment, GenerateRecipeFragment.newInstance())
                 .commit();
 
     }
@@ -52,43 +51,31 @@ public class HomeActivity extends AppCompatActivity implements HomeView, Parcela
         getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_NONE)
-                .replace(R.id.homeRoot, GenerateRecipeFragment.newInstance(this))
+                .replace(R.id.fragment, GenerateRecipeFragment.newInstance())
                 .commit();
     }
 
-    @Override
-    public void startTimerActivity(DiceUI diceUI) {
-        Intent timerIntent = new Intent(this, TimerActivity.class);
-        timerIntent.putExtra("timer", diceUI);
-        startActivity(timerIntent);
-    }
 
-    @Override
     public void addGenerateRecipeFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.homeRoot, GenerateRecipeFragment.newInstance(this))
+                .replace(R.id.fragment, GenerateRecipeFragment.newInstance())
                 .addToBackStack(null)
                 .commit();
     }
 
-    @Override
     public void addSavedRecipesFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.homeRoot, SavedRecipesFragment.newInstance(this))
+                .replace(R.id.fragment, SavedRecipesFragment.newInstance())
                 .addToBackStack(null)
                 .commit();
     }
 
-    @Override
     public void addHistoryFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.homeRoot, HistoryFragment.newInstance(this))
+                .replace(R.id.fragment, HistoryFragment.newInstance())
                 .addToBackStack(null)
                 .commit();
     }
@@ -129,15 +116,5 @@ public class HomeActivity extends AppCompatActivity implements HomeView, Parcela
         } else {
             mBottomNavigationView.setSelectedItemId(R.id.recipe);
         }
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        // do nothing
     }
 }

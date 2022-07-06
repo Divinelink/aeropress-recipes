@@ -29,34 +29,25 @@ public class GenerateRecipePresenterImpl implements GenerateRecipePresenter, Gen
     }
 
     @Override
-    public void onSuccessAppStarts(DiceDomain randomRecipe) {
+    public void onSuccessAppStarts(Recipe randomRecipe) {
         generateRecipeView.showRecipeAppStarts(randomRecipe);
 
-        generateRecipeView.passData(randomRecipe.getBloomTime(),
-                randomRecipe.getBrewTime(),
-                randomRecipe.getBloomWater(),
-                randomRecipe.getBrewWaterAmount() - randomRecipe.getBloomWater());
+        generateRecipeView.passData(randomRecipe);
     }
 
 
     @Override
-    public void onSuccessNewRecipe(DiceDomain randomRecipe) {
+    public void onSuccessNewRecipe(Recipe randomRecipe) {
         generateRecipeView.showRecipeRemoveResume(randomRecipe);
 
-        generateRecipeView.passData(randomRecipe.getBloomTime(),
-                randomRecipe.getBrewTime(),
-                randomRecipe.getBloomWater(),
-                randomRecipe.getBrewWaterAmount() - randomRecipe.getBloomWater());
+        generateRecipeView.passData(randomRecipe);
     }
 
     @Override
-    public void onSuccess(DiceDomain randomRecipe) {
+    public void onSuccess(Recipe randomRecipe) {
         generateRecipeView.showRecipe(randomRecipe);
 
-        generateRecipeView.passData(randomRecipe.getBloomTime(),
-                randomRecipe.getBrewTime(),
-                randomRecipe.getBloomWater(),
-                randomRecipe.getBrewWaterAmount() - randomRecipe.getBloomWater());
+        generateRecipeView.passData(randomRecipe);
     }
 
 }

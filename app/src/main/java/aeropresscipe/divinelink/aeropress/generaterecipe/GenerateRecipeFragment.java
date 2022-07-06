@@ -2,7 +2,6 @@ package aeropresscipe.divinelink.aeropress.generaterecipe;
 
 import android.os.Bundle;
 
-import aeropresscipe.divinelink.aeropress.base.HomeView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,31 +17,30 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 
+import com.google.android.material.button.MaterialButton;
+
 import aeropresscipe.divinelink.aeropress.R;
 import aeropresscipe.divinelink.aeropress.customviews.Notification;
+import aeropresscipe.divinelink.aeropress.timer.TimerActivity;
 
 public class GenerateRecipeFragment extends Fragment implements GenerateRecipeView {
 
     private RecyclerView recipeRv;
-    private LinearLayout generateRecipeButton;
-    private LinearLayout timerButton;
+    private MaterialButton generateRecipeButton;
+    private MaterialButton timerButton;
     private Button resumeBrewBtn;
 
     private Animation mFadeInAnimation;
     private Animation mAdapterAnimation;
     private GenerateRecipePresenter presenter;
-    private HomeView homeView;
-    private DiceUI diceUI;
 
+    private Recipe recipe;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_generate_recipe, container, false);
 
-        if (getArguments() != null) {
-            homeView = (HomeView) getArguments().getSerializable("home_view");
-        }
         recipeRv = v.findViewById(R.id.recipe_rv);
         generateRecipeButton = v.findViewById(R.id.generateRecipeButton);
         timerButton = v.findViewById(R.id.startTimerButton);
@@ -70,22 +68,21 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         });
 
         timerButton.setOnClickListener(view -> {
-            diceUI.setNewRecipe(true);
-            homeView.startTimerActivity(diceUI);
+            recipe.setNewRecipe(true);
+            startActivity(TimerActivity.newIntent(requireContext(), recipe));
         });
 
         resumeBrewBtn.setOnClickListener(view -> {
-            diceUI.setNewRecipe(false);
-            homeView.startTimerActivity(diceUI);
+            recipe.setNewRecipe(false);
+            startActivity(TimerActivity.newIntent(requireContext(), recipe));
         });
     }
 
     @Override
-    public void showRecipe(final DiceDomain randomRecipe) {
+    public void showRecipe(final Recipe randomRecipe) {
         if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
                 final GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter(randomRecipe, getActivity());
-
                 @Override
                 public void run() {
                     recipeRv.setAdapter(recipeRvAdapter);
@@ -106,9 +103,8 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
     }
 
     @Override
-    public void passData(int bloomTime, int brewTime, int bloomWater, int remainingBrewWater) {
-        // Set bloom time and brewtime. Needed for Timer
-        diceUI = new DiceUI(bloomTime, brewTime, bloomWater, remainingBrewWater);
+    public void passData(Recipe recipe) {
+        this.recipe = recipe;
     }
 
     @Override
@@ -117,7 +113,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
     }
 
     @Override
-    public void showRecipeRemoveResume(final DiceDomain randomRecipe) {
+    public void showRecipeRemoveResume(final Recipe randomRecipe) {
         if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
                 final GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter(randomRecipe, getActivity());
@@ -143,11 +139,10 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
     }
 
     @Override
-    public void showRecipeAppStarts(final DiceDomain randomRecipe) {
+    public void showRecipeAppStarts(final Recipe randomRecipe) {
         if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
                 final GenerateRecipeRvAdapter recipeRvAdapter = new GenerateRecipeRvAdapter(randomRecipe, getActivity());
-
                 @Override
                 public void run() {
                     recipeRv.setAdapter(recipeRvAdapter);
@@ -159,10 +154,9 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
         }
     }
 
-    public static GenerateRecipeFragment newInstance(HomeView homeView) {
+    public static GenerateRecipeFragment newInstance() {
         Bundle args = new Bundle();
         GenerateRecipeFragment fragment = new GenerateRecipeFragment();
-        args.putSerializable("home_view", homeView);
         fragment.setArguments(args);
         return fragment;
     }

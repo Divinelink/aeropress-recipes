@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import aeropresscipe.divinelink.aeropress.base.HomeView;
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceUI;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
@@ -22,6 +20,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.R;
+import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe;
+import aeropresscipe.divinelink.aeropress.timer.TimerActivity;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,13 +31,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 public class HistoryFragment extends Fragment implements IHistoryView, ISharedPrefHistoryManager {
 
     private IHistoryPresenter presenter;
-    private HomeView homeView;
 
     private RecyclerView historyRecipesRV;
     private Toolbar mToolBar;
     private LinearLayout mEmptyListLL;
     private Animation mFadeAnimation;
-    private TextView mHistoryTV;
 
     private boolean mHistoryIsEmpty;
 
@@ -47,12 +45,7 @@ public class HistoryFragment extends Fragment implements IHistoryView, ISharedPr
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_history, container, false);
 
-        if (getArguments() != null) {
-            homeView = (HomeView) getArguments().getSerializable("home_view");
-        }
-
         historyRecipesRV = (RecyclerView) v.findViewById(R.id.historyRV);
-        mHistoryTV = (TextView) v.findViewById(R.id.historyTV);
         mToolBar = (Toolbar) v.findViewById(R.id.toolbar);
         mToolBar.setOnMenuItemClickListener(toolbarMenuClickListener);
         mEmptyListLL = (LinearLayout) v.findViewById(R.id.emptyListLayout);
@@ -69,17 +62,15 @@ public class HistoryFragment extends Fragment implements IHistoryView, ISharedPr
         return v;
     }
 
-    public static HistoryFragment newInstance(HomeView homeView) {
-
+    public static HistoryFragment newInstance() {
         HistoryFragment fragment = new HistoryFragment();
         Bundle args = new Bundle();
-        args.putSerializable("home_view", homeView);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public void showHistory(final List<HistoryDomain> savedRecipes) {
+    public void showHistory(final List<History> savedRecipes) {
 
 
         if (getActivity() != null) {
@@ -105,7 +96,6 @@ public class HistoryFragment extends Fragment implements IHistoryView, ISharedPr
             getActivity().runOnUiThread(() -> {
 
                 beginFading(historyRecipesRV, AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_favourites), 8);
-                mHistoryTV.setVisibility(View.GONE);
                 beginFading(mEmptyListLL, AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_favourites), 0);
                 setIsHistoryEmptyBool(getContext(), true);
 
@@ -120,13 +110,11 @@ public class HistoryFragment extends Fragment implements IHistoryView, ISharedPr
     }
 
     @Override
-    public void passData(final int bloomTime, final int brewTime, final int bloomWater,
-                         final int brewWater) {
+    public void passData(Recipe recipe) {
         if (getActivity() != null) {
             getActivity().runOnUiThread(() -> {
-                DiceUI diceUI = new DiceUI(bloomTime, brewTime, bloomWater, brewWater);
-                diceUI.setNewRecipe(true);
-                homeView.startTimerActivity(diceUI);
+                recipe.setNewRecipe(true);
+                startActivity(TimerActivity.newIntent(requireContext(), recipe));
             });
         }
     }

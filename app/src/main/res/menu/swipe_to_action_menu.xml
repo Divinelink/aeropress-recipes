@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools">
 
-  <item
-    android:id="@+id/delete"
-    android:background="@drawable/swipe_action_delete"
-    android:icon="@drawable/ic_delete"
-    android:iconTint="@color/white"
-    android:title="@string/delete"
-    android:titleTextColor="@color/white"
-    tools:ignore="MenuTitle,UnusedAttribute" />
+    <item
+        android:id="@+id/delete"
+        android:background="@drawable/swipe_action_delete"
+        android:icon="@drawable/ic_delete"
+        android:iconTint="@color/colorOnTertiary"
+        android:title="@string/delete"
+        android:titleTextColor="@color/colorOnTertiary"
+        tools:ignore="MenuTitle,UnusedAttribute" />
 
-  <item
-    android:id="@+id/brew"
-    android:background="@drawable/swipe_action_brew"
-    android:icon="@drawable/ic_heart"
-    android:iconTint="@color/white"
-    android:title="@string/brew"
-    android:titleTextColor="@color/white"
-    tools:ignore="MenuTitle,UnusedAttribute" />
+    <item
+        android:id="@+id/brew"
+        android:background="@drawable/swipe_action_brew"
+        android:icon="@drawable/ic_heart"
+        android:iconTint="@color/colorOnPrimary"
+        android:title="@string/brew"
+        android:titleTextColor="@color/colorOnPrimary"
+        tools:ignore="MenuTitle,UnusedAttribute" />
 
 </menu>

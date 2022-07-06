@@ -23,24 +23,20 @@ import aeropresscipe.divinelink.aeropress.R;
 
 public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipeRvAdapter.RecipeViewHolder> {
 
-    final private DiceDomain randomRecipe;
-
     final private int temp, brewTime, bloomTime, bloomWater, waterAmount, coffeeAmount;
     final private String groundSize, brewingMethod;
 
     final private Context context;
 
-    public GenerateRecipeRvAdapter(DiceDomain mRandomRecipe, Context mContext) {
-        this.randomRecipe = mRandomRecipe;
-
-        this.temp = randomRecipe.getDiceTemperature();
-        this.groundSize = randomRecipe.getGroundSize();
-        this.brewTime = randomRecipe.getBrewTime();
-        this.brewingMethod = randomRecipe.getBrewingMethod();
-        this.bloomTime = randomRecipe.getBloomTime();
-        this.bloomWater = randomRecipe.getBloomWater();
-        this.waterAmount = randomRecipe.getBrewWaterAmount();
-        this.coffeeAmount = randomRecipe.getCoffeeAmount();
+    public GenerateRecipeRvAdapter(Recipe recipe, Context mContext) {
+        this.temp = recipe.getDiceTemperature();
+        this.groundSize = recipe.getGroundSize();
+        this.brewTime = recipe.getBrewTime();
+        this.brewingMethod = recipe.getBrewingMethod();
+        this.bloomTime = recipe.getBloomTime();
+        this.bloomWater = recipe.getBloomWater();
+        this.waterAmount = recipe.getBrewWaterAmount();
+        this.coffeeAmount = recipe.getCoffeeAmount();
 
         this.context = mContext;
     }

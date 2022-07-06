@@ -3,7 +3,7 @@
   <item>
     <shape>
       <corners android:radius="8dp" />
-      <solid android:color="@color/green" />
+      <solid android:color="@color/colorPrimary" />
     </shape>
   </item>
 </ripple>

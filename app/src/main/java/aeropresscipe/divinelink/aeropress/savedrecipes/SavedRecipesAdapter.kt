@@ -2,14 +2,13 @@ package aeropresscipe.divinelink.aeropress.savedrecipes
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.databinding.RecipeCardItemBinding
-import android.view.ViewGroup
-import android.view.LayoutInflater
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView
-
+import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import gr.divinelink.core.util.swipe.ActionBindHelper
 import gr.divinelink.core.util.swipe.SwipeAction
 import gr.divinelink.core.util.swipe.SwipeMenuListener
@@ -36,6 +35,7 @@ class SavedRecipesAdapter(
     private val actionsBindHelper = ActionBindHelper()
 
     companion object {
+        // TODO: Add EmptyList State that shows that list is empty.
         const val Type_Recipe = 0
         const val Type_History = 1
     }
@@ -90,12 +90,12 @@ class SavedRecipesAdapter(
 
         fun updateView(item: SavedRecipeDomain) {
             swipeToAction.menuListener = this
-            val totalWater = item.brewWaterAmount
-            val totalTime = item.bloomTime + item.brewTime
-            val bloomTime = item.bloomTime
-            val temp = item.diceTemperature
-            val grindSize = item.groundSize.substring(0, 1)
-                .uppercase(Locale.getDefault()) + item.groundSize.substring(1).lowercase(
+            val totalWater = item.recipe.brewWaterAmount
+            val totalTime = item.recipe.bloomTime + item.recipe.brewTime
+            val bloomTime = item.recipe.bloomTime
+            val temp = item.recipe.diceTemperature
+            val grindSize = item.recipe.groundSize.substring(0, 1)
+                .uppercase(Locale.getDefault()) + item.recipe.groundSize.substring(1).lowercase(
                 Locale.getDefault()
             )
             binding.card.recipeTitle.text =
@@ -107,11 +107,11 @@ class SavedRecipesAdapter(
                 temp * 9 / 5 + 32
             )
             binding.card.beansWeightTV.text =
-                context.resources.getString(R.string.SavedCoffeeWeightTextView, item.coffeeAmount)
+                context.resources.getString(R.string.SavedCoffeeWeightTextView, item.recipe.coffeeAmount)
             binding.card.beansGrindLevelTV.text =
                 context.resources.getString(R.string.SavedGrindLevelTextView, grindSize)
             binding.card.brewingMethodTextView.text =
-                context.resources.getString(R.string.SavedBrewingMethodTextView, item.brewingMethod)
+                context.resources.getString(R.string.SavedBrewingMethodTextView, item.recipe.brewingMethod)
 
             if (bloomTime == 0) {
                 binding.card.brewingTimeTextView.text = context.resources.getString(
@@ -119,7 +119,7 @@ class SavedRecipesAdapter(
                 )
             } else {
                 binding.card.brewingTimeTextView.text = context.resources.getString(
-                    R.string.SavedTotalTimeWithBloomTextView, item.brewTime, bloomTime
+                    R.string.SavedTotalTimeWithBloomTextView, item.recipe.brewTime, bloomTime
                 )
             }
         }

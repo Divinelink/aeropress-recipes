@@ -11,11 +11,11 @@ public interface GenerateRecipeInteractor {
 
     interface OnGenerateRecipeFinishListener{
 
-        void onSuccess(DiceDomain randomRecipe);
+        void onSuccess(Recipe randomRecipe);
 
-        void onSuccessNewRecipe(DiceDomain randomRecipe);
+        void onSuccessNewRecipe(Recipe randomRecipe);
 
-        void onSuccessAppStarts(DiceDomain randomRecipe);
+        void onSuccessAppStarts(Recipe randomRecipe);
 
         void isAlreadyBrewing();
     }

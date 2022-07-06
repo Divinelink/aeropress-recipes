@@ -1,63 +1,72 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="?android:attr/actionBarSize"
-    android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context=".history.HistoryFragment">
 
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorAccent"
-        android:minHeight="?attr/actionBarSize"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        app:menu="@menu/history_toolbar_menu"
-        app:theme="@style/ToolbarTheme"
-        app:title="@string/history" />
+        android:fitsSystemWindows="true">
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu="@menu/history_toolbar_menu"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:subtitle="@string/history_subtitle"
+            app:title="@string/history" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
 
     <LinearLayout
-        android:id="@+id/emptyListLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:alpha="0.5"
-        android:orientation="horizontal"
-        android:visibility="gone">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:src="@drawable/ic_history_fragment_image" />
-
-        <TextView
+        <LinearLayout
+            android:id="@+id/emptyListLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/emptyHistoryListText"
-            android:textAlignment="viewStart" />
+            android:layout_margin="12dp"
+            android:alpha="0.5"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="12dp"
+                android:contentDescription="@string/emptyHistoryListText"
+                android:src="@drawable/ic_history_fragment_image" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:text="@string/emptyHistoryListText"
+                android:textAlignment="viewStart" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/historyRV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="8dp"
+            android:paddingBottom="16dp"
+            app:layout_anchor="@id/toolbar" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/historyTV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Most Recent Brewed Recipes"
-        android:gravity="center"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/historyRV"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

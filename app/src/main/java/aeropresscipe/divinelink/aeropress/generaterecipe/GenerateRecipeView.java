@@ -3,13 +3,13 @@ package aeropresscipe.divinelink.aeropress.generaterecipe;
 
 public interface GenerateRecipeView {
 
-    void showRecipe(DiceDomain randomRecipe);
+    void showRecipe(Recipe randomRecipe);
 
-    void showRecipeAppStarts(DiceDomain randomRecipe);
+    void showRecipeAppStarts(Recipe randomRecipe);
 
-    void showRecipeRemoveResume(DiceDomain randomRecipe);
+    void showRecipeRemoveResume(Recipe randomRecipe);
 
-    void passData(int bloomTime, int brewTime, int bloomWater, int remainingBrewWater);
+    void passData(Recipe dice);
 
     void showIsAlreadyBrewingDialog();
 
