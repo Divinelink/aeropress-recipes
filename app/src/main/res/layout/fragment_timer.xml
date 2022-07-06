@@ -36,11 +36,11 @@
 
     <TextView
         android:id="@+id/brewingTimeTextView"
+        style="@style/TextAppearance.Material3.DisplayLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="10dp"
-        style="@style/TextAppearance.Material3.DisplayLarge"
         app:layout_constraintBottom_toTopOf="@id/likeRecipeLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,17 +66,17 @@
         android:id="@+id/likeRecipeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="68dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
+            style="@style/Text.BodyMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            style="@style/Text.BodyMedium"
             android:text="@string/consider_adding_to_favourites" />
 
         <androidx.appcompat.widget.AppCompatImageButton
