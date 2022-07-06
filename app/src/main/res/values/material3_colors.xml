@@ -30,6 +30,12 @@
     <color name="colorSurfaceTint">@color/light_colorSurfaceTint</color>
     <color name="colorSurfaceTintColor">@color/light_colorSurfaceTintColor</color>
 
+<!--    <color name="colorSurface1">@color/light_colorSurface1</color>-->
+    <color name="colorSurface2">@color/light_colorSurface2</color>
+<!--    <color name="colorSurface3">@color/light_colorSurface3</color>-->
+<!--    <color name="colorSurface4">@color/light_colorSurface4</color>-->
+<!--    <color name="colorSurface5">@color/light_colorSurface5</color>-->
+
     <color name="text_primary">@color/light_text_primary</color>
     <color name="text_primary_disabled">@color/light_text_primary_disabled</color>
     <color name="text_primary_dialog">@color/light_text_primary_dialog</color>

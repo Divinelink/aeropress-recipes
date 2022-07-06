@@ -38,6 +38,7 @@
         <item name="android:navigationBarColor">@color/transparent</item>
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
+        <item name="android:windowLightNavigationBar">?attr/isLightTheme</item>
 
         <!--        <item name="textAppearanceDisplaySmall">@style/TextAppearance.MyApp.DisplaySmall</item>-->
         <!--        <item name="textAppearanceTitleLarge">@style/TextAppearance.MyApp.</item>-->

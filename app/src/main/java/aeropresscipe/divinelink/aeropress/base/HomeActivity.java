@@ -1,23 +1,21 @@
 package aeropresscipe.divinelink.aeropress.base;
 
-import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe;
+import aeropresscipe.divinelink.aeropress.R;
 import aeropresscipe.divinelink.aeropress.history.HistoryFragment;
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipesFragment;
-import aeropresscipe.divinelink.aeropress.timer.TimerActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 
-import aeropresscipe.divinelink.aeropress.R;
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeFragment;
+import gr.divinelink.core.util.utils.WindowUtil;
+
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 
@@ -33,6 +31,8 @@ public class HomeActivity extends AppCompatActivity {
         mBottomNavigationView = findViewById(R.id.bottom_navigation);
         mBottomNavigationView.setOnItemSelectedListener(onItemSelectedListener);
         mBottomNavigationView.setOnItemReselectedListener(onItemReselectedListener);
+
+        WindowUtil.INSTANCE.setNavigationBarColor(this, ContextCompat.getColor(this, R.color.colorSurface2));
 
         getSupportFragmentManager()
                 .beginTransaction()

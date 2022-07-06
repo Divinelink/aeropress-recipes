@@ -32,6 +32,12 @@
     <color name="light_colorSurfaceTint">#00677E</color>
     <color name="light_colorSurfaceTintColor">#00677E</color>
 
+<!--    <color name="light_colorSurface1">#F2F5F8</color>-->
+    <color name="light_colorSurface2">#F0F9FE</color>
+<!--    <color name="light_colorSurface3">#E8ECF4</color>-->
+<!--    <color name="light_colorSurface4">#E6EAF3</color>-->
+<!--    <color name="light_colorSurface5">#E3E7F1</color>-->
+
     <color name="light_text_primary">@color/light_colorOnSurface</color>
     <color name="light_text_primary_disabled">@color/core_grey_25</color>
     <color name="light_text_primary_dialog">@color/core_grey_65</color>
