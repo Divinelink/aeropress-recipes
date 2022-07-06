@@ -36,7 +36,6 @@ public class HistoryFragment extends Fragment implements IHistoryView, ISharedPr
     private Toolbar mToolBar;
     private LinearLayout mEmptyListLL;
     private Animation mFadeAnimation;
-    private TextView mHistoryTV;
 
     private boolean mHistoryIsEmpty;
 
@@ -47,7 +46,6 @@ public class HistoryFragment extends Fragment implements IHistoryView, ISharedPr
         View v = inflater.inflate(R.layout.fragment_history, container, false);
 
         historyRecipesRV = (RecyclerView) v.findViewById(R.id.historyRV);
-        mHistoryTV = (TextView) v.findViewById(R.id.historyTV);
         mToolBar = (Toolbar) v.findViewById(R.id.toolbar);
         mToolBar.setOnMenuItemClickListener(toolbarMenuClickListener);
         mEmptyListLL = (LinearLayout) v.findViewById(R.id.emptyListLayout);
@@ -98,7 +96,6 @@ public class HistoryFragment extends Fragment implements IHistoryView, ISharedPr
             getActivity().runOnUiThread(() -> {
 
                 beginFading(historyRecipesRV, AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_favourites), 8);
-                mHistoryTV.setVisibility(View.GONE);
                 beginFading(mEmptyListLL, AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_favourites), 0);
                 setIsHistoryEmptyBool(getContext(), true);
 

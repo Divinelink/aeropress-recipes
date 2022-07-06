@@ -65,6 +65,7 @@
 
     <string name="recipe">Recipe</string>
     <string name="history">History</string>
+    <string name="history_subtitle">Recently brewed recipes</string>
     <string name="emptyHistoryListText">Your brewing history will appear here</string>
 
     <string name="action_delete">Delete History</string>
