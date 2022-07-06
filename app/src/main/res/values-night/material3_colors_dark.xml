@@ -30,11 +30,11 @@
     <color name="dark_colorSurfaceTint">#5BD5FA</color>
     <color name="dark_colorSurfaceTintColor">#5BD5FA</color>
 
-    <color name="dark_colorSurface1">#23242A</color>
-    <color name="dark_colorSurface2">#272A31</color>
-    <color name="dark_colorSurface3">#2C2F37</color>
-    <color name="dark_colorSurface4">#2E3039</color>
-    <color name="dark_colorSurface5">#31343E</color>
+<!--    <color name="dark_colorSurface1">#23242A</color>-->
+    <color name="dark_colorSurface2">#172224</color>
+<!--    <color name="dark_colorSurface3">#2C2F37</color>-->
+<!--    <color name="dark_colorSurface4">#2E3039</color>-->
+<!--    <color name="dark_colorSurface5">#31343E</color>-->
 
     <color name="dark_colorTransparent1">#0AFFFFFF</color>
     <color name="dark_colorTransparent2">#1FFFFFFF</color>
