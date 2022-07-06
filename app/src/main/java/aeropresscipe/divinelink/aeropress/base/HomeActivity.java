@@ -37,7 +37,7 @@ public class HomeActivity extends AppCompatActivity {
         getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.homeRoot, GenerateRecipeFragment.newInstance())
+                .replace(R.id.fragment, GenerateRecipeFragment.newInstance())
                 .commit();
 
     }
@@ -51,7 +51,7 @@ public class HomeActivity extends AppCompatActivity {
         getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_NONE)
-                .replace(R.id.homeRoot, GenerateRecipeFragment.newInstance())
+                .replace(R.id.fragment, GenerateRecipeFragment.newInstance())
                 .commit();
     }
 
@@ -59,7 +59,7 @@ public class HomeActivity extends AppCompatActivity {
     public void addGenerateRecipeFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.homeRoot, GenerateRecipeFragment.newInstance())
+                .replace(R.id.fragment, GenerateRecipeFragment.newInstance())
                 .addToBackStack(null)
                 .commit();
     }
@@ -67,7 +67,7 @@ public class HomeActivity extends AppCompatActivity {
     public void addSavedRecipesFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.homeRoot, SavedRecipesFragment.newInstance())
+                .replace(R.id.fragment, SavedRecipesFragment.newInstance())
                 .addToBackStack(null)
                 .commit();
     }
@@ -75,7 +75,7 @@ public class HomeActivity extends AppCompatActivity {
     public void addHistoryFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.homeRoot, HistoryFragment.newInstance())
+                .replace(R.id.fragment, HistoryFragment.newInstance())
                 .addToBackStack(null)
                 .commit();
     }
