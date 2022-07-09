@@ -17,6 +17,7 @@ import android.animation.AnimatorInflater
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import gr.divinelink.core.util.extensions.getPairOfMinutesSeconds
 import gr.divinelink.core.util.timer.Timer
 import java.lang.ref.WeakReference
 

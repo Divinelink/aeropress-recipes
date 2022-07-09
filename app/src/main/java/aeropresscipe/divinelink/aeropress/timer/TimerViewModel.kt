@@ -5,8 +5,6 @@ import aeropresscipe.divinelink.aeropress.base.mvi.BaseAndroidViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
 import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
 import aeropresscipe.divinelink.aeropress.generaterecipe.getBrewingStates
-import aeropresscipe.divinelink.aeropress.generaterecipe.remainingWater
-import aeropresscipe.divinelink.aeropress.generaterecipe.withBloom
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import aeropresscipe.divinelink.aeropress.timer.util.BrewPhase
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
@@ -16,6 +14,7 @@ import android.app.Application
 import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import gr.divinelink.core.util.extensions.inMilliseconds
 import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -135,15 +134,7 @@ class TimerViewModel(
 
 }
 
-fun Long.inMilliseconds(): Long {
-    return this * 1000
-}
 
-fun Long.getPairOfMinutesSeconds(): Pair<Long, Long> {
-    val minutesUntilFinished = this / 60
-    val secondsInMinuteUntilFinished = this - minutesUntilFinished * 60
-    return Pair(minutesUntilFinished, secondsInMinuteUntilFinished)
-}
 
 interface ITimerViewModel {
     fun updateState(state: TimerState)
