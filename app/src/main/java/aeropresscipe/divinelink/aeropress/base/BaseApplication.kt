@@ -2,11 +2,13 @@ package aeropresscipe.divinelink.aeropress.base
 
 import aeropresscipe.divinelink.aeropress.helpers.SharedPreferences
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
 val preferences: SharedPreferences by lazy {
     BaseApplication.sharedPreferences
 }
 
+@HiltAndroidApp
 class BaseApplication : Application() {
 
     companion object {
@@ -22,7 +24,5 @@ class BaseApplication : Application() {
         sharedPreferences = SharedPreferences(this)
     }
 
-    override fun onTerminate() {
-        super.onTerminate()
-    }
+
 }
