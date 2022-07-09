@@ -32,12 +32,12 @@ public class TimerActivity extends AppCompatActivity {
         Toolbar mToolBar = findViewById(R.id.toolbar);
         mToolBar.setNavigationOnClickListener(v1 -> onBackPressed());
 
-        Recipe dice = (Recipe) getIntent().getSerializableExtra(EXTRA_RECIPE);
+        Recipe recipe = (Recipe) getIntent().getSerializableExtra(EXTRA_RECIPE);
 
         getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.timerRoot, TimerFragment.newInstance(dice))
+                .replace(R.id.timerRoot, TimerFragment.newInstance(recipe))
                 .commit();
     }
 

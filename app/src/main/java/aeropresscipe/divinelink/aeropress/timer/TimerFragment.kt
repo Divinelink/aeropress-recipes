@@ -38,7 +38,7 @@ class TimerFragment : Fragment(),
         binding = FragmentTimerBinding.inflate(inflater, container, false)
         val view = binding?.root
 
-        transferableModel.recipe = arguments?.getSerializable("timer") as Recipe
+        transferableModel.recipe = arguments?.getSerializable(TIMER) as Recipe
 
         viewModelFactory = TimerViewModelFactory(
             app = requireActivity().application,
@@ -140,12 +140,13 @@ class TimerFragment : Fragment(),
 
     companion object {
         private const val REDUCE_RATE = 10L
+        const val TIMER = "TIMER"
 
         @JvmStatic
-        fun newInstance(dice: Recipe?): TimerFragment {
+        fun newInstance(recipe: Recipe?): TimerFragment {
             val fragment = TimerFragment()
             val args = Bundle()
-            args.putSerializable("timer", dice)
+            args.putSerializable(TIMER, recipe)
             fragment.arguments = args
             return fragment
         }
