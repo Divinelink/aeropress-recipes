@@ -4,6 +4,9 @@ import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseAndroidViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
 import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
+import aeropresscipe.divinelink.aeropress.generaterecipe.getBrewingStates
+import aeropresscipe.divinelink.aeropress.generaterecipe.remainingWater
+import aeropresscipe.divinelink.aeropress.generaterecipe.withBloom
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import aeropresscipe.divinelink.aeropress.timer.util.BrewPhase
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
@@ -83,8 +86,8 @@ class TimerViewModel(
 
     private fun startTimers(transferableModel: TimerTransferableModel?) {
         val brewPhase = BrewPhase.Builder()
-            .brewStates(transferableModel?.recipe?.getBrewStates())
-            .brewState(transferableModel?.recipe?.getBrewStates()?.firstOrNull())
+            .brewStates(transferableModel?.recipe?.getBrewingStates())
+            .brewState(transferableModel?.recipe?.getBrewingStates()?.firstOrNull())
             .build()
 
         transferableModel?.brew = brewPhase

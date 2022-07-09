@@ -82,19 +82,6 @@ class TimerFragment : Fragment(),
 //    }
 
 
-//    private var brewRunnable: Runnable = object : Runnable {
-//        override fun run() {
-//            if (millisecondsRemaining < 10) {
-//                timerHandler.removeCallbacks(this)
-//                //TODO ADD ANIMATION
-////                presenter?.showMessage()
-//            } else {
-//                timerHandler.postDelayed(this, 10)
-//                millisecondsRemaining -= 10
-////                updateCountdownUI()
-//            }
-//        }
-//    }
 
     override fun onPause() {
         // Use OnPause instead of OnStop, because onStop is called after we go back to HomeActivity,
