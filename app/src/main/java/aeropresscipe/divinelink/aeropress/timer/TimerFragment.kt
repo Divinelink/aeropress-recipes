@@ -83,7 +83,6 @@ class TimerFragment : Fragment(),
 //    }
 
 
-
     override fun onPause() {
         // Use OnPause instead of OnStop, because onStop is called after we go back to HomeActivity,
         // and in this case we don't get the isBrewing boolean in brewTime
@@ -238,6 +237,4 @@ class TimerFragment : Fragment(),
         binding?.progressBar?.progress = timeInMilliseconds.toInt()
         millisecondsRemaining -= REDUCE_RATE
     }
-
-
 }
