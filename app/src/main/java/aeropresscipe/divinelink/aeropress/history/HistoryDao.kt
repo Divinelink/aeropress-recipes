@@ -42,5 +42,4 @@ interface HistoryDao {
         delete(historyDomain.recipe)
         insertRecipeToHistory(historyDomain)
     }
-
 }
