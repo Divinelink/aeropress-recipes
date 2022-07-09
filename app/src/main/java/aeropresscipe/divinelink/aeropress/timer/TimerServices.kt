@@ -1,6 +1,7 @@
 package aeropresscipe.divinelink.aeropress.timer
 
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase
+import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain
 import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
 import aeropresscipe.divinelink.aeropress.history.History
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
@@ -16,6 +17,7 @@ interface ITimerServices {
     suspend fun updateHistory(recipe: Recipe, brewDate: String, isLiked: Boolean, context: Context)
     suspend fun addToHistory(recipe: Recipe, brewDate: String, context: Context)
     suspend fun isRecipeSaved(recipe: Recipe?, context: Context): Boolean
+    suspend fun updateBrewingState(recipe: DiceDomain, context: Context)
 }
 
 class TimerServices(
@@ -58,7 +60,7 @@ class TimerServices(
         return database.let { db ->
             withContext(dispatcher) {
                 val historyDao = db.historyDao()
-                historyDao.updateRecipe(History(recipe = recipe, dateBrewed =  brewDate, isRecipeLiked = isLiked))
+                historyDao.updateRecipe(History(recipe = recipe, dateBrewed = brewDate, isRecipeLiked = isLiked))
             }
         }
     }
@@ -89,4 +91,17 @@ class TimerServices(
             }
         }
     }
+
+    override suspend fun updateBrewingState(
+        recipe: DiceDomain,
+        context: Context
+    ) {
+        val database = HomeDatabase.getDatabase(context)
+        return database.let {
+
+        }
+
+    }
+
+
 }
