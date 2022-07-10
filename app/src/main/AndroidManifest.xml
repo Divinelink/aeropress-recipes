@@ -3,7 +3,7 @@
     package="aeropresscipe.divinelink.aeropress">
 
     <application
-        android:name=".base.BaseApplication"
+        android:name="aeropresscipe.divinelink.aeropress.base.BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,8 +14,8 @@
         <activity
             android:name=".base.HomeActivity"
             android:exported="true"
-            android:theme="@style/Base.Theme.Aeropress"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/Base.Theme.Aeropress">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

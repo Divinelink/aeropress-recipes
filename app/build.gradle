@@ -1,9 +1,9 @@
 plugins {
-    id 'com.android.application'
     id 'kotlin-android'
     id 'io.gitlab.arturbosch.detekt'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'com.android.application'
 }
 
 apply {
@@ -42,6 +42,10 @@ android {
     }
 }
 
+kapt {
+    correctErrorTypes true
+}
+
 dependencies {
     def appcompat_version = "1.2.0"
     def room_version = "2.4.2"
@@ -56,8 +60,17 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'me.zhanghai.android.materialprogressbar:library:1.6.1'
     implementation 'com.google.code.gson:gson:2.8.9'
-    implementation "com.google.dagger:hilt-android:2.38.1"
-    kapt "com.google.dagger:hilt-compiler:2.38.1"
+
+    implementation 'com.google.dagger:hilt-android:2.42'
+    kapt 'com.google.dagger:hilt-compiler:2.42'
+
+    // For instrumentation tests
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.42'
+    kaptAndroidTest 'com.google.dagger:hilt-compiler:2.42'
+
+    // For local unit tests
+    testImplementation 'com.google.dagger:hilt-android-testing:2.42'
+    kaptTest 'com.google.dagger:hilt-compiler:2.42'
 
     implementation "androidx.appcompat:appcompat:$appcompat_version"
 
