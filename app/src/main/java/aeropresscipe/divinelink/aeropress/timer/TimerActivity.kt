@@ -8,8 +8,10 @@ import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentTransaction
 import dagger.hilt.android.AndroidEntryPoint
+import gr.divinelink.core.util.utils.WindowUtil
 
 
 @AndroidEntryPoint
@@ -21,6 +23,8 @@ class TimerActivity : AppCompatActivity() {
         mToolBar.setNavigationOnClickListener {
             onBackPressed()
         }
+
+        WindowUtil.setNavigationBarColor(this, ContextCompat.getColor(this, R.color.colorBackground))
 
         val recipe = intent.getSerializableExtra(EXTRA_RECIPE) as Recipe?
 
