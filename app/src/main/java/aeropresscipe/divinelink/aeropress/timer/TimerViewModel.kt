@@ -31,7 +31,7 @@ class TimerViewModel @AssistedInject constructor(
 
     var state: TimerState = TimerState.InitialState
         set(value) {
-            Log.d(TimerViewModel::class.simpleName, state.javaClass.simpleName)
+            Log.d(TAG, state.javaClass.simpleName)
             field = value
             statesList.add(value)
             delegate?.get()?.updateState(value)
@@ -60,6 +60,11 @@ class TimerViewModel @AssistedInject constructor(
                     startTimers(transferableModel)
                 }
             )
+
+            repository.updateBrewingState(true) {
+                Log.d(TAG, "Recipe is brewing")
+            }
+
         }
     }
 
@@ -67,6 +72,9 @@ class TimerViewModel @AssistedInject constructor(
         transferableModel?.brew?.removeCurrentPhase()
         transferableModel?.brew?.let { brew ->
             if (brew.getCurrentState() == BrewState.Finished) {
+                repository.updateBrewingState(false) {
+                    Log.d(TAG, "Recipe finished brewing")
+                }
                 state = TimerState.FinishState
             } else {
                 state = TimerState.StartTimer(
@@ -128,6 +136,11 @@ class TimerViewModel @AssistedInject constructor(
         val date = Date()
         val formatter = SimpleDateFormat("dd MMMM yyyy")
         return formatter.format(date.time)
+    }
+
+    companion object {
+        private val TAG: String? = TimerViewModel::class.simpleName
+
     }
 
 }

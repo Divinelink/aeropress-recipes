@@ -33,7 +33,8 @@ class TimerRepository @Inject constructor(
     ) = performTransaction(completionBlock) { dbRemote.isRecipeSaved(recipe) }
 
     fun updateBrewingState(
+        setBrewing: Boolean,
         completionBlock: () -> Unit
-    ) = performTransaction(completionBlock) { dbRemote.updateBrewingState() }
+    ) = performTransaction(completionBlock) { dbRemote.updateBrewingState(setBrewing) }
 
 }

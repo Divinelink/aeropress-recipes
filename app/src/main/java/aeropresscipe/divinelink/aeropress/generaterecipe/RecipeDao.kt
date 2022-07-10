@@ -1,10 +1,11 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe
 
 import androidx.room.Dao
-import androidx.room.OnConflictStrategy
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 
 @Dao
 interface RecipeDao {
@@ -16,6 +17,12 @@ interface RecipeDao {
 
     @Query("DELETE FROM Recipe")
     fun deleteAll()
+
+    @Update
+    suspend fun updateBrewing(recipe: DiceDomain)
+
+    @Query("UPDATE Recipe SET isBrewing=:isBrewing WHERE id = :id")
+    fun updateBrewingState(isBrewing: Boolean, id: Int)
 
     @Transaction
     fun updateRecipe(recipe: Recipe) {

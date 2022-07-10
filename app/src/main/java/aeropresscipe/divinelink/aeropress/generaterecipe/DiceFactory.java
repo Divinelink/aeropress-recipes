@@ -37,11 +37,11 @@ class GroundSize extends Dice {
 
     @Override
     public void setDice() {
-        dice.add(new GroundSizeDice("fine", 60));
-        dice.add(new GroundSizeDice("medium-fine", 90));
-        dice.add(new GroundSizeDice("medium", 120));
-        dice.add(new GroundSizeDice("coarse", 240));
-//        dice.add(new DiceDomain("lel", 5));
+//        dice.add(new GroundSizeDice("fine", 60));
+//        dice.add(new GroundSizeDice("medium-fine", 90));
+//        dice.add(new GroundSizeDice("medium", 120));
+//        dice.add(new GroundSizeDice("coarse", 240));
+        dice.add(new GroundSizeDice("lel", 5));
     }
 
     public GroundSize() {
@@ -55,18 +55,20 @@ class BrewMethodDice extends Dice {
 
     @Override
     public void setDice() {
-        dice.add(new MethodDice("Standard", 0, 0));
-        dice.add(new MethodDice("Standard", 30, 30));
-        dice.add(new MethodDice("Standard", 30, 60));
-        dice.add(new MethodDice("Inverted", 0, 0));
-        dice.add(new MethodDice("Inverted", 30, 30));
-        dice.add(new MethodDice("Inverted", 30, 60));
-        dice.add(new MethodDice("Standard", 45, 30));
-        dice.add(new MethodDice("Standard", 45, 60));
-        dice.add(new MethodDice("Inverted", 45, 30));
-        dice.add(new MethodDice("Inverted", 45, 60));
+//        dice.add(new MethodDice("Standard", 0, 0));
+//        dice.add(new MethodDice("Standard", 30, 30));
+//        dice.add(new MethodDice("Standard", 30, 60));
+//        dice.add(new MethodDice("Inverted", 0, 0));
+//        dice.add(new MethodDice("Inverted", 30, 30));
+//        dice.add(new MethodDice("Inverted", 30, 60));
+//        dice.add(new MethodDice("Standard", 45, 30));
+//        dice.add(new MethodDice("Standard", 45, 60));
+//        dice.add(new MethodDice("Inverted", 45, 30));
+//        dice.add(new MethodDice("Inverted", 45, 60));
 
 //        dice.add(new DiceDomain("TestNoBloom", 0, 0));
+
+        dice.add(new MethodDice("Inverted", 5, 60));
 
 //        dice.add(new DiceDomain("Test", 1, 0));
 
@@ -146,9 +148,7 @@ class GenerateRecipe {
                 waterAmount,
                 groundSize,
                 brewingMethod,
-                false,
-                false,
-                0
+                true
         );
     }
 }

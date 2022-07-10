@@ -18,7 +18,7 @@ interface ITimerServices {
     suspend fun updateHistory(recipe: Recipe, brewDate: String, isLiked: Boolean)
     suspend fun addToHistory(recipe: Recipe, brewDate: String)
     suspend fun isRecipeSaved(recipe: Recipe?): Boolean
-    suspend fun updateBrewingState()
+    suspend fun updateBrewingState(brewing: Boolean)
 }
 
 class TimerServices @Inject constructor(
@@ -75,9 +75,10 @@ class TimerServices @Inject constructor(
     }
 
     override suspend fun updateBrewingState(
+        brewing: Boolean
     ) {
         withContext(dispatcher) {
-            recipeDao.singleRecipe.isBrewing = true
+            recipeDao.updateBrewingState(brewing, recipeDao.singleRecipe.id)
         }
     }
 
