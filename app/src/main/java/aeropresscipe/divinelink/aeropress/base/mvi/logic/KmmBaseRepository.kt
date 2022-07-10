@@ -83,6 +83,19 @@ open class BaseRepository {
         }
     }
 
+    protected fun performTransaction(
+        transaction: suspend () -> Unit
+    ) = MainScope().launch(coroutineContext) {
+        runCatching {
+            transaction()
+        }.onSuccess {
+            runCompletionBlock {
+                // Do nothing
+            }
+        }
+    }
+
+
     protected fun <T : Any?> performTransaction(
         completionBlock: (T) -> Unit,
         transaction: suspend () -> T
