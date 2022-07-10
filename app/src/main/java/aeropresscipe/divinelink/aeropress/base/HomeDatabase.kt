@@ -29,7 +29,7 @@ abstract class HomeDatabase : RoomDatabase() {
 
     companion object {
         private var INSTANCE: HomeDatabase? = null
-        private const val DB_NAME = "Home_Database"
+        const val DB_NAME = "Home_Database"
 
         @JvmStatic
         fun getDatabase(ctx: Context): HomeDatabase {

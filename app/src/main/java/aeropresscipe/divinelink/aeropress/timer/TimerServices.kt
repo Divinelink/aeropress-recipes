@@ -1,14 +1,17 @@
 package aeropresscipe.divinelink.aeropress.timer
 
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain
+import aeropresscipe.divinelink.aeropress.base.di.IoDispatcher
 import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
+import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeDao
 import aeropresscipe.divinelink.aeropress.history.History
+import aeropresscipe.divinelink.aeropress.history.HistoryDao
+import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDao
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import android.content.Context
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 
 interface ITimerServices {
@@ -17,11 +20,14 @@ interface ITimerServices {
     suspend fun updateHistory(recipe: Recipe, brewDate: String, isLiked: Boolean, context: Context)
     suspend fun addToHistory(recipe: Recipe, brewDate: String, context: Context)
     suspend fun isRecipeSaved(recipe: Recipe?, context: Context): Boolean
-    suspend fun updateBrewingState(recipe: DiceDomain, context: Context)
+    suspend fun updateBrewingState()
 }
 
-class TimerServices(
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+class TimerServices @Inject constructor(
+    private val recipeDao: RecipeDao,
+    private val historyDao: HistoryDao,
+    private val savedRecipeDao: SavedRecipeDao,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ITimerServices {
 
     override suspend fun likeCurrentRecipe(recipe: SavedRecipeDomain, context: Context): Boolean {
@@ -93,15 +99,10 @@ class TimerServices(
     }
 
     override suspend fun updateBrewingState(
-        recipe: DiceDomain,
-        context: Context
     ) {
-        val database = HomeDatabase.getDatabase(context)
-        return database.let {
-
+        withContext(dispatcher) {
+            recipeDao.singleRecipe.isBrewing = true
         }
-
     }
-
 
 }

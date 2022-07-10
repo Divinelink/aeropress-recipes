@@ -1,50 +1,54 @@
 package aeropresscipe.divinelink.aeropress.timer
 
-import aeropresscipe.divinelink.aeropress.customviews.Notification.Companion.make
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.os.Bundle
 import aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.customviews.Notification.Companion.make
 import aeropresscipe.divinelink.aeropress.databinding.FragmentTimerBinding
 import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
+import aeropresscipe.divinelink.aeropress.timer.util.TimerViewModelAssistedFactory
 import aeropresscipe.divinelink.aeropress.timer.util.TimerViewModelFactory
+import android.animation.AnimatorInflater
+import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MotionEvent
-import android.animation.AnimatorSet
-import android.animation.AnimatorInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.getPairOfMinutesSeconds
 import gr.divinelink.core.util.timer.Timer
 import java.lang.ref.WeakReference
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class TimerFragment : Fragment(),
     ITimerViewModel,
     TimerStateHandler {
     private var binding: FragmentTimerBinding? = null
 
+    @Inject
+    lateinit var assistedFactory: TimerViewModelAssistedFactory
     private lateinit var viewModel: TimerViewModel
-    private lateinit var viewModelFactory: TimerViewModelFactory
 
     private var transferableModel = TimerTransferableModel()
 
     private var millisecondsRemaining = 0L
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentTimerBinding.inflate(inflater, container, false)
         val view = binding?.root
 
         transferableModel.recipe = arguments?.getSerializable(TIMER) as Recipe
 
-        viewModelFactory = TimerViewModelFactory(
-            app = requireActivity().application,
-            delegate = WeakReference<ITimerViewModel>(this),
-            repository = TimerRepository(),
-        )
+        val viewModelFactory = TimerViewModelFactory(assistedFactory, WeakReference<ITimerViewModel>(this))
         viewModel = ViewModelProvider(this, viewModelFactory).get(TimerViewModel::class.java)
 
         viewModel.init(transferableModel)

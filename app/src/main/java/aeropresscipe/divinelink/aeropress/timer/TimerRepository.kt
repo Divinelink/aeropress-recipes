@@ -1,16 +1,13 @@
 package aeropresscipe.divinelink.aeropress.timer
 
 import aeropresscipe.divinelink.aeropress.base.mvi.logic.BaseRepository
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain
 import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import android.content.Context
-import kotlinx.coroutines.Dispatchers
-import kotlin.coroutines.CoroutineContext
+import javax.inject.Inject
 
-class TimerRepository(
-    override var coroutineContext: CoroutineContext = Dispatchers.Main,
-    private val dbRemote: ITimerServices = TimerServices()
+class TimerRepository @Inject constructor(
+    private val dbRemote: TimerServices,
 ) : BaseRepository() {
 
     fun likeCurrentRecipe(
@@ -39,5 +36,10 @@ class TimerRepository(
         context: Context,
         completionBlock: (Boolean) -> Unit
     ) = performTransaction(completionBlock) { dbRemote.isRecipeSaved(recipe, context) }
+
+    fun updateBrewingState(
+        completionBlock: () -> Unit
+    ) = performTransaction(completionBlock) { dbRemote.updateBrewingState() }
+
 
 }

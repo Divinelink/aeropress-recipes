@@ -19,7 +19,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 
-
 public class HomeActivity extends AppCompatActivity {
     private BottomNavigationView mBottomNavigationView;
 

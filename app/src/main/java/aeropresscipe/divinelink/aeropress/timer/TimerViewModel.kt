@@ -14,15 +14,18 @@ import android.app.Application
 import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.qualifiers.ApplicationContext
 import gr.divinelink.core.util.extensions.inMilliseconds
 import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 import java.util.Date
 
-class TimerViewModel(
-    application: Application,
-    override var delegate: WeakReference<ITimerViewModel>?,
-    private var dbRepository: TimerRepository = TimerRepository(),
+class TimerViewModel @AssistedInject constructor(
+    private var repository: TimerRepository,
+    @ApplicationContext application: Application,
+    @Assisted override var delegate: WeakReference<ITimerViewModel>? = null,
 ) : BaseAndroidViewModel<ITimerViewModel>(application),
     TimerIntents {
     internal var statesList: MutableList<TimerState> = mutableListOf()
@@ -39,7 +42,7 @@ class TimerViewModel(
 
     override fun init(transferableModel: TimerTransferableModel) {
         this.transferableModel = transferableModel
-        dbRepository.isRecipeSaved(transferableModel.recipe, getApplication()) { saved ->
+        repository.isRecipeSaved(transferableModel.recipe, getApplication()) { saved ->
             val image = when (saved) {
                 true -> R.drawable.ic_heart_on
                 false -> R.drawable.ic_heart_off
@@ -53,7 +56,7 @@ class TimerViewModel(
             state = TimerState.ErrorState("Something went wrong!")
         } else {
             // Initialise Timer
-            dbRepository.addToHistory(
+            repository.addToHistory(
                 recipe = transferableModel.recipe!!,
                 brewDate = getCurrentDate(),
                 context = getApplication(),
@@ -109,16 +112,16 @@ class TimerViewModel(
         } else {
             // Save Recipe on DB
             val savedRecipe = SavedRecipeDomain(recipe, getCurrentDate())
-            dbRepository.likeCurrentRecipe(
+            repository.likeCurrentRecipe(
                 recipe = savedRecipe,
                 context = getApplication(),
                 completionBlock = { recipeLiked ->
                     if (recipeLiked) {
                         state = TimerState.RecipeSavedState
-                        dbRepository.updateHistory(recipe, getCurrentDate(), recipeLiked, getApplication()) { /* Intentionally Blank. */ }
+                        repository.updateHistory(recipe, getCurrentDate(), recipeLiked, getApplication()) { /* Intentionally Blank. */ }
                     } else {
                         state = TimerState.RecipeRemovedState
-                        dbRepository.updateHistory(recipe, getCurrentDate(), recipeLiked, getApplication()) { /* Intentionally Blank. */ }
+                        repository.updateHistory(recipe, getCurrentDate(), recipeLiked, getApplication()) { /* Intentionally Blank. */ }
                     }
                 }
             )
@@ -133,7 +136,6 @@ class TimerViewModel(
     }
 
 }
-
 
 
 interface ITimerViewModel {

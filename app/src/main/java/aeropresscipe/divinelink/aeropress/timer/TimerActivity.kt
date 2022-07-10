@@ -9,7 +9,10 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentTransaction
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class TimerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
