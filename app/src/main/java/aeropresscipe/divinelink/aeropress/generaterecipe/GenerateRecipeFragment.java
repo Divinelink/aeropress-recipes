@@ -109,7 +109,7 @@ public class GenerateRecipeFragment extends Fragment implements GenerateRecipeVi
 
     @Override
     public void showIsAlreadyBrewingDialog() {
-        Notification.Companion.make(generateRecipeButton, R.string.alreadyBrewingDialog).setAnchorView(R.id.bottom_navigation).show();
+        Notification.Companion.make(generateRecipeButton, R.string.alreadyBrewingDialog).setAnchorView(R.id.resumeBrewButton).show();
     }
 
     @Override
