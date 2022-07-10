@@ -1,7 +1,7 @@
 package aeropresscipe.divinelink.aeropress.timer
 
 import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.base.mvi.BaseAndroidViewModel
+import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
 import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
 import aeropresscipe.divinelink.aeropress.generaterecipe.getBrewingStates
@@ -10,13 +10,11 @@ import aeropresscipe.divinelink.aeropress.timer.util.BrewPhase
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
 import android.annotation.SuppressLint
-import android.app.Application
 import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import dagger.hilt.android.qualifiers.ApplicationContext
 import gr.divinelink.core.util.extensions.inMilliseconds
 import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
@@ -24,9 +22,8 @@ import java.util.Date
 
 class TimerViewModel @AssistedInject constructor(
     private var repository: TimerRepository,
-    @ApplicationContext application: Application,
     @Assisted override var delegate: WeakReference<ITimerViewModel>? = null,
-) : BaseAndroidViewModel<ITimerViewModel>(application),
+) : BaseViewModel<ITimerViewModel>(),
     TimerIntents {
     internal var statesList: MutableList<TimerState> = mutableListOf()
 
@@ -42,7 +39,7 @@ class TimerViewModel @AssistedInject constructor(
 
     override fun init(transferableModel: TimerTransferableModel) {
         this.transferableModel = transferableModel
-        repository.isRecipeSaved(transferableModel.recipe, getApplication()) { saved ->
+        repository.isRecipeSaved(transferableModel.recipe) { saved ->
             val image = when (saved) {
                 true -> R.drawable.ic_heart_on
                 false -> R.drawable.ic_heart_off
@@ -59,7 +56,6 @@ class TimerViewModel @AssistedInject constructor(
             repository.addToHistory(
                 recipe = transferableModel.recipe!!,
                 brewDate = getCurrentDate(),
-                context = getApplication(),
                 completionBlock = {
                     startTimers(transferableModel)
                 }
@@ -114,14 +110,13 @@ class TimerViewModel @AssistedInject constructor(
             val savedRecipe = SavedRecipeDomain(recipe, getCurrentDate())
             repository.likeCurrentRecipe(
                 recipe = savedRecipe,
-                context = getApplication(),
                 completionBlock = { recipeLiked ->
                     if (recipeLiked) {
                         state = TimerState.RecipeSavedState
-                        repository.updateHistory(recipe, getCurrentDate(), recipeLiked, getApplication()) { /* Intentionally Blank. */ }
+                        repository.updateHistory(recipe, getCurrentDate(), recipeLiked) { /* Intentionally Blank. */ }
                     } else {
                         state = TimerState.RecipeRemovedState
-                        repository.updateHistory(recipe, getCurrentDate(), recipeLiked, getApplication()) { /* Intentionally Blank. */ }
+                        repository.updateHistory(recipe, getCurrentDate(), recipeLiked) { /* Intentionally Blank. */ }
                     }
                 }
             )

@@ -3,7 +3,6 @@ package aeropresscipe.divinelink.aeropress.timer
 import aeropresscipe.divinelink.aeropress.base.mvi.logic.BaseRepository
 import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
-import android.content.Context
 import javax.inject.Inject
 
 class TimerRepository @Inject constructor(
@@ -12,34 +11,29 @@ class TimerRepository @Inject constructor(
 
     fun likeCurrentRecipe(
         recipe: SavedRecipeDomain,
-        context: Context,
         completionBlock: (Boolean) -> Unit
-    ) = performTransaction(completionBlock) { dbRemote.likeCurrentRecipe(recipe, context) }
+    ) = performTransaction(completionBlock) { dbRemote.likeCurrentRecipe(recipe) }
 
     fun updateHistory(
         recipe: Recipe,
         brewDate: String,
         isLiked: Boolean,
-        context: Context,
         completionBlock: () -> Unit
-    ) = performTransaction(completionBlock) { dbRemote.updateHistory(recipe, brewDate, isLiked, context) }
+    ) = performTransaction(completionBlock) { dbRemote.updateHistory(recipe, brewDate, isLiked) }
 
     fun addToHistory(
         recipe: Recipe,
         brewDate: String,
-        context: Context,
         completionBlock: () -> Unit
-    ) = performTransaction(completionBlock) { dbRemote.addToHistory(recipe, brewDate, context) }
+    ) = performTransaction(completionBlock) { dbRemote.addToHistory(recipe, brewDate) }
 
     fun isRecipeSaved(
         recipe: Recipe?,
-        context: Context,
         completionBlock: (Boolean) -> Unit
-    ) = performTransaction(completionBlock) { dbRemote.isRecipeSaved(recipe, context) }
+    ) = performTransaction(completionBlock) { dbRemote.isRecipeSaved(recipe) }
 
     fun updateBrewingState(
         completionBlock: () -> Unit
     ) = performTransaction(completionBlock) { dbRemote.updateBrewingState() }
-
 
 }
