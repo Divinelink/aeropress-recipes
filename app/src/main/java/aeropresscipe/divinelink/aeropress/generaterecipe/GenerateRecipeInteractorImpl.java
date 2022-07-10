@@ -9,54 +9,46 @@ import android.util.Log;
 import aeropresscipe.divinelink.aeropress.base.BaseApplication;
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase;
 
-public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor, SharedPrefManager {
+public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor {
     //We only want to edit out data in the interactor, before we pass them into the Presenter
     // otherwise we break the MVP rules
 
-
     @Override
     public void getNewRecipe(final OnGenerateRecipeFinishListener listener, final Context ctx, boolean letGenerate) {
-        // Executed By Pressing "New Recipe Button"
+        AsyncTask.execute(() -> {
+            final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
+            // Executed By Pressing "New Recipe Button"
 
-        // Check whether to show generate a new recipe or not.
-        // If there's a recipe running already, show a toast that asks the user to long press on the button in order to get a new recipe.
-        // When long-pressing, letGenerate is true, and isBrewing becomes false, then the model passes the new recipe on the presenter etc.
-        boolean isBrewing = IsItBrewingAlready(ctx);
+            // Check whether to show generate a new recipe or not.
+            // If there's a recipe running already, show a toast that asks the user to long press on the button in order to get a new recipe.
+            // When long-pressing, letGenerate is true, and isBrewing becomes false, then the model passes the new recipe on the presenter etc.
+            boolean isBrewing = recipeDao.getSingleRecipe().isBrewing();
 
-        if (letGenerate)
-            isBrewing = false;
+            if (letGenerate)
+                isBrewing = false;
 
-        if (isBrewing) {
-            listener.isAlreadyBrewing();
-        } else {
-            AsyncTask.execute(() -> {
-                final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
-
+            if (isBrewing) {
+                listener.isAlreadyBrewing();
+            } else {
                 final Recipe newRecipe = new GenerateRecipe().getFinalRecipe();
-
                 // When Using AsyncTask, we also need to use .runOnUiThread(new Runnable()) where we set the adapter
                 // That updates the UI. In this case, on the fragment, on showRecipe() method.
-
                 // Stuff that updates the UI
                 Log.d("getNewRecipe", "Get New Recipe Button, updates DB and creates new recipe");
                 AsyncTask.execute(() -> {
                     recipeDao.updateRecipe(newRecipe);
                     listener.onSuccessNewRecipe(newRecipe);
                 });
-
-                BaseApplication.sharedPreferences.setBrewing(false);
-            });
-        }
+            }
+        });
     }
 
     @Override
     public void getRecipe(final OnGenerateRecipeFinishListener listener, final Context ctx) {
-
-        final boolean isBrewing = IsItBrewingAlready(ctx);
-
         AsyncTask.execute(() -> {
             final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
             final DiceDomain recipe = recipeDao.getSingleRecipe();
+            final boolean isBrewing = recipe.isBrewing();
 
             if (recipe == null) {
                 // If it's the first brewTime we run the app, there's no recipe. We generate a new one using the getRandomRecipe() method
@@ -80,11 +72,5 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor, S
                 });
             }
         });
-    }
-
-
-    @Override
-    public boolean IsItBrewingAlready(Context ctx) {
-        return BaseApplication.sharedPreferences.isBrewing();
     }
 }
