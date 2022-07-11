@@ -20,9 +20,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.getPairOfMinutesSeconds
-import gr.divinelink.core.util.timer.Timer
+import gr.divinelink.core.util.timer.PreciseCountdown
 import java.lang.ref.WeakReference
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class TimerFragment : Fragment(),
@@ -58,34 +59,6 @@ class TimerFragment : Fragment(),
         initListeners()
         return view
     }
-
-//    override fun showTimer(time: Int, bloomPhase: Boolean) {
-//        millisecondsRemaining = time
-//        if (bloomPhase) {
-//            timerHandler.postDelayed(runnable, 10)
-//            updateCountdownUI()
-//            binding?.timerHeader?.text = String.format("%s\n%s", getString(R.string.bloomPhase), getString(R.string.bloomPhaseWaterText, diceUI?.bloomWater))
-//            diceUI?.setRecipeHadBloom(true)
-//        } else {
-//            timerHandler.postDelayed(brewRunnable, 10)
-//            // Checks if there was a bloom or not, and set corresponding text on textView.
-//            updateCountdownUI()
-//            if (GetPhaseFactory().findPhase(diceUI?.bloomTime ?: 0, diceUI?.brewTime ?: 0).phases || diceUI?.recipeHadBloom() == true) {
-//                binding?.timerHeader?.text = String.format("%s\n%s", getString(R.string.brewPhase), getString(R.string.brewPhaseWithBloom, diceUI?.remainingBrewWater))
-//            } else {
-//                binding?.timerHeader?.text = String.format("%s\n%s", getString(R.string.brewPhase), getString(R.string.brewPhaseNoBloom, diceUI?.remainingBrewWater))
-//            }
-//            diceUI.bloomTime = 0
-//        }
-//        // Set max progress bar to be either the max BloomTime or BrewTime.
-//        // Avoid if statements by using Factory
-//        binding?.progressBar?.max = GetPhaseFactory().getMaxTime(diceUI.bloomTime, diceUI.brewTime) * 1000
-//
-////        ObjectAnimator.ofInt(binding?.progressBar, "progress", brewTime)
-////                .setDuration(300)
-////                .start();
-//    }
-
 
     override fun onPause() {
         // Use OnPause instead of OnStop, because onStop is called after we go back to HomeActivity,
@@ -142,7 +115,7 @@ class TimerFragment : Fragment(),
     }
 
     companion object {
-        private const val REDUCE_RATE = 10L
+        private const val INTERVAL = 10L
         const val TIMER = "TIMER"
 
         @JvmStatic
@@ -213,15 +186,17 @@ class TimerFragment : Fragment(),
                 .start()
         }
 
-        Timer(
-            millisInFuture = millisecondsRemaining,
-            countDownInterval = REDUCE_RATE,
-            runAtStart = true,
-            onFinish = { viewModel.updateTimer() },
+        PreciseCountdown(
+            totalTime = millisecondsRemaining,
+            interval = INTERVAL,
             onTick = {
-                updateCountdownUI(millisecondsRemaining)
+                updateCountdownUI(it)
+            },
+            onFinish = {
+                viewModel.updateTimer()
             }
-        )
+        ).start()
+
     }
 
     override fun handleFinishState() {
@@ -235,10 +210,11 @@ class TimerFragment : Fragment(),
     private fun updateCountdownUI(
         timeInMilliseconds: Long,
     ) {
+        millisecondsRemaining -= INTERVAL
         val time = timeInMilliseconds / 1000
         val timeLeft = time.getPairOfMinutesSeconds()
-        binding?.brewingTimeTextView?.text = String.format("%d:%02d", timeLeft.first, timeLeft.second)
+        binding?.brewingTimeTextView?.text = String.format("%d:%02d", timeLeft.first, timeLeft.second + 1L)
         binding?.progressBar?.progress = timeInMilliseconds.toInt()
-        millisecondsRemaining -= REDUCE_RATE
     }
 }
+
