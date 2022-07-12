@@ -37,7 +37,8 @@ class TimerFragment : Fragment(),
 
     private var transferableModel = TimerTransferableModel()
 
-    private var millisecondsRemaining = 0L
+    private lateinit var timer: PreciseCountdown
+    private var milliSecondsLeft = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,7 +70,7 @@ class TimerFragment : Fragment(),
 //            val isBloomPhase = GetPhaseFactory().findPhase(diceUI.bloomTime ?: 0, diceUI.brewTime ?: 0).phases
 //            timerHandler.removeCallbacks(runnable)
 //            timerHandler.removeCallbacks(brewRunnable)
-//            presenter?.saveValuesOnPause(context, millisecondsRemaining, diceUI.brewTime ?: 0, isBloomPhase)
+//            presenter?.saveValuesOnPause(context, milliSecondsLeft, diceUI.brewTime ?: 0, isBloomPhase)
 //        } else {
 //            // When leaving Timer and it is over, set isBrewing boolean to false, meaning that brewing process is over
 //            // which removes the resume button on Generate Recipe Fragment.
@@ -174,7 +175,7 @@ class TimerFragment : Fragment(),
 
     override fun handleStartProgressBar(state: TimerState.StartProgressBar) {
         binding?.progressBar?.max = state.timeInMilliseconds.toInt()
-        millisecondsRemaining = state.timeInMilliseconds
+        milliSecondsLeft = state.timeInMilliseconds
 
         if (state.animate) {
             ObjectAnimator
@@ -186,8 +187,8 @@ class TimerFragment : Fragment(),
                 .start()
         }
 
-        PreciseCountdown(
-            totalTime = millisecondsRemaining,
+        timer = PreciseCountdown(
+            totalTime = milliSecondsLeft,
             interval = INTERVAL,
             onTick = {
                 updateCountdownUI(it)
@@ -195,12 +196,13 @@ class TimerFragment : Fragment(),
             onFinish = {
                 viewModel.updateTimer()
             }
-        ).start()
-
+        )
+        timer.start()
     }
 
+
     override fun handleFinishState() {
-        // to do
+        timer.dispose()
     }
 
     override fun handleUpdateSavedIndicator(state: TimerState.UpdateSavedIndicator) {
@@ -210,11 +212,10 @@ class TimerFragment : Fragment(),
     private fun updateCountdownUI(
         timeInMilliseconds: Long,
     ) {
-        millisecondsRemaining -= INTERVAL
+        milliSecondsLeft -= INTERVAL
         val time = timeInMilliseconds / 1000
         val timeLeft = time.getPairOfMinutesSeconds()
         binding?.brewingTimeTextView?.text = String.format("%d:%02d", timeLeft.first, timeLeft.second + 1L)
         binding?.progressBar?.progress = timeInMilliseconds.toInt()
     }
 }
-
