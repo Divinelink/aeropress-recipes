@@ -2,61 +2,77 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- region Material3 Styles -->
+
+    <style name="Text.DisplayLarge" parent="TextAppearance.Material3.DisplayLarge">
+        <item name="fontFamily">@font/font_medium</item>
+        <item name="android:lineSpacingExtra">8sp</item>
+    </style>
+
     <style name="Text.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="fontFamily">@font/font_medium</item>
         <item name="android:lineSpacingExtra">8sp</item>
     </style>
 
     <style name="Text.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="fontFamily">@font/font_medium</item>
         <item name="android:lineSpacingExtra">6sp</item>
     </style>
 
     <style name="Text.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/font_medium</item>
         <item name="android:lineSpacingExtra">6sp</item>
     </style>
 
     <style name="Text.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
-        <item name="fontFamily">@font/montserrat_medium</item>
-        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="fontFamily">@font/font_medium</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">18sp</item>
         <item name="android:lineSpacingExtra">6sp</item>
     </style>
 
     <style name="Text.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="fontFamily">@font/font_medium</item>
         <item name="android:textSize">16sp</item>
         <item name="android:lineSpacingExtra">6sp</item>
     </style>
 
     <style name="Text.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="fontFamily">@font/font_medium</item>
         <item name="android:lineSpacingExtra">6sp</item>
     </style>
 
     <!-- 14sp -->
     <style name="Text.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="fontFamily">@font/font_medium</item>
         <item name="android:textSize">14sp</item>
         <item name="android:lineSpacingExtra">6sp</item>
     </style>
 
     <style name="Text.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="fontFamily">@font/font_medium</item>
         <item name="android:textSize">13sp</item>
         <item name="android:lineSpacingExtra">3sp</item>
     </style>
 
     <style name="Text.MaterialCaption" parent="Text.BodySmall">
+        <item name="fontFamily">@font/font_medium</item>
         <item name="android:textSize">12sp</item>
         <item name="android:lineSpacingExtra">4sp</item>
     </style>
 
     <style name="Text.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="fontFamily">@font/font_medium</item>
         <item name="android:lineSpacingExtra">6sp</item>
     </style>
 
     <style name="Text.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="fontFamily">@font/font_medium</item>
         <item name="android:textSize">13sp</item>
         <item name="android:lineSpacingExtra">3sp</item>
     </style>
 
     <style name="Text.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="fontFamily">@font/font_medium</item>
         <item name="android:lineSpacingExtra">4sp</item>
     </style>
 
@@ -67,26 +83,26 @@
 <!--    <style name="Text.Headline" parent="Base.TextAppearance.AppCompat.Headline">-->
 <!--        <item name="android:textSize">28sp</item>-->
 <!--        <item name="android:lineSpacingExtra">3sp</item>-->
-<!--        <item name="android:fontFamily">@font/montserrat_regular</item>-->
+<!--        <item name="fontFamily">@font/montserrat_regular</item>-->
 <!--        <item name="android:letterSpacing" tools:ignore="NewApi">0</item>-->
 <!--    </style>-->
 
 <!--    <style name="Text.Headline.Medium">-->
 <!--        <item name="android:lineSpacingExtra">5sp</item>-->
-<!--        <item name="android:fontFamily">@font/montserrat_regular</item>-->
+<!--        <item name="fontFamily">@font/montserrat_regular</item>-->
 <!--    </style>-->
 
 <!--    <style name="Text.Body" parent="Base.TextAppearance.AppCompat.Body1">-->
 <!--        <item name="android:textSize">16sp</item>-->
 <!--        <item name="android:lineSpacingExtra">2sp</item>-->
-<!--        <item name="android:fontFamily">@font/montserrat_regular</item>-->
+<!--        <item name="fontFamily">@font/montserrat_regular</item>-->
 <!--        <item name="android:letterSpacing" tools:ignore="NewApi">0.01</item>-->
 <!--    </style>-->
 
 <!--    <style name="Text.Preview" parent="Base.TextAppearance.AppCompat.Body2">-->
 <!--        <item name="android:textSize">14sp</item>-->
 <!--        <item name="android:lineSpacingExtra">3sp</item>-->
-<!--        <item name="android:fontFamily">@font/montserrat_regular</item>-->
+<!--        <item name="fontFamily">@font/montserrat_regular</item>-->
 <!--        <item name="android:letterSpacing" tools:ignore="NewApi">0.01</item>-->
 <!--    </style>-->
 
@@ -95,7 +111,7 @@
 <!--    </style>-->
 
 <!--    <style name="Text.Preview.Medium">-->
-<!--        <item name="android:fontFamily">@font/montserrat_regular</item>-->
+<!--        <item name="fontFamily">@font/montserrat_regular</item>-->
 <!--    </style>-->
 
 <!--    <style name="Text.Preview.Medium.Primary">-->
@@ -109,7 +125,7 @@
 <!--    <style name="Text.Caption" parent="Base.TextAppearance.AppCompat.Caption">-->
 <!--        <item name="android:textSize">12sp</item>-->
 <!--        <item name="android:lineSpacingExtra">2sp</item>-->
-<!--        <item name="android:fontFamily">@font/montserrat_regular</item>-->
+<!--        <item name="fontFamily">@font/montserrat_regular</item>-->
 <!--        <item name="android:letterSpacing" tools:ignore="NewApi">0.03</item>-->
 <!--    </style>-->
 
@@ -121,7 +137,7 @@
 <!--    <style name="Text.Giant" parent="@style/TextAppearance.AppCompat.Display1">-->
 <!--        <item name="android:textSize">48sp</item>-->
 <!--        <item name="android:textColor">@color/text_primary</item>-->
-<!--        <item name="android:fontFamily">@font/montserrat_regular</item>-->
+<!--        <item name="fontFamily">@font/montserrat_regular</item>-->
 <!--    </style>-->
 
 <!--    <style name="TextAppearance.Title1" parent="@style/TextAppearance.AppCompat.Title">-->
@@ -208,7 +224,7 @@
 
 <!--    <style name="TextAppearance.Mono" parent="@style/TextAppearance.AppCompat.Caption">-->
 <!--        <item name="android:textSize">14sp</item>-->
-<!--        <item name="android:fontFamily">monospace</item>-->
+<!--        <item name="fontFamily">monospace</item>-->
 <!--    </style>-->
 
 <!--    <style name="TextAppearance.Caption" parent="@style/TextAppearance.AppCompat.Caption">-->
@@ -229,7 +245,7 @@
 
 <!--    <style name="TextAppearance.Title.ActionMode" parent="">-->
 <!--        <item name="android:textSize">20sp</item>-->
-<!--        <item name="android:fontFamily">@font/montserrat_regular</item>-->
+<!--        <item name="fontFamily">@font/montserrat_regular</item>-->
 <!--        <item name="android:letterSpacing" tools:ignore="NewApi">0.01</item>-->
 <!--    </style>-->
 

@@ -32,12 +32,15 @@
         <item name="android:textColor">@color/text_color_light_theme</item>
         <item name="android:textColorSecondary">@color/text_color_secondary_light_theme</item>
 
-        <item name="fontFamily">@font/montserrat_regular</item>
+        <item name="android:fontFamily">@font/font_medium</item>
 
         <item name="android:navigationBarColor">@color/transparent</item>
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
         <item name="android:windowLightNavigationBar">?attr/isLightTheme</item>
+
+        <!--        <item name="appBarLayoutStyle">@style/AppTheme.AppBarOverlay</item>-->
+        <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
 
         <!--        <item name="textAppearanceDisplaySmall">@style/TextAppearance.MyApp.DisplaySmall</item>-->
         <!--        <item name="textAppearanceTitleLarge">@style/TextAppearance.MyApp.</item>-->

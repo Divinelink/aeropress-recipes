@@ -5,7 +5,7 @@
     android:id="@+id/notificationRoot"
     style="@style/customSnackBarStyle"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/startEndMargin"
     android:layout_marginEnd="@dimen/startEndMargin"
     app:cardCornerRadius="8dp"
@@ -20,7 +20,9 @@
         android:layout_marginEnd="@dimen/startEndMargin"
         android:gravity="start|center"
         android:paddingStart="16dp"
+        android:paddingTop="12dp"
         android:paddingEnd="16dp"
+        android:paddingBottom="12dp"
         android:textColor="@color/colorOnPrimaryContainer"
         tools:text="Custom SnackBar Title" />
 

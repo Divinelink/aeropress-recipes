@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/timer_header"
-        style="@style/TextAppearance.Material3.TitleLarge"
+        style="@style/Text.TitleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -36,7 +36,7 @@
 
     <TextView
         android:id="@+id/brewingTimeTextView"
-        style="@style/TextAppearance.Material3.DisplayLarge"
+        style="@style/Text.DisplayLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

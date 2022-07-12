@@ -20,7 +20,6 @@
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            android:theme="@style/ToolbarTheme"
             app:title="@string/favourites" />
 
     </com.google.android.material.appbar.AppBarLayout>
