@@ -16,7 +16,7 @@ class Notification(
 ) : BaseTransientBottomBar<Notification>(parent, content, content) {
 
     init {
-        getView().setBackgroundColor(ContextCompat.getColor(view.context, android.R.color.transparent))
+        getView().setBackgroundColor(ContextCompat.getColor(view.context, R.color.transparent))
         getView().setPadding(0, 0, 0, 0)
     }
 

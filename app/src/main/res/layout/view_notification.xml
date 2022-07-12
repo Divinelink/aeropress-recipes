@@ -1,31 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/notificationRoot"
+    style="@style/customSnackBarStyle"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="40dp"
     android:layout_marginStart="@dimen/startEndMargin"
-    android:layout_marginEnd="@dimen/startEndMargin">
+    android:layout_marginEnd="@dimen/startEndMargin"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="0dp">
 
-    <androidx.cardview.widget.CardView
+    <TextView
+        android:id="@+id/notification_text"
+        style="@style/Text.LabelMedium"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/customSnackBarStyle"
-        app:cardCornerRadius="8dp">
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/startEndMargin"
+        android:layout_marginEnd="@dimen/startEndMargin"
+        android:gravity="start|center"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColor="@color/colorOnPrimaryContainer"
+        tools:text="Custom SnackBar Title" />
 
-        <TextView
-            android:id="@+id/notification_text"
-            style="@style/Text.BodySmall"
-            android:textColor="@color/colorOnPrimaryContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/startEndMargin"
-            android:layout_marginEnd="@dimen/startEndMargin"
-            android:gravity="center"
-            android:padding="8dp"
-            tools:text="Custom SnackBar Title" />
-
-    </androidx.cardview.widget.CardView>
-
-</FrameLayout>
+</androidx.cardview.widget.CardView>
