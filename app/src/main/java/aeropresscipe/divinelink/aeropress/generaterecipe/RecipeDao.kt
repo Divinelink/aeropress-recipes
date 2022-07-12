@@ -13,7 +13,7 @@ interface RecipeDao {
     fun insertRecipe(recipe: DiceDomain)
 
     @get:Query("SELECT * FROM Recipe ORDER BY id DESC LIMIT 1")
-    val singleRecipe: DiceDomain
+    val singleRecipe: DiceDomain?
 
     @Query("DELETE FROM Recipe")
     fun deleteAll()

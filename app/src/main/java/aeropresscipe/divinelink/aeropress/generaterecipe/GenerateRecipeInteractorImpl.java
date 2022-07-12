@@ -48,7 +48,6 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor {
         AsyncTask.execute(() -> {
             final RecipeDao recipeDao = HomeDatabase.getDatabase(ctx).recipeDao();
             final DiceDomain recipe = recipeDao.getSingleRecipe();
-            final boolean isBrewing = recipe.isBrewing();
 
             if (recipe == null) {
                 // If it's the first brewTime we run the app, there's no recipe. We generate a new one using the getRandomRecipe() method
@@ -65,6 +64,7 @@ public class GenerateRecipeInteractorImpl implements GenerateRecipeInteractor {
             } else {
                 Log.d("Show Recipe", "Show already existing recipe");
                 AsyncTask.execute(() -> {
+                    final boolean isBrewing = recipe.isBrewing();
                     if (isBrewing) // When there's a timer active and app is starting
                         listener.onSuccess(recipe.getRecipe());
                     else // When there's no timer active and app is starting

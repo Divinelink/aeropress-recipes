@@ -78,7 +78,7 @@ class TimerServices @Inject constructor(
         brewing: Boolean
     ) {
         withContext(dispatcher) {
-            recipeDao.updateBrewingState(brewing, recipeDao.singleRecipe.id)
+            recipeDao.updateBrewingState(brewing, recipeDao.singleRecipe?.id ?: -1)
         }
     }
 
