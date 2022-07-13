@@ -39,28 +39,29 @@ class GenerateRecipeFragment : Fragment(), GenerateRecipeView {
     }
 
     private fun initListeners() {
-
-        binding?.generateRecipeButton?.setOnClickListener {
-            presenter?.getNewRecipe(context, false)
-        }
-        binding?.generateRecipeButton?.setOnLongClickListener {
-            presenter?.getNewRecipe(context, true)
-            true
-        }
-        binding?.startTimerButton?.setOnClickListener {
-            recipe?.isNewRecipe = true
-            startActivity(newIntent(requireContext(), recipe))
-        }
-        binding?.resumeBrewButton?.setOnClickListener {
-            recipe?.isNewRecipe = false
-            startActivity(newIntent(requireContext(), recipe))
+        binding?.apply {
+            generateRecipeButton.setOnClickListener {
+                presenter?.getNewRecipe(context, false)
+            }
+            generateRecipeButton.setOnLongClickListener {
+                presenter?.getNewRecipe(context, true)
+                true
+            }
+            startTimerButton.setOnClickListener {
+                recipe?.isNewRecipe = true
+                startActivity(newIntent(requireContext(), recipe))
+            }
+            resumeBrewButton.setOnClickListener {
+                recipe?.isNewRecipe = false
+                startActivity(newIntent(requireContext(), recipe))
+            }
         }
     }
 
     override fun showRecipe(randomRecipe: Recipe) {
+        val recipeAdapter = GenerateRecipeRvAdapter(randomRecipe, activity)
         ThreadUtil.runOnMain {
-            val recipeRvAdapter = GenerateRecipeRvAdapter(randomRecipe, activity)
-            binding?.recipeRv?.adapter = recipeRvAdapter
+            binding?.recipeRv?.adapter = recipeAdapter
             if (fadeInAnimation.hasEnded().not()) {
                 fadeInAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in_out)
                 binding?.resumeBrewButton?.startAnimation(fadeInAnimation)
@@ -77,12 +78,12 @@ class GenerateRecipeFragment : Fragment(), GenerateRecipeView {
     }
 
     override fun showRecipeRemoveResume(randomRecipe: Recipe) {
+        val recipeAdapter = GenerateRecipeRvAdapter(randomRecipe, activity)
         ThreadUtil.runOnMain {
-            val recipeRvAdapter = GenerateRecipeRvAdapter(randomRecipe, activity)
             binding?.recipeRv?.startAnimation(adapterAnimation)
             // We need this so the adapter changes during the animation phase, and not before it.
             val adapterHandler = Handler(Looper.getMainLooper())
-            val adapterRunnable = Runnable { binding?.recipeRv?.adapter = recipeRvAdapter }
+            val adapterRunnable = Runnable { binding?.recipeRv?.adapter = recipeAdapter }
             adapterHandler.postDelayed(adapterRunnable, adapterAnimation.duration)
             if (fadeInAnimation.hasEnded().not()) {
                 fadeInAnimation = AnimationUtils.loadAnimation(activity, R.anim.fade_out)
@@ -92,14 +93,15 @@ class GenerateRecipeFragment : Fragment(), GenerateRecipeView {
     }
 
     override fun showRecipeAppStarts(randomRecipe: Recipe) {
-        activity?.runOnUiThread(object : Runnable {
-            val recipeRvAdapter = GenerateRecipeRvAdapter(randomRecipe, activity)
-            override fun run() {
-                binding?.recipeRv?.adapter = recipeRvAdapter
-                binding?.resumeBrewButton?.startAnimation(fadeInAnimation)
+        val recipeAdapter = GenerateRecipeRvAdapter(randomRecipe, activity)
+        ThreadUtil.runOnMain {
+            binding?.apply {
+                recipeRv.adapter = recipeAdapter
+                resumeBrewButton.startAnimation(fadeInAnimation)
             }
-        })
+        }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
