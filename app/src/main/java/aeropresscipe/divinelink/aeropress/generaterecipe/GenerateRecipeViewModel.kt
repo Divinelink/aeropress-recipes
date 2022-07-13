@@ -11,18 +11,63 @@ import timber.log.Timber
 import java.lang.ref.WeakReference
 
 class GenerateRecipeViewModel @AssistedInject constructor(
-//    private var repository: GenerateRecipeRepository,
+    private var repository: GenerateRecipeRepository,
     @Assisted override var delegate: WeakReference<IGenerateRecipeViewModel>? = null
 ) : BaseViewModel<IGenerateRecipeViewModel>(),
     GenerateRecipeIntents {
     internal var statesList: MutableList<GenerateRecipeState> = mutableListOf()
+
+    private var dice: DiceDomain? = null
 
     var state: GenerateRecipeState = GenerateRecipeState.InitialState
         set(value) {
             Timber.d(value.toString())
             field = value
             delegate?.get()?.updateState(value)
+            statesList.add(value)
         }
+
+    init {
+        state = GenerateRecipeState.InitialState
+    }
+
+    override fun getRecipe() {
+        repository.getRecipe { dice ->
+            state = GenerateRecipeState.ShowRecipeState(dice.recipe)
+            state = when (dice.isBrewing) {
+                true -> GenerateRecipeState.ShowResumeButtonState
+                false -> GenerateRecipeState.HideResumeButtonState
+            }
+
+            this.dice = dice
+        }
+    }
+
+    override fun generateRecipe() {
+        repository.checkIfBrewing { isBrewing ->
+            when (isBrewing) {
+                true -> state = GenerateRecipeState.ShowAlreadyBrewingState
+                false -> generateRandomRecipe()
+            }
+        }
+    }
+
+    override fun forceGenerateRecipe() {
+        generateRandomRecipe()
+        state = GenerateRecipeState.HideResumeButtonState
+    }
+
+    private fun generateRandomRecipe() {
+        repository.createNewRecipe { dice ->
+            state = GenerateRecipeState.RefreshRecipeState(dice.recipe)
+            this.dice = dice
+        }
+    }
+
+    override fun startTimer(resume: Boolean) {
+        dice?.recipe?.isNewRecipe = resume
+        dice?.recipe?.let { recipe -> state = GenerateRecipeState.StartTimerState(recipe) }
+    }
 
 }
 
@@ -31,19 +76,40 @@ interface IGenerateRecipeViewModel {
 }
 
 interface GenerateRecipeIntents : MVIBaseView {
-    //TODO add your code here
+    fun getRecipe()
+
+    fun generateRecipe()
+    fun forceGenerateRecipe()
+
+    fun startTimer(resume: Boolean)
 }
 
 sealed class GenerateRecipeState {
     object InitialState : GenerateRecipeState()
     object LoadingState : GenerateRecipeState()
     data class ErrorState(val data: String) : GenerateRecipeState()
+
+    object ShowAlreadyBrewingState : GenerateRecipeState()
+    object ShowResumeButtonState : GenerateRecipeState()
+    object HideResumeButtonState : GenerateRecipeState()
+    data class ShowRecipeState(val recipe: Recipe) : GenerateRecipeState()
+    data class RefreshRecipeState(val recipe: Recipe) : GenerateRecipeState()
+
+    data class StartTimerState(val recipe: Recipe) : GenerateRecipeState()
 }
 
 interface GenerateRecipeStateHandler {
     fun handleInitialState()
     fun handleLoadingState()
-    fun handleErrorState()
+    fun handleErrorState(state: GenerateRecipeState.ErrorState)
+
+    fun handleShowResumeButtonState()
+    fun handleHideResumeButtonState()
+
+    fun handleShowAlreadyBrewingState()
+    fun handleShowRecipeState(state: GenerateRecipeState.ShowRecipeState)
+    fun handleRefreshRecipeState(state: GenerateRecipeState.RefreshRecipeState)
+    fun handleStartTimerState(state: GenerateRecipeState.StartTimerState)
 }
 
 @Suppress("UNCHECKED_CAST")

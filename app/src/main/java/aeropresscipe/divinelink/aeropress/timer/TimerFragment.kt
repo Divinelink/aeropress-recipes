@@ -48,7 +48,7 @@ class TimerFragment : Fragment(),
         binding = FragmentTimerBinding.inflate(inflater, container, false)
         val view = binding?.root
 
-        transferableModel.recipe = arguments?.getSerializable(TIMER) as Recipe
+        transferableModel.recipe = arguments?.getSerializable(TIMER) as Recipe?
 
         val viewModelFactory = TimerViewModelFactory(assistedFactory, WeakReference<ITimerViewModel>(this))
         viewModel = ViewModelProvider(this, viewModelFactory).get(TimerViewModel::class.java)

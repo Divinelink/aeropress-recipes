@@ -13,12 +13,13 @@ import com.google.android.material.navigation.NavigationBarView;
 
 
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeFragment;
+import dagger.hilt.android.AndroidEntryPoint;
 import gr.divinelink.core.util.utils.WindowUtil;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 
-
+@AndroidEntryPoint
 public class HomeActivity extends AppCompatActivity {
     private BottomNavigationView mBottomNavigationView;
 

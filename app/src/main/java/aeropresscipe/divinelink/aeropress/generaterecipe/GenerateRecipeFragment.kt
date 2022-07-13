@@ -1,67 +1,72 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe
 
-import aeropresscipe.divinelink.aeropress.timer.TimerActivity.Companion.newIntent
-import aeropresscipe.divinelink.aeropress.customviews.Notification.Companion.make
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.os.Bundle
 import aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.customviews.Notification
 import aeropresscipe.divinelink.aeropress.databinding.FragmentGenerateRecipeBinding
-import android.os.Looper
-import android.os.Handler
+import aeropresscipe.divinelink.aeropress.timer.TimerActivity
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
+import gr.divinelink.core.util.extensions.fadeOut
 import gr.divinelink.core.util.utils.ThreadUtil
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.lang.ref.WeakReference
+import javax.inject.Inject
 
-class GenerateRecipeFragment : Fragment(), GenerateRecipeView {
+@AndroidEntryPoint
+class GenerateRecipeFragment :
+    Fragment(),
+    IGenerateRecipeViewModel,
+    GenerateRecipeStateHandler {
     private var binding: FragmentGenerateRecipeBinding? = null
+
+    @Inject
+    lateinit var assistedFactory: GenerateRecipeViewModelAssistedFactory
+    private lateinit var viewModel: GenerateRecipeViewModel
 
     private lateinit var fadeInAnimation: Animation
     private lateinit var adapterAnimation: Animation
 
-    private var presenter: GenerateRecipePresenter? = null
-    private var recipe: Recipe? = null
+    //FIXME Recycler view Adapter needs fix
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentGenerateRecipeBinding.inflate(inflater, container, false)
         val view = binding?.root
         binding?.recipeRv?.layoutManager = LinearLayoutManager(activity)
-        presenter = GenerateRecipePresenterImpl(this)
-        presenter?.getRecipe(context)
-        fadeInAnimation = AnimationUtils.loadAnimation(activity, R.anim.initiliaze_animation)
-        adapterAnimation = AnimationUtils.loadAnimation(activity, R.anim.adapter_anim)
-        initListeners()
+
+        val viewModelFactory = GenerateRecipeViewModelFactory(assistedFactory, WeakReference<IGenerateRecipeViewModel>(this))
+        viewModel = ViewModelProvider(this, viewModelFactory).get(GenerateRecipeViewModel::class.java)
+
+        viewModel.getRecipe()
 
         return view
     }
 
-    private fun initListeners() {
-        binding?.apply {
-            generateRecipeButton.setOnClickListener {
-                presenter?.getNewRecipe(context, false)
-            }
-            generateRecipeButton.setOnLongClickListener {
-                presenter?.getNewRecipe(context, true)
-                true
-            }
-            startTimerButton.setOnClickListener {
-                recipe?.isNewRecipe = true
-                startActivity(newIntent(requireContext(), recipe))
-            }
-            resumeBrewButton.setOnClickListener {
-                recipe?.isNewRecipe = false
-                startActivity(newIntent(requireContext(), recipe))
-            }
+    override fun updateState(state: GenerateRecipeState) {
+        when (state) {
+            is GenerateRecipeState.InitialState -> handleInitialState()
+            is GenerateRecipeState.ErrorState -> handleErrorState(state)
+            is GenerateRecipeState.LoadingState -> handleLoadingState()
+            is GenerateRecipeState.ShowAlreadyBrewingState -> handleShowAlreadyBrewingState()
+            is GenerateRecipeState.ShowRecipeState -> handleShowRecipeState(state)
+            is GenerateRecipeState.RefreshRecipeState -> handleRefreshRecipeState(state)
+            is GenerateRecipeState.StartTimerState -> handleStartTimerState(state)
+            is GenerateRecipeState.HideResumeButtonState -> handleHideResumeButtonState()
+            is GenerateRecipeState.ShowResumeButtonState -> handleShowResumeButtonState()
         }
     }
 
-    override fun showRecipe(randomRecipe: Recipe) {
-        val recipeAdapter = GenerateRecipeRvAdapter(randomRecipe, activity)
+    override fun handleShowResumeButtonState() {
         ThreadUtil.runOnMain {
-            binding?.recipeRv?.adapter = recipeAdapter
             if (fadeInAnimation.hasEnded().not()) {
                 fadeInAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in_out)
                 binding?.resumeBrewButton?.startAnimation(fadeInAnimation)
@@ -69,39 +74,65 @@ class GenerateRecipeFragment : Fragment(), GenerateRecipeView {
         }
     }
 
-    override fun passData(recipe: Recipe) {
-        this.recipe = recipe
-    }
-
-    override fun showIsAlreadyBrewingDialog() {
-        make(binding?.generateRecipeButton, R.string.alreadyBrewingDialog).setAnchorView(R.id.resumeBrewButton).show()
-    }
-
-    override fun showRecipeRemoveResume(randomRecipe: Recipe) {
-        val recipeAdapter = GenerateRecipeRvAdapter(randomRecipe, activity)
+    override fun handleHideResumeButtonState() {
         ThreadUtil.runOnMain {
-            binding?.recipeRv?.startAnimation(adapterAnimation)
-            // We need this so the adapter changes during the animation phase, and not before it.
-            val adapterHandler = Handler(Looper.getMainLooper())
-            val adapterRunnable = Runnable { binding?.recipeRv?.adapter = recipeAdapter }
-            adapterHandler.postDelayed(adapterRunnable, adapterAnimation.duration)
-            if (fadeInAnimation.hasEnded().not()) {
-                fadeInAnimation = AnimationUtils.loadAnimation(activity, R.anim.fade_out)
-                binding?.resumeBrewButton?.startAnimation(fadeInAnimation)
-            }
+            binding?.resumeBrewButton?.fadeOut()
         }
     }
 
-    override fun showRecipeAppStarts(randomRecipe: Recipe) {
-        val recipeAdapter = GenerateRecipeRvAdapter(randomRecipe, activity)
-        ThreadUtil.runOnMain {
-            binding?.apply {
-                recipeRv.adapter = recipeAdapter
-                resumeBrewButton.startAnimation(fadeInAnimation)
-            }
+    override fun handleInitialState() {
+        fadeInAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.initiliaze_animation)
+        adapterAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.adapter_anim)
+        initListeners()
+    }
+
+    override fun handleLoadingState() {
+        // Nothing yet
+    }
+
+    override fun handleErrorState(state: GenerateRecipeState.ErrorState) {
+        // Nothing yet
+    }
+
+    override fun handleShowAlreadyBrewingState() {
+        Notification.make(binding?.generateRecipeButton, R.string.alreadyBrewingDialog)
+            .setAnchorView(R.id.resumeBrewButton)
+            .show()
+    }
+
+    override fun handleShowRecipeState(state: GenerateRecipeState.ShowRecipeState) {
+        binding?.recipeRv?.adapter = GenerateRecipeRvAdapter(state.recipe, requireContext())
+    }
+
+    override fun handleRefreshRecipeState(state: GenerateRecipeState.RefreshRecipeState) {
+        binding?.recipeRv?.startAnimation(adapterAnimation)
+        MainScope().launch {
+            delay(adapterAnimation.duration)
+            binding?.recipeRv?.adapter = GenerateRecipeRvAdapter(state.recipe, requireContext())
         }
     }
 
+    override fun handleStartTimerState(state: GenerateRecipeState.StartTimerState) {
+        startActivity(TimerActivity.newIntent(requireContext(), state.recipe))
+    }
+
+    private fun initListeners() {
+        binding?.apply {
+            generateRecipeButton.setOnClickListener {
+                viewModel.generateRecipe()
+            }
+            generateRecipeButton.setOnLongClickListener {
+                viewModel.forceGenerateRecipe()
+                true
+            }
+            startTimerButton.setOnClickListener {
+                viewModel.startTimer(resume = false)
+            }
+            resumeBrewButton.setOnClickListener {
+                viewModel.startTimer(resume = true)
+            }
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
