@@ -40,8 +40,8 @@ class TimerActivity : AppCompatActivity() {
 
         @JvmStatic
         fun newIntent(
-            context: Context,
-            recipe: Recipe
+            context: Context?,
+            recipe: Recipe?
         ): Intent {
             val intent = Intent(context, TimerActivity::class.java)
             intent.putExtra(EXTRA_RECIPE, recipe)

@@ -40,8 +40,8 @@ class Notification(
             return Notification(parent, customView)
         }
 
-        fun make(view: View, @StringRes resId: Int): Notification {
-            return make(view, view.resources.getText(resId))
+        fun make(view: View?, @StringRes resId: Int): Notification {
+            return make(view, view?.resources?.getText(resId).toString())
         }
     }
 }
