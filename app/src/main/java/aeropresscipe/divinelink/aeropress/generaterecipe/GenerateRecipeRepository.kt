@@ -30,7 +30,10 @@ interface IGenerateRecipeRemote {
     suspend fun getRecipe(): DiceDomain
 }
 
-class GenerateRecipeRemote @Inject constructor(
+/**
+ * Open for Unit Tests
+ */
+open class GenerateRecipeRemote @Inject constructor(
     private val recipeDao: RecipeDao,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : IGenerateRecipeRemote {
