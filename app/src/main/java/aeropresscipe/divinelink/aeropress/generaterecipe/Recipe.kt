@@ -12,9 +12,13 @@ data class Recipe(
     var coffeeAmount: Int,
     var brewWaterAmount: Int,
     var groundSize: String,
-    var brewingMethod: String,
+    var brewingMethod: BrewMethod,
     @Ignore var isNewRecipe: Boolean = false,
-) : Serializable
+) : Serializable {
+    companion object {
+        private const val serialVersionUID: Long = 1L
+    }
+}
 
 fun Recipe.withBloom(): Boolean {
     return this.bloomTime != 0

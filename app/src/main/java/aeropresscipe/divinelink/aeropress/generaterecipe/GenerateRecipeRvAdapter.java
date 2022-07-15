@@ -24,7 +24,8 @@ import aeropresscipe.divinelink.aeropress.R;
 public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipeRvAdapter.RecipeViewHolder> {
 
     final private int temp, brewTime, bloomTime, bloomWater, waterAmount, coffeeAmount;
-    final private String groundSize, brewingMethod;
+    private final String groundSize;
+    private final BrewMethod brewingMethod;
 
     final private Context context;
 

@@ -1,7 +1,12 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe
 
+enum class BrewMethod {
+    Standard,
+    Inverted
+}
+
 data class MethodDice(
-    val brewingMethod: String,
+    val brewMethod: BrewMethod,
     val bloomTime: Int,
     val bloomWater: Int
 )

@@ -68,7 +68,7 @@ class BrewMethodDice extends Dice {
 
 //        dice.add(new DiceDomain("TestNoBloom", 0, 0));
 
-        dice.add(new MethodDice("Inverted", 5, 60));
+        dice.add(new MethodDice(BrewMethod.Inverted, 5, 60));
 
 //        dice.add(new DiceDomain("Test", 1, 0));
 
@@ -132,7 +132,7 @@ class GenerateRecipe {
         final String groundSize = groundSizeDice.getGroundSize();
         final int brewTime = groundSizeDice.getBrewTime();
 
-        final String brewingMethod = brewMethod.getBrewingMethod();
+        final BrewMethod brewingMethod = brewMethod.getBrewMethod();
         final int bloomTime = brewMethod.getBloomTime();
         final int bloomWater = brewMethod.getBloomWater();
 
