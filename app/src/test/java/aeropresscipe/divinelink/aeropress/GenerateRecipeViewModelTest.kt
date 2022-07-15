@@ -59,18 +59,9 @@ class GenerateRecipeViewModelTest {
     }
 
     @Test
-    fun `given recipe is brewing, when I getRecipe then I expect ShowResumeButtonState`() = runTest {
+    fun `given recipe is brewing, when I forceGenerateRecipe then I expect RefreshRecipeState`() = runTest {
         // Given
-        val response = DiceDomain(
-            Recipe(diceTemperature = 0,
-                brewTime = 0,
-                bloomTime = 0,
-                bloomWater = 0,
-                coffeeAmount = 0,
-                brewWaterAmount = 0,
-                groundSize = "",
-                brewingMethod = "",
-                isNewRecipe = false), isBrewing = true)
+        val response = DiceDomain(recipeModel(), isBrewing = true)
 
         whenever(remote.createNewRecipe()).thenReturn(response)
         // When
@@ -79,5 +70,42 @@ class GenerateRecipeViewModelTest {
         assertTrue(viewModel.statesList[1] is GenerateRecipeState.RefreshRecipeState)
         assertEquals(viewModel.statesList[2], GenerateRecipeState.HideResumeButtonState)
 
+    }
+
+
+    @Test
+    fun `given recipe is not brewing, when I forceGenerateRecipe then I expect RefreshRecipeState`() = runTest {
+        // Given
+        val response = DiceDomain(recipeModel(), isBrewing = false)
+        whenever(remote.createNewRecipe()).thenReturn(response)
+        // When
+        viewModel.forceGenerateRecipe()
+        // Then
+        assertTrue(viewModel.statesList[1] is GenerateRecipeState.RefreshRecipeState)
+        assertEquals(viewModel.statesList[2], GenerateRecipeState.HideResumeButtonState)
+
+    }
+
+    private fun recipeModel(
+        diceTemperature: Int = 0,
+        brewTime: Int = 0,
+        bloomTime: Int = 0,
+        bloomWater: Int = 0,
+        coffeeAmount: Int = 0,
+        brewWaterAmount: Int = 0,
+        groundSize: String = "",
+        brewingMethod: String = "",
+        isNewRecipe: Boolean = false,
+    ): Recipe {
+        return Recipe(
+            diceTemperature = diceTemperature,
+            brewTime = brewTime,
+            bloomTime = bloomTime,
+            bloomWater = bloomWater,
+            coffeeAmount = coffeeAmount,
+            brewWaterAmount = brewWaterAmount,
+            groundSize = groundSize,
+            brewingMethod = brewingMethod,
+            isNewRecipe = isNewRecipe)
     }
 }
