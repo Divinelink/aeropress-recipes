@@ -41,7 +41,7 @@ class GenerateRecipeFragment :
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentGenerateRecipeBinding.inflate(inflater, container, false)
         val view = binding?.root
-        binding?.recipeRv?.layoutManager = LinearLayoutManager(activity)
+        binding?.recipeRv?.layoutManager = LinearLayoutManager(requireContext())
 
         val viewModelFactory = GenerateRecipeViewModelFactory(assistedFactory, WeakReference<IGenerateRecipeViewModel>(this))
         viewModel = ViewModelProvider(this, viewModelFactory).get(GenerateRecipeViewModel::class.java)
@@ -75,9 +75,7 @@ class GenerateRecipeFragment :
     }
 
     override fun handleHideResumeButtonState() {
-        ThreadUtil.runOnMain {
-            binding?.resumeBrewButton?.fadeOut()
-        }
+        binding?.resumeBrewButton?.fadeOut()
     }
 
     override fun handleInitialState() {
