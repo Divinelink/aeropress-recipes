@@ -16,5 +16,5 @@ fun CharSequence.toSpanned(): Spanned {
 }
 
 fun Int.toFahrenheit(): Int {
-    return (this * (Numbers.NINE / Numbers.FIVE + Numbers.THIRTY_TWO))
+    return (this * Numbers.NINE / Numbers.FIVE + Numbers.THIRTY_TWO)
 }
