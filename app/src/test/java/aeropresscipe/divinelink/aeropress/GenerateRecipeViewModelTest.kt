@@ -21,7 +21,6 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import java.lang.ref.WeakReference
 
-
 @ExperimentalCoroutinesApi
 class GenerateRecipeViewModelTest {
     private lateinit var viewModel: GenerateRecipeViewModel
@@ -69,9 +68,7 @@ class GenerateRecipeViewModelTest {
         // Then
         assertTrue(viewModel.statesList[1] is GenerateRecipeState.RefreshRecipeState)
         assertEquals(viewModel.statesList[2], GenerateRecipeState.HideResumeButtonState)
-
     }
-
 
     @Test
     fun `given recipe is not brewing, when I forceGenerateRecipe then I expect RefreshRecipeState`() = runTest {
@@ -83,7 +80,6 @@ class GenerateRecipeViewModelTest {
         // Then
         assertTrue(viewModel.statesList[1] is GenerateRecipeState.RefreshRecipeState)
         assertEquals(viewModel.statesList[2], GenerateRecipeState.HideResumeButtonState)
-
     }
 
     private fun recipeModel(
@@ -104,8 +100,8 @@ class GenerateRecipeViewModelTest {
             bloomWater = bloomWater,
             coffeeAmount = coffeeAmount,
             brewWaterAmount = brewWaterAmount,
-            groundSize = groundSize,
-            brewingMethod = brewingMethod,
+            grindSize = groundSize,
+            brewMethod = brewingMethod,
             isNewRecipe = isNewRecipe)
     }
 }
