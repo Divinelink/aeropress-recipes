@@ -22,7 +22,7 @@ sealed class RecipeStep(
     data class PourWaterStep(val waterAmount: Int) : RecipeStep(R.string.addWaterSlowly)
 
     // End No Bloom Region
-    data class WaitToBrewStep(val brewTime: Int) : RecipeStep(R.string.waitToBrewText)
+    data class WaitToBrewStep(val minutes: Long, val seconds: Long) : RecipeStep(R.string.waitToBrewText)
 
     object FlipToNormalOrientation : RecipeStep(R.string.upsideDownMethodText)
 

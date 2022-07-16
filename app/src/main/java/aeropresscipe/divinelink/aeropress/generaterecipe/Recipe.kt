@@ -2,6 +2,7 @@ package aeropresscipe.divinelink.aeropress.generaterecipe
 
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
 import androidx.room.Ignore
+import gr.divinelink.core.util.extensions.getPairOfMinutesSeconds
 import java.io.Serializable
 
 data class Recipe(
@@ -59,10 +60,10 @@ fun Recipe.buildSteps(): MutableList<RecipeStep> {
         steps.add(RecipeStep.BloomStep(bloomWater = this.bloomWater, bloomTime = this.bloomTime))
         steps.add(RecipeStep.RemainingWaterStep(remainingWater = this.remainingWater()))
     } else {
-        steps.add(RecipeStep.PourWaterStep(waterAmount = this.remainingWater()))
+        steps.add(RecipeStep.PourWaterStep(waterAmount = this.brewWaterAmount))
     }
-
-    steps.add(RecipeStep.WaitToBrewStep(brewTime = this.brewTime))
+    val timeLeft = brewTime.toLong().getPairOfMinutesSeconds()
+    steps.add(RecipeStep.WaitToBrewStep(timeLeft.first, timeLeft.second))
 
     if (this.brewMethod == BrewMethod.INVERTED) {
         steps.add(RecipeStep.FlipToNormalOrientation)
