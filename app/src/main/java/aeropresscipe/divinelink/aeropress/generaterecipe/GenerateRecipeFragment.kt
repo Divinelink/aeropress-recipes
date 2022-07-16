@@ -1,18 +1,17 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.os.Bundle
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.customviews.Notification
 import aeropresscipe.divinelink.aeropress.databinding.FragmentGenerateRecipeBinding
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.fadeOut
 import gr.divinelink.core.util.utils.ThreadUtil
@@ -36,12 +35,9 @@ class GenerateRecipeFragment :
     private lateinit var fadeInAnimation: Animation
     private lateinit var adapterAnimation: Animation
 
-    //FIXME Recycler view Adapter needs fix
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentGenerateRecipeBinding.inflate(inflater, container, false)
         val view = binding?.root
-        binding?.recipeRv?.layoutManager = LinearLayoutManager(requireContext())
 
         val viewModelFactory = GenerateRecipeViewModelFactory(assistedFactory, WeakReference<IGenerateRecipeViewModel>(this))
         viewModel = ViewModelProvider(this, viewModelFactory).get(GenerateRecipeViewModel::class.java)
@@ -99,14 +95,20 @@ class GenerateRecipeFragment :
     }
 
     override fun handleShowRecipeState(state: GenerateRecipeState.ShowRecipeState) {
-        binding?.recipeRv?.adapter = GenerateRecipeRvAdapter(state.recipe, requireContext())
+        binding?.recipeList?.adapter = GenerateRecipeListView(
+            steps = state.steps,
+            context = requireContext()
+        )
     }
 
     override fun handleRefreshRecipeState(state: GenerateRecipeState.RefreshRecipeState) {
-        binding?.recipeRv?.startAnimation(adapterAnimation)
+        binding?.recipeList?.startAnimation(adapterAnimation)
         MainScope().launch {
             delay(adapterAnimation.duration)
-            binding?.recipeRv?.adapter = GenerateRecipeRvAdapter(state.recipe, requireContext())
+            binding?.recipeList?.adapter = GenerateRecipeListView(
+                steps = state.steps,
+                context = requireContext()
+            )
         }
     }
 

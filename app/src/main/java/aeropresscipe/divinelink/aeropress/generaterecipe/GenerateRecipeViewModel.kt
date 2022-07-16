@@ -33,7 +33,7 @@ class GenerateRecipeViewModel @AssistedInject constructor(
 
     override fun getRecipe() {
         repository.getRecipe { dice ->
-            state = GenerateRecipeState.ShowRecipeState(dice.recipe)
+            state = GenerateRecipeState.ShowRecipeState(dice.recipe.buildSteps())
             state = when (dice.isBrewing) {
                 true -> GenerateRecipeState.ShowResumeButtonState
                 false -> GenerateRecipeState.HideResumeButtonState
@@ -59,7 +59,7 @@ class GenerateRecipeViewModel @AssistedInject constructor(
 
     private fun generateRandomRecipe() {
         repository.createNewRecipe { dice ->
-            state = GenerateRecipeState.RefreshRecipeState(dice.recipe)
+            state = GenerateRecipeState.RefreshRecipeState(dice.recipe.buildSteps())
             this.dice = dice
         }
     }
@@ -68,7 +68,6 @@ class GenerateRecipeViewModel @AssistedInject constructor(
         dice?.recipe?.isNewRecipe = resume
         dice?.recipe?.let { recipe -> state = GenerateRecipeState.StartTimerState(recipe) }
     }
-
 }
 
 interface IGenerateRecipeViewModel {
@@ -92,8 +91,8 @@ sealed class GenerateRecipeState {
     object ShowAlreadyBrewingState : GenerateRecipeState()
     object ShowResumeButtonState : GenerateRecipeState()
     object HideResumeButtonState : GenerateRecipeState()
-    data class ShowRecipeState(val recipe: Recipe) : GenerateRecipeState()
-    data class RefreshRecipeState(val recipe: Recipe) : GenerateRecipeState()
+    data class ShowRecipeState(val steps: MutableList<RecipeStep>) : GenerateRecipeState()
+    data class RefreshRecipeState(val steps: MutableList<RecipeStep>) : GenerateRecipeState()
 
     data class StartTimerState(val recipe: Recipe) : GenerateRecipeState()
 }
