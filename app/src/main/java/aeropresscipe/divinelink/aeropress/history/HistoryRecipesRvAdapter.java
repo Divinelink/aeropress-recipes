@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -96,13 +95,13 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
         final int total_time = historyRecipes.get(i).getRecipe().getBloomTime() + historyRecipes.get(i).getRecipe().getBrewTime();
         final int bloomTime = historyRecipes.get(i).getRecipe().getBloomTime();
         final int temp = historyRecipes.get(i).getRecipe().getDiceTemperature();
-        final String grindSize = historyRecipes.get(i).getRecipe().getGroundSize().getSize().substring(0, 1).toUpperCase() + historyRecipes.get(i).getRecipe().getGroundSize().getSize().substring(1).toLowerCase();
+        final String grindSize = historyRecipes.get(i).getRecipe().getGrindSize().getSize().substring(0, 1).toUpperCase() + historyRecipes.get(i).getRecipe().getGrindSize().getSize().substring(1).toLowerCase();
         boolean isLiked;
 
         savedRecipeViewHolder.waterAndTempItem.setText(context.getResources().getString(R.string.SavedWaterAndTempTextView, total_water, temp, temp * 9 / 5 + 32));
         savedRecipeViewHolder.beansWeightItem.setText(context.getResources().getString(R.string.SavedCoffeeWeightTextView, historyRecipes.get(i).getRecipe().getCoffeeAmount()));
         savedRecipeViewHolder.beansGrindLevelItem.setText(context.getResources().getString(R.string.SavedGrindLevelTextView, grindSize));
-        savedRecipeViewHolder.brewingMethodItem.setText(context.getResources().getString(R.string.SavedBrewingMethodTextView, historyRecipes.get(i).getRecipe().getBrewingMethod().getMethod()));
+        savedRecipeViewHolder.brewingMethodItem.setText(context.getResources().getString(R.string.SavedBrewingMethodTextView, historyRecipes.get(i).getRecipe().getBrewMethod().getMethod()));
 
         if (bloomTime == 0)
             savedRecipeViewHolder.timeItem.setText(context.getResources().getString(R.string.SavedTotalTimeTextView, total_time));

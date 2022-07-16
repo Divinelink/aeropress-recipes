@@ -41,10 +41,10 @@ class GroundSize extends Dice {
 //        dice.add(new GroundSizeDice(CoffeeGroundSize.MEDIUM_FINE, 90));
 //        dice.add(new GroundSizeDice(CoffeeGroundSize.MEDIUM, 120));
 //        dice.add(new GroundSizeDice(CoffeeGroundSize.COARSE, 240));
-        dice.add(new GroundSizeDice(CoffeeGroundSize.FINE, 10));
-        dice.add(new GroundSizeDice(CoffeeGroundSize.MEDIUM_FINE, 10));
-        dice.add(new GroundSizeDice(CoffeeGroundSize.MEDIUM, 10));
-        dice.add(new GroundSizeDice(CoffeeGroundSize.COARSE, 10));
+        dice.add(new GroundSizeDice(CoffeeGrindSize.FINE, 10));
+        dice.add(new GroundSizeDice(CoffeeGrindSize.MEDIUM_FINE, 10));
+        dice.add(new GroundSizeDice(CoffeeGrindSize.MEDIUM, 10));
+        dice.add(new GroundSizeDice(CoffeeGrindSize.COARSE, 10));
 
     }
 
@@ -74,6 +74,8 @@ class BrewMethodDice extends Dice {
 
         dice.add(new MethodDice(BrewMethod.INVERTED, 5, 60));
         dice.add(new MethodDice(BrewMethod.STANDARD, 5, 60));
+
+        dice.add(new MethodDice(BrewMethod.STANDARD, 0, 60));
 
 //        dice.add(new DiceDomain("Test", 1, 0));
 
@@ -134,7 +136,7 @@ class GenerateRecipe {
 
         final int temp = tempDice.getTemperature();
 
-        final CoffeeGroundSize groundSize = groundSizeDice.getGroundSize();
+        final CoffeeGrindSize groundSize = groundSizeDice.getGroundSize();
         final int brewTime = groundSizeDice.getBrewTime();
 
         final BrewMethod brewingMethod = brewMethod.getBrewMethod();

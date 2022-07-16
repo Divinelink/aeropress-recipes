@@ -91,8 +91,8 @@ class SavedRecipesAdapter(
             val totalTime = item.recipe.bloomTime + item.recipe.brewTime
             val bloomTime = item.recipe.bloomTime
             val temp = item.recipe.diceTemperature
-            val grindSize = item.recipe.groundSize.size.substring(0, 1)
-                .uppercase(Locale.getDefault()) + item.recipe.groundSize.size.substring(1).lowercase(
+            val grindSize = item.recipe.grindSize.size.substring(0, 1)
+                .uppercase(Locale.getDefault()) + item.recipe.grindSize.size.substring(1).lowercase(
                 Locale.getDefault()
             )
             binding.card.recipeTitle.text =
@@ -108,7 +108,7 @@ class SavedRecipesAdapter(
             binding.card.beansGrindLevelTV.text =
                 context.resources.getString(R.string.SavedGrindLevelTextView, grindSize)
             binding.card.brewingMethodTextView.text =
-                context.resources.getString(R.string.SavedBrewingMethodTextView, item.recipe.brewingMethod.method)
+                context.resources.getString(R.string.SavedBrewingMethodTextView, item.recipe.brewMethod.method)
 
             if (bloomTime == 0) {
                 binding.card.brewingTimeTextView.text = context.resources.getString(

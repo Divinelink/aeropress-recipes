@@ -5,7 +5,7 @@ enum class BrewMethod(val method: String) {
     INVERTED("Inverted")
 }
 
-enum class CoffeeGroundSize(val size: String) {
+enum class CoffeeGrindSize(val size: String) {
     FINE("fine"),
     MEDIUM_FINE("medium-fine"),
     MEDIUM("medium"),
@@ -23,7 +23,7 @@ data class TemperatureDice(
 )
 
 data class GroundSizeDice(
-    val groundSize: CoffeeGroundSize,
+    val groundSize: CoffeeGrindSize,
     val brewTime: Int
 )
 

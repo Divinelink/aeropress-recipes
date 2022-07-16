@@ -24,16 +24,16 @@ import aeropresscipe.divinelink.aeropress.R;
 public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipeRvAdapter.RecipeViewHolder> {
 
     final private int temp, brewTime, bloomTime, bloomWater, waterAmount, coffeeAmount;
-    private final CoffeeGroundSize groundSize;
+    private final CoffeeGrindSize groundSize;
     private final BrewMethod brewingMethod;
 
     final private Context context;
 
     public GenerateRecipeRvAdapter(Recipe recipe, Context mContext) {
         this.temp = recipe.getDiceTemperature();
-        this.groundSize = recipe.getGroundSize();
+        this.groundSize = recipe.getGrindSize();
         this.brewTime = recipe.getBrewTime();
-        this.brewingMethod = recipe.getBrewingMethod();
+        this.brewingMethod = recipe.getBrewMethod();
         this.bloomTime = recipe.getBloomTime();
         this.bloomWater = recipe.getBloomWater();
         this.waterAmount = recipe.getBrewWaterAmount();
@@ -117,9 +117,9 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
         SpannableString CoffeeGrind = new SpannableString(grindCoffeeText);
         CoffeeGrind.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), 6, 7 + Integer.toString(coffeeAmount).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        if (brewingMethod.equals(context.getResources().getString(R.string.standard)))
+        if (brewingMethod == BrewMethod.STANDARD) {
             recipeViewHolder.brewingMethodItem.setText(R.string.normal_orientation_text);
-        else {
+        } else {
             recipeViewHolder.brewingMethodItem.setText(R.string.inverted_orientation_text);
             recipeViewHolder.upsideDownMethodText.setVisibility(View.VISIBLE);
         }
