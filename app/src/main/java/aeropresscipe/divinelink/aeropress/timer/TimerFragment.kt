@@ -19,7 +19,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
-import gr.divinelink.core.util.constants.Numbers
+import gr.divinelink.core.util.constants.Numbers.ONE
+import gr.divinelink.core.util.constants.Numbers.ONE_THOUSAND
+import gr.divinelink.core.util.constants.Numbers.SIXTY
+import gr.divinelink.core.util.constants.Numbers.THREE_HUNDRED
 import gr.divinelink.core.util.extensions.getPairOfMinutesSeconds
 import gr.divinelink.core.util.timer.PreciseCountdown
 import java.lang.ref.WeakReference
@@ -183,7 +186,7 @@ class TimerFragment : Fragment(),
                     binding?.progressBar, "progress",
                     state.timeInMilliseconds.toInt()
                 )
-                .setDuration(Numbers.THREE_HUNDRED.toLong())
+                .setDuration(THREE_HUNDRED.toLong())
                 .start()
         }
 
@@ -212,9 +215,18 @@ class TimerFragment : Fragment(),
         timeInMilliseconds: Long,
     ) {
         milliSecondsLeft -= INTERVAL
-        val time = timeInMilliseconds / Numbers.ONE_THOUSAND
+        val time = timeInMilliseconds / ONE_THOUSAND
         val timeLeft = time.getPairOfMinutesSeconds()
-        binding?.brewingTimeTextView?.text = String.format(Locale.US, "%d:%02d", timeLeft.first, timeLeft.second + 1L)
+        val seconds: Long
+        val minutes: Long
+        if (timeLeft.second + ONE == SIXTY.toLong()) {
+            minutes = timeLeft.first + ONE
+            seconds = 0L
+        } else {
+            minutes = timeLeft.first
+            seconds = timeLeft.second + ONE
+        }
+        binding?.brewingTimeTextView?.text = String.format(Locale.US, "%d:%02d", minutes, seconds)
         binding?.progressBar?.progress = timeInMilliseconds.toInt()
     }
 }

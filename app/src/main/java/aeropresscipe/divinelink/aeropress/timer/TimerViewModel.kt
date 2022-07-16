@@ -10,7 +10,6 @@ import aeropresscipe.divinelink.aeropress.timer.util.BrewPhase
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import dagger.assisted.Assisted
@@ -73,7 +72,7 @@ class TimerViewModel @AssistedInject constructor(
         transferableModel?.brew?.let { brew ->
             if (brew.getCurrentState() == BrewState.Finished) {
                 repository.updateBrewingState(false) {
-                    Log.d(TAG, "Recipe finished brewing")
+                    Timber.d("Recipe finished brewing")
                 }
                 state = TimerState.FinishState
             } else {
@@ -136,10 +135,6 @@ class TimerViewModel @AssistedInject constructor(
         val date = Date()
         val formatter = SimpleDateFormat("dd MMMM yyyy")
         return formatter.format(date.time)
-    }
-
-    companion object {
-        private val TAG: String? = TimerViewModel::class.simpleName
     }
 }
 
