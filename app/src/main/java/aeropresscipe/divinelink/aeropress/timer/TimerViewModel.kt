@@ -3,8 +3,8 @@ package aeropresscipe.divinelink.aeropress.timer
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
-import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
-import aeropresscipe.divinelink.aeropress.generaterecipe.getBrewingStates
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.getBrewingStates
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import aeropresscipe.divinelink.aeropress.timer.util.BrewPhase
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
@@ -16,6 +16,7 @@ import androidx.annotation.StringRes
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import gr.divinelink.core.util.extensions.inMilliseconds
+import timber.log.Timber
 import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -31,7 +32,7 @@ class TimerViewModel @AssistedInject constructor(
 
     var state: TimerState = TimerState.InitialState
         set(value) {
-            Log.d(TAG, state.javaClass.simpleName)
+            Timber.d(state.javaClass.simpleName)
             field = value
             statesList.add(value)
             delegate?.get()?.updateState(value)
@@ -62,9 +63,8 @@ class TimerViewModel @AssistedInject constructor(
             )
 
             repository.updateBrewingState(true) {
-                Log.d(TAG, "Recipe is brewing")
+                Timber.d("Recipe is brewing")
             }
-
         }
     }
 
@@ -140,11 +140,8 @@ class TimerViewModel @AssistedInject constructor(
 
     companion object {
         private val TAG: String? = TimerViewModel::class.simpleName
-
     }
-
 }
-
 
 interface ITimerViewModel {
     fun updateState(state: TimerState)

@@ -1,7 +1,7 @@
 package aeropresscipe.divinelink.aeropress.savedrecipes
 
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase.Companion.getDatabase
-import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.history.History
 import android.content.Context
 import android.util.Log

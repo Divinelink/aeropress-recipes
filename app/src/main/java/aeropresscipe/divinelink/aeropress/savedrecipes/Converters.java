@@ -5,8 +5,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain;
-import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe;
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe;
 
 import androidx.room.TypeConverter;
 

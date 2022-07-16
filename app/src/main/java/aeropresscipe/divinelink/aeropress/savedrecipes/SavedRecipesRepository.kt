@@ -1,8 +1,7 @@
 package aeropresscipe.divinelink.aeropress.savedrecipes
 
 import aeropresscipe.divinelink.aeropress.base.mvi.logic.BaseRepository
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain
-import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext

@@ -1,8 +1,8 @@
 package aeropresscipe.divinelink.aeropress.timer
 
 import aeropresscipe.divinelink.aeropress.base.di.IoDispatcher
-import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
 import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeDao
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.history.History
 import aeropresscipe.divinelink.aeropress.history.HistoryDao
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDao
@@ -10,7 +10,6 @@ import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-
 
 interface ITimerServices {
     suspend fun likeCurrentRecipe(recipe: SavedRecipeDomain): Boolean
@@ -81,5 +80,4 @@ class TimerServices @Inject constructor(
             recipeDao.updateBrewingState(brewing, recipeDao.singleRecipe?.id ?: -1)
         }
     }
-
 }

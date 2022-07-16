@@ -12,7 +12,7 @@ import java.util.Date;
 
 import aeropresscipe.divinelink.aeropress.base.BaseApplication;
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase;
-import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe;
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe;
 import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeDao;
 import aeropresscipe.divinelink.aeropress.history.HistoryDao;
 import aeropresscipe.divinelink.aeropress.history.History;

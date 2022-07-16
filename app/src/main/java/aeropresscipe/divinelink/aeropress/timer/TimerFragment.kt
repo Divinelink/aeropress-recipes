@@ -3,7 +3,7 @@ package aeropresscipe.divinelink.aeropress.timer
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.customviews.Notification.Companion.make
 import aeropresscipe.divinelink.aeropress.databinding.FragmentTimerBinding
-import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
 import aeropresscipe.divinelink.aeropress.timer.util.TimerViewModelAssistedFactory
 import aeropresscipe.divinelink.aeropress.timer.util.TimerViewModelFactory
@@ -19,11 +19,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
+import gr.divinelink.core.util.constants.Numbers
 import gr.divinelink.core.util.extensions.getPairOfMinutesSeconds
 import gr.divinelink.core.util.timer.PreciseCountdown
 import java.lang.ref.WeakReference
+import java.util.Locale
 import javax.inject.Inject
-
 
 @AndroidEntryPoint
 class TimerFragment : Fragment(),
@@ -96,7 +97,6 @@ class TimerFragment : Fragment(),
         super.onDestroyView()
         binding = null
     }
-
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initListeners() {
@@ -183,7 +183,7 @@ class TimerFragment : Fragment(),
                     binding?.progressBar, "progress",
                     state.timeInMilliseconds.toInt()
                 )
-                .setDuration(300)
+                .setDuration(Numbers.THREE_HUNDRED.toLong())
                 .start()
         }
 
@@ -200,7 +200,6 @@ class TimerFragment : Fragment(),
         timer.start()
     }
 
-
     override fun handleFinishState() {
         timer.dispose()
     }
@@ -213,9 +212,9 @@ class TimerFragment : Fragment(),
         timeInMilliseconds: Long,
     ) {
         milliSecondsLeft -= INTERVAL
-        val time = timeInMilliseconds / 1000
+        val time = timeInMilliseconds / Numbers.ONE_THOUSAND
         val timeLeft = time.getPairOfMinutesSeconds()
-        binding?.brewingTimeTextView?.text = String.format("%d:%02d", timeLeft.first, timeLeft.second + 1L)
+        binding?.brewingTimeTextView?.text = String.format(Locale.US, "%d:%02d", timeLeft.first, timeLeft.second + 1L)
         binding?.progressBar?.progress = timeInMilliseconds.toInt()
     }
 }

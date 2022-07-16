@@ -1,13 +1,15 @@
 package aeropresscipe.divinelink.aeropress
 
-import aeropresscipe.divinelink.aeropress.generaterecipe.DiceDomain
+import aeropresscipe.divinelink.aeropress.generaterecipe.BrewMethod
+import aeropresscipe.divinelink.aeropress.generaterecipe.CoffeeGrindSize
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeIntents
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeRemote
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeRepository
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeState
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeViewModel
 import aeropresscipe.divinelink.aeropress.generaterecipe.IGenerateRecipeViewModel
-import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -89,8 +91,8 @@ class GenerateRecipeViewModelTest {
         bloomWater: Int = 0,
         coffeeAmount: Int = 0,
         brewWaterAmount: Int = 0,
-        groundSize: String = "",
-        brewingMethod: String = "",
+        groundSize: CoffeeGrindSize = CoffeeGrindSize.MEDIUM,
+        brewingMethod: BrewMethod = BrewMethod.STANDARD,
         isNewRecipe: Boolean = false,
     ): Recipe {
         return Recipe(

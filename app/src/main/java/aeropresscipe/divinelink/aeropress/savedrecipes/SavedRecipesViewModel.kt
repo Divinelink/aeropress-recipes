@@ -2,7 +2,7 @@ package aeropresscipe.divinelink.aeropress.savedrecipes
 
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseAndroidViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
-import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import android.app.Application
 import java.lang.ref.WeakReference
 

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import java.util.List;
 
-import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe;
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe;
 
 interface IHistoryInteractor {
 

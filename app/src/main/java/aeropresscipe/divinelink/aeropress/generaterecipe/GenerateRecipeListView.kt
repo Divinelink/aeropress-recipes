@@ -2,6 +2,7 @@ package aeropresscipe.divinelink.aeropress.generaterecipe
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.databinding.ListRecipeItemBinding
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.RecipeStep
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View

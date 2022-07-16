@@ -102,4 +102,6 @@ object Numbers {
     const val NINETY_EIGHT = 98
     const val NINETY_NINE = 99
     const val ONE_HUNDRED = 100
+    const val THREE_HUNDRED = 300
+    const val ONE_THOUSAND = 1_000
 }

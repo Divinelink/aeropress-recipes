@@ -1,18 +1,17 @@
 package aeropresscipe.divinelink.aeropress.timer
 
-import aeropresscipe.divinelink.aeropress.timer.TimerFragment.Companion.newInstance
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.timer.TimerFragment.Companion.newInstance
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentTransaction
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.utils.WindowUtil
-
 
 @AndroidEntryPoint
 class TimerActivity : AppCompatActivity() {

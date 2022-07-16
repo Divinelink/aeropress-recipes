@@ -1,5 +1,7 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe
 
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy

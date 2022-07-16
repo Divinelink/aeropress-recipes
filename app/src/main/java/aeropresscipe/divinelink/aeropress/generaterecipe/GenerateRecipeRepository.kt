@@ -2,6 +2,7 @@ package aeropresscipe.divinelink.aeropress.generaterecipe
 
 import aeropresscipe.divinelink.aeropress.base.di.IoDispatcher
 import aeropresscipe.divinelink.aeropress.base.mvi.logic.BaseRepository
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -21,7 +22,6 @@ class GenerateRecipeRepository @Inject constructor(
     fun createNewRecipe(
         completionBlock: (DiceDomain) -> Unit
     ) = performTransaction(completionBlock) { dbRemote.createNewRecipe() }
-
 }
 
 interface IGenerateRecipeRemote {

@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase;
-import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe;
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe;
 import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeDao;
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDao;
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain;

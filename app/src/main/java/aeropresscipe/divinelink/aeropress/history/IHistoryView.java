@@ -2,7 +2,7 @@ package aeropresscipe.divinelink.aeropress.history;
 
 import java.util.List;
 
-import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe;
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe;
 
 interface IHistoryView {
 

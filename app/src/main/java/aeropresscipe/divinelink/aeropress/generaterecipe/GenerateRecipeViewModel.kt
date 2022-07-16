@@ -2,6 +2,10 @@ package aeropresscipe.divinelink.aeropress.generaterecipe
 
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.RecipeStep
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.buildSteps
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import dagger.assisted.Assisted

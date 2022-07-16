@@ -20,7 +20,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import aeropresscipe.divinelink.aeropress.R;
-import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe;
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe;
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity;
 
 import androidx.recyclerview.widget.LinearLayoutManager;

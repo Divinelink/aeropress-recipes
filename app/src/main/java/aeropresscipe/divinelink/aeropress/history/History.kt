@@ -1,8 +1,8 @@
 package aeropresscipe.divinelink.aeropress.history
 
-import androidx.room.PrimaryKey
-import aeropresscipe.divinelink.aeropress.generaterecipe.Recipe
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "HistoryRecipes")
 data class History(

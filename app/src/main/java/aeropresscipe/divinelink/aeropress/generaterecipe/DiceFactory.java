@@ -2,6 +2,8 @@ package aeropresscipe.divinelink.aeropress.generaterecipe;
 
 import java.util.ArrayList;
 
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe;
+
 abstract class Dice {
 
     protected ArrayList<Object> dice;
@@ -45,6 +47,8 @@ class GroundSize extends Dice {
         dice.add(new GroundSizeDice(CoffeeGrindSize.MEDIUM_FINE, 10));
         dice.add(new GroundSizeDice(CoffeeGrindSize.MEDIUM, 10));
         dice.add(new GroundSizeDice(CoffeeGrindSize.COARSE, 10));
+        dice.add(new GroundSizeDice(CoffeeGrindSize.COARSE, 60));
+        dice.add(new GroundSizeDice(CoffeeGrindSize.COARSE, 65));
 
     }
 
@@ -75,7 +79,7 @@ class BrewMethodDice extends Dice {
         dice.add(new MethodDice(BrewMethod.INVERTED, 5, 60));
         dice.add(new MethodDice(BrewMethod.STANDARD, 5, 60));
 
-        dice.add(new MethodDice(BrewMethod.STANDARD, 0, 60));
+        dice.add(new MethodDice(BrewMethod.STANDARD, 0, 0));
 
 //        dice.add(new DiceDomain("Test", 1, 0));
 
