@@ -11,8 +11,8 @@ data class Recipe(
     var bloomWater: Int,
     var coffeeAmount: Int,
     var brewWaterAmount: Int,
-    var groundSize: CoffeeGroundSize,
-    var brewingMethod: BrewMethod,
+    var grindSize: CoffeeGrindSize,
+    var brewMethod: BrewMethod,
     @Ignore var isNewRecipe: Boolean = false,
 ) : Serializable {
     companion object {
@@ -38,4 +38,37 @@ fun Recipe.getBrewingStates(): MutableList<BrewState> {
     }
     brewStates.add(BrewState.Finished)
     return brewStates
+}
+
+fun Recipe.buildSteps(): MutableList<RecipeStep> {
+    val steps: MutableList<RecipeStep> = mutableListOf()
+
+    steps.add(RecipeStep.HeatWaterStep(this.brewWaterAmount, this.diceTemperature))
+    steps.add(RecipeStep.CoffeeGrindStep(
+        coffeeAmount = this.coffeeAmount,
+        grindSize = this.grindSize)
+    )
+
+    when (this.brewMethod) {
+        BrewMethod.STANDARD -> steps.add(RecipeStep.StandardMethodStep)
+        BrewMethod.INVERTED -> steps.add(RecipeStep.InvertedMethodStep)
+    }
+
+    steps.add(RecipeStep.PourGroundCoffeeStep)
+    if (this.withBloom()) {
+        steps.add(RecipeStep.BloomStep(bloomWater = this.bloomWater, bloomTime = this.bloomTime))
+        steps.add(RecipeStep.RemainingWaterStep(remainingWater = this.remainingWater()))
+    } else {
+        steps.add(RecipeStep.PourWaterStep(waterAmount = this.remainingWater()))
+    }
+
+    steps.add(RecipeStep.WaitToBrewStep(brewTime = this.brewTime))
+
+    if (this.brewMethod == BrewMethod.INVERTED) {
+        steps.add(RecipeStep.FlipToNormalOrientation)
+    }
+
+    steps.add(RecipeStep.PressStep)
+
+    return steps
 }
