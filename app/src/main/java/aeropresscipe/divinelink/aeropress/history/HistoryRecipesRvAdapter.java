@@ -96,13 +96,13 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
         final int total_time = historyRecipes.get(i).getRecipe().getBloomTime() + historyRecipes.get(i).getRecipe().getBrewTime();
         final int bloomTime = historyRecipes.get(i).getRecipe().getBloomTime();
         final int temp = historyRecipes.get(i).getRecipe().getDiceTemperature();
-        final String grindSize = historyRecipes.get(i).getRecipe().getGroundSize().substring(0, 1).toUpperCase() + historyRecipes.get(i).getRecipe().getGroundSize().substring(1).toLowerCase();
+        final String grindSize = historyRecipes.get(i).getRecipe().getGroundSize().getSize().substring(0, 1).toUpperCase() + historyRecipes.get(i).getRecipe().getGroundSize().getSize().substring(1).toLowerCase();
         boolean isLiked;
 
         savedRecipeViewHolder.waterAndTempItem.setText(context.getResources().getString(R.string.SavedWaterAndTempTextView, total_water, temp, temp * 9 / 5 + 32));
         savedRecipeViewHolder.beansWeightItem.setText(context.getResources().getString(R.string.SavedCoffeeWeightTextView, historyRecipes.get(i).getRecipe().getCoffeeAmount()));
         savedRecipeViewHolder.beansGrindLevelItem.setText(context.getResources().getString(R.string.SavedGrindLevelTextView, grindSize));
-        savedRecipeViewHolder.brewingMethodItem.setText(context.getResources().getString(R.string.SavedBrewingMethodTextView, historyRecipes.get(i).getRecipe().getBrewingMethod()));
+        savedRecipeViewHolder.brewingMethodItem.setText(context.getResources().getString(R.string.SavedBrewingMethodTextView, historyRecipes.get(i).getRecipe().getBrewingMethod().getMethod()));
 
         if (bloomTime == 0)
             savedRecipeViewHolder.timeItem.setText(context.getResources().getString(R.string.SavedTotalTimeTextView, total_time));

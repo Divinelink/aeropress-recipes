@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import gr.divinelink.core.util.extensions.toFahrenheit
 import gr.divinelink.core.util.swipe.ActionBindHelper
 import gr.divinelink.core.util.swipe.SwipeAction
 import gr.divinelink.core.util.swipe.SwipeMenuListener
@@ -35,7 +36,7 @@ class SavedRecipesAdapter(
     private val actionsBindHelper = ActionBindHelper()
 
     companion object {
-        // TODO: Add EmptyList State that shows that list is empty.
+        // fixme  Add EmptyList State that shows that list is empty.
         const val Type_Recipe = 0
         const val Type_History = 1
     }
@@ -77,10 +78,6 @@ class SavedRecipesAdapter(
             holder.updateView(item as SavedRecipeDomain)
             actionsBindHelper.bind(item.id.toString(), holder.binding.savedRecipeItem)
         }
-
-        holder.itemView.setOnClickListener {
-//            delegate.onItemClick(item = item)
-        }
     }
 
     inner class RecipeViewHolder(var binding: RecipeCardItemBinding) :
@@ -94,8 +91,8 @@ class SavedRecipesAdapter(
             val totalTime = item.recipe.bloomTime + item.recipe.brewTime
             val bloomTime = item.recipe.bloomTime
             val temp = item.recipe.diceTemperature
-            val grindSize = item.recipe.groundSize.substring(0, 1)
-                .uppercase(Locale.getDefault()) + item.recipe.groundSize.substring(1).lowercase(
+            val grindSize = item.recipe.groundSize.size.substring(0, 1)
+                .uppercase(Locale.getDefault()) + item.recipe.groundSize.size.substring(1).lowercase(
                 Locale.getDefault()
             )
             binding.card.recipeTitle.text =
@@ -104,14 +101,14 @@ class SavedRecipesAdapter(
                 R.string.SavedWaterAndTempTextView,
                 totalWater,
                 temp,
-                temp * 9 / 5 + 32
+                temp.toFahrenheit()
             )
             binding.card.beansWeightTV.text =
                 context.resources.getString(R.string.SavedCoffeeWeightTextView, item.recipe.coffeeAmount)
             binding.card.beansGrindLevelTV.text =
                 context.resources.getString(R.string.SavedGrindLevelTextView, grindSize)
             binding.card.brewingMethodTextView.text =
-                context.resources.getString(R.string.SavedBrewingMethodTextView, item.recipe.brewingMethod)
+                context.resources.getString(R.string.SavedBrewingMethodTextView, item.recipe.brewingMethod.method)
 
             if (bloomTime == 0) {
                 binding.card.brewingTimeTextView.text = context.resources.getString(
@@ -125,7 +122,7 @@ class SavedRecipesAdapter(
         }
 
         override fun onClosed(view: View) {
-            // empty
+            // Intentionally Empty.
         }
 
         override fun onOpened(view: View) {
@@ -134,7 +131,7 @@ class SavedRecipesAdapter(
         }
 
         override fun onFullyOpened(view: View, quickAction: SwipeAction) {
-            // empty
+            // Intentionally Empty.
         }
 
         override fun onActionClicked(view: View, action: SwipeAction) {

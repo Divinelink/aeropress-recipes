@@ -24,7 +24,7 @@ import aeropresscipe.divinelink.aeropress.R;
 public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipeRvAdapter.RecipeViewHolder> {
 
     final private int temp, brewTime, bloomTime, bloomWater, waterAmount, coffeeAmount;
-    private final String groundSize;
+    private final CoffeeGroundSize groundSize;
     private final BrewMethod brewingMethod;
 
     final private Context context;
@@ -85,7 +85,7 @@ public class GenerateRecipeRvAdapter extends RecyclerView.Adapter<GenerateRecipe
         final int seconds = brewTime % 60;
 
         final String heatWaterText = context.getResources().getString(R.string.heatWaterText, waterAmount, temp, temp * 9 / 5 + 32);
-        final String grindCoffeeText = context.getResources().getString(R.string.grindCoffeeText, coffeeAmount, groundSize);
+        final String grindCoffeeText = context.getResources().getString(R.string.grindCoffeeText, coffeeAmount, groundSize.getSize());
 
         final String finalTime = String.format(Locale.ENGLISH, "%d:%02d", minutes, seconds);
         final String timeToBrew = context.getResources().getString(R.string.waitToBrewText, finalTime, (minutes == 1 && seconds == 0) ? "minute" : "minutes");

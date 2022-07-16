@@ -5,24 +5,24 @@
   https://developer.android.com/guide/topics/resources/string-resource
    above API 24
    -->
-    <string name="heatWaterText">Heat %dg of water to %d°C / %d°F.</string>
+    <string name="heatWaterText">Heat <b>%dg</b> of water to <b>%d°C / %d°F</b>.</string>
 
-    <string name="grindCoffeeText">Grind %dg of coffee to a %s grind.</string>
+    <string name="grindCoffeeText">Grind <b>%dg</b> of coffee to a %s grind.</string>
 
     <string name="normal_orientation_text">Place the aeropress on the mug in the normal orientation with wet filter and cap on.</string>
     <string name="inverted_orientation_text">Place the aeropress in the upside-down orientation.</string>
 
-    <string name="addWaterText">Add %dg of water and wait %d seconds for the coffee to bloom. </string>
+    <string name="addWaterText">Add <b>%dg</b> of water and wait <b>%d</b> seconds for the coffee to bloom.</string>
 
-    <string name="addRemainingWater">Add the remaining %dg of water.</string>
+    <string name="addRemainingWater">Add the remaining <b>%dg</b> of water.</string>
 
-    <string name="addWaterSlowly">Add %dg of water slowly.</string>
+    <string name="addWaterSlowly">Add <b>%dg</b> of water slowly.</string>
 
     <string name="pourInCoffee">Pour in the ground coffee.</string>
 
     <string name="pressText">Press &amp; Enjoy!</string>
 
-    <string name="waitToBrewText">Wait %s %s to brew.</string>
+    <string name="waitToBrewText">Wait <b>%s</b> %s to brew.</string>
 
     <string name="upsideDownMethodText">Wet the filter paper, and put the cap on. Place the mug upside-down on the aeropress and flip to be the normal orientation.</string>
 
@@ -76,6 +76,7 @@
     <string name="save_recipe_notification">Saved to %s.</string>
     <string name="remove_recipe_notification">Removed from %s.</string>
     <string name="add_favourite">Add Favourite</string>
+    <string name="step_image">step_image</string>
 
 
 </resources>

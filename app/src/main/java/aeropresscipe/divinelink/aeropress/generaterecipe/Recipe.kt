@@ -11,7 +11,7 @@ data class Recipe(
     var bloomWater: Int,
     var coffeeAmount: Int,
     var brewWaterAmount: Int,
-    var groundSize: String,
+    var groundSize: CoffeeGroundSize,
     var brewingMethod: BrewMethod,
     @Ignore var isNewRecipe: Boolean = false,
 ) : Serializable {

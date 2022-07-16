@@ -1,8 +1,15 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe
 
-enum class BrewMethod {
-    Standard,
-    Inverted
+enum class BrewMethod(val method: String) {
+    STANDARD("Standard"),
+    INVERTED("Inverted")
+}
+
+enum class CoffeeGroundSize(val size: String) {
+    FINE("fine"),
+    MEDIUM_FINE("medium-fine"),
+    MEDIUM("medium"),
+    COARSE("coarse"),
 }
 
 data class MethodDice(
@@ -16,7 +23,7 @@ data class TemperatureDice(
 )
 
 data class GroundSizeDice(
-    val groundSize: String,
+    val groundSize: CoffeeGroundSize,
     val brewTime: Int
 )
 
