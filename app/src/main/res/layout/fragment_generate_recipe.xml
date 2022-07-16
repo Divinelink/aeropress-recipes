@@ -53,15 +53,20 @@
             android:text="@string/brew" />
     </LinearLayout>
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recipe_rv"
+    <ListView
+        android:id="@+id/recipeList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:listSelector="@color/transparent"
         android:overScrollMode="never"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:itemCount="20" />
+        tools:layout_height="250dp">
+    </ListView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
