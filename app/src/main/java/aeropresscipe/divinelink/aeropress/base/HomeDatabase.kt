@@ -15,7 +15,7 @@ import androidx.room.TypeConverters
 
 @Database(
     entities = [DiceDomain::class, SavedRecipeDomain::class, History::class],
-    version = 18,
+    version = 21,
     exportSchema = true
 )
 @TypeConverters(
