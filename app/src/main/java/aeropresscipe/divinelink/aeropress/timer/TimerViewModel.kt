@@ -28,7 +28,7 @@ class TimerViewModel @AssistedInject constructor(
     TimerIntents {
     internal var statesList: MutableList<TimerState> = mutableListOf()
 
-    private var transferableModel: TimerTransferableModel? = null
+    internal var transferableModel: TimerTransferableModel? = null
 
     var state: TimerState = TimerState.InitialState
         set(value) {
