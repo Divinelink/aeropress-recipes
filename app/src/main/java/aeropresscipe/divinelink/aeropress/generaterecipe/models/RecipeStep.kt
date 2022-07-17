@@ -14,7 +14,7 @@ sealed class RecipeStep(
     object PourGroundCoffeeStep : RecipeStep(R.string.pourInCoffee)
 
     // Bloom Region
-    data class BloomStep(val bloomWater: Int, val bloomTime: Int) : RecipeStep(R.string.addWaterText)
+    data class BloomStep(val bloomWater: Int, val bloomTime: Long) : RecipeStep(R.string.addWaterText)
     data class RemainingWaterStep(val remainingWater: Int) : RecipeStep(R.string.addRemainingWater)
 
     // End Bloom Region

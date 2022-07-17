@@ -9,8 +9,8 @@ import java.io.Serializable
 
 data class Recipe(
     var diceTemperature: Int,
-    var brewTime: Int,
-    var bloomTime: Int,
+    var brewTime: Long,
+    var bloomTime: Long,
     var bloomWater: Int,
     var coffeeAmount: Int,
     var brewWaterAmount: Int,
@@ -24,7 +24,7 @@ data class Recipe(
 }
 
 fun Recipe.withBloom(): Boolean {
-    return this.bloomTime != 0
+    return this.bloomTime != 0L
 }
 
 fun Recipe.remainingWater(): Int {

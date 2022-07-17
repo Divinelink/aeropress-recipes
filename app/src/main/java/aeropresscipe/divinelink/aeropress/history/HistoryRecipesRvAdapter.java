@@ -92,8 +92,8 @@ public class HistoryRecipesRvAdapter extends RecyclerView.Adapter<RecyclerView.V
         SavedRecipeViewHolder savedRecipeViewHolder = (SavedRecipeViewHolder) holder;
 
         final int total_water = historyRecipes.get(i).getRecipe().getBrewWaterAmount();
-        final int total_time = historyRecipes.get(i).getRecipe().getBloomTime() + historyRecipes.get(i).getRecipe().getBrewTime();
-        final int bloomTime = historyRecipes.get(i).getRecipe().getBloomTime();
+        final long total_time = historyRecipes.get(i).getRecipe().getBloomTime() + historyRecipes.get(i).getRecipe().getBrewTime();
+        final long bloomTime = historyRecipes.get(i).getRecipe().getBloomTime();
         final int temp = historyRecipes.get(i).getRecipe().getDiceTemperature();
         final String grindSize = historyRecipes.get(i).getRecipe().getGrindSize().getSize().substring(0, 1).toUpperCase() + historyRecipes.get(i).getRecipe().getGrindSize().getSize().substring(1).toLowerCase();
         boolean isLiked;

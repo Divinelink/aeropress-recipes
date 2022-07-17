@@ -110,7 +110,7 @@ class SavedRecipesAdapter(
             binding.card.brewingMethodTextView.text =
                 context.resources.getString(R.string.SavedBrewingMethodTextView, item.recipe.brewMethod.method)
 
-            if (bloomTime == 0) {
+            if (bloomTime == 0L) {
                 binding.card.brewingTimeTextView.text = context.resources.getString(
                     R.string.SavedTotalTimeTextView, totalTime
                 )

@@ -86,8 +86,8 @@ class GenerateRecipeViewModelTest {
 
     private fun recipeModel(
         diceTemperature: Int = 0,
-        brewTime: Int = 0,
-        bloomTime: Int = 0,
+        brewTime: Long = 0,
+        bloomTime: Long = 0,
         bloomWater: Int = 0,
         coffeeAmount: Int = 0,
         brewWaterAmount: Int = 0,
