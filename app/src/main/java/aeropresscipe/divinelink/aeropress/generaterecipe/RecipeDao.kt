@@ -15,7 +15,7 @@ interface RecipeDao {
     fun insertRecipe(recipe: DiceDomain)
 
     @get:Query("SELECT * FROM Recipe ORDER BY id DESC LIMIT 1")
-    val singleRecipe: DiceDomain?
+    val singleRecipe: DiceDomain
 
     @Query("DELETE FROM Recipe")
     fun deleteAll()
@@ -25,6 +25,9 @@ interface RecipeDao {
 
     @Query("UPDATE Recipe SET isBrewing=:isBrewing WHERE id = :id")
     fun updateBrewingState(isBrewing: Boolean, id: Int)
+
+    @Query("UPDATE Recipe SET bloomTimeLeft=:bloomTimeLeft, brewTimeLeft=:brewTimeLeft  WHERE id = :id")
+    fun updateTimes(bloomTimeLeft: Long, brewTimeLeft: Long, id: Int)
 
     @Transaction
     fun updateRecipe(recipe: Recipe) {
