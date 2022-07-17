@@ -8,6 +8,7 @@ import aeropresscipe.divinelink.aeropress.generaterecipe.models.getBrewingStates
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import aeropresscipe.divinelink.aeropress.timer.util.BrewPhase
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
+import aeropresscipe.divinelink.aeropress.timer.util.Phase
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
 import android.annotation.SuppressLint
 import androidx.annotation.DrawableRes
@@ -39,6 +40,12 @@ class TimerViewModel @AssistedInject constructor(
 
     override fun init(transferableModel: TimerTransferableModel) {
         this.transferableModel = transferableModel
+        val brewPhase = BrewPhase.Builder()
+            .brewStates(transferableModel.recipe?.getBrewingStates())
+            .brewState(transferableModel.recipe?.getBrewingStates()?.firstOrNull())
+            .build()
+        this.transferableModel?.brew = brewPhase
+
         repository.isRecipeSaved(transferableModel.recipe) { saved ->
             val image = when (saved) {
                 true -> R.drawable.ic_heart_on
@@ -48,16 +55,51 @@ class TimerViewModel @AssistedInject constructor(
         }
     }
 
-    override fun startBrew(transferableModel: TimerTransferableModel?) {
+    override fun resume() {
+        repository.resume {
+            if (it != null) {
+                val states = transferableModel?.recipe?.getBrewingStates()
+                val bloomTimeLeft = it.bloomTimeLeft - System.currentTimeMillis()
+                val brewTimeLeft = it.brewTimeLeft - System.currentTimeMillis()
+
+                if (bloomTimeLeft > 0) {
+                    val bloomState = states?.firstOrNull { state -> state.phase == Phase.Bloom }
+                    transferableModel?.currentBrewState = bloomState
+                    startTimerStates(bloomState!!, bloomTimeLeft)
+                } else if (brewTimeLeft > 0) {
+                    val brewState = states?.firstOrNull { state -> state.phase == Phase.Brew }
+                    transferableModel?.currentBrewState = brewState
+                    startTimerStates(brewState!!, brewTimeLeft)
+                } else {
+                    state = TimerState.FinishState
+                }
+            }
+        }
+    }
+
+    private fun startTimerStates(brewState: BrewState, timeLeft: Long, animate: Boolean = false) {
+        state = TimerState.StartTimer(
+            water = brewState.brewWater,
+            title = brewState.title,
+            description = brewState.description
+        )
+        state = TimerState.StartProgressBar(
+            maxValue = brewState.brewTime.inMilliseconds().toInt(),
+            timeInMilliseconds = timeLeft,
+            animate = animate
+        )
+    }
+
+    override fun startBrew() {
         if (transferableModel?.recipe == null) {
             state = TimerState.ErrorState("Something went wrong!")
         } else {
             // Initialise Timer
             repository.addToHistory(
-                recipe = transferableModel.recipe!!,
+                recipe = transferableModel?.recipe!!,
                 brewDate = getCurrentDate(),
                 completionBlock = {
-                    startTimers(transferableModel)
+                    startTimers()
                 }
             )
 
@@ -70,43 +112,51 @@ class TimerViewModel @AssistedInject constructor(
     override fun updateTimer() {
         transferableModel?.brew?.removeCurrentPhase()
         transferableModel?.brew?.let { brew ->
+            // Update current brew state
+            transferableModel?.currentBrewState = brew.getCurrentState()
             if (brew.getCurrentState() == BrewState.Finished) {
                 repository.updateBrewingState(false) {
                     Timber.d("Recipe finished brewing")
                 }
                 state = TimerState.FinishState
             } else {
-                state = TimerState.StartTimer(
-                    water = brew.getCurrentState().brewWater,
-                    title = brew.getCurrentState().title,
-                    description = brew.getCurrentState().description
-                )
-                state = TimerState.StartProgressBar(
-                    timeInMilliseconds = brew.getCurrentState().brewTime.inMilliseconds(),
-                    animate = true
-                )
+                startTimerStates(brew.getCurrentState(), brew.getCurrentState().brewTime.inMilliseconds(), animate = true)
             }
         }
     }
 
-    private fun startTimers(transferableModel: TimerTransferableModel?) {
-        val brewPhase = BrewPhase.Builder()
-            .brewStates(transferableModel?.recipe?.getBrewingStates())
-            .brewState(transferableModel?.recipe?.getBrewingStates()?.firstOrNull())
-            .build()
+    override fun exitTimer(millisecondsLeft: Long) {
+        val bloomEnds: Long
+        val brewEnds: Long
+        when (transferableModel?.currentBrewState) {
+            is BrewState.Bloom -> {
+                bloomEnds = millisecondsLeft + System.currentTimeMillis()
+                brewEnds = transferableModel?.recipe?.brewTime?.inMilliseconds()?.plus(millisecondsLeft)?.plus(System.currentTimeMillis()) ?: 0L
+                repository.updateTimes(bloomEnds = bloomEnds, brewEnds = brewEnds)
+            }
+            is BrewState, is BrewState.BrewWithBloom -> {
+                bloomEnds = 0
+                brewEnds = millisecondsLeft + System.currentTimeMillis()
+                repository.updateTimes(bloomEnds = bloomEnds, brewEnds = brewEnds)
+            }
+            else -> {
+                repository.updateTimes(bloomEnds = 0L, brewEnds = 0L)
+                repository.updateBrewingState(false) {
+                    Timber.d("Recipe brewing set to false.")
+                }
+            }
+        }
+    }
 
-        transferableModel?.brew = brewPhase
-
-        state = TimerState.StartTimer(
-            water = brewPhase.brewState.brewWater,
-            title = brewPhase.brewState.title,
-            description = brewPhase.brewState.description
-        )
-
-        state = TimerState.StartProgressBar(
-            timeInMilliseconds = brewPhase.brewState.brewTime.inMilliseconds(),
-            animate = false
-        )
+    private fun startTimers() {
+        val brewState = transferableModel?.brew?.brewState
+        val brewTime = transferableModel?.brew?.brewState?.brewTime
+        transferableModel?.currentBrewState = brewState
+        if (brewState != null && brewTime != null) {
+            startTimerStates(brewState, brewTime.inMilliseconds())
+        } else {
+            state = TimerState.ErrorState("Something went wrong!")
+        }
     }
 
     override fun saveRecipe(recipe: Recipe?) {
@@ -144,9 +194,10 @@ interface ITimerViewModel {
 
 interface TimerIntents : MVIBaseView {
     fun init(transferableModel: TimerTransferableModel)
-    fun startBrew(transferableModel: TimerTransferableModel?)
+    fun startBrew()
+    fun resume()
     fun saveRecipe(recipe: Recipe?)
-
+    fun exitTimer(millisecondsLeft: Long)
     fun updateTimer()
 }
 
@@ -166,7 +217,9 @@ sealed class TimerState {
         @StringRes val description: Int
     ) : TimerState()
 
-    data class StartProgressBar(val timeInMilliseconds: Long, val animate: Boolean) : TimerState()
+    data class StartProgressBar(val maxValue: Int, val timeInMilliseconds: Long, val animate: Boolean) : TimerState()
+
+    object ExitState : TimerState()
 
     object FinishState : TimerState()
 }
@@ -183,6 +236,8 @@ interface TimerStateHandler {
 
     fun handleStartTimer(state: TimerState.StartTimer)
     fun handleStartProgressBar(state: TimerState.StartProgressBar)
+
+    fun handleExitState()
 
     fun handleFinishState()
 }

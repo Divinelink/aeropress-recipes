@@ -46,7 +46,7 @@ class TimerFragment : Fragment(),
 
     private var transferableModel = TimerTransferableModel()
 
-    private lateinit var timer: PreciseCountdown
+    private var timer: PreciseCountdown? = null
     private var milliSecondsLeft = 0L
 
     override fun onCreateView(
@@ -66,8 +66,8 @@ class TimerFragment : Fragment(),
         viewModel.init(transferableModel)
 
         when (flow) {
-            TimerFlow.START -> viewModel.startBrew(transferableModel)
-            TimerFlow.RESUME -> viewModel.resume(transferableModel)
+            TimerFlow.START -> viewModel.startBrew()
+            TimerFlow.RESUME -> viewModel.resume()
         }
 
         initListeners()
@@ -75,36 +75,9 @@ class TimerFragment : Fragment(),
     }
 
     override fun onPause() {
-        // Use OnPause instead of OnStop, because onStop is called after we go back to HomeActivity,
-        // and in this case we don't get the isBrewing boolean in brewTime
         super.onPause()
-//        timer.dispose()
+        timer?.dispose()
         viewModel.exitTimer(milliSecondsLeft)
-//        diceUI?.isNewRecipe = false
-//        if (GetPhaseFactory().findPhase(diceUI.bloomTime, diceUI.brewTime ?: 0).brewTime != 0) {
-//            val isBloomPhase = GetPhaseFactory().findPhase(diceUI.bloomTime ?: 0, diceUI.brewTime ?: 0).phases
-//            timerHandler.removeCallbacks(runnable)
-//            timerHandler.removeCallbacks(brewRunnable)
-//            presenter?.saveValuesOnPause(context, milliSecondsLeft, diceUI.brewTime ?: 0, isBloomPhase)
-//        } else {
-//            // When leaving Timer and it is over, set isBrewing boolean to false, meaning that brewing process is over
-//            // which removes the resume button on Generate Recipe Fragment.
-//            BaseApplication.sharedPreferences.isBrewing = false
-//        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-//         if resuming from recipe without bloom isNewRecipe == false
-//        if (diceUI?.isNewRecipe == true) { // if it's a new recipe, dont call returnValuesOnResume
-//            presenter?.startBrewing(
-//                GetPhaseFactory().findPhase(diceUI.bloomTime, diceUI?.brewTime).brewTime,
-//                GetPhaseFactory().findPhase(diceUI.bloomTime, diceUI?.brewTime).phases,
-//                context)
-//        } else {
-//            When resuming, we need to pass the old recipe, not the new one.
-//            presenter?.returnValuesOnResume(context)
-//        }
     }
 
     override fun onDestroyView() {
@@ -159,7 +132,12 @@ class TimerFragment : Fragment(),
             is TimerState.StartProgressBar -> handleStartProgressBar(state)
             is TimerState.StartTimer -> handleStartTimer(state)
             is TimerState.FinishState -> handleFinishState()
+            is TimerState.ExitState -> handleExitState()
         }
+    }
+
+    override fun handleExitState() {
+//        TODO("Not yet implemented")
     }
 
     override fun handleInitialState() {
@@ -190,7 +168,7 @@ class TimerFragment : Fragment(),
     }
 
     override fun handleStartProgressBar(state: TimerState.StartProgressBar) {
-        binding?.progressBar?.max = state.timeInMilliseconds.toInt()
+        binding?.progressBar?.max = state.maxValue
         milliSecondsLeft = state.timeInMilliseconds
 
         if (state.animate) {
@@ -213,11 +191,11 @@ class TimerFragment : Fragment(),
                 viewModel.updateTimer()
             }
         )
-        timer.start()
+        timer?.start()
     }
 
     override fun handleFinishState() {
-        timer.dispose()
+        timer?.dispose()
     }
 
     override fun handleUpdateSavedIndicator(state: TimerState.UpdateSavedIndicator) {
