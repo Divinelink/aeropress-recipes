@@ -1,6 +1,7 @@
 package aeropresscipe.divinelink.aeropress.timer
 
 import aeropresscipe.divinelink.aeropress.base.mvi.logic.BaseRepository
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import javax.inject.Inject
@@ -36,4 +37,13 @@ class TimerRepository @Inject constructor(
         setBrewing: Boolean,
         completionBlock: () -> Unit
     ) = performTransaction(completionBlock) { dbRemote.updateBrewingState(setBrewing) }
+
+    fun updateTimes(
+        bloomEnds: Long,
+        brewEnds: Long,
+    ) = performTransaction { dbRemote.updateTimes(bloomEnds, brewEnds) }
+
+    fun resume(
+        completionBlock: (DiceDomain) -> Unit
+    ) = performTransaction(completionBlock) { dbRemote.getResumeTimes() }
 }
