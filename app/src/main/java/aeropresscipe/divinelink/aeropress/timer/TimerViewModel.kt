@@ -57,22 +57,20 @@ class TimerViewModel @AssistedInject constructor(
 
     override fun resume() {
         repository.resume {
-            if (it != null) {
-                val states = transferableModel?.recipe?.getBrewingStates()
-                val bloomTimeLeft = it.bloomTimeLeft - System.currentTimeMillis()
-                val brewTimeLeft = it.brewTimeLeft - System.currentTimeMillis()
+            val states = transferableModel?.recipe?.getBrewingStates()
+            val bloomTimeLeft = it.bloomEndTimeMillis - System.currentTimeMillis()
+            val brewTimeLeft = it.brewEndTimeMillis - System.currentTimeMillis()
 
-                if (bloomTimeLeft > 0) {
-                    val bloomState = states?.firstOrNull { state -> state.phase == Phase.Bloom }
-                    transferableModel?.currentBrewState = bloomState
-                    startTimerStates(bloomState!!, bloomTimeLeft)
-                } else if (brewTimeLeft > 0) {
-                    val brewState = states?.firstOrNull { state -> state.phase == Phase.Brew }
-                    transferableModel?.currentBrewState = brewState
-                    startTimerStates(brewState!!, brewTimeLeft)
-                } else {
-                    state = TimerState.FinishState
-                }
+            if (bloomTimeLeft > 0) {
+                val bloomState = states?.firstOrNull { state -> state.phase == Phase.Bloom }
+                transferableModel?.currentBrewState = bloomState
+                startTimerStates(bloomState!!, bloomTimeLeft)
+            } else if (brewTimeLeft > 0) {
+                val brewState = states?.firstOrNull { state -> state.phase == Phase.Brew }
+                transferableModel?.currentBrewState = brewState
+                startTimerStates(brewState!!, brewTimeLeft)
+            } else {
+                state = TimerState.FinishState
             }
         }
     }
