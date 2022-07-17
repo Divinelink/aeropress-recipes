@@ -6,6 +6,7 @@ import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.RecipeStep
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.buildSteps
+import aeropresscipe.divinelink.aeropress.timer.TimerFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import dagger.assisted.Assisted
@@ -69,8 +70,12 @@ class GenerateRecipeViewModel @AssistedInject constructor(
     }
 
     override fun startTimer(resume: Boolean) {
+        val flow = when (resume) {
+            true -> TimerFlow.RESUME
+            false -> TimerFlow.START
+        }
         dice?.recipe?.isNewRecipe = resume
-        dice?.recipe?.let { recipe -> state = GenerateRecipeState.StartTimerState(recipe) }
+        dice?.recipe?.let { recipe -> state = GenerateRecipeState.StartTimerState(recipe, flow) }
     }
 }
 
@@ -98,7 +103,7 @@ sealed class GenerateRecipeState {
     data class ShowRecipeState(val steps: MutableList<RecipeStep>) : GenerateRecipeState()
     data class RefreshRecipeState(val steps: MutableList<RecipeStep>) : GenerateRecipeState()
 
-    data class StartTimerState(val recipe: Recipe) : GenerateRecipeState()
+    data class StartTimerState(val recipe: Recipe, val flow: TimerFlow) : GenerateRecipeState()
 }
 
 interface GenerateRecipeStateHandler {

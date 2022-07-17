@@ -29,6 +29,11 @@ import java.lang.ref.WeakReference
 import java.util.Locale
 import javax.inject.Inject
 
+enum class TimerFlow {
+    START,
+    RESUME
+}
+
 @AndroidEntryPoint
 class TimerFragment : Fragment(),
     ITimerViewModel,
@@ -53,13 +58,17 @@ class TimerFragment : Fragment(),
         val view = binding?.root
 
         transferableModel.recipe = arguments?.getSerializable(TIMER) as Recipe?
+        val flow = arguments?.getSerializable(FLOW) as TimerFlow
 
         val viewModelFactory = TimerViewModelFactory(assistedFactory, WeakReference<ITimerViewModel>(this))
         viewModel = ViewModelProvider(this, viewModelFactory).get(TimerViewModel::class.java)
 
         viewModel.init(transferableModel)
 
-        viewModel.startBrew(transferableModel)
+        when (flow) {
+            TimerFlow.START -> viewModel.startBrew(transferableModel)
+            TimerFlow.RESUME -> viewModel.resume(transferableModel)
+        }
 
         initListeners()
         return view
@@ -69,6 +78,8 @@ class TimerFragment : Fragment(),
         // Use OnPause instead of OnStop, because onStop is called after we go back to HomeActivity,
         // and in this case we don't get the isBrewing boolean in brewTime
         super.onPause()
+//        timer.dispose()
+        viewModel.exitTimer(milliSecondsLeft)
 //        diceUI?.isNewRecipe = false
 //        if (GetPhaseFactory().findPhase(diceUI.bloomTime, diceUI.brewTime ?: 0).brewTime != 0) {
 //            val isBloomPhase = GetPhaseFactory().findPhase(diceUI.bloomTime ?: 0, diceUI.brewTime ?: 0).phases
@@ -121,12 +132,14 @@ class TimerFragment : Fragment(),
     companion object {
         private const val INTERVAL = 10L
         const val TIMER = "TIMER"
+        const val FLOW = "FLOW"
 
         @JvmStatic
-        fun newInstance(recipe: Recipe?): TimerFragment {
+        fun newInstance(recipe: Recipe?, flow: TimerFlow? = TimerFlow.START): TimerFragment {
             val fragment = TimerFragment()
             val args = Bundle()
             args.putSerializable(TIMER, recipe)
+            args.putSerializable(FLOW, flow)
             fragment.arguments = args
             return fragment
         }

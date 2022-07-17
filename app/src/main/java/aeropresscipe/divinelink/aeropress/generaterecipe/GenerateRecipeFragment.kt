@@ -113,7 +113,7 @@ class GenerateRecipeFragment :
     }
 
     override fun handleStartTimerState(state: GenerateRecipeState.StartTimerState) {
-        startActivity(TimerActivity.newIntent(requireContext(), state.recipe))
+        startActivity(TimerActivity.newIntent(requireContext(), state.recipe, state.flow))
     }
 
     private fun initListeners() {

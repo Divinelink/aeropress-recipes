@@ -22,6 +22,7 @@ import java.util.List;
 import aeropresscipe.divinelink.aeropress.R;
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe;
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity;
+import aeropresscipe.divinelink.aeropress.timer.TimerFlow;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -114,7 +115,7 @@ public class HistoryFragment extends Fragment implements IHistoryView, ISharedPr
         if (getActivity() != null) {
             getActivity().runOnUiThread(() -> {
                 recipe.setNewRecipe(true);
-                startActivity(TimerActivity.newIntent(requireContext(), recipe));
+                startActivity(TimerActivity.newIntent(requireContext(), recipe, TimerFlow.START));
             });
         }
     }

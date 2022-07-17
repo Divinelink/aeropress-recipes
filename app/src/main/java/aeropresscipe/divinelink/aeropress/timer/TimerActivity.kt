@@ -2,6 +2,7 @@ package aeropresscipe.divinelink.aeropress.timer
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.timer.TimerFragment.Companion.FLOW
 import aeropresscipe.divinelink.aeropress.timer.TimerFragment.Companion.newInstance
 import android.content.Context
 import android.content.Intent
@@ -26,11 +27,12 @@ class TimerActivity : AppCompatActivity() {
         WindowUtil.setNavigationBarColor(this, ContextCompat.getColor(this, R.color.colorBackground))
 
         val recipe = intent.getSerializableExtra(EXTRA_RECIPE) as Recipe?
+        val flow = intent.getSerializableExtra(FLOW) as TimerFlow
 
         supportFragmentManager
             .beginTransaction()
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            .replace(R.id.timerRoot, newInstance(recipe))
+            .replace(R.id.timerRoot, newInstance(recipe, flow))
             .commit()
     }
 
@@ -40,10 +42,12 @@ class TimerActivity : AppCompatActivity() {
         @JvmStatic
         fun newIntent(
             context: Context?,
-            recipe: Recipe?
+            recipe: Recipe?,
+            flow: TimerFlow? = TimerFlow.START
         ): Intent {
             val intent = Intent(context, TimerActivity::class.java)
             intent.putExtra(EXTRA_RECIPE, recipe)
+            intent.putExtra(FLOW, flow)
             return intent
         }
     }
