@@ -18,6 +18,11 @@ import gr.divinelink.core.util.utils.ThreadUtil
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
@@ -35,12 +40,17 @@ class GenerateRecipeFragment :
     private lateinit var fadeInAnimation: Animation
     private lateinit var adapterAnimation: Animation
 
+    private val currentMoment: Instant by lazy { Clock.System.now() }
+    private val datetime: LocalDateTime by lazy { currentMoment.toLocalDateTime(TimeZone.currentSystemDefault()) }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentGenerateRecipeBinding.inflate(inflater, container, false)
         val view = binding?.root
 
         val viewModelFactory = GenerateRecipeViewModelFactory(assistedFactory, WeakReference<IGenerateRecipeViewModel>(this))
         viewModel = ViewModelProvider(this, viewModelFactory).get(GenerateRecipeViewModel::class.java)
+
+        viewModel.init(datetime.hour)
 
         viewModel.getRecipe()
 
@@ -58,6 +68,7 @@ class GenerateRecipeFragment :
             is GenerateRecipeState.StartTimerState -> handleStartTimerState(state)
             is GenerateRecipeState.HideResumeButtonState -> handleHideResumeButtonState()
             is GenerateRecipeState.ShowResumeButtonState -> handleShowResumeButtonState()
+            is GenerateRecipeState.UpdateToolbarState -> handleUpdateToolbarState(state)
         }
     }
 
@@ -114,6 +125,10 @@ class GenerateRecipeFragment :
 
     override fun handleStartTimerState(state: GenerateRecipeState.StartTimerState) {
         startActivity(TimerActivity.newIntent(requireContext(), state.recipe, state.flow))
+    }
+
+    override fun handleUpdateToolbarState(state: GenerateRecipeState.UpdateToolbarState) {
+        binding?.toolbar?.title = resources.getString(state.title)
     }
 
     private fun initListeners() {

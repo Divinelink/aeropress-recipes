@@ -1,11 +1,6 @@
 <resources>
     <string name="app_name">Aeropress Recipes</string>
 
-    <!-- In API 24 and above, we can use &lt;b&gt; &lt;/b&gt; in order to bold the text, instead of using
-  https://developer.android.com/guide/topics/resources/string-resource
-   above API 24
-   -->
-
     <string name="heatWaterText">Heat &lt;b&gt;%dg&lt;/b&gt; of water to &lt;b&gt;%d°C / %d°F&lt;/b&gt;.</string>
 
     <string name="grindCoffeeText">Grind &lt;b&gt;%dg&lt;/b&gt; of coffee to a &lt;b&gt;%s&lt;/b&gt; grind.</string>
@@ -87,5 +82,9 @@
         <item quantity="one">@string/minute</item>
         <item quantity="other">@string/minutes</item>
     </plurals>
+
+    <string name="good_morning">Good morning</string>
+    <string name="good_afternoon">Good afternoon</string>
+    <string name="good_evening">Good evening</string>
 
 </resources>
