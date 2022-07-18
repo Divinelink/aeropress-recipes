@@ -74,14 +74,10 @@ class TimerFragment : Fragment(),
         return view
     }
 
-    override fun onPause() {
-        super.onPause()
-        timer?.dispose()
-        viewModel.exitTimer(milliSecondsLeft)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
+        timer?.dispose()
+        viewModel.exitTimer(milliSecondsLeft)
         binding = null
     }
 
