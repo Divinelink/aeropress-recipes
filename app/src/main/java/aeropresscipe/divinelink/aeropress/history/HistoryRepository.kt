@@ -59,11 +59,11 @@ class HistoryRemote @Inject constructor(
         return withContext(dispatcher) {
             if (savedRecipeDao.recipeExists(recipe.recipe)) {
                 savedRecipeDao.delete(recipe.recipe)
-                historyDao.updateLike(false, recipe.recipe)
+                historyDao.updateLike(recipe.recipe, false)
                 false
             } else {
                 savedRecipeDao.insertLikedRecipe(recipe)
-                historyDao.updateLike(true, recipe.recipe)
+                historyDao.updateLike(recipe.recipe, true)
                 true
             }
         }

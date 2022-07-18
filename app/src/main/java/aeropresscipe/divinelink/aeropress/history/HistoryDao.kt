@@ -38,7 +38,7 @@ interface HistoryDao {
     fun updateHistory(recipe: History)
 
     @Query("UPDATE HistoryRecipes SET isRecipeLiked=:isLiked WHERE Recipe=:recipe")
-    fun updateLike(isLiked: Boolean, recipe: Recipe?)
+    fun updateLike(recipe: Recipe, isLiked: Boolean)
 
     @Transaction
     fun updateRecipe(historyDomain: History) {

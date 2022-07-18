@@ -168,10 +168,10 @@ class TimerViewModel @AssistedInject constructor(
                 completionBlock = { recipeLiked ->
                     if (recipeLiked) {
                         state = TimerState.RecipeSavedState
-                        repository.updateHistory(recipe, getCurrentDate(), recipeLiked) { /* Intentionally Blank. */ }
+                        repository.updateHistory(recipe, recipeLiked) { /* Intentionally Blank. */ }
                     } else {
                         state = TimerState.RecipeRemovedState
-                        repository.updateHistory(recipe, getCurrentDate(), recipeLiked) { /* Intentionally Blank. */ }
+                        repository.updateHistory(recipe, recipeLiked) { /* Intentionally Blank. */ }
                     }
                 }
             )
