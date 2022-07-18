@@ -4,9 +4,7 @@ import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.databinding.FragmentSavedRecipesBinding
 import aeropresscipe.divinelink.aeropress.savedrecipes.util.SavedRecipesViewModelFactory
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,7 +62,6 @@ class SavedRecipesFragment : Fragment(),
     }
 
     override fun updateState(state: SavedRecipesState) {
-        Log.d("State is: $state", "$state")
         when (state) {
             is SavedRecipesState.ErrorState -> handleErrorState()
             is SavedRecipesState.InitialState -> handleInitialState()

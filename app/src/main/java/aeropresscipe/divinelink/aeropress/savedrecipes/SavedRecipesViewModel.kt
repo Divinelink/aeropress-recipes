@@ -41,8 +41,7 @@ class SavedRecipesViewModel(
                 state = if (selectedRecipe == null) {
                     SavedRecipesState.ErrorState("Something went wrong!") // //TODO 15/6/22 divinelink: Fix Error State
                 } else {
-                    val newRecipe = recipe
-                    newRecipe.isNewRecipe = true
+                    recipe.isNewRecipe = true
                     SavedRecipesState.StartNewBrewState(recipe)
                 }
             }
