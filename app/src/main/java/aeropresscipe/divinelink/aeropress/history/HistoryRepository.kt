@@ -25,14 +25,14 @@ class HistoryRepository @Inject constructor(
 
     fun likeRecipe(
         recipe: SavedRecipeDomain,
-        completionBlock: (Boolean) -> Unit
+        completionBlock: (History) -> Unit
     ) = performTransaction(completionBlock) { remote.likeRecipe(recipe) }
 }
 
 interface IHistoryRemote {
     suspend fun getHistory(): List<History>
     suspend fun getRecipe(recipe: Recipe): Recipe
-    suspend fun likeRecipe(recipe: SavedRecipeDomain): Boolean
+    suspend fun likeRecipe(recipe: SavedRecipeDomain): History
 }
 
 class HistoryRemote @Inject constructor(
@@ -55,17 +55,16 @@ class HistoryRemote @Inject constructor(
         }
     }
 
-    override suspend fun likeRecipe(recipe: SavedRecipeDomain): Boolean {
+    override suspend fun likeRecipe(recipe: SavedRecipeDomain): History {
         return withContext(dispatcher) {
             if (savedRecipeDao.recipeExists(recipe.recipe)) {
                 savedRecipeDao.delete(recipe.recipe)
                 historyDao.updateLike(recipe.recipe, false)
-                false
             } else {
                 savedRecipeDao.insertLikedRecipe(recipe)
                 historyDao.updateLike(recipe.recipe, true)
-                true
             }
+            historyDao.getHistoryRecipe(recipe.recipe)
         }
     }
 }

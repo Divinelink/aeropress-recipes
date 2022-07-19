@@ -41,8 +41,8 @@ interface HistoryDao {
     fun updateLike(recipe: Recipe, isLiked: Boolean)
 
     @Transaction
-    fun updateRecipe(historyDomain: History) {
-        delete(historyDomain.recipe)
-        insertRecipeToHistory(historyDomain)
+    fun updateRecipe(history: History) {
+        delete(history.recipe)
+        insertRecipeToHistory(history)
     }
 }

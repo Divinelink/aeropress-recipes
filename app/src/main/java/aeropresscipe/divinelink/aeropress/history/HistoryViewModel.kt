@@ -50,12 +50,9 @@ class HistoryViewModel @AssistedInject constructor(
         }
     }
 
-    override fun likeRecipe(recipe: Recipe, position: Int) {
-        repository.likeRecipe(SavedRecipeDomain(recipe, getCurrentDate())) {
-            state = when (it) {
-                true -> HistoryState.RecipeLikedState(position)
-                false -> HistoryState.RecipeRemovedState(position)
-            }
+    override fun likeRecipe(recipe: History, position: Int) {
+        repository.likeRecipe(SavedRecipeDomain(recipe.recipe, getCurrentDate())) {
+            state = HistoryState.RecipeLikedState(it, position)
         }
     }
 
@@ -72,7 +69,7 @@ interface IHistoryViewModel {
 
 interface HistoryIntents : MVIBaseView {
     fun startBrew(recipe: Recipe)
-    fun likeRecipe(recipe: Recipe, position: Int)
+    fun likeRecipe(recipe: History, position: Int)
 }
 
 sealed class HistoryState {
@@ -85,8 +82,7 @@ sealed class HistoryState {
 
     data class StartNewBrewState(val recipe: Recipe) : HistoryState()
 
-    data class RecipeLikedState(val position: Int) : HistoryState()
-    data class RecipeRemovedState(val position: Int) : HistoryState()
+    data class RecipeLikedState(val item: History, val position: Int) : HistoryState()
 }
 
 interface HistoryStateHandler {
@@ -100,7 +96,6 @@ interface HistoryStateHandler {
     fun handleStartNewBrewState(state: HistoryState.StartNewBrewState)
 
     fun handleRecipeLikedState(state: HistoryState.RecipeLikedState)
-    fun handleRecipeRemovedState(state: HistoryState.RecipeRemovedState)
 }
 
 @Suppress("UNCHECKED_CAST")

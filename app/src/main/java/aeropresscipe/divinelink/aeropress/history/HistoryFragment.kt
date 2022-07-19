@@ -2,6 +2,7 @@ package aeropresscipe.divinelink.aeropress.history
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.databinding.FragmentHistoryBinding
+import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipesAdapter
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,9 +13,12 @@ import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
+import gr.divinelink.core.util.swipe.SwipeAction
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class HistoryFragment : Fragment(),
     HistoryStateHandler,
     IHistoryViewModel {
@@ -23,14 +27,19 @@ class HistoryFragment : Fragment(),
     private var mFadeAnimation: Animation? = null
 
     private val historyAdapter by lazy {
-//        SavedRecipesAdapter(
-//            requireContext()
-//        ) { recipe: SavedRecipeDomain, swipeAction: SwipeAction ->
-//            when (swipeAction.actionId) {
-//                R.id.delete -> showDeleteRecipeDialog(recipe)
-//                R.id.brew -> viewModel.startBrew(recipe.recipe)
-//            }
-//        }
+        SavedRecipesAdapter(
+            requireContext(),
+            onActionClicked = { recipe: Any, swipeAction: SwipeAction ->
+                recipe as History
+                when (swipeAction.actionId) {
+                    R.id.brew -> viewModel.startBrew(recipe.recipe)
+                }
+            },
+            onLike = { recipe: Any, position: Int ->
+                recipe as History
+                viewModel.likeRecipe(recipe, position)
+            }
+        )
     }
 
     @Inject
@@ -41,21 +50,10 @@ class HistoryFragment : Fragment(),
         binding = FragmentHistoryBinding.inflate(inflater, container, false)
         val view = binding?.root
         binding?.toolbar?.setNavigationOnClickListener { activity?.onBackPressed() }
-        // Inflate the layout for this fragment
 
         val viewModelFactory = HistoryViewModelFactory(assistedFactory, WeakReference<IHistoryViewModel>(this))
         viewModel = ViewModelProvider(this, viewModelFactory).get(HistoryViewModel::class.java)
 
-//        val v = inflater.inflate(R.layout.fragment_history, container, false)
-//        historyRecipesRV = v.findViewById<View>(R.id.historyRV) as RecyclerView
-//        mToolBar = v.findViewById<View>(R.id.toolbar) as Toolbar
-//        mToolBar!!.setOnMenuItemClickListener(toolbarMenuClickListener)
-//        mEmptyListLL = v.findViewById<View>(R.id.emptyListLayout) as LinearLayout
-//        mToolBar!!.setNavigationOnClickListener { v1: View? -> activity!!.onBackPressed() }
-//        val layoutManager = LinearLayoutManager(activity)
-//        historyRecipesRV!!.layoutManager = layoutManager
-//        presenter = HistoryPresenterImpl(this)
-//        presenter.getHistoryRecipes(context)
         return view
     }
 
@@ -136,12 +134,12 @@ class HistoryFragment : Fragment(),
             is HistoryState.ShowHistoryState -> handleShowHistoryState(state)
             is HistoryState.StartNewBrewState -> handleStartNewBrewState(state)
             is HistoryState.RecipeLikedState -> handleRecipeLikedState(state)
-            is HistoryState.RecipeRemovedState -> handleRecipeRemovedState(state)
         }
     }
 
     override fun handleInitialState() {
         binding?.historyRV?.layoutManager = LinearLayoutManager(activity)
+        binding?.historyRV?.adapter = historyAdapter
     }
 
     override fun handleLoadingState() {
@@ -176,11 +174,9 @@ class HistoryFragment : Fragment(),
     }
 
     override fun handleRecipeLikedState(state: HistoryState.RecipeLikedState) {
-//        TODO("Not yet implemented")
-    }
-
-    override fun handleRecipeRemovedState(state: HistoryState.RecipeRemovedState) {
-//        TODO("Not yet implemented")
+        val items = historyAdapter.currentList.toMutableList()
+        items[state.position] = state.item
+        historyAdapter.submitList(items)
     }
 
     private fun beginFading(view: View?, animation: Animation, visibility: Int) {
