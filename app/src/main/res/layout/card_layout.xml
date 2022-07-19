@@ -113,7 +113,6 @@
                 android:visibility="gone"
                 tools:visibility="visible">
 
-<!--                    android:background="@color/"-->
                 <ImageView
                     android:id="@+id/likeRecipeButton"
                     style="@style/SavedRecipeImageViewStyle"
