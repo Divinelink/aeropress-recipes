@@ -2,7 +2,6 @@ package aeropresscipe.divinelink.aeropress.savedrecipes
 
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase.Companion.getDatabase
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
-import aeropresscipe.divinelink.aeropress.history.History
 import android.content.Context
 import android.util.Log
 import kotlinx.coroutines.CoroutineDispatcher
@@ -38,13 +37,8 @@ class SavedRecipesServicesImpl(
                 val history = db.historyDao()
 
                 recipes.delete(recipe.recipe)
-                if (history.historyRecipeExists(recipe.id)) {
-                    history.updateRecipe(History(
-                        recipe = recipe.recipe,
-                        dateBrewed = recipe.dateBrewed,
-                        isRecipeLiked = false)
-                    )
-                }
+                history.updateLike(recipe = recipe.recipe, false)
+
                 return@withContext recipes.savedRecipes
             }
         }
