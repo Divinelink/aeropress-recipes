@@ -70,8 +70,16 @@ class TimerViewModel @AssistedInject constructor(
                 transferableModel?.currentBrewState = brewState
                 startTimerStates(brewState!!, brewTimeLeft)
             } else {
-                state = TimerState.FinishState
+                finishRecipeBrewing()
             }
+        }
+    }
+
+    private fun finishRecipeBrewing() {
+        repository.updateTimes(bloomEnds = 0L, brewEnds = 0L)
+        repository.updateBrewingState(false) {
+            Timber.d("Recipe finished brewing")
+            state = TimerState.FinishState
         }
     }
 
@@ -113,10 +121,7 @@ class TimerViewModel @AssistedInject constructor(
             // Update current brew state
             transferableModel?.currentBrewState = brew.getCurrentState()
             if (brew.getCurrentState() == BrewState.Finished) {
-                repository.updateBrewingState(false) {
-                    Timber.d("Recipe finished brewing")
-                }
-                state = TimerState.FinishState
+                finishRecipeBrewing()
             } else {
                 startTimerStates(brew.getCurrentState(), brew.getCurrentState().brewTime.inMilliseconds(), animate = true)
             }
@@ -140,7 +145,7 @@ class TimerViewModel @AssistedInject constructor(
             else -> {
                 repository.updateTimes(bloomEnds = 0L, brewEnds = 0L)
                 repository.updateBrewingState(false) {
-                    Timber.d("Recipe brewing set to false.")
+                    state = TimerState.ExitState
                 }
             }
         }
