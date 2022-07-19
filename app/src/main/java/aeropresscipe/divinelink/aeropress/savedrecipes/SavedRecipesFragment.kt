@@ -29,13 +29,15 @@ class SavedRecipesFragment : Fragment(),
 
     private val recipesAdapter by lazy {
         SavedRecipesAdapter(
-            requireContext()
-        ) { recipe: SavedRecipeDomain, swipeAction: SwipeAction ->
-            when (swipeAction.actionId) {
-                R.id.delete -> showDeleteRecipeDialog(recipe)
-                R.id.brew -> viewModel.startBrew(recipe.recipe)
+            requireContext(),
+            onActionClicked = { recipe: Any, swipeAction: SwipeAction ->
+                recipe as SavedRecipeDomain
+                when (swipeAction.actionId) {
+                    R.id.delete -> showDeleteRecipeDialog(recipe)
+                    R.id.brew -> viewModel.startBrew(recipe.recipe)
+                }
             }
-        }
+        )
     }
 
     override fun onCreateView(
