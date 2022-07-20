@@ -6,6 +6,9 @@ import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipesAdapter
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -13,6 +16,7 @@ import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.swipe.SwipeAction
 import java.lang.ref.WeakReference
@@ -24,7 +28,13 @@ class HistoryFragment : Fragment(),
     IHistoryViewModel {
     private var binding: FragmentHistoryBinding? = null
 
+    private var clearMenuItem: MenuItem? = null
+
     private var mFadeAnimation: Animation? = null
+
+    @Inject
+    lateinit var assistedFactory: HistoryViewModelAssistedFactory
+    private lateinit var viewModel: HistoryViewModel
 
     private val historyAdapter by lazy {
         SavedRecipesAdapter(
@@ -42,10 +52,6 @@ class HistoryFragment : Fragment(),
         )
     }
 
-    @Inject
-    lateinit var assistedFactory: HistoryViewModelAssistedFactory
-    private lateinit var viewModel: HistoryViewModel
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHistoryBinding.inflate(inflater, container, false)
         val view = binding?.root
@@ -57,74 +63,6 @@ class HistoryFragment : Fragment(),
         return view
     }
 
-//    override fun showHistory(savedRecipes: List<History>) {
-//            activity?.runOnUiThread(object : Runnable {
-//                val historyRecipesRvAdapter = HistoryRecipesRvAdapter(savedRecipes, activity, historyRecipesRV)
-//                override fun run() {
-//                    mFadeAnimation = AnimationUtils.loadAnimation(activity, R.anim.fade_in_favourites)
-//                    historyRecipesRV!!.animation = mFadeAnimation
-//                    historyRecipesRV!!.adapter = historyRecipesRvAdapter
-//                    historyRecipesRvAdapter.setPresenter(presenter)
-//                }
-//            })
-//    }
-//
-//    override fun showEmptyListMessage() {
-//            activity?.runOnUiThread {
-//                beginFading(historyRecipesRV, AnimationUtils.loadAnimation(activity, R.anim.fade_out_favourites), 8)
-//                beginFading(mEmptyListLL, AnimationUtils.loadAnimation(activity, R.anim.fade_in_favourites), 0)
-//                setIsHistoryEmptyBool(requireContext(), true)
-//            }
-//
-//    }
-//
-//    fun beginFading(view: View?, animation: Animation?, visibility: Int) {
-//        // 0 = View.VISIBLE, 4 = View.INVISIBLE, 8 = View.GONE
-//        view?.startAnimation(animation)
-//        view?.visibility = visibility
-//    }
-//
-//    override fun passData(recipe: Recipe) {
-//            activity?.runOnUiThread {
-//                recipe.isNewRecipe = true
-//                startActivity(newIntent(requireContext(), recipe, TimerFlow.START))
-//            }
-//        }
-
-//
-//    var toolbarMenuClickListener = Toolbar.OnMenuItemClickListener { item ->
-// //        when (item.itemId) {
-// ////            R.id.action_delete_history -> {
-// ////                val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-// ////                mHistoryIsEmpty = preferences.getBoolean("isHistoryEmpty", false)
-// ////                TODO Make button unavailable when History is empty.
-// ////                if (!mHistoryIsEmpty) showDeleteHistoryDialog()
-// ////                true
-// ////            }
-// ////            else -> false
-// //        }
-//    }
-
-//    fun showDeleteHistoryDialog() {
-//        MaterialAlertDialogBuilder(context!!)
-//            .setTitle(R.string.action_delete)
-//            .setMessage(R.string.deleteHistoryMessage)
-//            .setPositiveButton(R.string.delete) { dialogInterface: DialogInterface?, i: Int -> presenter!!.clearHistory(context) }
-//            .setNegativeButton(R.string.cancel) { dialogInterface: DialogInterface?, i: Int -> }
-//            .show()
-//    }
-//
-//    override fun setIsHistoryEmptyBool(ctx: Context, bool: Boolean) {
-//        val preferences = PreferenceManager.getDefaultSharedPreferences(ctx)
-//        val editor = preferences.edit()
-//        editor.putBoolean("isHistoryEmpty", bool)
-//        editor.apply()
-//    }
-//
-//    override fun setRecipeLiked(isLiked: Boolean, pos: Int) {
-//            activity?.runOnUiThread { historyRecipesRV!!.adapter!!.notifyItemChanged(pos, isLiked) }
-//    }
-
     override fun updateState(state: HistoryState) {
         when (state) {
             is HistoryState.ErrorState -> handleErrorState(state)
@@ -134,12 +72,23 @@ class HistoryFragment : Fragment(),
             is HistoryState.ShowHistoryState -> handleShowHistoryState(state)
             is HistoryState.StartNewBrewState -> handleStartNewBrewState(state)
             is HistoryState.RecipeLikedState -> handleRecipeLikedState(state)
+            is HistoryState.ClearHistoryPopUpState -> handleClearHistoryPopUpState()
         }
     }
 
     override fun handleInitialState() {
         binding?.historyRV?.layoutManager = LinearLayoutManager(activity)
         binding?.historyRV?.adapter = historyAdapter
+
+        binding?.toolbar?.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.menu_clear -> {
+                    viewModel.clearHistory(false)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     override fun handleLoadingState() {
@@ -151,6 +100,9 @@ class HistoryFragment : Fragment(),
     }
 
     override fun handleShowHistoryState(state: HistoryState.ShowHistoryState) {
+        if (clearMenuItem?.isEnabled == false) {
+            clearMenuItem?.isEnabled = true
+        }
         mFadeAnimation = AnimationUtils.loadAnimation(activity, R.anim.fade_in_favourites)
         binding?.historyRV?.animation = mFadeAnimation
         historyAdapter.submitList(state.list)
@@ -167,6 +119,13 @@ class HistoryFragment : Fragment(),
             AnimationUtils.loadAnimation(activity, R.anim.fade_in_favourites),
             View.VISIBLE
         )
+        clearMenuItem?.isEnabled = false
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.history, menu)
+        clearMenuItem = menu.findItem(R.id.menu_clear)
+//        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun handleStartNewBrewState(state: HistoryState.StartNewBrewState) {
@@ -177,6 +136,19 @@ class HistoryFragment : Fragment(),
         val items = historyAdapter.currentList.toMutableList()
         items[state.position] = state.item
         historyAdapter.submitList(items)
+    }
+
+    override fun handleClearHistoryPopUpState() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.action_delete)
+            .setMessage(R.string.deleteHistoryMessage)
+            .setPositiveButton(R.string.delete) { _, _ ->
+                viewModel.clearHistory(true)
+            }
+            .setNegativeButton(R.string.cancel) { _, _ ->
+                // Intentionally Blank.
+            }
+            .show()
     }
 
     private fun beginFading(view: View?, animation: Animation, visibility: Int) {

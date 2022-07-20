@@ -56,6 +56,15 @@ class HistoryViewModel @AssistedInject constructor(
         }
     }
 
+    override fun clearHistory(delete: Boolean) {
+        when (delete) {
+            true -> repository.clearHistory {
+                state = HistoryState.EmptyHistoryState
+            }
+            false -> state = HistoryState.ClearHistoryPopUpState
+        }
+    }
+
     fun getCurrentDate(): String {
         val date = Date()
         val formatter = SimpleDateFormat("d MMMM yyyy")
@@ -70,6 +79,7 @@ interface IHistoryViewModel {
 interface HistoryIntents : MVIBaseView {
     fun startBrew(recipe: Recipe)
     fun likeRecipe(recipe: History, position: Int)
+    fun clearHistory(delete: Boolean)
 }
 
 sealed class HistoryState {
@@ -83,6 +93,7 @@ sealed class HistoryState {
     data class StartNewBrewState(val recipe: Recipe) : HistoryState()
 
     data class RecipeLikedState(val item: History, val position: Int) : HistoryState()
+    object ClearHistoryPopUpState : HistoryState()
 }
 
 interface HistoryStateHandler {
@@ -96,6 +107,7 @@ interface HistoryStateHandler {
     fun handleStartNewBrewState(state: HistoryState.StartNewBrewState)
 
     fun handleRecipeLikedState(state: HistoryState.RecipeLikedState)
+    fun handleClearHistoryPopUpState()
 }
 
 @Suppress("UNCHECKED_CAST")

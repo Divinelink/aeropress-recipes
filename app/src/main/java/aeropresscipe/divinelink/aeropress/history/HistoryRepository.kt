@@ -27,12 +27,17 @@ class HistoryRepository @Inject constructor(
         recipe: SavedRecipeDomain,
         completionBlock: (History) -> Unit
     ) = performTransaction(completionBlock) { remote.likeRecipe(recipe) }
+
+    fun clearHistory(
+        completionBlock: () -> Unit
+    ) = performTransaction(completionBlock) { remote.clearHistory() }
 }
 
 interface IHistoryRemote {
     suspend fun getHistory(): List<History>
     suspend fun getRecipe(recipe: Recipe): Recipe
     suspend fun likeRecipe(recipe: SavedRecipeDomain): History
+    suspend fun clearHistory()
 }
 
 class HistoryRemote @Inject constructor(
@@ -65,6 +70,12 @@ class HistoryRemote @Inject constructor(
                 historyDao.updateLike(recipe.recipe, true)
             }
             historyDao.getHistoryRecipe(recipe.recipe)
+        }
+    }
+
+    override suspend fun clearHistory() {
+        return withContext(dispatcher) {
+            historyDao.deleteAll()
         }
     }
 }
