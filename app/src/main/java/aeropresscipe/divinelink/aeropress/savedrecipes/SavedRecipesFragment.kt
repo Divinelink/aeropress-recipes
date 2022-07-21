@@ -56,10 +56,6 @@ class SavedRecipesFragment : Fragment(),
         )
         viewModel = ViewModelProvider(this, viewModelFactory).get(SavedRecipesViewModel::class.java)
 
-        val layoutManager = LinearLayoutManager(activity)
-        binding?.savedRecipesRV?.layoutManager = layoutManager
-        viewModel.getSavedRecipes()
-
         return view
     }
 
@@ -76,7 +72,8 @@ class SavedRecipesFragment : Fragment(),
     }
 
     override fun handleInitialState() {
-        // Intentionally Blank.
+        binding?.savedRecipesRV?.layoutManager = LinearLayoutManager(activity)
+        binding?.savedRecipesRV?.adapter = recipesAdapter
     }
 
     override fun handleLoadingState() {
@@ -96,28 +93,13 @@ class SavedRecipesFragment : Fragment(),
     }
 
     override fun handleEmptyRecipesState() {
-        beginFading(
-            binding?.savedRecipesRV,
-            AnimationUtils.loadAnimation(activity, R.anim.fade_out_favourites),
-            View.GONE
-        )
-        beginFading(
-            binding?.emptyListLayout,
-            AnimationUtils.loadAnimation(activity, R.anim.fade_in_favourites),
-            View.VISIBLE
-        )
+        recipesAdapter.submitList(listOf(SavedRecipesAdapter.EmptyFavorites))
     }
 
     override fun handleRecipesState(state: SavedRecipesState.RecipesState) {
         mFadeAnimation = AnimationUtils.loadAnimation(activity, R.anim.fade_in_favourites)
         binding?.savedRecipesRV?.animation = mFadeAnimation
-        binding?.savedRecipesRV?.adapter = recipesAdapter
         recipesAdapter.submitList(state.recipes)
-    }
-
-    private fun beginFading(view: View?, animation: Animation, visibility: Int) {
-        view?.startAnimation(animation)
-        view?.visibility = visibility
     }
 
     private fun showDeleteRecipeDialog(recipe: SavedRecipeDomain) {

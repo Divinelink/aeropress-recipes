@@ -1,6 +1,7 @@
 package aeropresscipe.divinelink.aeropress.savedrecipes
 
 import aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.databinding.EmptyRecyclerLayoutBinding
 import aeropresscipe.divinelink.aeropress.databinding.RecipeCardItemBinding
 import aeropresscipe.divinelink.aeropress.history.History
 import android.animation.AnimatorInflater
@@ -11,6 +12,8 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -61,18 +64,32 @@ class SavedRecipesAdapter(
 
     private val actionsBindHelper = ActionBindHelper()
 
+    object EmptyHistory
+    object EmptyFavorites
+
     companion object {
-        // fixme  Add EmptyList State that shows that list is empty.
-        const val Type_Recipe = 0
-        const val Type_History = 1
+        const val Recipe = 0
+        const val Empty_Favorites = 2
+        const val History = 3
+        const val Empty_History = 4
+        const val Type_Error = 5
     }
 
     override fun getItemViewType(position: Int): Int {
-        val item = getItem(position)
-        return if (item is SavedRecipeDomain) {
-            Type_Recipe
-        } else {
-            Type_History
+        return when (getItem(position)) {
+            is SavedRecipeDomain -> {
+                Recipe
+            }
+            is History -> {
+                History
+            }
+            is EmptyHistory -> {
+                Empty_History
+            }
+            is EmptyFavorites -> {
+                Empty_Favorites
+            }
+            else -> Type_Error
         }
     }
 
@@ -82,11 +99,19 @@ class SavedRecipesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            Type_Recipe -> {
-                RecipeViewHolder(RecipeCardItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            Recipe -> RecipeViewHolder(RecipeCardItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            History -> HistoryViewHolder(RecipeCardItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            Empty_History -> {
+                EmptyViewHolder(
+                    EmptyRecyclerLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                    EmptyType.EmptyHistory
+                )
             }
-            Type_History -> {
-                HistoryViewHolder(RecipeCardItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            Empty_Favorites -> {
+                EmptyViewHolder(
+                    EmptyRecyclerLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                    EmptyType.EmptyFavorites
+                )
             }
             else -> {
                 throw IllegalArgumentException("Invalid view type")
@@ -100,18 +125,24 @@ class SavedRecipesAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: List<Any>) {
         val item = currentList[position]
-        if (holder is HistoryViewHolder) {
-            if (payloads.isEmpty()) {
-                holder.updateView(item as History)
-                actionsBindHelper.bind(item.id.toString(), holder.binding.savedRecipeItem)
-                holder.binding.card.likeRecipeButton.setOnClickListener { onLike?.invoke(item, position) }
-            } else {
-                val like = payloads[0] as Boolean
-                holder.update(like)
+        when (holder) {
+            is HistoryViewHolder -> {
+                if (payloads.isEmpty()) {
+                    holder.updateView(item as History)
+                    actionsBindHelper.bind(item.id.toString(), holder.binding.savedRecipeItem)
+                    holder.binding.card.likeRecipeButton.setOnClickListener { onLike?.invoke(item, position) }
+                } else {
+                    val like = payloads[0] as Boolean
+                    holder.update(like)
+                }
             }
-        } else if (holder is RecipeViewHolder) {
-            holder.updateView(item as SavedRecipeDomain)
-            actionsBindHelper.bind(item.id.toString(), holder.binding.savedRecipeItem)
+            is RecipeViewHolder -> {
+                holder.updateView(item as SavedRecipeDomain)
+                actionsBindHelper.bind(item.id.toString(), holder.binding.savedRecipeItem)
+            }
+            is EmptyViewHolder -> {
+                holder.update()
+            }
         }
     }
 
@@ -175,6 +206,26 @@ class SavedRecipesAdapter(
         override fun onActionClicked(view: View, action: SwipeAction) {
             onActionClicked(currentList[layoutPosition] as SavedRecipeDomain, action)
         }
+    }
+
+    inner class EmptyViewHolder(
+        private val binding: EmptyRecyclerLayoutBinding,
+        private val type: EmptyType
+    ) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun update() {
+            binding.root.text = context.resources.getString(type.text)
+            binding.root.setCompoundDrawablesWithIntrinsicBounds(type.image, 0, 0, 0)
+        }
+    }
+
+    sealed class EmptyType(
+        @StringRes var text: Int,
+        @DrawableRes var image: Int
+    ) {
+        object EmptyHistory : EmptyType(text = R.string.empty_history_text, image = R.drawable.ic_history_fragment_image)
+        object EmptyFavorites : EmptyType(text = R.string.empty_favorites_text, image = R.drawable.ic_heart)
     }
 
     inner class HistoryViewHolder(val binding: RecipeCardItemBinding) :

@@ -6,13 +6,10 @@ import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipesAdapter
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,8 +28,6 @@ class HistoryFragment : Fragment(),
     private var binding: FragmentHistoryBinding? = null
 
     private var clearMenuItem: MenuItem? = null
-
-    private var mFadeAnimation: Animation? = null
 
     @Inject
     lateinit var assistedFactory: HistoryViewModelAssistedFactory
@@ -57,7 +52,6 @@ class HistoryFragment : Fragment(),
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHistoryBinding.inflate(inflater, container, false)
         val view = binding?.root
-        binding?.toolbar?.setNavigationOnClickListener { activity?.onBackPressed() }
 
         binding?.toolbar?.setNavigationOnClickListener { activity?.onBackPressed() }
         clearMenuItem = binding?.toolbar?.menu?.findItem(R.menu.history)
@@ -111,17 +105,8 @@ class HistoryFragment : Fragment(),
     }
 
     override fun handleEmptyHistoryState() {
-        beginFading(
-            binding?.historyRV,
-            AnimationUtils.loadAnimation(activity, R.anim.fade_out_favourites),
-            View.GONE
-        )
-        beginFading(
-            binding?.emptyListLayout,
-            AnimationUtils.loadAnimation(activity, R.anim.fade_in_favourites),
-            View.VISIBLE
-        )
-        clearMenuItem?.isEnabled = false
+        historyAdapter.submitList(listOf(SavedRecipesAdapter.EmptyHistory))
+        updateToolbar(false)
     }
 
     private fun updateToolbar(enable: Boolean) {
@@ -153,11 +138,6 @@ class HistoryFragment : Fragment(),
                 // Intentionally Blank.
             }
             .show()
-    }
-
-    private fun beginFading(view: View?, animation: Animation, visibility: Int) {
-        view?.startAnimation(animation)
-        view?.visibility = visibility
     }
 
     companion object {
