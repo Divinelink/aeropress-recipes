@@ -15,7 +15,6 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:menu="@menu/history"
             app:navigationIcon="?attr/homeAsUpIndicator"
             app:subtitle="@string/history_subtitle"
             app:title="@string/history" />

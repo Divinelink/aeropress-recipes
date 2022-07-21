@@ -18,6 +18,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import gr.divinelink.core.util.extensions.setDisabled
+import gr.divinelink.core.util.extensions.setEnabled
 import gr.divinelink.core.util.swipe.SwipeAction
 import java.lang.ref.WeakReference
 import javax.inject.Inject
@@ -57,8 +59,12 @@ class HistoryFragment : Fragment(),
         val view = binding?.root
         binding?.toolbar?.setNavigationOnClickListener { activity?.onBackPressed() }
 
+        binding?.toolbar?.setNavigationOnClickListener { activity?.onBackPressed() }
+        clearMenuItem = binding?.toolbar?.menu?.findItem(R.menu.history)
         val viewModelFactory = HistoryViewModelFactory(assistedFactory, WeakReference<IHistoryViewModel>(this))
         viewModel = ViewModelProvider(this, viewModelFactory).get(HistoryViewModel::class.java)
+
+        binding?.toolbar?.inflateMenu(R.menu.history)
 
         return view
     }
@@ -100,12 +106,8 @@ class HistoryFragment : Fragment(),
     }
 
     override fun handleShowHistoryState(state: HistoryState.ShowHistoryState) {
-        if (clearMenuItem?.isEnabled == false) {
-            clearMenuItem?.isEnabled = true
-        }
-        mFadeAnimation = AnimationUtils.loadAnimation(activity, R.anim.fade_in_favourites)
-        binding?.historyRV?.animation = mFadeAnimation
         historyAdapter.submitList(state.list)
+        updateToolbar(true)
     }
 
     override fun handleEmptyHistoryState() {
@@ -122,10 +124,12 @@ class HistoryFragment : Fragment(),
         clearMenuItem?.isEnabled = false
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.history, menu)
-        clearMenuItem = menu.findItem(R.id.menu_clear)
-//        super.onCreateOptionsMenu(menu, inflater)
+    private fun updateToolbar(enable: Boolean) {
+        clearMenuItem = binding?.toolbar?.menu?.findItem(R.id.menu_clear)
+        when (enable) {
+            true -> clearMenuItem?.setEnabled()
+            false -> clearMenuItem?.setDisabled()
+        }
     }
 
     override fun handleStartNewBrewState(state: HistoryState.StartNewBrewState) {
