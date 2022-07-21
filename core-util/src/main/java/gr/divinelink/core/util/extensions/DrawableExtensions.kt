@@ -2,6 +2,13 @@ package gr.divinelink.core.util.extensions
 
 import android.graphics.drawable.Drawable
 import android.view.MenuItem
+import gr.divinelink.core.util.extensions.DrawableExtensions.HALF_ALPHA
+import gr.divinelink.core.util.extensions.DrawableExtensions.NO_ALPHA
+
+object DrawableExtensions {
+    const val HALF_ALPHA = 100
+    const val NO_ALPHA = 255
+}
 
 fun MenuItem.setDisabled() {
     this.isEnabled = false
@@ -14,9 +21,9 @@ fun MenuItem.setEnabled() {
 }
 
 fun Drawable.setDisabled() {
-    this.alpha = 100
+    this.alpha = HALF_ALPHA
 }
 
 fun Drawable.setEnabled() {
-    this.alpha = 255
+    this.alpha = NO_ALPHA
 }

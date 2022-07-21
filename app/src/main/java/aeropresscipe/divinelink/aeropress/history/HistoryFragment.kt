@@ -9,13 +9,11 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
-import gr.divinelink.core.util.extensions.setDisabled
 import gr.divinelink.core.util.extensions.setEnabled
 import gr.divinelink.core.util.swipe.SwipeAction
 import java.lang.ref.WeakReference
@@ -113,7 +111,7 @@ class HistoryFragment : Fragment(),
         clearMenuItem = binding?.toolbar?.menu?.findItem(R.id.menu_clear)
         when (enable) {
             true -> clearMenuItem?.setEnabled()
-            false -> clearMenuItem?.setDisabled()
+            false -> clearMenuItem?.()
         }
     }
 

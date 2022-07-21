@@ -20,7 +20,8 @@ class SavedRecipesViewModel(
             delegate?.get()?.updateState(value)
         }
 
-    override fun getSavedRecipes() {
+    init {
+        state = SavedRecipesState.InitialState
         dbRepository.getListsFromDB(
             context = getApplication(),
             completionBlock = { recipes ->
@@ -70,7 +71,6 @@ interface ISavedRecipesViewModel {
 }
 
 interface SavedRecipesIntents : MVIBaseView {
-    fun getSavedRecipes()
     fun startBrew(recipe: Recipe)
     fun deleteRecipe(recipe: SavedRecipeDomain)
 }
