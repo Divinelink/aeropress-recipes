@@ -2,6 +2,7 @@ package aeropresscipe.divinelink.aeropress.savedrecipes
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.databinding.FragmentSavedRecipesBinding
+import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.RecipesAdapter
 import aeropresscipe.divinelink.aeropress.savedrecipes.util.SavedRecipesViewModelFactory
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
 import android.os.Bundle
@@ -28,7 +29,7 @@ class SavedRecipesFragment : Fragment(),
     private var mFadeAnimation: Animation? = null
 
     private val recipesAdapter by lazy {
-        SavedRecipesAdapter(
+        RecipesAdapter(
             requireContext(),
             onActionClicked = { recipe: Any, swipeAction: SwipeAction ->
                 recipe as SavedRecipeDomain
@@ -93,7 +94,7 @@ class SavedRecipesFragment : Fragment(),
     }
 
     override fun handleEmptyRecipesState() {
-        recipesAdapter.submitList(listOf(SavedRecipesAdapter.EmptyFavorites))
+        recipesAdapter.submitList(listOf(RecipesAdapter.EmptyFavorites))
     }
 
     override fun handleRecipesState(state: SavedRecipesState.RecipesState) {

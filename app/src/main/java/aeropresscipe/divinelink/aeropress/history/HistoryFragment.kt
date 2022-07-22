@@ -2,7 +2,7 @@ package aeropresscipe.divinelink.aeropress.history
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.databinding.FragmentHistoryBinding
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipesAdapter
+import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.RecipesAdapter
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -33,7 +33,7 @@ class HistoryFragment : Fragment(),
     private lateinit var viewModel: HistoryViewModel
 
     private val historyAdapter by lazy {
-        SavedRecipesAdapter(
+        RecipesAdapter(
             requireContext(),
             onActionClicked = { recipe: Any, swipeAction: SwipeAction ->
                 recipe as History
@@ -104,7 +104,7 @@ class HistoryFragment : Fragment(),
     }
 
     override fun handleEmptyHistoryState() {
-        historyAdapter.submitList(listOf(SavedRecipesAdapter.EmptyHistory))
+        historyAdapter.submitList(listOf(RecipesAdapter.EmptyHistory))
         updateToolbar(false)
     }
 

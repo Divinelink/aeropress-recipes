@@ -1,10 +1,11 @@
-package aeropresscipe.divinelink.aeropress.savedrecipes
+package aeropresscipe.divinelink.aeropress.savedrecipes.adapter
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.databinding.EmptyRecyclerLayoutBinding
 import aeropresscipe.divinelink.aeropress.databinding.RecipeCardItemBinding
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.history.History
+import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
 import android.annotation.SuppressLint
@@ -13,8 +14,6 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -28,7 +27,7 @@ typealias OnActionClicked = (recipe: Any, action: SwipeAction) -> Unit
 
 typealias OnLike = (recipe: Any, position: Int) -> Unit
 
-class SavedRecipesAdapter(
+class RecipesAdapter(
     private val context: Context,
     private val onActionClicked: OnActionClicked,
     private val onLike: OnLike? = null
@@ -190,23 +189,13 @@ class SavedRecipesAdapter(
         }
     }
 
-    sealed class EmptyType(
-        @StringRes var text: Int,
-        @DrawableRes var image: Int
-    ) {
-        object EmptyHistory : EmptyType(text = R.string.empty_history_text, image = R.drawable.ic_history_fragment_image)
-        object EmptyFavorites : EmptyType(text = R.string.empty_favorites_text, image = R.drawable.ic_heart)
-    }
-
     inner class HistoryViewHolder(val binding: RecipeCardItemBinding) :
         RecyclerView.ViewHolder(binding.root), SwipeMenuListener {
-
         private val swipeToAction = binding.savedRecipeItem
 
         @SuppressLint("ClickableViewAccessibility")
         fun updateView(item: History) {
             setCard(binding, item.recipe, item.dateBrewed)
-
             swipeToAction.menuListener = this
 
             binding.card.likeRecipeLayout.visibility = View.VISIBLE
