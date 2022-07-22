@@ -3,6 +3,7 @@ package aeropresscipe.divinelink.aeropress.savedrecipes
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.databinding.EmptyRecyclerLayoutBinding
 import aeropresscipe.divinelink.aeropress.databinding.RecipeCardItemBinding
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.history.History
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
@@ -156,38 +157,7 @@ class SavedRecipesAdapter(
 
         fun updateView(item: SavedRecipeDomain) {
             swipeToAction.menuListener = this
-            val totalWater = item.recipe.brewWaterAmount
-            val totalTime = item.recipe.bloomTime + item.recipe.brewTime
-            val bloomTime = item.recipe.bloomTime
-            val temp = item.recipe.diceTemperature
-            val grindSize = item.recipe.grindSize.size.substring(0, 1)
-                .uppercase(Locale.getDefault()) + item.recipe.grindSize.size.substring(1).lowercase(
-                Locale.getDefault()
-            )
-            binding.card.recipeTitle.text =
-                context.resources.getString(R.string.dateBrewedTextView, item.dateBrewed)
-            binding.card.waterAndTempTV.text = context.resources.getString(
-                R.string.SavedWaterAndTempTextView,
-                totalWater,
-                temp,
-                temp.toFahrenheit()
-            )
-            binding.card.beansWeightTV.text =
-                context.resources.getString(R.string.SavedCoffeeWeightTextView, item.recipe.coffeeAmount)
-            binding.card.beansGrindLevelTV.text =
-                context.resources.getString(R.string.SavedGrindLevelTextView, grindSize)
-            binding.card.brewingMethodTextView.text =
-                context.resources.getString(R.string.SavedBrewingMethodTextView, item.recipe.brewMethod.method)
-
-            if (bloomTime == 0L) {
-                binding.card.brewingTimeTextView.text = context.resources.getString(
-                    R.string.SavedTotalTimeTextView, totalTime
-                )
-            } else {
-                binding.card.brewingTimeTextView.text = context.resources.getString(
-                    R.string.SavedTotalTimeWithBloomTextView, item.recipe.brewTime, bloomTime
-                )
-            }
+            setCard(binding, item.recipe, item.dateBrewed)
         }
 
         override fun onClosed(view: View) {
@@ -235,39 +205,9 @@ class SavedRecipesAdapter(
 
         @SuppressLint("ClickableViewAccessibility")
         fun updateView(item: History) {
-            swipeToAction.menuListener = this
-            val totalWater = item.recipe.brewWaterAmount
-            val totalTime = item.recipe.bloomTime + item.recipe.brewTime
-            val bloomTime = item.recipe.bloomTime
-            val temp = item.recipe.diceTemperature
-            val grindSize = item.recipe.grindSize.size.substring(0, 1)
-                .uppercase(Locale.getDefault()) + item.recipe.grindSize.size.substring(1).lowercase(
-                Locale.getDefault()
-            )
-            binding.card.recipeTitle.text =
-                context.resources.getString(R.string.dateBrewedTextView, item.dateBrewed)
-            binding.card.waterAndTempTV.text = context.resources.getString(
-                R.string.SavedWaterAndTempTextView,
-                totalWater,
-                temp,
-                temp.toFahrenheit()
-            )
-            binding.card.beansWeightTV.text =
-                context.resources.getString(R.string.SavedCoffeeWeightTextView, item.recipe.coffeeAmount)
-            binding.card.beansGrindLevelTV.text =
-                context.resources.getString(R.string.SavedGrindLevelTextView, grindSize)
-            binding.card.brewingMethodTextView.text =
-                context.resources.getString(R.string.SavedBrewingMethodTextView, item.recipe.brewMethod.method)
+            setCard(binding, item.recipe, item.dateBrewed)
 
-            if (bloomTime == 0L) {
-                binding.card.brewingTimeTextView.text = context.resources.getString(
-                    R.string.SavedTotalTimeTextView, totalTime
-                )
-            } else {
-                binding.card.brewingTimeTextView.text = context.resources.getString(
-                    R.string.SavedTotalTimeWithBloomTextView, item.recipe.brewTime, bloomTime
-                )
-            }
+            swipeToAction.menuListener = this
 
             binding.card.likeRecipeLayout.visibility = View.VISIBLE
             update(item.isRecipeLiked)
@@ -303,11 +243,43 @@ class SavedRecipesAdapter(
         }
 
         override fun onFullyOpened(view: View, action: SwipeAction) {
-//            onActionClicked(currentList[layoutPosition] as History, action)
+            onActionClicked(currentList[layoutPosition] as History, action)
         }
 
         override fun onActionClicked(view: View, action: SwipeAction) {
             onActionClicked(currentList[layoutPosition] as History, action)
+        }
+    }
+
+    private fun setCard(binding: RecipeCardItemBinding, recipe: Recipe, brewDate: String) {
+        val totalWater = recipe.brewWaterAmount
+        val totalTime = recipe.bloomTime + recipe.brewTime
+        val bloomTime = recipe.bloomTime
+        val temp = recipe.diceTemperature
+        val grindSize = recipe.grindSize.size.substring(0, 1)
+            .uppercase(Locale.getDefault()) + recipe.grindSize.size.substring(1).lowercase(
+            Locale.getDefault()
+        )
+        binding.card.recipeTitle.text =
+            context.resources.getString(R.string.dateBrewedTextView, brewDate)
+        binding.card.waterAndTempTV.text = context.resources.getString(
+            R.string.SavedWaterAndTempTextView, totalWater, temp, temp.toFahrenheit()
+        )
+        binding.card.beansWeightTV.text =
+            context.resources.getString(R.string.SavedCoffeeWeightTextView, recipe.coffeeAmount)
+        binding.card.beansGrindLevelTV.text =
+            context.resources.getString(R.string.SavedGrindLevelTextView, grindSize)
+        binding.card.brewingMethodTextView.text =
+            context.resources.getString(R.string.SavedBrewingMethodTextView, recipe.brewMethod.method)
+
+        if (bloomTime == 0L) {
+            binding.card.brewingTimeTextView.text = context.resources.getString(
+                R.string.SavedTotalTimeTextView, totalTime
+            )
+        } else {
+            binding.card.brewingTimeTextView.text = context.resources.getString(
+                R.string.SavedTotalTimeWithBloomTextView, recipe.brewTime, bloomTime
+            )
         }
     }
 }
