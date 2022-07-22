@@ -129,7 +129,7 @@ class RecipesAdapter(
             is HistoryViewHolder -> {
                 if (payloads.isEmpty()) {
                     holder.updateView(item as History)
-                    actionsBindHelper.bind(item.id.toString(), holder.binding.savedRecipeItem)
+                    actionsBindHelper.bind(item.id.toString(), holder.binding.recipeItem)
                     holder.binding.card.likeRecipeButton.setOnClickListener { onLike?.invoke(item, position) }
                 } else {
                     val like = payloads[0] as Boolean
@@ -138,7 +138,7 @@ class RecipesAdapter(
             }
             is RecipeViewHolder -> {
                 holder.updateView(item as SavedRecipeDomain)
-                actionsBindHelper.bind(item.id.toString(), holder.binding.savedRecipeItem)
+                actionsBindHelper.bind(item.id.toString(), holder.binding.recipeItem)
             }
             is EmptyViewHolder -> {
                 holder.update()
@@ -152,10 +152,11 @@ class RecipesAdapter(
 
     inner class RecipeViewHolder(var binding: RecipeCardItemBinding) :
         RecyclerView.ViewHolder(binding.root), SwipeMenuListener {
-        private val swipeToAction = binding.savedRecipeItem
+        private val swipeToAction = binding.recipeItem
 
         fun updateView(item: SavedRecipeDomain) {
             swipeToAction.menuListener = this
+            swipeToAction.setActionsRes(R.menu.favorites_action_menu)
             setCard(binding, item.recipe, item.dateBrewed)
         }
 
@@ -191,11 +192,12 @@ class RecipesAdapter(
 
     inner class HistoryViewHolder(val binding: RecipeCardItemBinding) :
         RecyclerView.ViewHolder(binding.root), SwipeMenuListener {
-        private val swipeToAction = binding.savedRecipeItem
+        private val swipeToAction = binding.recipeItem
 
         @SuppressLint("ClickableViewAccessibility")
         fun updateView(item: History) {
             setCard(binding, item.recipe, item.dateBrewed)
+            swipeToAction.setActionsRes(R.menu.history_action_menu)
             swipeToAction.menuListener = this
 
             binding.card.likeRecipeLayout.visibility = View.VISIBLE
@@ -232,7 +234,7 @@ class RecipesAdapter(
         }
 
         override fun onFullyOpened(view: View, action: SwipeAction) {
-            onActionClicked(currentList[layoutPosition] as History, action)
+            // Intentionally Empty.
         }
 
         override fun onActionClicked(view: View, action: SwipeAction) {
