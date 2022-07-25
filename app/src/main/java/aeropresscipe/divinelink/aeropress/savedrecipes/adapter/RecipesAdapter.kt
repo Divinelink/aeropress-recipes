@@ -6,12 +6,9 @@ import aeropresscipe.divinelink.aeropress.databinding.RecipeCardItemBinding
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.history.History
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
-import android.animation.AnimatorInflater
-import android.animation.AnimatorSet
-import android.annotation.SuppressLint
+import aeropresscipe.divinelink.aeropress.timer.TimerFragment
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -130,10 +127,10 @@ class RecipesAdapter(
                 if (payloads.isEmpty()) {
                     holder.updateView(item as History)
                     actionsBindHelper.bind(item.id.toString(), holder.binding.recipeItem)
-                    holder.binding.card.likeRecipeButton.setOnClickListener { onLike?.invoke(item, position) }
+                    holder.binding.card.likeButton.setOnClickListener { onLike?.invoke(item, position) }
                 } else {
                     val like = payloads[0] as Boolean
-                    holder.update(like)
+                    holder.updateWithAnimation(like)
                 }
             }
             is RecipeViewHolder -> {
@@ -194,7 +191,6 @@ class RecipesAdapter(
         RecyclerView.ViewHolder(binding.root), SwipeMenuListener {
         private val swipeToAction = binding.recipeItem
 
-        @SuppressLint("ClickableViewAccessibility")
         fun updateView(item: History) {
             setCard(binding, item.recipe, item.dateBrewed)
             swipeToAction.setActionsRes(R.menu.history_action_menu)
@@ -202,26 +198,22 @@ class RecipesAdapter(
 
             binding.card.likeRecipeLayout.visibility = View.VISIBLE
             update(item.isRecipeLiked)
+        }
 
-            binding.card.likeRecipeButton.setOnTouchListener { view, motionEvent ->
-                if (motionEvent.action == MotionEvent.ACTION_DOWN) {
-                    val reducer = AnimatorInflater.loadAnimator(context, R.animator.reduce_size) as AnimatorSet
-                    reducer.setTarget(view)
-                    reducer.start()
-                } else if (motionEvent.action == MotionEvent.ACTION_UP) {
-                    val regainer = AnimatorInflater.loadAnimator(context, R.animator.regain_size) as AnimatorSet
-                    regainer.setTarget(view)
-                    regainer.start()
-                }
-                false
+        private fun update(like: Boolean) {
+            when (like) {
+                true -> binding.card.likeButton.frame = TimerFragment.LIKE_MAX_FRAME
+                false -> binding.card.likeButton.frame = TimerFragment.DISLIKE_MAX_FRAME
             }
         }
 
-        fun update(like: Boolean) {
+        fun updateWithAnimation(like: Boolean) {
             when (like) {
-                true -> binding.card.likeRecipeButton.setImageResource(R.drawable.ic_heart_on)
-                false -> binding.card.likeRecipeButton.setImageResource(R.drawable.ic_heart_off)
+                true -> binding.card.likeButton.setMinAndMaxFrame(TimerFragment.LIKE_MIN_FRAME, TimerFragment.LIKE_MAX_FRAME)
+                false -> binding.card.likeButton.setMinAndMaxFrame(TimerFragment.DISLIKE_MIN_FRAME, TimerFragment.DISLIKE_MAX_FRAME)
             }
+            binding.card.likeButton.clipToCompositionBounds = false
+            binding.card.likeButton.playAnimation()
         }
 
         override fun onClosed(view: View) {

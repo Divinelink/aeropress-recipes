@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:clipChildren="false"
     android:layout_height="match_parent"
     tools:context=".timer.TimerFragment">
 
@@ -54,9 +55,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
+        android:layout_marginBottom="37dp"
         android:minWidth="306dp"
         android:minHeight="306dp"
-        app:layout_constraintBottom_toTopOf="@id/likeRecipeLayout"
+        app:layout_constraintBottom_toTopOf="@+id/likeRecipeLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/timer_header"
@@ -68,6 +70,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="68dp"
         android:gravity="center"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -79,16 +83,19 @@
             android:gravity="center"
             android:text="@string/consider_adding_to_favourites" />
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/likeRecipeButton"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/likeButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginStart="16dp"
-            android:background="@drawable/ic_heart_off"
-            android:scaleType="fitCenter"
+            android:scaleX="2.2"
+            app:lottie_clipToCompositionBounds="false"
+            android:scaleY="2.2"
             android:soundEffectsEnabled="false"
-            tools:ignore="TouchTargetSizeCheck" />
+            app:lottie_rawRes="@raw/like"
+            app:tint="@color/colorOnBackground" />
 
     </LinearLayout>
 

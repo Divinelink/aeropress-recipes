@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="4dp"
         android:baselineAligned="false"
+        android:clipChildren="false"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -75,6 +76,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:clipChildren="false"
             android:orientation="vertical">
 
             <LinearLayout style="@style/SavedRecipeLinearLayoutForViewsStyle">
@@ -110,16 +112,20 @@
                 android:id="@+id/likeRecipeLayout"
                 style="@style/SavedRecipeLinearLayoutForViewsStyle"
                 android:layout_marginBottom="4dp"
+                android:clipChildren="false"
                 android:visibility="gone"
                 tools:visibility="visible">
 
-                <ImageView
-                    android:id="@+id/likeRecipeButton"
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/likeButton"
                     style="@style/SavedRecipeImageViewStyle"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:scaleType="fitCenter"
-                    android:soundEffectsEnabled="false"
-                    android:src="@drawable/ic_heart_off" />
+                    android:scaleX="2.3"
+                    android:scaleY="2.3"
+                    app:lottie_clipToCompositionBounds="false"
+                    app:lottie_rawRes="@raw/like" />
 
                 <TextView
                     android:id="@+id/AddToFavourites"

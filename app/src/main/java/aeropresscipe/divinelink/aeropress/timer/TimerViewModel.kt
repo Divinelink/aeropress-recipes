@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.timer
 
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
@@ -11,7 +10,6 @@ import aeropresscipe.divinelink.aeropress.timer.util.BrewState
 import aeropresscipe.divinelink.aeropress.timer.util.Phase
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
 import android.annotation.SuppressLint
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -47,11 +45,11 @@ class TimerViewModel @AssistedInject constructor(
         this.transferableModel?.brew = brewPhase
 
         repository.isRecipeSaved(transferableModel.recipe) { saved ->
-            val image = when (saved) {
-                true -> R.drawable.ic_heart_on
-                false -> R.drawable.ic_heart_off
+            val frame = when (saved) {
+                true -> TimerFragment.LIKE_MAX_FRAME
+                false -> TimerFragment.DISLIKE_MAX_FRAME
             }
-            state = TimerState.UpdateSavedIndicator(image)
+            state = TimerState.UpdateSavedIndicator(frame)
         }
     }
 
@@ -212,7 +210,7 @@ sealed class TimerState {
     object RecipeSavedState : TimerState()
     object RecipeRemovedState : TimerState()
 
-    data class UpdateSavedIndicator(@DrawableRes val image: Int) : TimerState()
+    data class UpdateSavedIndicator(val frame: Int) : TimerState()
 
     data class StartTimer(
         val water: Int,

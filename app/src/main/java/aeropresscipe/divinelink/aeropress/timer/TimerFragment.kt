@@ -7,13 +7,10 @@ import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
 import aeropresscipe.divinelink.aeropress.timer.util.TimerViewModelAssistedFactory
 import aeropresscipe.divinelink.aeropress.timer.util.TimerViewModelFactory
-import android.animation.AnimatorInflater
-import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -83,18 +80,8 @@ class TimerFragment : Fragment(),
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initListeners() {
-        binding?.likeRecipeButton?.setOnClickListener { viewModel.saveRecipe(transferableModel.recipe) }
-        binding?.likeRecipeButton?.setOnTouchListener { view: View?, motionEvent: MotionEvent ->
-            if (motionEvent.action == MotionEvent.ACTION_DOWN) {
-                val reducer = AnimatorInflater.loadAnimator(context, R.animator.reduce_size) as AnimatorSet
-                reducer.setTarget(view)
-                reducer.start()
-            } else if (motionEvent.action == MotionEvent.ACTION_UP) {
-                val regainer = AnimatorInflater.loadAnimator(context, R.animator.regain_size) as AnimatorSet
-                regainer.setTarget(view)
-                regainer.start()
-            }
-            false
+        binding?.likeButton?.setOnClickListener {
+            viewModel.saveRecipe(transferableModel.recipe)
         }
     }
 
@@ -102,6 +89,12 @@ class TimerFragment : Fragment(),
         private const val INTERVAL = 10L
         const val TIMER = "TIMER"
         const val FLOW = "FLOW"
+
+        const val LIKE_MIN_FRAME = 0
+        const val LIKE_MAX_FRAME = 80
+
+        const val DISLIKE_MIN_FRAME = 80
+        const val DISLIKE_MAX_FRAME = 130
 
         @JvmStatic
         fun newInstance(recipe: Recipe?, flow: TimerFlow? = TimerFlow.START): TimerFragment {
@@ -149,13 +142,15 @@ class TimerFragment : Fragment(),
     }
 
     override fun handleRecipeSavedState() {
-        make(binding?.likeRecipeButton, resources.getString(R.string.save_recipe_notification, getString(R.string.favourites))).show()
-        binding?.likeRecipeButton?.setImageResource(R.drawable.ic_heart_on)
+        make(binding?.likeButton, resources.getString(R.string.save_recipe_notification, getString(R.string.favourites))).show()
+        binding?.likeButton?.setMinAndMaxFrame(LIKE_MIN_FRAME, LIKE_MAX_FRAME)
+        binding?.likeButton?.playAnimation()
     }
 
     override fun handleRecipeRemovedState() {
-        make(binding?.likeRecipeButton, resources.getString(R.string.remove_recipe_notification, getString(R.string.favourites))).show()
-        binding?.likeRecipeButton?.setImageResource(R.drawable.ic_heart_off)
+        make(binding?.likeButton, resources.getString(R.string.remove_recipe_notification, getString(R.string.favourites))).show()
+        binding?.likeButton?.setMinAndMaxFrame(DISLIKE_MIN_FRAME, DISLIKE_MAX_FRAME)
+        binding?.likeButton?.playAnimation()
     }
 
     override fun handleStartTimer(state: TimerState.StartTimer) {
@@ -195,7 +190,7 @@ class TimerFragment : Fragment(),
     }
 
     override fun handleUpdateSavedIndicator(state: TimerState.UpdateSavedIndicator) {
-        binding?.likeRecipeButton?.setImageResource(state.image)
+        binding?.likeButton?.frame = state.frame
     }
 
     private fun updateCountdownUI(
