@@ -1,6 +1,7 @@
 package aeropresscipe.divinelink.aeropress.history
 
 import aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.customviews.Notification
 import aeropresscipe.divinelink.aeropress.databinding.FragmentHistoryBinding
 import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.RecipesAdapter
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
@@ -72,6 +73,7 @@ class HistoryFragment : Fragment(),
             is HistoryState.StartNewBrewState -> handleStartNewBrewState(state)
             is HistoryState.RecipeLikedState -> handleRecipeLikedState(state)
             is HistoryState.ClearHistoryPopUpState -> handleClearHistoryPopUpState()
+            is HistoryState.ShowSnackBar -> handleShowSnackBar(state)
         }
     }
 
@@ -137,6 +139,10 @@ class HistoryFragment : Fragment(),
                 // Intentionally Blank.
             }
             .show()
+    }
+
+    override fun handleShowSnackBar(state: HistoryState.ShowSnackBar) {
+        Notification.make(binding?.historyRV, resources.getString(state.value.string, getString(state.value.favorites))).show()
     }
 
     companion object {

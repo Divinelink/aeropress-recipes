@@ -53,6 +53,11 @@ class HistoryViewModel @AssistedInject constructor(
     override fun likeRecipe(recipe: History, position: Int) {
         repository.likeRecipe(SavedRecipeDomain(recipe.recipe, getCurrentDate())) {
             state = HistoryState.RecipeLikedState(it, position)
+            val value: LikeSnackBar = when {
+                it.isRecipeLiked -> LikeSnackBar.Like
+                else -> LikeSnackBar.Remove
+            }
+            state = HistoryState.ShowSnackBar(value)
         }
     }
 
@@ -94,6 +99,8 @@ sealed class HistoryState {
 
     data class RecipeLikedState(val item: History, val position: Int) : HistoryState()
     object ClearHistoryPopUpState : HistoryState()
+
+    data class ShowSnackBar(val value: LikeSnackBar) : HistoryState()
 }
 
 interface HistoryStateHandler {
@@ -108,6 +115,8 @@ interface HistoryStateHandler {
 
     fun handleRecipeLikedState(state: HistoryState.RecipeLikedState)
     fun handleClearHistoryPopUpState()
+
+    fun handleShowSnackBar(state: HistoryState.ShowSnackBar)
 }
 
 @Suppress("UNCHECKED_CAST")

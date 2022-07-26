@@ -16,6 +16,5 @@ fun LottieAnimationView.changeLayersColor(
     val color = ContextCompat.getColor(context, colorRes)
     val filter = SimpleColorFilter(color)
     val callback: LottieValueCallback<ColorFilter> = LottieValueCallback(filter)
-//    println("${this.resolveKeyPath(KeyPath("**"))}")
     addValueCallback(keyPaths, LottieProperty.COLOR_FILTER, callback)
 }
