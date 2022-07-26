@@ -14,6 +14,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.model.KeyPath
+import gr.divinelink.core.util.extensions.changeLayersColor
 import gr.divinelink.core.util.extensions.toFahrenheit
 import gr.divinelink.core.util.swipe.ActionBindHelper
 import gr.divinelink.core.util.swipe.SwipeAction
@@ -195,6 +197,15 @@ class RecipesAdapter(
             setCard(binding, item.recipe, item.dateBrewed)
             swipeToAction.setActionsRes(R.menu.history_action_menu)
             swipeToAction.menuListener = this
+
+            binding.card.likeButton.changeLayersColor(R.color.colorPrimary, KeyPath("Heart Fill", "**"))
+            binding.card.likeButton.changeLayersColor(R.color.colorPrimary, KeyPath("Circle 2", "**"))
+            binding.card.likeButton.changeLayersColor(R.color.colorPrimary, KeyPath("Circle 1", "**"))
+            binding.card.likeButton.changeLayersColor(R.color.colorPrimary, KeyPath("Heart Fill Small 4", "**"))
+            binding.card.likeButton.changeLayersColor(R.color.colorOnPrimaryContainer, KeyPath("Heart Fill Small 2", "**"))
+            binding.card.likeButton.changeLayersColor(R.color.colorOnPrimaryContainer, KeyPath("Heart Fill Small 3", "**"))
+            binding.card.likeButton.changeLayersColor(R.color.colorOnBackground, KeyPath("Heart Stroke 2", "**"))
+            binding.card.likeButton.changeLayersColor(R.color.colorOnBackground, KeyPath("Heart Stroke", "**"))
 
             binding.card.likeRecipeLayout.visibility = View.VISIBLE
             update(item.isRecipeLiked)

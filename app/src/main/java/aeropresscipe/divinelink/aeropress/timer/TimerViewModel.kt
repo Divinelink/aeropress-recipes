@@ -36,6 +36,10 @@ class TimerViewModel @AssistedInject constructor(
             delegate?.get()?.updateState(value)
         }
 
+    init {
+        state = TimerState.InitialState
+    }
+
     override fun init(transferableModel: TimerTransferableModel) {
         this.transferableModel = transferableModel
         val brewPhase = BrewPhase.Builder()

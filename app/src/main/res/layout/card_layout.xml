@@ -122,8 +122,8 @@
                     style="@style/SavedRecipeImageViewStyle"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:scaleX="2.3"
-                    android:scaleY="2.3"
+                    android:scaleX="2"
+                    android:scaleY="2"
                     app:lottie_clipToCompositionBounds="false"
                     app:lottie_rawRes="@raw/like" />
 
