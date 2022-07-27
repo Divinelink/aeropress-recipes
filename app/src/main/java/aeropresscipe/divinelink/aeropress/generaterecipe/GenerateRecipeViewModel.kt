@@ -8,7 +8,6 @@ import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.RecipeStep
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.buildSteps
 import aeropresscipe.divinelink.aeropress.history.LikeSnackBar
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import aeropresscipe.divinelink.aeropress.timer.TimerFlow
 import aeropresscipe.divinelink.aeropress.timer.TimerFragment
 import aeropresscipe.divinelink.aeropress.timer.TimerRepository
@@ -18,7 +17,6 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import gr.divinelink.core.util.utils.DateUtil.getCurrentDate
 import timber.log.Timber
 import java.lang.ref.WeakReference
 
@@ -105,8 +103,7 @@ class GenerateRecipeViewModel @AssistedInject constructor(
 
     override fun likeRecipe() {
         dice?.recipe?.let {
-            val savedRecipe = SavedRecipeDomain(it, getCurrentDate())
-            timerRepository.likeCurrentRecipe(savedRecipe) { recipeLiked ->
+            timerRepository.likeCurrentRecipe(it) { recipeLiked ->
                 if (recipeLiked) {
                     state = GenerateRecipeState.RecipeSavedState
                     state = GenerateRecipeState.ShowSnackBar(LikeSnackBar.Like)

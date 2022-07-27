@@ -49,7 +49,7 @@ class SavedRecipesViewModel(
         )
     }
 
-    override fun deleteRecipe(recipe: SavedRecipeDomain) {
+    override fun deleteRecipe(recipe: Recipe) {
         dbRepository.deleteRecipe(
             recipe = recipe,
             context = getApplication(),
@@ -72,7 +72,7 @@ interface ISavedRecipesViewModel {
 
 interface SavedRecipesIntents : MVIBaseView {
     fun startBrew(recipe: Recipe)
-    fun deleteRecipe(recipe: SavedRecipeDomain)
+    fun deleteRecipe(recipe: Recipe)
 }
 
 sealed class SavedRecipesState {

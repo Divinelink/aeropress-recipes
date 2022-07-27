@@ -4,7 +4,6 @@ import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.getBrewingStates
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import aeropresscipe.divinelink.aeropress.timer.util.BrewPhase
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
 import aeropresscipe.divinelink.aeropress.timer.util.Phase
@@ -167,9 +166,8 @@ class TimerViewModel @AssistedInject constructor(
             state = TimerState.ErrorState("Something went wrong!") // Fixme
         } else {
             // Save Recipe on DB
-            val savedRecipe = SavedRecipeDomain(recipe, getCurrentDate())
             repository.likeCurrentRecipe(
-                recipe = savedRecipe,
+                recipe = recipe,
                 completionBlock = { recipeLiked ->
                     if (recipeLiked) {
                         state = TimerState.RecipeSavedState

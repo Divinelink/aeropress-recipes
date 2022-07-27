@@ -3,7 +3,6 @@ package aeropresscipe.divinelink.aeropress.timer
 import aeropresscipe.divinelink.aeropress.base.mvi.logic.BaseRepository
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import javax.inject.Inject
 
 class TimerRepository @Inject constructor(
@@ -11,7 +10,7 @@ class TimerRepository @Inject constructor(
 ) : BaseRepository() {
 
     fun likeCurrentRecipe(
-        recipe: SavedRecipeDomain,
+        recipe: Recipe,
         completionBlock: (Boolean) -> Unit
     ) = performTransaction(completionBlock) { dbRemote.likeCurrentRecipe(recipe) }
 

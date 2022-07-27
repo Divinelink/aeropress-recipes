@@ -8,13 +8,13 @@ import aeropresscipe.divinelink.aeropress.history.History
 import aeropresscipe.divinelink.aeropress.history.HistoryDao
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDao
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
+import gr.divinelink.core.util.utils.DateUtil.getCurrentDate
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 interface ITimerServices {
-    suspend fun likeCurrentRecipe(recipe: SavedRecipeDomain): Boolean
-    suspend fun removeCurrentRecipe(recipe: SavedRecipeDomain)
+    suspend fun likeCurrentRecipe(recipe: Recipe): Boolean
     suspend fun updateHistory(recipe: Recipe, isLiked: Boolean)
     suspend fun addToHistory(recipe: Recipe, brewDate: String)
     suspend fun isRecipeSaved(recipe: Recipe?): Boolean
@@ -30,23 +30,17 @@ open class TimerServices @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ITimerServices {
 
-    override suspend fun likeCurrentRecipe(recipe: SavedRecipeDomain): Boolean {
+    override suspend fun likeCurrentRecipe(recipe: Recipe): Boolean {
         return withContext(dispatcher) {
-            if (savedRecipeDao.recipeExists(recipe.recipe)) {
-                savedRecipeDao.delete(recipe.recipe)
-                historyDao.updateLike(recipe.recipe, false)
+            if (savedRecipeDao.recipeExists(recipe)) {
+                savedRecipeDao.delete(recipe)
+                historyDao.updateLike(recipe, false)
                 false
             } else {
-                savedRecipeDao.insertLikedRecipe(recipe)
-                historyDao.updateLike(recipe.recipe, true)
+                savedRecipeDao.insertLikedRecipe(SavedRecipeDomain(recipe, getCurrentDate()))
+                historyDao.updateLike(recipe, true)
                 true
             }
-        }
-    }
-
-    override suspend fun removeCurrentRecipe(recipe: SavedRecipeDomain) {
-        withContext(dispatcher) {
-            savedRecipeDao.delete(recipe.recipe)
         }
     }
 

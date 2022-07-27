@@ -2,6 +2,7 @@ package aeropresscipe.divinelink.aeropress.savedrecipes
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.databinding.FragmentSavedRecipesBinding
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.RecipesAdapter
 import aeropresscipe.divinelink.aeropress.savedrecipes.util.SavedRecipesViewModelFactory
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
@@ -34,7 +35,7 @@ class SavedRecipesFragment : Fragment(),
             onActionClicked = { recipe: Any, swipeAction: SwipeAction ->
                 recipe as SavedRecipeDomain
                 when (swipeAction.actionId) {
-                    R.id.delete -> showDeleteRecipeDialog(recipe)
+                    R.id.delete -> showDeleteRecipeDialog(recipe.recipe)
                     R.id.brew -> viewModel.startBrew(recipe.recipe)
                 }
             }
@@ -103,7 +104,7 @@ class SavedRecipesFragment : Fragment(),
         recipesAdapter.submitList(state.recipes)
     }
 
-    private fun showDeleteRecipeDialog(recipe: SavedRecipeDomain) {
+    private fun showDeleteRecipeDialog(recipe: Recipe) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.deleteRecipeDialogTitle)
             .setMessage(R.string.deleteRecipeDialogMessage)

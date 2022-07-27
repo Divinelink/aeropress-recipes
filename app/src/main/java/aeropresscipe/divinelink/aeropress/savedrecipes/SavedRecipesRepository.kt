@@ -17,7 +17,7 @@ class SavedRecipesRepository(
     ) = performTransaction(completionBlock) { dbRemote.getRecipesFromDB(context) }
 
     fun deleteRecipe(
-        recipe: SavedRecipeDomain,
+        recipe: Recipe,
         context: Context,
         completionBlock: (List<SavedRecipeDomain>?) -> Unit
     ) = performTransaction(completionBlock) { dbRemote.deleteRecipe(recipe, context) }

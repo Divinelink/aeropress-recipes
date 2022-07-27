@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 interface ISavedRecipesServices {
     suspend fun getRecipesFromDB(context: Context): List<SavedRecipeDomain>
 
-    suspend fun deleteRecipe(recipe: SavedRecipeDomain, context: Context): List<SavedRecipeDomain>
+    suspend fun deleteRecipe(recipe: Recipe, context: Context): List<SavedRecipeDomain>
 
     suspend fun getSingleRecipe(recipe: Recipe, context: Context): Recipe
 }
@@ -29,15 +29,15 @@ class SavedRecipesServicesImpl(
         }
     }
 
-    override suspend fun deleteRecipe(recipe: SavedRecipeDomain, context: Context): List<SavedRecipeDomain> {
+    override suspend fun deleteRecipe(recipe: Recipe, context: Context): List<SavedRecipeDomain> {
         val database = getDatabase(context)
         return database.let { db ->
             withContext(dispatcher) {
                 val recipes = db.savedRecipeDao()
                 val history = db.historyDao()
 
-                recipes.delete(recipe.recipe)
-                history.updateLike(recipe = recipe.recipe, false)
+                recipes.delete(recipe)
+                history.updateLike(recipe = recipe, false)
 
                 return@withContext recipes.savedRecipes
             }
