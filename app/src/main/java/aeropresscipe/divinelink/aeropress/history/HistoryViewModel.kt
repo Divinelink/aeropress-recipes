@@ -9,10 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import gr.divinelink.core.util.utils.DateUtil.getCurrentDate
 import timber.log.Timber
 import java.lang.ref.WeakReference
-import java.text.SimpleDateFormat
-import java.util.Date
 
 class HistoryViewModel @AssistedInject constructor(
     private var repository: HistoryRepository,
@@ -68,12 +67,6 @@ class HistoryViewModel @AssistedInject constructor(
             }
             false -> state = HistoryState.ClearHistoryPopUpState
         }
-    }
-
-    fun getCurrentDate(): String {
-        val date = Date()
-        val formatter = SimpleDateFormat("d MMMM yyyy")
-        return formatter.format(date.time)
     }
 }
 
