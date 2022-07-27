@@ -9,15 +9,13 @@ import aeropresscipe.divinelink.aeropress.timer.util.BrewPhase
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
 import aeropresscipe.divinelink.aeropress.timer.util.Phase
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
-import android.annotation.SuppressLint
 import androidx.annotation.StringRes
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import gr.divinelink.core.util.extensions.inMilliseconds
+import gr.divinelink.core.util.utils.DateUtil.getCurrentDate
 import timber.log.Timber
 import java.lang.ref.WeakReference
-import java.text.SimpleDateFormat
-import java.util.Date
 
 class TimerViewModel @AssistedInject constructor(
     private var repository: TimerRepository,
@@ -183,13 +181,6 @@ class TimerViewModel @AssistedInject constructor(
                 }
             )
         }
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    private fun getCurrentDate(): String {
-        val date = Date()
-        val formatter = SimpleDateFormat("dd MMMM yyyy")
-        return formatter.format(date.time)
     }
 }
 

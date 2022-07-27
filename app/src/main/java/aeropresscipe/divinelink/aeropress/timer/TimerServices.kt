@@ -34,9 +34,11 @@ open class TimerServices @Inject constructor(
         return withContext(dispatcher) {
             if (savedRecipeDao.recipeExists(recipe.recipe)) {
                 savedRecipeDao.delete(recipe.recipe)
+                historyDao.updateLike(recipe.recipe, false)
                 false
             } else {
                 savedRecipeDao.insertLikedRecipe(recipe)
+                historyDao.updateLike(recipe.recipe, true)
                 true
             }
         }
