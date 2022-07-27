@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:clipChildren="false"
     android:layout_height="match_parent"
+    android:clipChildren="false"
     tools:context=".timer.TimerFragment">
 
     <TextView
@@ -69,9 +69,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="68dp"
-        android:gravity="center"
         android:clipChildren="false"
         android:clipToPadding="false"
+        android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -91,11 +91,10 @@
             android:layout_gravity="center"
             android:layout_marginStart="16dp"
             android:scaleX="2.2"
-            app:lottie_clipToCompositionBounds="false"
             android:scaleY="2.2"
             android:soundEffectsEnabled="false"
-            app:lottie_rawRes="@raw/like"
-            app:tint="@color/colorOnBackground" />
+            app:lottie_clipToCompositionBounds="false"
+            app:lottie_rawRes="@raw/like" />
 
     </LinearLayout>
 
