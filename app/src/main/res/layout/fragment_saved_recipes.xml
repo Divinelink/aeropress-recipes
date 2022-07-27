@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            app:title="@string/favourites" />
+            app:title="@string/favorites" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

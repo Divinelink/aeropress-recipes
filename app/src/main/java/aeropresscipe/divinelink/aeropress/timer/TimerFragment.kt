@@ -153,7 +153,7 @@ class TimerFragment : Fragment(),
     }
 
     override fun handleRecipeSavedState() {
-        make(binding?.likeButton, resources.getString(R.string.save_recipe_notification, getString(R.string.favourites))).show()
+        make(binding?.likeButton, resources.getString(R.string.save_recipe_notification, getString(R.string.favorites))).show()
         binding?.apply {
             likeButton.setMinAndMaxFrame(LIKE_MIN_FRAME, LIKE_MAX_FRAME)
             likeButton.playAnimation()
@@ -161,7 +161,7 @@ class TimerFragment : Fragment(),
     }
 
     override fun handleRecipeRemovedState() {
-        make(binding?.likeButton, resources.getString(R.string.remove_recipe_notification, getString(R.string.favourites))).show()
+        make(binding?.likeButton, resources.getString(R.string.remove_recipe_notification, getString(R.string.favorites))).show()
         binding?.apply {
             likeButton.setMinAndMaxFrame(DISLIKE_MIN_FRAME, DISLIKE_MAX_FRAME)
             likeButton.playAnimation()

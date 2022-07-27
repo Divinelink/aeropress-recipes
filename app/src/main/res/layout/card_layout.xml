@@ -130,8 +130,9 @@
                 <TextView
                     android:id="@+id/AddToFavourites"
                     style="@style/SavedRecipeItemTextViewStyle"
-                    android:text="@string/add_favourite"
-                    tools:text="Add Favourite" />
+                    android:paddingTop="4dp"
+                    android:text="@string/add_favorite"
+                    tools:text="Add Favorite" />
 
             </LinearLayout>
         </LinearLayout>

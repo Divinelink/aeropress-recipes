@@ -86,7 +86,7 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.recipe:
                         addGenerateRecipeFragment();
                         return true;
-                    case R.id.favourites:
+                    case R.id.favorites:
                         addSavedRecipesFragment();
                         return true;
                     case R.id.history:
@@ -100,7 +100,7 @@ public class HomeActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.recipe:
                 // do nothing
-            case R.id.favourites:
+            case R.id.favorites:
                 // do nothing
             case R.id.history:
                 // do nothing
