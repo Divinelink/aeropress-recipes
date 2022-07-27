@@ -155,7 +155,8 @@ class GenerateRecipeFragment :
     }
 
     override fun handleUpdateSavedIndicator(state: GenerateRecipeState.UpdateSavedIndicator) {
-        lottieFavorite?.frame = state.frame
+        lottieFavorite?.setMinAndMaxFrame(state.frame, state.frame)
+        lottieFavorite?.playAnimation()
     }
 
     override fun handleShowSnackBar(state: GenerateRecipeState.ShowSnackBar) {
