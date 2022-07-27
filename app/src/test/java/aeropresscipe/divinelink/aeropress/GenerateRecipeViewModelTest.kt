@@ -10,6 +10,9 @@ import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeViewModel
 import aeropresscipe.divinelink.aeropress.generaterecipe.IGenerateRecipeViewModel
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.timer.TimerFragment
+import aeropresscipe.divinelink.aeropress.timer.TimerRepository
+import aeropresscipe.divinelink.aeropress.timer.TimerServices
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDateTime
@@ -35,8 +38,11 @@ class GenerateRecipeViewModelTest {
 
     @Mock
     private var remote: GenerateRecipeRemote = mock()
+    @Mock
+    private var timerRemote: TimerServices = mock()
 
     private var repository: GenerateRecipeRepository = GenerateRecipeRepository(remote)
+    private var timerRepository: TimerRepository = TimerRepository(timerRemote)
 
     private val sunday9am: LocalDateTime = LocalDateTime(2021, 7, 4, 9, 0, 0)
     private val sunday130pm: LocalDateTime = LocalDateTime(2021, 7, 4, 13, 30, 0)
@@ -50,7 +56,8 @@ class GenerateRecipeViewModelTest {
                     // do nothing
                 }
             }),
-            repository = repository)
+            repository = repository,
+            timerRepository = timerRepository)
 
         viewModelIntent = viewModel
     }
@@ -75,7 +82,8 @@ class GenerateRecipeViewModelTest {
         viewModel.forceGenerateRecipe()
         // Then
         assertTrue(viewModel.statesList[0] is GenerateRecipeState.RefreshRecipeState)
-        assertEquals(viewModel.statesList[1], GenerateRecipeState.HideResumeButtonState)
+        assertEquals(viewModel.statesList[1], GenerateRecipeState.UpdateSavedIndicator(TimerFragment.DISLIKE_MAX_FRAME))
+        assertEquals(viewModel.statesList[2], GenerateRecipeState.HideResumeButtonState)
     }
 
     @Test
@@ -87,7 +95,8 @@ class GenerateRecipeViewModelTest {
         viewModel.forceGenerateRecipe()
         // Then
         assertTrue(viewModel.statesList[0] is GenerateRecipeState.RefreshRecipeState)
-        assertEquals(viewModel.statesList[1], GenerateRecipeState.HideResumeButtonState)
+        assertEquals(viewModel.statesList[1], GenerateRecipeState.UpdateSavedIndicator(TimerFragment.DISLIKE_MAX_FRAME))
+        assertEquals(viewModel.statesList[2], GenerateRecipeState.HideResumeButtonState)
     }
 
     @Test

@@ -5,6 +5,7 @@ import aeropresscipe.divinelink.aeropress.generaterecipe.CoffeeGrindSize
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.ITimerViewModel
+import aeropresscipe.divinelink.aeropress.timer.TimerFragment
 import aeropresscipe.divinelink.aeropress.timer.TimerIntents
 import aeropresscipe.divinelink.aeropress.timer.TimerRepository
 import aeropresscipe.divinelink.aeropress.timer.TimerServices
@@ -127,7 +128,7 @@ class TimerViewModelTest {
 
         viewModel.init(transferableModel)
 
-        assertEquals(viewModel.state, TimerState.UpdateSavedIndicator(R.drawable.ic_heart_on))
+        assertEquals(viewModel.state, TimerState.UpdateSavedIndicator(TimerFragment.LIKE_MAX_FRAME))
     }
 
     @Test
@@ -139,7 +140,7 @@ class TimerViewModelTest {
 
         viewModel.init(transferableModel)
 
-        assertEquals(viewModel.state, TimerState.UpdateSavedIndicator(R.drawable.ic_heart_off))
+        assertEquals(viewModel.state, TimerState.UpdateSavedIndicator(TimerFragment.DISLIKE_MAX_FRAME))
     }
 
     @Test
@@ -164,8 +165,9 @@ class TimerViewModelTest {
         viewModel.init(transferableModel)
         viewModel.startBrew()
         assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Brew)
-        assertTrue(viewModel.statesList[0] is TimerState.StartTimer)
-        assertTrue(viewModel.statesList[1] is TimerState.StartProgressBar)
+        assertTrue(viewModel.statesList[0] is TimerState.InitialState)
+        assertTrue(viewModel.statesList[1] is TimerState.StartTimer)
+        assertTrue(viewModel.statesList[2] is TimerState.StartProgressBar)
     }
 
     @Test
@@ -179,7 +181,6 @@ class TimerViewModelTest {
         assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Finished)
         assertTrue(viewModel.state is TimerState.FinishState)
     }
-
 
     private fun recipeModel(
         diceTemperature: Int = 0,
