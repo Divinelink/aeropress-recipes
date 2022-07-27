@@ -12,7 +12,6 @@ import androidx.annotation.StringRes
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import gr.divinelink.core.util.extensions.inMilliseconds
-import gr.divinelink.core.util.utils.DateUtil.getCurrentDate
 import timber.log.Timber
 import java.lang.ref.WeakReference
 
@@ -71,6 +70,10 @@ class TimerViewModel @AssistedInject constructor(
             } else {
                 finishRecipeBrewing()
             }
+
+            repository.addToHistory(it.recipe) {
+                // Do nothing
+            }
         }
     }
 
@@ -102,7 +105,6 @@ class TimerViewModel @AssistedInject constructor(
             // Initialise Timer
             repository.addToHistory(
                 recipe = transferableModel?.recipe!!,
-                brewDate = getCurrentDate(),
                 completionBlock = {
                     startTimers()
                 }

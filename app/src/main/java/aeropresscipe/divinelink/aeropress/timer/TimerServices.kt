@@ -16,7 +16,7 @@ import javax.inject.Inject
 interface ITimerServices {
     suspend fun likeCurrentRecipe(recipe: Recipe): Boolean
     suspend fun updateHistory(recipe: Recipe, isLiked: Boolean)
-    suspend fun addToHistory(recipe: Recipe, brewDate: String)
+    suspend fun addToHistory(recipe: Recipe)
     suspend fun isRecipeSaved(recipe: Recipe?): Boolean
     suspend fun updateBrewingState(brewing: Boolean)
     suspend fun updateTimes(bloomEndTimeMillis: Long, brewEndTimeMillis: Long)
@@ -54,12 +54,11 @@ open class TimerServices @Inject constructor(
     }
 
     override suspend fun addToHistory(
-        recipe: Recipe,
-        brewDate: String
+        recipe: Recipe
     ) {
         withContext(dispatcher) {
             val isLiked = savedRecipeDao.recipeExists(recipe)
-            historyDao.updateRecipe(History(recipe, brewDate, isLiked))
+            historyDao.updateRecipe(History(recipe, getCurrentDate(), isLiked))
         }
     }
 

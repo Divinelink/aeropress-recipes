@@ -22,9 +22,8 @@ class TimerRepository @Inject constructor(
 
     fun addToHistory(
         recipe: Recipe,
-        brewDate: String,
         completionBlock: () -> Unit
-    ) = performTransaction(completionBlock) { dbRemote.addToHistory(recipe, brewDate) }
+    ) = performTransaction(completionBlock) { dbRemote.addToHistory(recipe) }
 
     fun isRecipeSaved(
         recipe: Recipe?,
