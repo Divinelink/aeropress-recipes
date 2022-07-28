@@ -48,7 +48,8 @@ kapt {
 
 dependencies {
     def appcompat_version = "1.2.0"
-    def room_version = "2.4.2"
+    def room_version = "2.4.3"
+    def hilt_version = "2.42"
 
     implementation project(':core-util')
 
@@ -78,18 +79,18 @@ dependencies {
     // Optional -- Mockk framework
     testImplementation "io.mockk:mockk:1.12.4"
 
-    implementation 'com.google.dagger:hilt-android:2.42'
-    kapt 'com.google.dagger:hilt-compiler:2.42'
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
     // For instrumentation tests
-    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.42'
-    kaptAndroidTest 'com.google.dagger:hilt-compiler:2.42'
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptAndroidTest "com.google.dagger:hilt-compiler:$hilt_version"
 
     // For local unit tests
-    testImplementation 'com.google.dagger:hilt-android-testing:2.42'
-    kaptTest 'com.google.dagger:hilt-compiler:2.42'
+    testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptTest "com.google.dagger:hilt-compiler:$hilt_version"
 
-    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.42")
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler$hilt_version")
 
     implementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 
