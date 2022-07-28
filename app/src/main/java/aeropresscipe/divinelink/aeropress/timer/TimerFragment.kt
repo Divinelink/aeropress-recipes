@@ -3,6 +3,7 @@ package aeropresscipe.divinelink.aeropress.timer
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.customviews.Notification.Companion.make
 import aeropresscipe.divinelink.aeropress.databinding.FragmentTimerBinding
+import aeropresscipe.divinelink.aeropress.finish.FinishActivity
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
 import aeropresscipe.divinelink.aeropress.timer.util.TimerViewModelAssistedFactory
@@ -202,6 +203,8 @@ class TimerFragment : Fragment(),
 
     override fun handleFinishState() {
         timer?.dispose()
+        startActivity(FinishActivity.newIntent(requireContext(), transferableModel.recipe))
+        activity?.finish()
     }
 
     override fun handleUpdateSavedIndicator(state: TimerState.UpdateSavedIndicator) {

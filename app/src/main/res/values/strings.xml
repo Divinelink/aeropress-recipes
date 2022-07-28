@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Aeropress Recipes</string>
 
+    <string name="close">Close</string>
+
     <string name="heatWaterText">Heat &lt;b&gt;%dg&lt;/b&gt; of water to &lt;b&gt;%d°C / %d°F&lt;/b&gt;.</string>
 
     <string name="grindCoffeeText">Grind &lt;b&gt;%dg&lt;/b&gt; of coffee to a &lt;b&gt;%s&lt;/b&gt; grind.</string>
@@ -33,7 +35,7 @@
     <string name="brewPhaseWithBloom">Pour in the remaining %dg of water</string>
     <string name="brewPhaseNoBloom">Pour in %dg of water</string>
 
-    <string name="enjoyCoffee">Press and enjoy your coffee!</string>
+    <string name="enjoyCoffee">Your coffee is ready.\nPress &amp; enjoy!</string>
     <string name="brew">Start Timer</string>
     <string name="resume_brew">Resume Brew</string>
     <string name="alreadyBrewingDialog">You\'re brewing. Hold to get a new recipe.</string>
