@@ -14,7 +14,7 @@ interface HistoryDao {
     fun insertRecipeToHistory(historyDomain: History?)
 
     @get:Query("SELECT * FROM HistoryRecipes")
-    val historyRecipes: List<History?>?
+    val historyRecipes: List<History>?
 
     @Query("SELECT * FROM HistoryRecipes WHERE recipe = :recipe")
     fun getHistoryRecipe(recipe: Recipe): History
@@ -37,9 +37,12 @@ interface HistoryDao {
     @Update(entity = History::class)
     fun updateHistory(recipe: History)
 
+    @Query("UPDATE HistoryRecipes SET isRecipeLiked=:isLiked WHERE Recipe=:recipe")
+    fun updateLike(recipe: Recipe, isLiked: Boolean)
+
     @Transaction
-    fun updateRecipe(historyDomain: History) {
-        delete(historyDomain.recipe)
-        insertRecipeToHistory(historyDomain)
+    fun updateRecipe(history: History) {
+        delete(history.recipe)
+        insertRecipeToHistory(history)
     }
 }

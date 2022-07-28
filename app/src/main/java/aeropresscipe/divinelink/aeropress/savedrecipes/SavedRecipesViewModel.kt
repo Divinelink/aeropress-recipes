@@ -20,7 +20,8 @@ class SavedRecipesViewModel(
             delegate?.get()?.updateState(value)
         }
 
-    override fun getSavedRecipes() {
+    init {
+        state = SavedRecipesState.InitialState
         dbRepository.getListsFromDB(
             context = getApplication(),
             completionBlock = { recipes ->
@@ -41,15 +42,14 @@ class SavedRecipesViewModel(
                 state = if (selectedRecipe == null) {
                     SavedRecipesState.ErrorState("Something went wrong!") // //TODO 15/6/22 divinelink: Fix Error State
                 } else {
-                    val newRecipe = recipe
-                    newRecipe.isNewRecipe = true
+                    recipe.isNewRecipe = true
                     SavedRecipesState.StartNewBrewState(recipe)
                 }
             }
         )
     }
 
-    override fun deleteRecipe(recipe: SavedRecipeDomain) {
+    override fun deleteRecipe(recipe: Recipe) {
         dbRepository.deleteRecipe(
             recipe = recipe,
             context = getApplication(),
@@ -71,9 +71,8 @@ interface ISavedRecipesViewModel {
 }
 
 interface SavedRecipesIntents : MVIBaseView {
-    fun getSavedRecipes()
     fun startBrew(recipe: Recipe)
-    fun deleteRecipe(recipe: SavedRecipeDomain)
+    fun deleteRecipe(recipe: Recipe)
 }
 
 sealed class SavedRecipesState {

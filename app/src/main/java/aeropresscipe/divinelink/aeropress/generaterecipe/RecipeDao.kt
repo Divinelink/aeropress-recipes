@@ -26,8 +26,8 @@ interface RecipeDao {
     @Query("UPDATE Recipe SET isBrewing=:isBrewing WHERE id = :id")
     fun updateBrewingState(isBrewing: Boolean, id: Int)
 
-    @Query("UPDATE Recipe SET bloomTimeLeft=:bloomTimeLeft, brewTimeLeft=:brewTimeLeft  WHERE id = :id")
-    fun updateTimes(bloomTimeLeft: Long, brewTimeLeft: Long, id: Int)
+    @Query("UPDATE Recipe SET bloomEndTimeMillis=:bloomEndTimeMillis, brewEndTimeMillis=:brewEndTimeMillis  WHERE id = :id")
+    fun updateTimes(bloomEndTimeMillis: Long, brewEndTimeMillis: Long, id: Int)
 
     @Transaction
     fun updateRecipe(recipe: Recipe) {

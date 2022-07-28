@@ -3,7 +3,6 @@ package aeropresscipe.divinelink.aeropress.timer
 import aeropresscipe.divinelink.aeropress.base.mvi.logic.BaseRepository
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import javax.inject.Inject
 
 class TimerRepository @Inject constructor(
@@ -11,22 +10,20 @@ class TimerRepository @Inject constructor(
 ) : BaseRepository() {
 
     fun likeCurrentRecipe(
-        recipe: SavedRecipeDomain,
+        recipe: Recipe,
         completionBlock: (Boolean) -> Unit
     ) = performTransaction(completionBlock) { dbRemote.likeCurrentRecipe(recipe) }
 
     fun updateHistory(
         recipe: Recipe,
-        brewDate: String,
         isLiked: Boolean,
         completionBlock: () -> Unit
-    ) = performTransaction(completionBlock) { dbRemote.updateHistory(recipe, brewDate, isLiked) }
+    ) = performTransaction(completionBlock) { dbRemote.updateHistory(recipe, isLiked) }
 
     fun addToHistory(
         recipe: Recipe,
-        brewDate: String,
         completionBlock: () -> Unit
-    ) = performTransaction(completionBlock) { dbRemote.addToHistory(recipe, brewDate) }
+    ) = performTransaction(completionBlock) { dbRemote.addToHistory(recipe) }
 
     fun isRecipeSaved(
         recipe: Recipe?,

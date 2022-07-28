@@ -2,11 +2,11 @@ package aeropresscipe.divinelink.aeropress.savedrecipes
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.databinding.FragmentSavedRecipesBinding
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.RecipesAdapter
 import aeropresscipe.divinelink.aeropress.savedrecipes.util.SavedRecipesViewModelFactory
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,14 +30,16 @@ class SavedRecipesFragment : Fragment(),
     private var mFadeAnimation: Animation? = null
 
     private val recipesAdapter by lazy {
-        SavedRecipesAdapter(
-            requireContext()
-        ) { recipe: SavedRecipeDomain, swipeAction: SwipeAction ->
-            when (swipeAction.actionId) {
-                R.id.delete -> showDeleteRecipeDialog(recipe)
-                R.id.brew -> viewModel.startBrew(recipe.recipe)
+        RecipesAdapter(
+            requireContext(),
+            onActionClicked = { recipe: Any, swipeAction: SwipeAction ->
+                recipe as SavedRecipeDomain
+                when (swipeAction.actionId) {
+                    R.id.delete -> showDeleteRecipeDialog(recipe.recipe)
+                    R.id.brew -> viewModel.startBrew(recipe.recipe)
+                }
             }
-        }
+        )
     }
 
     override fun onCreateView(
@@ -56,15 +58,10 @@ class SavedRecipesFragment : Fragment(),
         )
         viewModel = ViewModelProvider(this, viewModelFactory).get(SavedRecipesViewModel::class.java)
 
-        val layoutManager = LinearLayoutManager(activity)
-        binding?.savedRecipesRV?.layoutManager = layoutManager
-        viewModel.getSavedRecipes()
-
         return view
     }
 
     override fun updateState(state: SavedRecipesState) {
-        Log.d("State is: $state", "$state")
         when (state) {
             is SavedRecipesState.ErrorState -> handleErrorState()
             is SavedRecipesState.InitialState -> handleInitialState()
@@ -77,7 +74,8 @@ class SavedRecipesFragment : Fragment(),
     }
 
     override fun handleInitialState() {
-        // Intentionally Blank.
+        binding?.savedRecipesRV?.layoutManager = LinearLayoutManager(activity)
+        binding?.savedRecipesRV?.adapter = recipesAdapter
     }
 
     override fun handleLoadingState() {
@@ -97,31 +95,16 @@ class SavedRecipesFragment : Fragment(),
     }
 
     override fun handleEmptyRecipesState() {
-        beginFading(
-            binding?.savedRecipesRV,
-            AnimationUtils.loadAnimation(activity, R.anim.fade_out_favourites),
-            View.GONE
-        )
-        beginFading(
-            binding?.emptyListLayout,
-            AnimationUtils.loadAnimation(activity, R.anim.fade_in_favourites),
-            View.VISIBLE
-        )
+        recipesAdapter.submitList(listOf(RecipesAdapter.EmptyFavorites))
     }
 
     override fun handleRecipesState(state: SavedRecipesState.RecipesState) {
         mFadeAnimation = AnimationUtils.loadAnimation(activity, R.anim.fade_in_favourites)
         binding?.savedRecipesRV?.animation = mFadeAnimation
-        binding?.savedRecipesRV?.adapter = recipesAdapter
         recipesAdapter.submitList(state.recipes)
     }
 
-    private fun beginFading(view: View?, animation: Animation, visibility: Int) {
-        view?.startAnimation(animation)
-        view?.visibility = visibility
-    }
-
-    private fun showDeleteRecipeDialog(recipe: SavedRecipeDomain) {
+    private fun showDeleteRecipeDialog(recipe: Recipe) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.deleteRecipeDialogTitle)
             .setMessage(R.string.deleteRecipeDialogMessage)

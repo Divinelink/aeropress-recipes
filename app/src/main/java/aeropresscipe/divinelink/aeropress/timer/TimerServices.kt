@@ -8,18 +8,18 @@ import aeropresscipe.divinelink.aeropress.history.History
 import aeropresscipe.divinelink.aeropress.history.HistoryDao
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDao
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
+import gr.divinelink.core.util.utils.DateUtil.getCurrentDate
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 interface ITimerServices {
-    suspend fun likeCurrentRecipe(recipe: SavedRecipeDomain): Boolean
-    suspend fun removeCurrentRecipe(recipe: SavedRecipeDomain)
-    suspend fun updateHistory(recipe: Recipe, brewDate: String, isLiked: Boolean)
-    suspend fun addToHistory(recipe: Recipe, brewDate: String)
+    suspend fun likeCurrentRecipe(recipe: Recipe): Boolean
+    suspend fun updateHistory(recipe: Recipe, isLiked: Boolean)
+    suspend fun addToHistory(recipe: Recipe)
     suspend fun isRecipeSaved(recipe: Recipe?): Boolean
     suspend fun updateBrewingState(brewing: Boolean)
-    suspend fun updateTimes(bloomTimeLeft: Long, brewTimeLeft: Long)
+    suspend fun updateTimes(bloomEndTimeMillis: Long, brewEndTimeMillis: Long)
     suspend fun getResumeTimes(): DiceDomain
 }
 
@@ -30,41 +30,35 @@ open class TimerServices @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ITimerServices {
 
-    override suspend fun likeCurrentRecipe(recipe: SavedRecipeDomain): Boolean {
+    override suspend fun likeCurrentRecipe(recipe: Recipe): Boolean {
         return withContext(dispatcher) {
-            if (savedRecipeDao.recipeExists(recipe.recipe)) {
-                savedRecipeDao.delete(recipe.recipe)
+            if (savedRecipeDao.recipeExists(recipe)) {
+                savedRecipeDao.delete(recipe)
+                historyDao.updateLike(recipe, false)
                 false
             } else {
-                savedRecipeDao.insertLikedRecipe(recipe)
+                savedRecipeDao.insertLikedRecipe(SavedRecipeDomain(recipe, getCurrentDate()))
+                historyDao.updateLike(recipe, true)
                 true
             }
         }
     }
 
-    override suspend fun removeCurrentRecipe(recipe: SavedRecipeDomain) {
-        withContext(dispatcher) {
-            savedRecipeDao.delete(recipe.recipe)
-        }
-    }
-
     override suspend fun updateHistory(
         recipe: Recipe,
-        brewDate: String,
         isLiked: Boolean
     ) {
         withContext(dispatcher) {
-            historyDao.updateRecipe(History(recipe = recipe, dateBrewed = brewDate, isRecipeLiked = isLiked))
+            historyDao.updateLike(recipe, isLiked)
         }
     }
 
     override suspend fun addToHistory(
-        recipe: Recipe,
-        brewDate: String
+        recipe: Recipe
     ) {
         withContext(dispatcher) {
             val isLiked = savedRecipeDao.recipeExists(recipe)
-            historyDao.updateRecipe(History(recipe, brewDate, isLiked))
+            historyDao.updateRecipe(History(recipe, getCurrentDate(), isLiked))
         }
     }
 
@@ -84,9 +78,9 @@ open class TimerServices @Inject constructor(
         }
     }
 
-    override suspend fun updateTimes(bloomTimeLeft: Long, brewTimeLeft: Long) {
+    override suspend fun updateTimes(bloomEndTimeMillis: Long, brewEndTimeMillis: Long) {
         return withContext(dispatcher) {
-            recipeDao.updateTimes(bloomTimeLeft, brewTimeLeft, recipeDao.singleRecipe.id)
+            recipeDao.updateTimes(bloomEndTimeMillis, brewEndTimeMillis, recipeDao.singleRecipe.id)
         }
     }
 

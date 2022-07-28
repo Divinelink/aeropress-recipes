@@ -6,6 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".generaterecipe.GenerateRecipeFragment">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:paddingStart="0dp"
+            android:paddingEnd="16dp"
+            app:menu="@menu/recipe_menu"
+            tools:title="@string/good_morning" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -57,16 +78,16 @@
         android:id="@+id/recipeList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:divider="@null"
         android:dividerHeight="0dp"
         android:listSelector="@color/transparent"
         android:overScrollMode="never"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_height="250dp">
-    </ListView>
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        tools:layout_height="250dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

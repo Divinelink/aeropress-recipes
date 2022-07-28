@@ -2,7 +2,6 @@ package aeropresscipe.divinelink.aeropress.savedrecipes
 
 import aeropresscipe.divinelink.aeropress.base.HomeDatabase.Companion.getDatabase
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
-import aeropresscipe.divinelink.aeropress.history.History
 import android.content.Context
 import android.util.Log
 import kotlinx.coroutines.CoroutineDispatcher
@@ -12,7 +11,7 @@ import kotlinx.coroutines.withContext
 interface ISavedRecipesServices {
     suspend fun getRecipesFromDB(context: Context): List<SavedRecipeDomain>
 
-    suspend fun deleteRecipe(recipe: SavedRecipeDomain, context: Context): List<SavedRecipeDomain>
+    suspend fun deleteRecipe(recipe: Recipe, context: Context): List<SavedRecipeDomain>
 
     suspend fun getSingleRecipe(recipe: Recipe, context: Context): Recipe
 }
@@ -30,21 +29,16 @@ class SavedRecipesServicesImpl(
         }
     }
 
-    override suspend fun deleteRecipe(recipe: SavedRecipeDomain, context: Context): List<SavedRecipeDomain> {
+    override suspend fun deleteRecipe(recipe: Recipe, context: Context): List<SavedRecipeDomain> {
         val database = getDatabase(context)
         return database.let { db ->
             withContext(dispatcher) {
                 val recipes = db.savedRecipeDao()
                 val history = db.historyDao()
 
-                recipes.delete(recipe.recipe)
-                if (history.historyRecipeExists(recipe.id)) {
-                    history.updateRecipe(History(
-                        recipe = recipe.recipe,
-                        dateBrewed = recipe.dateBrewed,
-                        isRecipeLiked = false)
-                    )
-                }
+                recipes.delete(recipe)
+                history.updateLike(recipe = recipe, false)
+
                 return@withContext recipes.savedRecipes
             }
         }

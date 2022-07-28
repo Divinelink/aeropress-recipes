@@ -3,7 +3,6 @@ package aeropresscipe.divinelink.aeropress.generaterecipe.models
 import aeropresscipe.divinelink.aeropress.generaterecipe.BrewMethod
 import aeropresscipe.divinelink.aeropress.generaterecipe.CoffeeGrindSize
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
-import androidx.room.Ignore
 import gr.divinelink.core.util.extensions.getPairOfMinutesSeconds
 import java.io.Serializable
 
@@ -16,7 +15,7 @@ data class Recipe(
     var brewWaterAmount: Int,
     var grindSize: CoffeeGrindSize,
     var brewMethod: BrewMethod,
-    @Ignore var isNewRecipe: Boolean = false,
+    @Transient var isNewRecipe: Boolean = false,
 ) : Serializable {
     companion object {
         private const val serialVersionUID: Long = 1L
@@ -34,10 +33,10 @@ fun Recipe.remainingWater(): Int {
 fun Recipe.getBrewingStates(): MutableList<BrewState> {
     val brewStates: MutableList<BrewState> = mutableListOf()
     if (this.withBloom()) {
-        brewStates.add(BrewState.Bloom(water = this.bloomWater, time = this.bloomTime.toLong()))
-        brewStates.add(BrewState.BrewWithBloom(water = this.remainingWater(), time = this.brewTime.toLong()))
+        brewStates.add(BrewState.Bloom(water = this.bloomWater, time = this.bloomTime))
+        brewStates.add(BrewState.BrewWithBloom(water = this.remainingWater(), time = this.brewTime))
     } else {
-        brewStates.add(BrewState.Brew(water = this.brewWaterAmount, time = this.brewTime.toLong()))
+        brewStates.add(BrewState.Brew(water = this.brewWaterAmount, time = this.brewTime))
     }
     brewStates.add(BrewState.Finished)
     return brewStates
@@ -64,7 +63,7 @@ fun Recipe.buildSteps(): MutableList<RecipeStep> {
     } else {
         steps.add(RecipeStep.PourWaterStep(waterAmount = this.brewWaterAmount))
     }
-    val timeLeft = brewTime.toLong().getPairOfMinutesSeconds()
+    val timeLeft = brewTime.getPairOfMinutesSeconds()
     steps.add(RecipeStep.WaitToBrewStep(timeLeft.first, timeLeft.second))
 
     if (this.brewMethod == BrewMethod.INVERTED) {

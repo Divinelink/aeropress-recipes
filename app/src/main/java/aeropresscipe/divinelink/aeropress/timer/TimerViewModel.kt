@@ -1,25 +1,19 @@
 package aeropresscipe.divinelink.aeropress.timer
 
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.getBrewingStates
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import aeropresscipe.divinelink.aeropress.timer.util.BrewPhase
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
 import aeropresscipe.divinelink.aeropress.timer.util.Phase
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
-import android.annotation.SuppressLint
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import gr.divinelink.core.util.extensions.inMilliseconds
 import timber.log.Timber
 import java.lang.ref.WeakReference
-import java.text.SimpleDateFormat
-import java.util.Date
 
 class TimerViewModel @AssistedInject constructor(
     private var repository: TimerRepository,
@@ -28,7 +22,7 @@ class TimerViewModel @AssistedInject constructor(
     TimerIntents {
     internal var statesList: MutableList<TimerState> = mutableListOf()
 
-    private var transferableModel: TimerTransferableModel? = null
+    internal var transferableModel: TimerTransferableModel? = null
 
     var state: TimerState = TimerState.InitialState
         set(value) {
@@ -37,6 +31,10 @@ class TimerViewModel @AssistedInject constructor(
             statesList.add(value)
             delegate?.get()?.updateState(value)
         }
+
+    init {
+        state = TimerState.InitialState
+    }
 
     override fun init(transferableModel: TimerTransferableModel) {
         this.transferableModel = transferableModel
@@ -47,33 +45,43 @@ class TimerViewModel @AssistedInject constructor(
         this.transferableModel?.brew = brewPhase
 
         repository.isRecipeSaved(transferableModel.recipe) { saved ->
-            val image = when (saved) {
-                true -> R.drawable.ic_heart_on
-                false -> R.drawable.ic_heart_off
+            val frame = when (saved) {
+                true -> TimerFragment.LIKE_MAX_FRAME
+                false -> TimerFragment.DISLIKE_MAX_FRAME
             }
-            state = TimerState.UpdateSavedIndicator(image)
+            state = TimerState.UpdateSavedIndicator(frame)
         }
     }
 
     override fun resume() {
         repository.resume {
-            if (it != null) {
-                val states = transferableModel?.recipe?.getBrewingStates()
-                val bloomTimeLeft = it.bloomTimeLeft - System.currentTimeMillis()
-                val brewTimeLeft = it.brewTimeLeft - System.currentTimeMillis()
+            val states = transferableModel?.recipe?.getBrewingStates()
+            val bloomTimeLeft = it.bloomEndTimeMillis - System.currentTimeMillis()
+            val brewTimeLeft = it.brewEndTimeMillis - System.currentTimeMillis()
 
-                if (bloomTimeLeft > 0) {
-                    val bloomState = states?.firstOrNull { state -> state.phase == Phase.Bloom }
-                    transferableModel?.currentBrewState = bloomState
-                    startTimerStates(bloomState!!, bloomTimeLeft)
-                } else if (brewTimeLeft > 0) {
-                    val brewState = states?.firstOrNull { state -> state.phase == Phase.Brew }
-                    transferableModel?.currentBrewState = brewState
-                    startTimerStates(brewState!!, brewTimeLeft)
-                } else {
-                    state = TimerState.FinishState
-                }
+            if (bloomTimeLeft > 0) {
+                val bloomState = states?.firstOrNull { state -> state.phase == Phase.Bloom }
+                transferableModel?.currentBrewState = bloomState
+                startTimerStates(bloomState!!, bloomTimeLeft)
+            } else if (brewTimeLeft > 0) {
+                val brewState = states?.firstOrNull { state -> state.phase == Phase.Brew }
+                transferableModel?.currentBrewState = brewState
+                startTimerStates(brewState!!, brewTimeLeft)
+            } else {
+                finishRecipeBrewing()
             }
+
+            repository.addToHistory(it.recipe) {
+                // Do nothing
+            }
+        }
+    }
+
+    private fun finishRecipeBrewing() {
+        repository.updateTimes(bloomEnds = 0L, brewEnds = 0L)
+        repository.updateBrewingState(false) {
+            Timber.d("Recipe finished brewing")
+            state = TimerState.FinishState
         }
     }
 
@@ -97,7 +105,6 @@ class TimerViewModel @AssistedInject constructor(
             // Initialise Timer
             repository.addToHistory(
                 recipe = transferableModel?.recipe!!,
-                brewDate = getCurrentDate(),
                 completionBlock = {
                     startTimers()
                 }
@@ -115,10 +122,7 @@ class TimerViewModel @AssistedInject constructor(
             // Update current brew state
             transferableModel?.currentBrewState = brew.getCurrentState()
             if (brew.getCurrentState() == BrewState.Finished) {
-                repository.updateBrewingState(false) {
-                    Timber.d("Recipe finished brewing")
-                }
-                state = TimerState.FinishState
+                finishRecipeBrewing()
             } else {
                 startTimerStates(brew.getCurrentState(), brew.getCurrentState().brewTime.inMilliseconds(), animate = true)
             }
@@ -142,7 +146,7 @@ class TimerViewModel @AssistedInject constructor(
             else -> {
                 repository.updateTimes(bloomEnds = 0L, brewEnds = 0L)
                 repository.updateBrewingState(false) {
-                    Timber.d("Recipe brewing set to false.")
+                    state = TimerState.ExitState
                 }
             }
         }
@@ -164,27 +168,19 @@ class TimerViewModel @AssistedInject constructor(
             state = TimerState.ErrorState("Something went wrong!") // Fixme
         } else {
             // Save Recipe on DB
-            val savedRecipe = SavedRecipeDomain(recipe, getCurrentDate())
             repository.likeCurrentRecipe(
-                recipe = savedRecipe,
+                recipe = recipe,
                 completionBlock = { recipeLiked ->
                     if (recipeLiked) {
                         state = TimerState.RecipeSavedState
-                        repository.updateHistory(recipe, getCurrentDate(), recipeLiked) { /* Intentionally Blank. */ }
+                        repository.updateHistory(recipe, recipeLiked) { /* Intentionally Blank. */ }
                     } else {
                         state = TimerState.RecipeRemovedState
-                        repository.updateHistory(recipe, getCurrentDate(), recipeLiked) { /* Intentionally Blank. */ }
+                        repository.updateHistory(recipe, recipeLiked) { /* Intentionally Blank. */ }
                     }
                 }
             )
         }
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    private fun getCurrentDate(): String {
-        val date = Date()
-        val formatter = SimpleDateFormat("dd MMMM yyyy")
-        return formatter.format(date.time)
     }
 }
 
@@ -209,7 +205,7 @@ sealed class TimerState {
     object RecipeSavedState : TimerState()
     object RecipeRemovedState : TimerState()
 
-    data class UpdateSavedIndicator(@DrawableRes val image: Int) : TimerState()
+    data class UpdateSavedIndicator(val frame: Int) : TimerState()
 
     data class StartTimer(
         val water: Int,

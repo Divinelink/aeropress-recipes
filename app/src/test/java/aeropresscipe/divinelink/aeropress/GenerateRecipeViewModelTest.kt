@@ -10,10 +10,15 @@ import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeViewModel
 import aeropresscipe.divinelink.aeropress.generaterecipe.IGenerateRecipeViewModel
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.timer.TimerFragment
+import aeropresscipe.divinelink.aeropress.timer.TimerRepository
+import aeropresscipe.divinelink.aeropress.timer.TimerServices
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.LocalDateTime
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -33,8 +38,15 @@ class GenerateRecipeViewModelTest {
 
     @Mock
     private var remote: GenerateRecipeRemote = mock()
+    @Mock
+    private var timerRemote: TimerServices = mock()
 
     private var repository: GenerateRecipeRepository = GenerateRecipeRepository(remote)
+    private var timerRepository: TimerRepository = TimerRepository(timerRemote)
+
+    private val sunday9am: LocalDateTime = LocalDateTime(2021, 7, 4, 9, 0, 0)
+    private val sunday130pm: LocalDateTime = LocalDateTime(2021, 7, 4, 13, 30, 0)
+    private val sunday930pm: LocalDateTime = LocalDateTime(2021, 7, 4, 21, 30, 0)
 
     private fun initViewModel() {
         viewModel = GenerateRecipeViewModel(
@@ -44,7 +56,8 @@ class GenerateRecipeViewModelTest {
                     // do nothing
                 }
             }),
-            repository = repository)
+            repository = repository,
+            timerRepository = timerRepository)
 
         viewModelIntent = viewModel
     }
@@ -68,7 +81,8 @@ class GenerateRecipeViewModelTest {
         // When
         viewModel.forceGenerateRecipe()
         // Then
-        assertTrue(viewModel.statesList[1] is GenerateRecipeState.RefreshRecipeState)
+        assertTrue(viewModel.statesList[0] is GenerateRecipeState.RefreshRecipeState)
+        assertEquals(viewModel.statesList[1], GenerateRecipeState.UpdateSavedIndicator(TimerFragment.DISLIKE_MAX_FRAME))
         assertEquals(viewModel.statesList[2], GenerateRecipeState.HideResumeButtonState)
     }
 
@@ -80,8 +94,38 @@ class GenerateRecipeViewModelTest {
         // When
         viewModel.forceGenerateRecipe()
         // Then
-        assertTrue(viewModel.statesList[1] is GenerateRecipeState.RefreshRecipeState)
+        assertTrue(viewModel.statesList[0] is GenerateRecipeState.RefreshRecipeState)
+        assertEquals(viewModel.statesList[1], GenerateRecipeState.UpdateSavedIndicator(TimerFragment.DISLIKE_MAX_FRAME))
         assertEquals(viewModel.statesList[2], GenerateRecipeState.HideResumeButtonState)
+    }
+
+    @Test
+    fun `given time is 0900 am, then I expect morning message`() {
+        viewModel.init(sunday9am.hour)
+
+        assertTrue(viewModel.statesList[0] is GenerateRecipeState.InitialState)
+        assertEquals(viewModel.statesList[1], GenerateRecipeState.UpdateToolbarState(R.string.good_morning))
+        assertNotEquals(viewModel.statesList[1], GenerateRecipeState.UpdateToolbarState(R.string.good_afternoon))
+        assertNotEquals(viewModel.statesList[1], GenerateRecipeState.UpdateToolbarState(R.string.good_evening))
+    }
+
+    @Test
+    fun `given time is 130 PM, then I expect afternoon message`() {
+        viewModel.init(sunday130pm.hour)
+
+        assertTrue(viewModel.statesList[0] is GenerateRecipeState.InitialState)
+        assertEquals(viewModel.statesList[1], GenerateRecipeState.UpdateToolbarState(R.string.good_afternoon))
+        assertNotEquals(viewModel.statesList[1], GenerateRecipeState.UpdateToolbarState(R.string.good_morning))
+        assertNotEquals(viewModel.statesList[1], GenerateRecipeState.UpdateToolbarState(R.string.good_evening))
+    }
+
+    @Test
+    fun `given time is 2130 PM, then I expect evening message`() {
+        viewModel.init(sunday930pm.hour)
+        assertTrue(viewModel.statesList[0] is GenerateRecipeState.InitialState)
+        assertEquals(viewModel.statesList[1], GenerateRecipeState.UpdateToolbarState(R.string.good_evening))
+        assertNotEquals(viewModel.statesList[1], GenerateRecipeState.UpdateToolbarState(R.string.good_morning))
+        assertNotEquals(viewModel.statesList[1], GenerateRecipeState.UpdateToolbarState(R.string.good_afternoon))
     }
 
     private fun recipeModel(
