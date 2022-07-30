@@ -7,8 +7,8 @@
 
     <string name="grindCoffeeText">Grind &lt;b&gt;%dg&lt;/b&gt; of coffee to a &lt;b&gt;%s&lt;/b&gt; grind.</string>
 
-    <string name="normal_orientation_text">Place the aeropress on the mug in the normal orientation with wet filter and cap on.</string>
-    <string name="inverted_orientation_text">Place the aeropress in the upside-down orientation.</string>
+    <string name="normal_orientation_text">Place the aeropress on the mug in the &lt;b&gt;normal orientation&lt;/b&gt; with wet filter and cap on.</string>
+    <string name="inverted_orientation_text">Place the aeropress in the &lt;b&gt;upside-down&lt;/b&gt; orientation.</string>
 
     <string name="addWaterText">Add &lt;b&gt;%dg&lt;/b&gt; of water and wait &lt;b&gt;%d&lt;/b&gt; seconds for the coffee to bloom.</string>
 
