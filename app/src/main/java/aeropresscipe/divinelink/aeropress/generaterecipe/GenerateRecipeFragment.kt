@@ -124,7 +124,7 @@ class GenerateRecipeFragment :
 
     override fun handleShowAlreadyBrewingState() {
         Notification.make(binding?.generateRecipeButton, R.string.alreadyBrewingDialog)
-            .setAnchorView(R.id.resumeBrewButton)
+            .setAnchorView(R.id.generateRecipeButton)
             .show()
     }
 
@@ -161,7 +161,7 @@ class GenerateRecipeFragment :
 
     override fun handleShowSnackBar(state: GenerateRecipeState.ShowSnackBar) {
         Notification.make(binding?.generateRecipeButton, resources.getString(state.value.string, getString(state.value.favorites)))
-            .setAnchorView(R.id.resumeBrewButton)
+            .setAnchorView(R.id.generateRecipeButton)
             .show()
     }
 
