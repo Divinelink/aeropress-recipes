@@ -6,7 +6,7 @@
     <dimen name="text_size">14sp</dimen>
 
 
-    <dimen name="startEndMargin">4dp</dimen>
+    <dimen name="startEndMargin">16dp</dimen>
     <dimen name="Body_Normal_Importance">14sp</dimen>
     <dimen name="Body_Low_Importance">12sp</dimen>
 
