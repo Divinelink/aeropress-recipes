@@ -41,7 +41,7 @@ class SlideUpWithSnackbarBehavior(context: Context, attributeSet: AttributeSet?)
 
     companion object {
         @Dimension(unit = Dimension.DP)
-        private val PAD_TOP_OF_SNACKBAR_DP = 12f
+        private val PAD_TOP_OF_SNACKBAR_DP = 8f
         private const val SLIDE_DURATION = 200L
     }
 }
