@@ -3,6 +3,7 @@ package aeropresscipe.divinelink.aeropress.timer
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.customviews.Notification.Companion.make
 import aeropresscipe.divinelink.aeropress.databinding.FragmentTimerBinding
+import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
 import aeropresscipe.divinelink.aeropress.finish.FinishActivity
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
@@ -16,13 +17,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.airbnb.lottie.model.KeyPath
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.constants.Numbers.ONE
 import gr.divinelink.core.util.constants.Numbers.ONE_THOUSAND
 import gr.divinelink.core.util.constants.Numbers.SIXTY
 import gr.divinelink.core.util.constants.Numbers.THREE_HUNDRED
-import gr.divinelink.core.util.extensions.changeLayersColor
 import gr.divinelink.core.util.extensions.getPairOfMinutesSeconds
 import gr.divinelink.core.util.timer.PreciseCountdown
 import java.lang.ref.WeakReference
@@ -133,16 +132,7 @@ class TimerFragment : Fragment(),
     }
 
     override fun handleInitialState() {
-        binding?.apply {
-            likeButton.changeLayersColor(R.color.colorPrimary, KeyPath("Heart Fill", "**"))
-            likeButton.changeLayersColor(R.color.colorPrimary, KeyPath("Circle 2", "**"))
-            likeButton.changeLayersColor(R.color.colorPrimary, KeyPath("Circle 1", "**"))
-            likeButton.changeLayersColor(R.color.colorPrimary, KeyPath("Heart Fill Small 4", "**"))
-            likeButton.changeLayersColor(R.color.colorOnBackground, KeyPath("Heart Stroke 2", "**"))
-            likeButton.changeLayersColor(R.color.colorOnBackground, KeyPath("Heart Stroke", "**"))
-            likeButton.changeLayersColor(R.color.colorOnPrimaryContainer, KeyPath("Heart Fill Small 2", "**"))
-            likeButton.changeLayersColor(R.color.colorOnPrimaryContainer, KeyPath("Heart Fill Small 3", "**"))
-        }
+        LottieHelper.updateLikeButton(binding?.likeButton)
     }
 
     override fun handleLoadingState() {

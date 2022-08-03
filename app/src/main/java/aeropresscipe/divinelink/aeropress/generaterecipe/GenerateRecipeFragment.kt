@@ -3,6 +3,7 @@ package aeropresscipe.divinelink.aeropress.generaterecipe
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.customviews.Notification
 import aeropresscipe.divinelink.aeropress.databinding.FragmentGenerateRecipeBinding
+import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
 import aeropresscipe.divinelink.aeropress.timer.TimerFragment
 import android.os.Bundle
@@ -14,9 +15,7 @@ import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.airbnb.lottie.LottieAnimationView
-import com.airbnb.lottie.model.KeyPath
 import dagger.hilt.android.AndroidEntryPoint
-import gr.divinelink.core.util.extensions.changeLayersColor
 import gr.divinelink.core.util.extensions.fadeOut
 import gr.divinelink.core.util.utils.ThreadUtil
 import kotlinx.coroutines.MainScope
@@ -100,14 +99,7 @@ class GenerateRecipeFragment :
         favoriteMenuItem?.setActionView(R.layout.layout_favorite_item)
         lottieFavorite = favoriteMenuItem?.actionView as LottieAnimationView?
 
-        lottieFavorite?.changeLayersColor(R.color.colorPrimary, KeyPath("Heart Fill", "**"))
-        lottieFavorite?.changeLayersColor(R.color.colorPrimary, KeyPath("Circle 2", "**"))
-        lottieFavorite?.changeLayersColor(R.color.colorPrimary, KeyPath("Circle 1", "**"))
-        lottieFavorite?.changeLayersColor(R.color.colorPrimary, KeyPath("Heart Fill Small 4", "**"))
-        lottieFavorite?.changeLayersColor(R.color.colorOnBackground, KeyPath("Heart Stroke 2", "**"))
-        lottieFavorite?.changeLayersColor(R.color.colorOnBackground, KeyPath("Heart Stroke", "**"))
-        lottieFavorite?.changeLayersColor(R.color.colorOnPrimaryContainer, KeyPath("Heart Fill Small 2", "**"))
-        lottieFavorite?.changeLayersColor(R.color.colorOnPrimaryContainer, KeyPath("Heart Fill Small 3", "**"))
+        LottieHelper.updateLikeButton(lottieFavorite)
 
         fadeInAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.initiliaze_animation)
         adapterAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.adapter_anim)
