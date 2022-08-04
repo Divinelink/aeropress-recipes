@@ -19,11 +19,11 @@
         app:sal_isFullActionSupported="false"
         app:sal_shouldVibrateOnQuickAction="false">
 
-        <include
+        <aeropresscipe.divinelink.aeropress.customviews.RecipeCardView
             android:id="@+id/card"
-            layout="@layout/card_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
     </gr.divinelink.core.util.swipe.SwipeToActionLayout>
 
 </androidx.cardview.widget.CardView>
