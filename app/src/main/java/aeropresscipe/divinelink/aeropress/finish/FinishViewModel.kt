@@ -22,6 +22,7 @@ class FinishViewModel @AssistedInject constructor(
             Timber.d(value.toString())
             field = value
             delegate?.get()?.updateState(value)
+            statesList.add(value)
         }
 
     init {
