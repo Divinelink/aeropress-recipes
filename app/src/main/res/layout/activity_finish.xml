@@ -72,7 +72,7 @@
             android:layout_marginBottom="32dp"
             app:cardCornerRadius="16dp">
 
-            <!--            <include layout="@layout/card_layout" />-->
+            <include layout="@layout/card_layout" />
 
         </androidx.cardview.widget.CardView>
 
@@ -131,10 +131,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:cornerRadius="32dp"
             android:background="?android:attr/selectableItemBackground"
             android:text="@string/close"
-            android:textColor="@color/colorOnBackground" />
+            android:textColor="@color/colorOnBackground"
+            app:cornerRadius="32dp" />
 
     </LinearLayout>
 

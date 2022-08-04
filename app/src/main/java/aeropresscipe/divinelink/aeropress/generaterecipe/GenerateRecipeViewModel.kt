@@ -25,7 +25,6 @@ class GenerateRecipeViewModel @AssistedInject constructor(
     private var timerRepository: TimerRepository,
     @Assisted override var delegate: WeakReference<IGenerateRecipeViewModel>? = null
 ) : BaseViewModel<IGenerateRecipeViewModel>(),
-
     GenerateRecipeIntents {
     internal var statesList: MutableList<GenerateRecipeState> = mutableListOf()
     private var dice: DiceDomain? = null
