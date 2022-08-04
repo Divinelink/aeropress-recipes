@@ -1,10 +1,11 @@
 package aeropresscipe.divinelink.aeropress.savedrecipes.adapter
 
 import aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.customviews.RecipeCard
+import aeropresscipe.divinelink.aeropress.customviews.RecipeCardView
 import aeropresscipe.divinelink.aeropress.databinding.EmptyRecyclerLayoutBinding
 import aeropresscipe.divinelink.aeropress.databinding.RecipeCardItemBinding
 import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.history.History
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import aeropresscipe.divinelink.aeropress.timer.TimerFragment
@@ -15,11 +16,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import gr.divinelink.core.util.extensions.toFahrenheit
 import gr.divinelink.core.util.swipe.ActionBindHelper
 import gr.divinelink.core.util.swipe.SwipeAction
 import gr.divinelink.core.util.swipe.SwipeMenuListener
-import java.util.Locale
 
 typealias OnActionClicked = (recipe: Any, action: SwipeAction) -> Unit
 
@@ -128,7 +127,8 @@ class RecipesAdapter(
                 if (payloads.isEmpty()) {
                     holder.updateView(item as History)
                     actionsBindHelper.bind(item.id.toString(), holder.binding.recipeItem)
-                    holder.binding.card.likeButton.setOnClickListener { onLike?.invoke(item, position) }
+                    holder.binding.card.setOnLikeButtonListener { onLike?.invoke(item, position) }
+//                    holder.binding.card.setOnLikeButtonListener { onLike?.invoke(item, position) }
                 } else {
                     val like = payloads[0] as Boolean
                     holder.updateWithAnimation(like)
@@ -155,7 +155,7 @@ class RecipesAdapter(
         fun updateView(item: SavedRecipeDomain) {
             swipeToAction.menuListener = this
             swipeToAction.setActionsRes(R.menu.favorites_action_menu)
-            setCard(binding, item.recipe, item.dateBrewed)
+            binding.card.setRecipe(RecipeCard.FavoritesCard(item.recipe, item.dateBrewed))
         }
 
         override fun onClosed(view: View) {
@@ -193,30 +193,30 @@ class RecipesAdapter(
         private val swipeToAction = binding.recipeItem
 
         fun updateView(item: History) {
-            setCard(binding, item.recipe, item.dateBrewed)
+            binding.card.setRecipe(RecipeCard.HistoryCard(item.recipe, item.dateBrewed))
+            binding.card.enableLikeButton(true)
             swipeToAction.setActionsRes(R.menu.history_action_menu)
             swipeToAction.menuListener = this
 
-            LottieHelper.updateLikeButton(binding.card.likeButton)
+            LottieHelper.updateLikeButton(binding.card.binding.likeButton)
 
-            binding.card.likeRecipeLayout.visibility = View.VISIBLE
             update(item.isRecipeLiked)
         }
 
         private fun update(like: Boolean) {
             when (like) {
-                true -> binding.card.likeButton.frame = TimerFragment.LIKE_MAX_FRAME
-                false -> binding.card.likeButton.frame = TimerFragment.DISLIKE_MAX_FRAME
+                true -> binding.card.binding.likeButton.frame = TimerFragment.LIKE_MAX_FRAME
+                false -> binding.card.binding.likeButton.frame = TimerFragment.DISLIKE_MAX_FRAME
             }
         }
 
         fun updateWithAnimation(like: Boolean) {
             when (like) {
-                true -> binding.card.likeButton.setMinAndMaxFrame(TimerFragment.LIKE_MIN_FRAME, TimerFragment.LIKE_MAX_FRAME)
-                false -> binding.card.likeButton.setMinAndMaxFrame(TimerFragment.DISLIKE_MIN_FRAME, TimerFragment.DISLIKE_MAX_FRAME)
+                true -> binding.card.binding.likeButton.setMinAndMaxFrame(TimerFragment.LIKE_MIN_FRAME, TimerFragment.LIKE_MAX_FRAME)
+                false -> binding.card.binding.likeButton.setMinAndMaxFrame(TimerFragment.DISLIKE_MIN_FRAME, TimerFragment.DISLIKE_MAX_FRAME)
             }
-            binding.card.likeButton.clipToCompositionBounds = false
-            binding.card.likeButton.playAnimation()
+            binding.card.binding.likeButton.clipToCompositionBounds = false
+            binding.card.binding.likeButton.playAnimation()
         }
 
         override fun onClosed(view: View) {
@@ -228,44 +228,12 @@ class RecipesAdapter(
             actionsBindHelper.closeOtherThan(recipe.id.toString())
         }
 
-        override fun onFullyOpened(view: View, action: SwipeAction) {
+        override fun onFullyOpened(view: View, quickAction: SwipeAction) {
             // Intentionally Empty.
         }
 
         override fun onActionClicked(view: View, action: SwipeAction) {
             onActionClicked(currentList[layoutPosition] as History, action)
-        }
-    }
-
-    private fun setCard(binding: RecipeCardItemBinding, recipe: Recipe, brewDate: String) {
-        val totalWater = recipe.brewWaterAmount
-        val totalTime = recipe.bloomTime + recipe.brewTime
-        val bloomTime = recipe.bloomTime
-        val temp = recipe.diceTemperature
-        val grindSize = recipe.grindSize.size.substring(0, 1)
-            .uppercase(Locale.getDefault()) + recipe.grindSize.size.substring(1).lowercase(
-            Locale.getDefault()
-        )
-        binding.card.recipeTitle.text =
-            context.resources.getString(R.string.dateBrewedTextView, brewDate)
-        binding.card.waterAndTempTV.text = context.resources.getString(
-            R.string.SavedWaterAndTempTextView, totalWater, temp, temp.toFahrenheit()
-        )
-        binding.card.beansWeightTV.text =
-            context.resources.getString(R.string.SavedCoffeeWeightTextView, recipe.coffeeAmount)
-        binding.card.beansGrindLevelTV.text =
-            context.resources.getString(R.string.SavedGrindLevelTextView, grindSize)
-        binding.card.brewingMethodTextView.text =
-            context.resources.getString(R.string.SavedBrewingMethodTextView, recipe.brewMethod.method)
-
-        if (bloomTime == 0L) {
-            binding.card.brewingTimeTextView.text = context.resources.getString(
-                R.string.SavedTotalTimeTextView, totalTime
-            )
-        } else {
-            binding.card.brewingTimeTextView.text = context.resources.getString(
-                R.string.SavedTotalTimeWithBloomTextView, recipe.brewTime, bloomTime
-            )
         }
     }
 }
