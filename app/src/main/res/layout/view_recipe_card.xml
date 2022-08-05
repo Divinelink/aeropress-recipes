@@ -1,7 +1,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true">
@@ -9,7 +9,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:paddingBottom="8dp">
 
         <TextView
             android:id="@+id/recipe_title"
@@ -17,9 +20,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:text="Brewed On: DATE HERE" />
 
         <LinearLayout
@@ -28,11 +28,7 @@
             android:layout_marginTop="4dp"
             android:baselineAligned="false"
             android:clipChildren="false"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recipe_title">
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -40,50 +36,23 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <LinearLayout style="@style/SavedRecipeLinearLayoutForViewsStyle">
+                <TextView
+                    android:id="@+id/waterAndTempTV"
+                    style="@style/RecipeItemStyle"
+                    app:drawableStartCompat="@drawable/ic_kettlebyxnimrodx"
+                    tools:text="Water and Temp" />
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/waterAmountImageView"
-                        style="@style/SavedRecipeImageViewStyle"
-                        android:contentDescription="@string/water_temperature_image"
-                        android:src="@drawable/ic_kettlebyxnimrodx" />
+                <TextView
+                    android:id="@+id/beansWeightTV"
+                    style="@style/RecipeItemStyle"
+                    app:drawableStartCompat="@drawable/ic_weightbyphoto3idea_studio"
+                    tools:text="Beans Weight" />
 
-                    <TextView
-                        android:id="@+id/waterAndTempTV"
-                        style="@style/SavedRecipeItemTextViewStyle"
-                        tools:text="Water and Temp" />
-
-                </LinearLayout>
-
-
-                <LinearLayout style="@style/SavedRecipeLinearLayoutForViewsStyle">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/beansWeight"
-                        style="@style/SavedRecipeImageViewStyle"
-                        android:contentDescription="@string/beans_weight_image"
-                        android:src="@drawable/ic_weightbyphoto3idea_studio" />
-
-                    <TextView
-                        android:id="@+id/beansWeightTV"
-                        style="@style/SavedRecipeItemTextViewStyle"
-                        tools:text="Beans Weight" />
-
-                </LinearLayout>
-
-                <LinearLayout style="@style/SavedRecipeLinearLayoutForViewsStyle">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/beansGrindLevel"
-                        style="@style/SavedRecipeImageViewStyle"
-                        android:contentDescription="@string/grind_level_image"
-                        android:src="@drawable/ic_coffee_grinderbypongsakornred" />
-
-                    <TextView
-                        android:id="@+id/beansGrindLevelTV"
-                        style="@style/SavedRecipeItemTextViewStyle"
-                        tools:text="Beans Grind" />
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/beansGrindLevelTV"
+                    style="@style/RecipeItemStyle"
+                    app:drawableStartCompat="@drawable/ic_coffee_grinderbypongsakornred"
+                    tools:text="Beans Grind" />
 
             </LinearLayout>
 
@@ -92,58 +61,46 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:clipChildren="false"
+                android:clipToPadding="false"
                 android:orientation="vertical">
 
-                <LinearLayout style="@style/SavedRecipeLinearLayoutForViewsStyle">
+                <TextView
+                    android:id="@+id/brewingMethodTextView"
+                    style="@style/RecipeItemStyle"
+                    app:drawableStartCompat="@drawable/ic_aeropressbyxnimrodx"
+                    tools:text="Brew Method" />
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/brewingMethodImage"
-                        style="@style/SavedRecipeImageViewStyle"
-                        android:contentDescription="@string/brew_method_image"
-                        android:src="@drawable/ic_aeropressbyxnimrodx" />
-
-                    <TextView
-                        android:id="@+id/brewingMethodTextView"
-                        style="@style/SavedRecipeItemTextViewStyle"
-                        tools:text="Brew Method" />
-                </LinearLayout>
-
-                <LinearLayout style="@style/SavedRecipeLinearLayoutForViewsStyle">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/time"
-                        style="@style/SavedRecipeImageViewStyle"
-                        android:contentDescription="@string/brew_time_image"
-                        android:src="@drawable/ic_chronometerbyfreepik" />
-
-                    <TextView
-                        android:id="@+id/brewingTimeTextView"
-                        style="@style/SavedRecipeItemTextViewStyle"
-                        tools:text="Time" />
-
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/brewingTimeTextView"
+                    style="@style/RecipeItemStyle"
+                    app:drawableStartCompat="@drawable/ic_chronometerbyfreepik"
+                    tools:text="Time" />
 
                 <LinearLayout
                     android:id="@+id/likeRecipeLayout"
-                    style="@style/SavedRecipeLinearLayoutForViewsStyle"
-                    android:layout_marginBottom="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:clipChildren="false"
+                    android:clipToPadding="false"
                     android:visibility="gone"
                     tools:visibility="visible">
 
-
                     <com.airbnb.lottie.LottieAnimationView
                         android:id="@+id/likeButton"
-                        style="@style/SavedRecipeImageViewStyle"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:layout_gravity="center"
-                        android:scaleX="2.5"
-                        android:scaleY="2.5"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:scaleX="2.2"
+                        android:scaleY="2.2"
                         app:lottie_clipToCompositionBounds="false"
                         app:lottie_rawRes="@raw/like" />
 
                     <TextView
                         android:id="@+id/AddToFavourites"
-                        style="@style/SavedRecipeItemTextViewStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:paddingTop="4dp"
                         android:text="@string/add_favorite"
                         tools:text="Add Favorite" />
