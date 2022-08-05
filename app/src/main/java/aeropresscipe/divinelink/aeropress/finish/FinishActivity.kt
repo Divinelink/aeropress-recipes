@@ -74,6 +74,7 @@ class FinishActivity :
 
             close.setOnClickListener { viewModel.closeButtonClicked() }
             toolbar.setNavigationOnClickListener { viewModel.closeButtonClicked() }
+            likeButton.setOnClickListener { viewModel.likeRecipe(recipe) }
 
             recipe?.let {
                 binding.card.setRecipe(RecipeCard.FinishCard(recipe = it))
