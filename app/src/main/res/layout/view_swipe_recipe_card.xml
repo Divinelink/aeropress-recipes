@@ -12,7 +12,7 @@
     app:cardCornerRadius="8dp">
 
     <gr.divinelink.core.util.swipe.SwipeToActionLayout
-        android:id="@+id/recipe_item"
+        android:id="@+id/swipe_action_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:sal_gravity="right"

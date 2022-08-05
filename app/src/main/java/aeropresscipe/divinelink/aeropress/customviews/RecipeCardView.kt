@@ -21,8 +21,8 @@ class RecipeCardView : FrameLayout {
         addView(binding.root)
     }
 
-    fun enableLikeButton(withLike: Boolean) {
-        if (withLike) {
+    fun enableLikeButton(enable: Boolean) {
+        if (enable) {
             binding.likeRecipeLayout.visibility = View.VISIBLE
         } else {
             binding.likeRecipeLayout.visibility = View.GONE
@@ -34,10 +34,10 @@ class RecipeCardView : FrameLayout {
         val totalTime = card.recipe.bloomTime + card.recipe.brewTime
         val bloomTime = card.recipe.bloomTime
         val temp = card.recipe.diceTemperature
-        val grindSize = card.recipe.grindSize.size.substring(0, 1)
-            .uppercase(Locale.getDefault()) + card.recipe.grindSize.size.substring(1).lowercase(
-            Locale.getDefault()
-        )
+        val grindSize = card.recipe.grindSize.size
+            .substring(0, 1)
+            .uppercase(Locale.getDefault()) + card.recipe.grindSize.size.substring(1)
+            .lowercase(Locale.getDefault())
 
         binding.recipeTitle.visibility = card.brewDateVisibility
         binding.recipeTitle.text = context.resources.getString(R.string.dateBrewedTextView, card.brewDate)
@@ -65,11 +65,11 @@ class RecipeCardView : FrameLayout {
         this.likeButtonListener = l
     }
 
-//    fun setOnLikeButtonListener(l: () -> Unit) {
-//        this.likeButtonListener = LikeButtonListener {
-//            l.invoke()
-//        }
-//    }
+    fun setOnLikeButtonListener(l: () -> Unit) {
+        this.likeButtonListener = LikeButtonListener {
+            l.invoke()
+        }
+    }
 
     fun interface LikeButtonListener {
         fun onClickListener()

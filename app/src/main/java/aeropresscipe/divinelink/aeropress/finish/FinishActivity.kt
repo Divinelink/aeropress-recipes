@@ -1,9 +1,11 @@
 package aeropresscipe.divinelink.aeropress.finish
 
 import aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.customviews.RecipeCard
 import aeropresscipe.divinelink.aeropress.databinding.ActivityFinishBinding
 import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.timer.TimerFragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -28,12 +30,16 @@ class FinishActivity :
     lateinit var assistedFactory: FinishViewModelAssistedFactory
     private lateinit var viewModel: FinishViewModel
 
+    var recipe: Recipe? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFinishBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
         setNavigationBarColor(this, ContextCompat.getColor(this, R.color.colorBackground))
+
+        recipe = intent?.getSerializableExtra(TimerFragment.TIMER) as Recipe?
 
         val viewModelFactory = FinishViewModelFactory(assistedFactory, WeakReference<IFinishViewModel>(this))
         viewModel = ViewModelProvider(this, viewModelFactory).get(FinishViewModel::class.java)
@@ -64,6 +70,11 @@ class FinishActivity :
 
             close.setOnClickListener { viewModel.closeButtonClicked() }
             toolbar.setNavigationOnClickListener { viewModel.closeButtonClicked() }
+
+            recipe?.let {
+                binding.card.setRecipe(RecipeCard.FinishCard(recipe = it))
+            }
+
         }
     }
 

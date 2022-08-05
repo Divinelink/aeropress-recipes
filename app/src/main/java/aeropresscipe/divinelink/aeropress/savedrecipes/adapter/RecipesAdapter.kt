@@ -2,9 +2,8 @@ package aeropresscipe.divinelink.aeropress.savedrecipes.adapter
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.customviews.RecipeCard
-import aeropresscipe.divinelink.aeropress.customviews.RecipeCardView
 import aeropresscipe.divinelink.aeropress.databinding.EmptyRecyclerLayoutBinding
-import aeropresscipe.divinelink.aeropress.databinding.RecipeCardItemBinding
+import aeropresscipe.divinelink.aeropress.databinding.ViewSwipeRecipeCardBinding
 import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
 import aeropresscipe.divinelink.aeropress.history.History
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
@@ -96,8 +95,8 @@ class RecipesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            Recipe -> RecipeViewHolder(RecipeCardItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-            History -> HistoryViewHolder(RecipeCardItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            Recipe -> RecipeViewHolder(ViewSwipeRecipeCardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            History -> HistoryViewHolder(ViewSwipeRecipeCardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             Empty_History -> {
                 EmptyViewHolder(
                     EmptyRecyclerLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false),
@@ -126,7 +125,7 @@ class RecipesAdapter(
             is HistoryViewHolder -> {
                 if (payloads.isEmpty()) {
                     holder.updateView(item as History)
-                    actionsBindHelper.bind(item.id.toString(), holder.binding.recipeItem)
+                    actionsBindHelper.bind(item.id.toString(), holder.binding.swipeActionLayout)
                     holder.binding.card.setOnLikeButtonListener { onLike?.invoke(item, position) }
 //                    holder.binding.card.setOnLikeButtonListener { onLike?.invoke(item, position) }
                 } else {
@@ -136,7 +135,7 @@ class RecipesAdapter(
             }
             is RecipeViewHolder -> {
                 holder.updateView(item as SavedRecipeDomain)
-                actionsBindHelper.bind(item.id.toString(), holder.binding.recipeItem)
+                actionsBindHelper.bind(item.id.toString(), holder.binding.swipeActionLayout)
             }
             is EmptyViewHolder -> {
                 holder.update()
@@ -148,9 +147,9 @@ class RecipesAdapter(
         onBindViewHolder(holder, position, emptyList())
     }
 
-    inner class RecipeViewHolder(var binding: RecipeCardItemBinding) :
+    inner class RecipeViewHolder(var binding: ViewSwipeRecipeCardBinding) :
         RecyclerView.ViewHolder(binding.root), SwipeMenuListener {
-        private val swipeToAction = binding.recipeItem
+        private val swipeToAction = binding.swipeActionLayout
 
         fun updateView(item: SavedRecipeDomain) {
             swipeToAction.menuListener = this
@@ -188,9 +187,9 @@ class RecipesAdapter(
         }
     }
 
-    inner class HistoryViewHolder(val binding: RecipeCardItemBinding) :
+    inner class HistoryViewHolder(val binding: ViewSwipeRecipeCardBinding) :
         RecyclerView.ViewHolder(binding.root), SwipeMenuListener {
-        private val swipeToAction = binding.recipeItem
+        private val swipeToAction = binding.swipeActionLayout
 
         fun updateView(item: History) {
             binding.card.setRecipe(RecipeCard.HistoryCard(item.recipe, item.dateBrewed))

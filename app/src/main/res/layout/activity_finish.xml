@@ -63,18 +63,14 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/recipe_card"
-            android:layout_width="match_parent"
+
+        <aeropresscipe.divinelink.aeropress.customviews.RecipeCardView
+            android:id="@+id/card"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
-            android:layout_marginBottom="32dp"
-            app:cardCornerRadius="16dp">
-
-            <include layout="@layout/card_layout" />
-
-        </androidx.cardview.widget.CardView>
+            android:layout_marginBottom="32dp" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
