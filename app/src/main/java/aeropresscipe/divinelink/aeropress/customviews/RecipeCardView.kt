@@ -13,8 +13,6 @@ import java.util.Locale
 class RecipeCardView : FrameLayout {
     var binding: ViewRecipeCardBinding = ViewRecipeCardBinding.inflate(LayoutInflater.from(context), this, false)
 
-    private var likeButtonListener: LikeButtonListener? = null
-
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
@@ -60,19 +58,11 @@ class RecipeCardView : FrameLayout {
         binding.likeRecipeLayout.visibility = card.likeButtonVisibility
     }
 
-
-    fun setOnLikeButtonListener(l: LikeButtonListener?) {
-        this.likeButtonListener = l
-    }
-
     fun setOnLikeButtonListener(l: () -> Unit) {
-        this.likeButtonListener = LikeButtonListener {
+        binding.likeButton.visibility = View.VISIBLE
+        binding.likeButton.setOnClickListener {
             l.invoke()
         }
-    }
-
-    fun interface LikeButtonListener {
-        fun onClickListener()
     }
 
 }

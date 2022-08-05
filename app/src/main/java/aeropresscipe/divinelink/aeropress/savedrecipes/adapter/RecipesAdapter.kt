@@ -2,6 +2,7 @@ package aeropresscipe.divinelink.aeropress.savedrecipes.adapter
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.customviews.RecipeCard
+import aeropresscipe.divinelink.aeropress.customviews.RecipeCardView
 import aeropresscipe.divinelink.aeropress.databinding.EmptyRecyclerLayoutBinding
 import aeropresscipe.divinelink.aeropress.databinding.ViewSwipeRecipeCardBinding
 import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
@@ -127,7 +128,6 @@ class RecipesAdapter(
                     holder.updateView(item as History)
                     actionsBindHelper.bind(item.id.toString(), holder.binding.swipeActionLayout)
                     holder.binding.card.setOnLikeButtonListener { onLike?.invoke(item, position) }
-//                    holder.binding.card.setOnLikeButtonListener { onLike?.invoke(item, position) }
                 } else {
                     val like = payloads[0] as Boolean
                     holder.updateWithAnimation(like)
@@ -193,7 +193,6 @@ class RecipesAdapter(
 
         fun updateView(item: History) {
             binding.card.setRecipe(RecipeCard.HistoryCard(item.recipe, item.dateBrewed))
-            binding.card.enableLikeButton(true)
             swipeToAction.setActionsRes(R.menu.history_action_menu)
             swipeToAction.menuListener = this
 
