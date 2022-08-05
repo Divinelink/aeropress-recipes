@@ -39,7 +39,7 @@ class FinishActivity :
         setContentView(view)
         setNavigationBarColor(this, ContextCompat.getColor(this, R.color.colorBackground))
 
-        recipe = intent?.getSerializableExtra(TimerFragment.TIMER) as Recipe?
+        recipe = intent?.getSerializableExtra(EXTRA_RECIPE) as Recipe?
 
         val viewModelFactory = FinishViewModelFactory(assistedFactory, WeakReference<IFinishViewModel>(this))
         viewModel = ViewModelProvider(this, viewModelFactory).get(FinishViewModel::class.java)
@@ -52,7 +52,6 @@ class FinishActivity :
             is FinishState.LoadingState -> handleLoadingState()
             is FinishState.CloseState -> handleCloseState()
         }
-
     }
 
     override fun handleInitialState() {
