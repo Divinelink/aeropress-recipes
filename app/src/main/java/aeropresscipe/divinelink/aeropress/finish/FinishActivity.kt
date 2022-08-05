@@ -1,6 +1,7 @@
 package aeropresscipe.divinelink.aeropress.finish
 
 import aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.customviews.Notification
 import aeropresscipe.divinelink.aeropress.customviews.RecipeCard
 import aeropresscipe.divinelink.aeropress.databinding.ActivityFinishBinding
 import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
@@ -51,6 +52,10 @@ class FinishActivity :
             is FinishState.InitialState -> handleInitialState()
             is FinishState.LoadingState -> handleLoadingState()
             is FinishState.CloseState -> handleCloseState()
+            is FinishState.RecipeRemovedState -> handleRecipeRemovedState()
+            is FinishState.RecipeSavedState -> handleRecipeSavedState()
+            is FinishState.UpdateSavedIndicator -> handleUpdateSavedIndicator(state)
+            is FinishState.ShowSnackBar -> handleShowSnackBar(state)
         }
     }
 
@@ -85,10 +90,33 @@ class FinishActivity :
         TODO("Not yet implemented")
     }
 
+    override fun handleRecipeSavedState() {
+        binding.apply {
+            likeButton.setMinAndMaxFrame(TimerFragment.LIKE_MIN_FRAME, TimerFragment.LIKE_MAX_FRAME)
+            likeButton.playAnimation()
+        }
+    }
+
+    override fun handleRecipeRemovedState() {
+        binding.apply {
+            likeButton.setMinAndMaxFrame(TimerFragment.DISLIKE_MIN_FRAME, TimerFragment.DISLIKE_MAX_FRAME)
+            likeButton.playAnimation()
+        }
+    }
+
+    override fun handleShowSnackBar(state: FinishState.ShowSnackBar) {
+        Notification
+            .make(binding.likeButton, resources.getString(state.value.string, getString(state.value.favorites)))
+            .show()
+    }
+
+    override fun handleUpdateSavedIndicator(state: FinishState.UpdateSavedIndicator) {
+        binding.likeButton.frame = state.frame
+    }
+
     override fun handleCloseState() {
         finish()
     }
-
 
     companion object {
         private const val EXTRA_RECIPE = "EXTRA_RECIPE"

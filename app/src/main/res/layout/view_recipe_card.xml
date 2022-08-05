@@ -103,7 +103,9 @@
                         android:id="@+id/AddToFavourites"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:paddingStart="0dp"
                         android:paddingTop="4dp"
+                        android:paddingEnd="8dp"
                         android:text="@string/add_favorite"
                         tools:text="Add Favorite" />
 
