@@ -5,7 +5,6 @@ import aeropresscipe.divinelink.aeropress.databinding.ViewRecipeCardBinding
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import androidx.cardview.widget.CardView
 import gr.divinelink.core.util.extensions.toFahrenheit
 import java.util.Locale
@@ -47,7 +46,7 @@ class RecipeCardView : CardView {
             )
         }
 
-        binding.likeRecipeLayout.visibility = card.likeButtonVisibility
+        binding.likeButtonLayout.visibility = card.likeButtonVisibility
     }
 
     /**
@@ -55,7 +54,6 @@ class RecipeCardView : CardView {
      */
 
     fun setOnLikeButtonListener(action: () -> Unit) {
-        binding.likeButton.visibility = View.VISIBLE
         binding.likeButton.setOnClickListener {
             action.invoke()
         }

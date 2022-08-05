@@ -21,7 +21,8 @@
 
         <aeropresscipe.divinelink.aeropress.customviews.RecipeCardView
             android:id="@+id/card"
-            android:layout_width="wrap_content"
+            app:cardElevation="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
     </gr.divinelink.core.util.swipe.SwipeToActionLayout>
