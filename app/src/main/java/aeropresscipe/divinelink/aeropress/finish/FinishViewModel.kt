@@ -2,8 +2,6 @@ package aeropresscipe.divinelink.aeropress.finish
 
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
-import aeropresscipe.divinelink.aeropress.history.LikeSnackBar
 import aeropresscipe.divinelink.aeropress.timer.TimerRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -35,20 +33,6 @@ class FinishViewModel @AssistedInject constructor(
         state = FinishState.CloseState
     }
 
-    override fun likeRecipe(recipe: Recipe?) {
-        if (recipe != null) {
-            repository.likeCurrentRecipe(recipe) { recipeLiked ->
-                if (recipeLiked) {
-                    state = FinishState.RecipeSavedState
-                    state = FinishState.ShowSnackBar(LikeSnackBar.Like)
-                } else {
-                    state = FinishState.RecipeRemovedState
-                    state = FinishState.ShowSnackBar(LikeSnackBar.Remove)
-                }
-            }
-        }
-
-    }
 
 }
 
@@ -58,7 +42,6 @@ interface IFinishViewModel {
 
 interface FinishIntents : MVIBaseView {
     fun closeButtonClicked()
-    fun likeRecipe(recipe: Recipe?)
 }
 
 sealed class FinishState {
@@ -66,12 +49,6 @@ sealed class FinishState {
     object LoadingState : FinishState()
     object CloseState : FinishState()
     data class ErrorState(val data: String) : FinishState()
-
-    object RecipeSavedState : FinishState()
-    object RecipeRemovedState : FinishState()
-
-    data class UpdateSavedIndicator(val frame: Int) : FinishState()
-    data class ShowSnackBar(val value: LikeSnackBar) : FinishState()
 }
 
 interface FinishStateHandler {
@@ -79,11 +56,5 @@ interface FinishStateHandler {
     fun handleLoadingState()
     fun handleErrorState(state: FinishState.ErrorState)
     fun handleCloseState()
-
-    fun handleRecipeSavedState()
-    fun handleRecipeRemovedState()
-
-    fun handleUpdateSavedIndicator(state: FinishState.UpdateSavedIndicator)
-    fun handleShowSnackBar(state: FinishState.ShowSnackBar)
 }
 

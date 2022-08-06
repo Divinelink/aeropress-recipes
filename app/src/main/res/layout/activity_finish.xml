@@ -5,6 +5,7 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
     tools:context=".finish.FinishActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -94,58 +95,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
-            <androidx.cardview.widget.CardView
+            <aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView
                 android:id="@+id/likeButtonCardLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 android:layout_marginTop="32dp"
+                android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clipChildren="false"
-                    android:gravity="center"
-                    android:padding="16dp">
-
-                    <TextView
-                        style="@style/Text.BodyMedium"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="8dp"
-                        android:gravity="center"
-                        android:text="@string/consider_adding_to_favorites"
-                        android:textAlignment="center"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/likeButton"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <com.airbnb.lottie.LottieAnimationView
-                        android:id="@+id/likeButton"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="8dp"
-                        android:scaleX="2.2"
-                        android:scaleY="2.2"
-                        android:soundEffectsEnabled="false"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:lottie_clipToCompositionBounds="false"
-                        app:lottie_rawRes="@raw/like" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
+                app:layout_constraintTop_toBottomOf="@+id/card" />
 
 
             <com.google.android.material.button.MaterialButton

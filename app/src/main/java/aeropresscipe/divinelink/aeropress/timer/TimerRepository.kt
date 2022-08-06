@@ -14,12 +14,6 @@ class TimerRepository @Inject constructor(
         completionBlock: (Boolean) -> Unit
     ) = performTransaction(completionBlock) { dbRemote.likeCurrentRecipe(recipe) }
 
-    fun updateHistory(
-        recipe: Recipe,
-        isLiked: Boolean,
-        completionBlock: () -> Unit
-    ) = performTransaction(completionBlock) { dbRemote.updateHistory(recipe, isLiked) }
-
     fun addToHistory(
         recipe: Recipe,
         completionBlock: () -> Unit

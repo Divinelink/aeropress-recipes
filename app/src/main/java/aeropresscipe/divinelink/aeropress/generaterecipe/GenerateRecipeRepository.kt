@@ -40,7 +40,7 @@ open class GenerateRecipeRemote @Inject constructor(
 
     override suspend fun alreadyBrewing(): Boolean {
         return withContext(dispatcher) {
-            recipeDao.singleRecipe?.isBrewing == true
+            recipeDao.singleRecipe.isBrewing
         }
     }
 
@@ -54,15 +54,7 @@ open class GenerateRecipeRemote @Inject constructor(
 
     override suspend fun getRecipe(): DiceDomain {
         return withContext(dispatcher) {
-            val recipe = recipeDao.singleRecipe
-            if (recipe == null) {
-                // Create a new recipe if there's no recipe available
-                val newRecipe = GenerateRecipe().finalRecipe
-                recipeDao.updateRecipe(newRecipe)
-                return@withContext DiceDomain(newRecipe, false)
-            } else {
-                recipe
-            }
+            recipeDao.singleRecipe
         }
     }
 }

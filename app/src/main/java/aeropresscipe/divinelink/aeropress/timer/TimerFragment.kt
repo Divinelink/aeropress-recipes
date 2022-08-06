@@ -1,16 +1,12 @@
 package aeropresscipe.divinelink.aeropress.timer
 
-import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.customviews.Notification.Companion.make
 import aeropresscipe.divinelink.aeropress.databinding.FragmentTimerBinding
-import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
 import aeropresscipe.divinelink.aeropress.finish.FinishActivity
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
 import aeropresscipe.divinelink.aeropress.timer.util.TimerViewModelAssistedFactory
 import aeropresscipe.divinelink.aeropress.timer.util.TimerViewModelFactory
 import android.animation.ObjectAnimator
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -69,7 +65,6 @@ class TimerFragment : Fragment(),
             TimerFlow.RESUME -> viewModel.resume()
         }
 
-        initListeners()
         return view
     }
 
@@ -78,13 +73,6 @@ class TimerFragment : Fragment(),
         timer?.dispose()
         viewModel.exitTimer(milliSecondsLeft)
         binding = null
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    private fun initListeners() {
-        binding?.likeButton?.setOnClickListener {
-            viewModel.saveRecipe(transferableModel.recipe)
-        }
     }
 
     companion object {
@@ -112,14 +100,7 @@ class TimerFragment : Fragment(),
     override fun updateState(state: TimerState) {
         when (state) {
             is TimerState.InitialState -> handleInitialState()
-            is TimerState.LoadingState -> handleLoadingState()
             is TimerState.ErrorState -> handleErrorState(state)
-
-            is TimerState.RecipeRemovedState -> handleRecipeRemovedState()
-            is TimerState.RecipeSavedState -> handleRecipeSavedState()
-
-            is TimerState.UpdateSavedIndicator -> handleUpdateSavedIndicator(state)
-
             is TimerState.StartProgressBar -> handleStartProgressBar(state)
             is TimerState.StartTimer -> handleStartTimer(state)
             is TimerState.FinishState -> handleFinishState()
@@ -128,35 +109,15 @@ class TimerFragment : Fragment(),
     }
 
     override fun handleExitState() {
-//        TODO("Not yet implemented")
+        // Do nothing yet.
     }
 
     override fun handleInitialState() {
-        LottieHelper.updateLikeButton(binding?.likeButton)
-    }
-
-    override fun handleLoadingState() {
-//        TODO("Not yet implemented")
+        binding?.likeButtonCard?.recipe = transferableModel.recipe
     }
 
     override fun handleErrorState(state: TimerState.ErrorState) {
-//        TODO("Not yet implemented")
-    }
-
-    override fun handleRecipeSavedState() {
-        make(binding?.likeButton, resources.getString(R.string.save_recipe_notification, getString(R.string.favorites))).show()
-        binding?.apply {
-            likeButton.setMinAndMaxFrame(LIKE_MIN_FRAME, LIKE_MAX_FRAME)
-            likeButton.playAnimation()
-        }
-    }
-
-    override fun handleRecipeRemovedState() {
-        make(binding?.likeButton, resources.getString(R.string.remove_recipe_notification, getString(R.string.favorites))).show()
-        binding?.apply {
-            likeButton.setMinAndMaxFrame(DISLIKE_MIN_FRAME, DISLIKE_MAX_FRAME)
-            likeButton.playAnimation()
-        }
+        // Do nothing yet.
     }
 
     override fun handleStartTimer(state: TimerState.StartTimer) {
@@ -195,10 +156,6 @@ class TimerFragment : Fragment(),
         timer?.dispose()
         startActivity(FinishActivity.newIntent(requireContext(), transferableModel.recipe))
         activity?.finish()
-    }
-
-    override fun handleUpdateSavedIndicator(state: TimerState.UpdateSavedIndicator) {
-        binding?.likeButton?.frame = state.frame
     }
 
     private fun updateCountdownUI(

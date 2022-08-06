@@ -2,7 +2,6 @@ package aeropresscipe.divinelink.aeropress.timer
 
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.getBrewingStates
 import aeropresscipe.divinelink.aeropress.timer.util.BrewPhase
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
@@ -43,14 +42,6 @@ class TimerViewModel @AssistedInject constructor(
             .brewState(transferableModel.recipe?.getBrewingStates()?.firstOrNull())
             .build()
         this.transferableModel?.brew = brewPhase
-
-        repository.isRecipeSaved(transferableModel.recipe) { saved ->
-            val frame = when (saved) {
-                true -> TimerFragment.LIKE_MAX_FRAME
-                false -> TimerFragment.DISLIKE_MAX_FRAME
-            }
-            state = TimerState.UpdateSavedIndicator(frame)
-        }
     }
 
     override fun resume() {
@@ -162,26 +153,6 @@ class TimerViewModel @AssistedInject constructor(
             state = TimerState.ErrorState("Something went wrong!")
         }
     }
-
-    override fun saveRecipe(recipe: Recipe?) {
-        if (recipe == null) {
-            state = TimerState.ErrorState("Something went wrong!") // Fixme
-        } else {
-            // Save Recipe on DB
-            repository.likeCurrentRecipe(
-                recipe = recipe,
-                completionBlock = { recipeLiked ->
-                    if (recipeLiked) {
-                        state = TimerState.RecipeSavedState
-                        repository.updateHistory(recipe, recipeLiked) { /* Intentionally Blank. */ }
-                    } else {
-                        state = TimerState.RecipeRemovedState
-                        repository.updateHistory(recipe, recipeLiked) { /* Intentionally Blank. */ }
-                    }
-                }
-            )
-        }
-    }
 }
 
 interface ITimerViewModel {
@@ -192,20 +163,13 @@ interface TimerIntents : MVIBaseView {
     fun init(transferableModel: TimerTransferableModel)
     fun startBrew()
     fun resume()
-    fun saveRecipe(recipe: Recipe?)
     fun exitTimer(millisecondsLeft: Long)
     fun updateTimer()
 }
 
 sealed class TimerState {
     object InitialState : TimerState()
-    object LoadingState : TimerState()
     data class ErrorState(val data: String) : TimerState()
-
-    object RecipeSavedState : TimerState()
-    object RecipeRemovedState : TimerState()
-
-    data class UpdateSavedIndicator(val frame: Int) : TimerState()
 
     data class StartTimer(
         val water: Int,
@@ -222,18 +186,11 @@ sealed class TimerState {
 
 interface TimerStateHandler {
     fun handleInitialState()
-    fun handleLoadingState()
     fun handleErrorState(state: TimerState.ErrorState)
-
-    fun handleRecipeSavedState()
-    fun handleRecipeRemovedState()
-
-    fun handleUpdateSavedIndicator(state: TimerState.UpdateSavedIndicator)
 
     fun handleStartTimer(state: TimerState.StartTimer)
     fun handleStartProgressBar(state: TimerState.StartProgressBar)
 
     fun handleExitState()
-
     fun handleFinishState()
 }
