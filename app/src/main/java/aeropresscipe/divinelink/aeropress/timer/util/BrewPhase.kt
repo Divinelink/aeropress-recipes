@@ -5,17 +5,14 @@ import androidx.annotation.StringRes
 
 class BrewPhase private constructor(
     var brewStates: MutableList<BrewState>,
-    val brewState: BrewState,
 ) {
     data class Builder(
         var brewStates: MutableList<BrewState>? = null,
-        var brewState: BrewState? = null,
+        var currentState: BrewState? = null,
     ) {
         fun brewStates(brewStates: MutableList<BrewState>?) = apply { this.brewStates = brewStates }
-        fun brewState(brewState: BrewState?) = apply { this.brewState = brewState }
         fun build() = BrewPhase(
             brewStates = brewStates!!,
-            brewState = brewState!!,
         )
     }
 

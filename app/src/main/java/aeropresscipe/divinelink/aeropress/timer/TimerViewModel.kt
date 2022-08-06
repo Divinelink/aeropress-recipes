@@ -38,24 +38,23 @@ class TimerViewModel @AssistedInject constructor(
         this.transferableModel = transferableModel
         val brewPhase = BrewPhase.Builder()
             .brewStates(transferableModel.recipe?.getBrewingStates())
-            .brewState(transferableModel.recipe?.getBrewingStates()?.firstOrNull())
             .build()
         this.transferableModel?.brew = brewPhase
     }
 
     override fun resume() {
         repository.resume {
-            val states = transferableModel?.recipe?.getBrewingStates()
+            val states = transferableModel?.brew?.brewStates
             val bloomTimeLeft = it.bloomEndTimeMillis - System.currentTimeMillis()
             val brewTimeLeft = it.brewEndTimeMillis - System.currentTimeMillis()
+            val bloomState = states?.find { state -> state.phase == Phase.Bloom }
 
             if (bloomTimeLeft > 0) {
-                val bloomState = states?.firstOrNull { state -> state.phase == Phase.Bloom }
-                transferableModel?.currentBrewState = bloomState
                 startTimerStates(bloomState!!, bloomTimeLeft)
             } else if (brewTimeLeft > 0) {
-                val brewState = states?.firstOrNull { state -> state.phase == Phase.Brew }
-                transferableModel?.currentBrewState = brewState
+                // Remove bloomState from list and get BrewState for new timer.
+                states?.remove(bloomState)
+                val brewState = states?.find { state -> state.phase == Phase.Brew }
                 startTimerStates(brewState!!, brewTimeLeft)
             } else {
                 finishRecipeBrewing()
@@ -106,7 +105,6 @@ class TimerViewModel @AssistedInject constructor(
         transferableModel?.brew?.removeCurrentPhase()
         transferableModel?.brew?.let { brew ->
             // Update current brew state
-            transferableModel?.currentBrewState = brew.getCurrentState()
             if (brew.getCurrentState() == BrewState.Finished) {
                 finishRecipeBrewing()
             } else {
@@ -118,7 +116,7 @@ class TimerViewModel @AssistedInject constructor(
     override fun exitTimer(millisecondsLeft: Long) {
         val bloomEnds: Long
         val brewEnds: Long
-        when (transferableModel?.currentBrewState) {
+        when (transferableModel?.brew?.getCurrentState()) {
             is BrewState.Bloom -> {
                 bloomEnds = millisecondsLeft + System.currentTimeMillis()
                 brewEnds = transferableModel?.recipe?.brewTime?.inMilliseconds()?.plus(millisecondsLeft)?.plus(System.currentTimeMillis()) ?: 0L
@@ -139,11 +137,9 @@ class TimerViewModel @AssistedInject constructor(
     }
 
     private fun startTimers() {
-        val brewState = transferableModel?.brew?.brewState
-        val brewTime = transferableModel?.brew?.brewState?.brewTime
-        transferableModel?.currentBrewState = brewState
-        if (brewState != null && brewTime != null) {
-            startTimerStates(brewState, brewTime.inMilliseconds())
+        val brewState = transferableModel?.brew?.getCurrentState()
+        if (brewState?.brewTime != null) {
+            startTimerStates(brewState, brewState.brewTime.inMilliseconds())
         } else {
             state = TimerState.ErrorState("Something went wrong!")
         }
