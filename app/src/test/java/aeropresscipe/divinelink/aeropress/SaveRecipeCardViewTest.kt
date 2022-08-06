@@ -9,12 +9,12 @@ import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardViewModel
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.BrewMethod
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.CoffeeGrindSize
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.history.LikeSnackBar
 import aeropresscipe.divinelink.aeropress.timer.TimerRepository
 import aeropresscipe.divinelink.aeropress.timer.TimerServices
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -22,6 +22,7 @@ import org.mockito.Mock
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import java.lang.ref.WeakReference
+import kotlin.test.assertEquals
 
 
 @ExperimentalCoroutinesApi
@@ -68,7 +69,7 @@ class SaveRecipeCardViewTest {
 
         viewModel.init(recipeModel())
 
-        Assert.assertEquals(viewModel.state, SaveRecipeCardState.UpdateSavedIndicator(LIKE_MAX_FRAME))
+        assertEquals(viewModel.state, SaveRecipeCardState.UpdateSavedIndicator(LIKE_MAX_FRAME))
     }
 
     @Test
@@ -79,8 +80,36 @@ class SaveRecipeCardViewTest {
 
         viewModel.init(response)
 
-        Assert.assertEquals(viewModel.state, SaveRecipeCardState.UpdateSavedIndicator(DISLIKE_MAX_FRAME))
+        assertEquals(viewModel.state, SaveRecipeCardState.UpdateSavedIndicator(DISLIKE_MAX_FRAME))
     }
+
+    @Test
+    fun `given recipe is not liked, when I like then I expect RecipeSavedState`() = runTest {
+        val response = recipeModel()
+
+        whenever(remote.isRecipeSaved(response)).thenReturn(false)
+        val isLiked = remote.isRecipeSaved(response)
+        whenever(remote.likeCurrentRecipe(response)).thenReturn(!isLiked)
+
+        viewModel.likeRecipe(response)
+
+        assertEquals(viewModel.statesList[0], SaveRecipeCardState.RecipeSavedState)
+        assertEquals(viewModel.statesList[1], SaveRecipeCardState.ShowSnackBar(LikeSnackBar.Like))
+    }
+
+    @Test
+    fun `given recipe is liked, when I like then I expect RecipeSavedState`() = runTest {
+        val response = recipeModel()
+        whenever(remote.isRecipeSaved(response)).thenReturn(true)
+        val isLiked = remote.isRecipeSaved(response)
+        whenever(remote.likeCurrentRecipe(response)).thenReturn(!isLiked)
+
+        viewModel.likeRecipe(response)
+
+        assertEquals(viewModel.statesList[0], SaveRecipeCardState.RecipeRemovedState)
+        assertEquals(viewModel.statesList[1], SaveRecipeCardState.ShowSnackBar(LikeSnackBar.Remove))
+    }
+
 
 
     private fun recipeModel(
