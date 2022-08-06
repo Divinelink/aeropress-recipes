@@ -15,6 +15,7 @@ import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -76,10 +77,36 @@ class TimerViewModelTest {
         // When
         viewModel.resume()
         // Then
-        assertTrue(viewModel.transferableModel?.currentBrewState is BrewState.Bloom)
-        assertFalse(viewModel.transferableModel?.currentBrewState is BrewState.BrewWithBloom)
-        assertFalse(viewModel.transferableModel?.currentBrewState is BrewState.Brew)
+        assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Bloom)
+        assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.BrewWithBloom)
+        assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Brew)
+        assertEquals(viewModel.statesList[1], TimerState.StartTimer(BrewState.Bloom(
+            water = response.recipe.bloomWater,
+            time = response.recipe.bloomTime))
+        )
     }
+
+    @Test
+    fun `given bloom state, when I resume then I expect StartProgressBar state`() = runTest {
+        // Given
+        val response = DiceDomain(recipeModel(bloomTime = 5, brewTime = 10), isBrewing = true,
+            bloomEndTimeMillis = 5000 + System.currentTimeMillis(),
+            brewEndTimeMillis = 10000 + System.currentTimeMillis()
+        )
+        whenever(remote.getResumeTimes()).thenReturn(response)
+        transferableModel.recipe = response.recipe
+        viewModel.init(transferableModel)
+        // When
+        viewModel.resume()
+        // Then
+        assertTrue(viewModel.statesList[0] is TimerState.InitialState)
+        assertEquals(viewModel.statesList[1], TimerState.StartTimer(BrewState.Bloom(
+            water = response.recipe.bloomWater,
+            time = response.recipe.bloomTime))
+        )
+        assertTrue(viewModel.statesList[2] is TimerState.StartProgressBar)
+    }
+
 
     @Test
     fun `given bloom state with 0 seconds left, when I resume then I expect Brew State`() = runTest {
@@ -94,9 +121,9 @@ class TimerViewModelTest {
         // When
         viewModel.resume()
         // Then
-        assertTrue(viewModel.transferableModel?.currentBrewState is BrewState.BrewWithBloom)
-        assertFalse(viewModel.transferableModel?.currentBrewState is BrewState.Bloom)
-        assertFalse(viewModel.transferableModel?.currentBrewState is BrewState.Brew)
+        assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.BrewWithBloom)
+        assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Bloom)
+        assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Brew)
     }
 
     @Test
@@ -112,9 +139,14 @@ class TimerViewModelTest {
         // When
         viewModel.resume()
         // Then
-        assertTrue(viewModel.transferableModel?.currentBrewState is BrewState.Brew)
-        assertFalse(viewModel.transferableModel?.currentBrewState is BrewState.Bloom)
-        assertFalse(viewModel.transferableModel?.currentBrewState is BrewState.BrewWithBloom)
+        val states = mutableListOf(
+            BrewState.Brew(response.recipe.brewWaterAmount, response.recipe.brewTime),
+            BrewState.Finished
+        )
+        assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Brew)
+        assertEquals(viewModel.transferableModel?.brew?.brewStates, states)
+        assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Bloom)
+        assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.BrewWithBloom)
     }
 
     @Test
@@ -151,18 +183,29 @@ class TimerViewModelTest {
         transferableModel.recipe = response.recipe
 
         viewModel.init(transferableModel)
+        assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Brew)
         viewModel.updateTimer()
         assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Finished)
+        assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Brew)
+        assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.BrewWithBloom)
+        assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Bloom)
         assertTrue(viewModel.state is TimerState.FinishState)
+    }
+
+    @Test
+    fun `given recipe is null, when I startBrew, then I expect ErrorState`() = runTest {
+        transferableModel.recipe = null
+        viewModel.startBrew()
+        assert(viewModel.state is TimerState.ErrorState)
     }
 
     private fun recipeModel(
         diceTemperature: Int = 0,
         brewTime: Long = 0,
         bloomTime: Long = 0,
-        bloomWater: Int = 0,
+        bloomWater: Int = 10,
         coffeeAmount: Int = 0,
-        brewWaterAmount: Int = 0,
+        brewWaterAmount: Int = 15,
         groundSize: CoffeeGrindSize = CoffeeGrindSize.MEDIUM,
         brewingMethod: BrewMethod = BrewMethod.STANDARD,
         isNewRecipe: Boolean = false,
