@@ -1,7 +1,8 @@
 package aeropresscipe.divinelink.aeropress
 
-import aeropresscipe.divinelink.aeropress.generaterecipe.BrewMethod
-import aeropresscipe.divinelink.aeropress.generaterecipe.CoffeeGrindSize
+import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.BrewMethod
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.CoffeeGrindSize
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeIntents
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeRemote
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeRepository
@@ -82,7 +83,7 @@ class GenerateRecipeViewModelTest {
         viewModel.forceGenerateRecipe()
         // Then
         assertTrue(viewModel.statesList[0] is GenerateRecipeState.RefreshRecipeState)
-        assertEquals(viewModel.statesList[1], GenerateRecipeState.UpdateSavedIndicator(TimerFragment.DISLIKE_MAX_FRAME))
+        assertEquals(viewModel.statesList[1], GenerateRecipeState.UpdateSavedIndicator(DISLIKE_MAX_FRAME))
         assertEquals(viewModel.statesList[2], GenerateRecipeState.HideResumeButtonState)
     }
 
@@ -95,7 +96,7 @@ class GenerateRecipeViewModelTest {
         viewModel.forceGenerateRecipe()
         // Then
         assertTrue(viewModel.statesList[0] is GenerateRecipeState.RefreshRecipeState)
-        assertEquals(viewModel.statesList[1], GenerateRecipeState.UpdateSavedIndicator(TimerFragment.DISLIKE_MAX_FRAME))
+        assertEquals(viewModel.statesList[1], GenerateRecipeState.UpdateSavedIndicator(DISLIKE_MAX_FRAME))
         assertEquals(viewModel.statesList[2], GenerateRecipeState.HideResumeButtonState)
     }
 
