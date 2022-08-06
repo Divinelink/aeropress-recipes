@@ -49,10 +49,6 @@ class RecipeCardView : CardView {
         binding.likeButtonLayout.visibility = card.likeButtonVisibility
     }
 
-    /**
-     * Like button's visibility changes when you set a click listener.
-     */
-
     fun setOnLikeButtonListener(action: () -> Unit) {
         binding.likeButton.setOnClickListener {
             action.invoke()
