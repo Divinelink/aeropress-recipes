@@ -7,7 +7,6 @@ import aeropresscipe.divinelink.aeropress.timer.util.BrewPhase
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
 import aeropresscipe.divinelink.aeropress.timer.util.Phase
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
-import androidx.annotation.StringRes
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import gr.divinelink.core.util.extensions.inMilliseconds
@@ -77,11 +76,7 @@ class TimerViewModel @AssistedInject constructor(
     }
 
     private fun startTimerStates(brewState: BrewState, timeLeft: Long, animate: Boolean = false) {
-        state = TimerState.StartTimer(
-            water = brewState.brewWater,
-            title = brewState.title,
-            description = brewState.description
-        )
+        state = TimerState.StartTimer(brewState)
         state = TimerState.StartProgressBar(
             maxValue = brewState.brewTime.inMilliseconds().toInt(),
             timeInMilliseconds = timeLeft,
@@ -171,11 +166,7 @@ sealed class TimerState {
     object InitialState : TimerState()
     data class ErrorState(val data: String) : TimerState()
 
-    data class StartTimer(
-        val water: Int,
-        @StringRes val title: Int,
-        @StringRes val description: Int
-    ) : TimerState()
+    data class StartTimer(val brewState: BrewState) : TimerState()
 
     data class StartProgressBar(val maxValue: Int, val timeInMilliseconds: Long, val animate: Boolean) : TimerState()
 

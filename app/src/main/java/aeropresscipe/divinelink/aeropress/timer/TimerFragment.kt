@@ -115,8 +115,8 @@ class TimerFragment : Fragment(),
     }
 
     override fun handleStartTimer(state: TimerState.StartTimer) {
-        binding?.timerHeader?.text = resources.getString(state.title)
-        binding?.waterDescription?.text = resources.getString(state.description, state.water)
+        binding?.timerHeader?.text = resources.getString(state.brewState.title)
+        binding?.waterDescription?.text = resources.getString(state.brewState.description, state.brewState.brewWater)
     }
 
     override fun handleStartProgressBar(state: TimerState.StartProgressBar) {
