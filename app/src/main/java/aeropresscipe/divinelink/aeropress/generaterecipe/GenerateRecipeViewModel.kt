@@ -3,13 +3,14 @@ package aeropresscipe.divinelink.aeropress.generaterecipe
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
+import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
+import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.LIKE_MAX_FRAME
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.RecipeStep
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.buildSteps
 import aeropresscipe.divinelink.aeropress.history.LikeSnackBar
 import aeropresscipe.divinelink.aeropress.timer.TimerFlow
-import aeropresscipe.divinelink.aeropress.timer.TimerFragment
 import aeropresscipe.divinelink.aeropress.timer.TimerRepository
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
@@ -51,8 +52,8 @@ class GenerateRecipeViewModel @AssistedInject constructor(
             }
             timerRepository.isRecipeSaved(dice.recipe) { saved ->
                 val frame = when (saved) {
-                    true -> TimerFragment.LIKE_MAX_FRAME
-                    false -> TimerFragment.DISLIKE_MAX_FRAME
+                    true -> LIKE_MAX_FRAME
+                    false -> DISLIKE_MAX_FRAME
                 }
                 state = GenerateRecipeState.UpdateSavedIndicator(frame)
             }
@@ -77,7 +78,7 @@ class GenerateRecipeViewModel @AssistedInject constructor(
     private fun generateRandomRecipe() {
         repository.createNewRecipe { dice ->
             state = GenerateRecipeState.RefreshRecipeState(dice.recipe.buildSteps())
-            state = GenerateRecipeState.UpdateSavedIndicator(TimerFragment.DISLIKE_MAX_FRAME)
+            state = GenerateRecipeState.UpdateSavedIndicator(DISLIKE_MAX_FRAME)
             this.dice = dice
         }
     }

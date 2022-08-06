@@ -2,13 +2,15 @@ package aeropresscipe.divinelink.aeropress.savedrecipes.adapter
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.customviews.RecipeCard
-import aeropresscipe.divinelink.aeropress.customviews.RecipeCardView
+import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
+import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.DISLIKE_MIN_FRAME
+import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.LIKE_MAX_FRAME
+import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.LIKE_MIN_FRAME
 import aeropresscipe.divinelink.aeropress.databinding.EmptyRecyclerLayoutBinding
 import aeropresscipe.divinelink.aeropress.databinding.ViewSwipeRecipeCardBinding
 import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
 import aeropresscipe.divinelink.aeropress.history.History
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
-import aeropresscipe.divinelink.aeropress.timer.TimerFragment
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -203,15 +205,15 @@ class RecipesAdapter(
 
         private fun update(like: Boolean) {
             when (like) {
-                true -> binding.card.binding.likeButton.frame = TimerFragment.LIKE_MAX_FRAME
-                false -> binding.card.binding.likeButton.frame = TimerFragment.DISLIKE_MAX_FRAME
+                true -> binding.card.binding.likeButton.frame = LIKE_MAX_FRAME
+                false -> binding.card.binding.likeButton.frame = DISLIKE_MAX_FRAME
             }
         }
 
         fun updateWithAnimation(like: Boolean) {
             when (like) {
-                true -> binding.card.binding.likeButton.setMinAndMaxFrame(TimerFragment.LIKE_MIN_FRAME, TimerFragment.LIKE_MAX_FRAME)
-                false -> binding.card.binding.likeButton.setMinAndMaxFrame(TimerFragment.DISLIKE_MIN_FRAME, TimerFragment.DISLIKE_MAX_FRAME)
+                true -> binding.card.binding.likeButton.setMinAndMaxFrame(LIKE_MIN_FRAME, LIKE_MAX_FRAME)
+                false -> binding.card.binding.likeButton.setMinAndMaxFrame(DISLIKE_MIN_FRAME, DISLIKE_MAX_FRAME)
             }
             binding.card.binding.likeButton.clipToCompositionBounds = false
             binding.card.binding.likeButton.playAnimation()

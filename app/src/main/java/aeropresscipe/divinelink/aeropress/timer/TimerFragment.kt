@@ -80,12 +80,6 @@ class TimerFragment : Fragment(),
         const val TIMER = "TIMER"
         const val FLOW = "FLOW"
 
-        const val LIKE_MIN_FRAME = 0
-        const val LIKE_MAX_FRAME = 80
-
-        const val DISLIKE_MIN_FRAME = 80
-        const val DISLIKE_MAX_FRAME = 130
-
         @JvmStatic
         fun newInstance(recipe: Recipe?, flow: TimerFlow? = TimerFlow.START): TimerFragment {
             val fragment = TimerFragment()

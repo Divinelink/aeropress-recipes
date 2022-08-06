@@ -2,10 +2,13 @@ package aeropresscipe.divinelink.aeropress.generaterecipe
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.customviews.Notification
+import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
+import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.DISLIKE_MIN_FRAME
+import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.LIKE_MAX_FRAME
+import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.LIKE_MIN_FRAME
 import aeropresscipe.divinelink.aeropress.databinding.FragmentGenerateRecipeBinding
 import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
-import aeropresscipe.divinelink.aeropress.timer.TimerFragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -157,14 +160,14 @@ class GenerateRecipeFragment :
 
     override fun handleRecipeSavedState() {
         lottieFavorite?.apply {
-            setMinAndMaxFrame(TimerFragment.LIKE_MIN_FRAME, TimerFragment.LIKE_MAX_FRAME)
+            setMinAndMaxFrame(LIKE_MIN_FRAME, LIKE_MAX_FRAME)
             playAnimation()
         }
     }
 
     override fun handleRecipeRemovedState() {
         lottieFavorite?.apply {
-            setMinAndMaxFrame(TimerFragment.DISLIKE_MIN_FRAME, TimerFragment.DISLIKE_MAX_FRAME)
+            setMinAndMaxFrame(DISLIKE_MIN_FRAME, DISLIKE_MAX_FRAME)
             playAnimation()
         }
     }

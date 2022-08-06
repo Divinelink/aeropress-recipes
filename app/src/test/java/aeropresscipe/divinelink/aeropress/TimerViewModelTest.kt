@@ -1,11 +1,10 @@
 package aeropresscipe.divinelink.aeropress
 
-import aeropresscipe.divinelink.aeropress.generaterecipe.BrewMethod
-import aeropresscipe.divinelink.aeropress.generaterecipe.CoffeeGrindSize
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.BrewMethod
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.CoffeeGrindSize
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.ITimerViewModel
-import aeropresscipe.divinelink.aeropress.timer.TimerFragment
 import aeropresscipe.divinelink.aeropress.timer.TimerIntents
 import aeropresscipe.divinelink.aeropress.timer.TimerRepository
 import aeropresscipe.divinelink.aeropress.timer.TimerServices
@@ -16,7 +15,6 @@ import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -117,30 +115,6 @@ class TimerViewModelTest {
         assertTrue(viewModel.transferableModel?.currentBrewState is BrewState.Brew)
         assertFalse(viewModel.transferableModel?.currentBrewState is BrewState.Bloom)
         assertFalse(viewModel.transferableModel?.currentBrewState is BrewState.BrewWithBloom)
-    }
-
-    @Test
-    fun `given recipe is liked, on init return saved state`() = runTest {
-        val response = DiceDomain(recipeModel())
-
-        whenever(remote.isRecipeSaved(response.recipe)).thenReturn(true)
-        transferableModel.recipe = response.recipe
-
-        viewModel.init(transferableModel)
-
-        assertEquals(viewModel.state, TimerState.UpdateSavedIndicator(TimerFragment.LIKE_MAX_FRAME))
-    }
-
-    @Test
-    fun `given recipe is not liked, on init return saved state`() = runTest {
-        val response = DiceDomain(recipeModel())
-
-        whenever(remote.isRecipeSaved(response.recipe)).thenReturn(false)
-        transferableModel.recipe = response.recipe
-
-        viewModel.init(transferableModel)
-
-        assertEquals(viewModel.state, TimerState.UpdateSavedIndicator(TimerFragment.DISLIKE_MAX_FRAME))
     }
 
     @Test

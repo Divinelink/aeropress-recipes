@@ -4,8 +4,8 @@ import aeropresscipe.divinelink.aeropress.finish.FinishIntents
 import aeropresscipe.divinelink.aeropress.finish.FinishState
 import aeropresscipe.divinelink.aeropress.finish.FinishViewModel
 import aeropresscipe.divinelink.aeropress.finish.IFinishViewModel
-import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeRemote
-import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeRepository
+import aeropresscipe.divinelink.aeropress.timer.TimerRepository
+import aeropresscipe.divinelink.aeropress.timer.TimerServices
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.After
 import org.junit.Before
@@ -23,8 +23,8 @@ class FinishViewModelTest {
     private lateinit var viewModelIntent: FinishIntents
 
     @Mock
-    private var remote: GenerateRecipeRemote = mock()
-    private var repository: GenerateRecipeRepository = GenerateRecipeRepository(remote)
+    private var remote: TimerServices = mock()
+    private var repository: TimerRepository = TimerRepository(remote)
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()

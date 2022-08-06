@@ -2,7 +2,13 @@ package aeropresscipe.divinelink.aeropress.generaterecipe;
 
 import java.util.ArrayList;
 
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.BrewMethod;
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.BrewWaterDice;
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.CoffeeGrindSize;
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.GroundSizeDice;
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.MethodDice;
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe;
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.TemperatureDice;
 
 abstract class Dice {
 

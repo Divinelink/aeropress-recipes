@@ -2,9 +2,10 @@ package aeropresscipe.divinelink.aeropress.customviews
 
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
+import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
+import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.LIKE_MAX_FRAME
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.history.LikeSnackBar
-import aeropresscipe.divinelink.aeropress.timer.TimerFragment
 import aeropresscipe.divinelink.aeropress.timer.TimerRepository
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -33,8 +34,8 @@ class SaveRecipeCardViewModel @AssistedInject constructor(
         state = SaveRecipeCardState.InitialState
         repository.isRecipeSaved(recipe) { saved ->
             val frame = when (saved) {
-                true -> TimerFragment.LIKE_MAX_FRAME
-                false -> TimerFragment.DISLIKE_MAX_FRAME
+                true -> LIKE_MAX_FRAME
+                false -> DISLIKE_MAX_FRAME
             }
             state = SaveRecipeCardState.UpdateSavedIndicator(frame)
         }

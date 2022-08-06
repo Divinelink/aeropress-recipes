@@ -2,7 +2,6 @@ package aeropresscipe.divinelink.aeropress.customviews
 
 import aeropresscipe.divinelink.aeropress.databinding.ViewSaveRecipeCardBinding
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
-import aeropresscipe.divinelink.aeropress.timer.TimerFragment
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -57,14 +56,14 @@ class SaveRecipeCardView :
 
     override fun handleRecipeSavedState() {
         binding.apply {
-            saveRecipeButton.setMinAndMaxFrame(TimerFragment.LIKE_MIN_FRAME, TimerFragment.LIKE_MAX_FRAME)
+            saveRecipeButton.setMinAndMaxFrame(LIKE_MIN_FRAME, LIKE_MAX_FRAME)
             saveRecipeButton.playAnimation()
         }
     }
 
     override fun handleRecipeRemovedState() {
         binding.apply {
-            saveRecipeButton.setMinAndMaxFrame(TimerFragment.DISLIKE_MIN_FRAME, TimerFragment.DISLIKE_MAX_FRAME)
+            saveRecipeButton.setMinAndMaxFrame(DISLIKE_MIN_FRAME, DISLIKE_MAX_FRAME)
             saveRecipeButton.playAnimation()
         }
     }
@@ -77,6 +76,14 @@ class SaveRecipeCardView :
 
     override fun handleUpdateSavedIndicator(state: SaveRecipeCardState.UpdateSavedIndicator) {
         binding.saveRecipeButton.frame = state.frame
+    }
+
+    companion object {
+        const val LIKE_MIN_FRAME = 0
+        const val LIKE_MAX_FRAME = 80
+
+        const val DISLIKE_MIN_FRAME = 80
+        const val DISLIKE_MAX_FRAME = 130
     }
 
 }
