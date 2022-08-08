@@ -7,7 +7,7 @@ enum class BrewMethod(val method: String) {
 
 enum class CoffeeGrindSize(val size: String) {
     FINE("fine"),
-    MEDIUM_FINE("medium-fine"),
+    MEDIUM_FINE("medium - fine"),
     MEDIUM("medium"),
     COARSE("coarse"),
 }
