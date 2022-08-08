@@ -2,6 +2,7 @@ package aeropresscipe.divinelink.aeropress.customviews
 
 import aeropresscipe.divinelink.aeropress.databinding.ViewSaveRecipeCardBinding
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -52,6 +53,7 @@ class SaveRecipeCardView :
         binding.saveRecipeButton.setOnClickListener {
             viewModel.likeRecipe(recipe)
         }
+        LottieHelper.updateLikeButton(binding.saveRecipeButton)
     }
 
     override fun handleRecipeSavedState() {
