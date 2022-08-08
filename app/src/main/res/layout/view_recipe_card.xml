@@ -90,7 +90,7 @@
                     <com.airbnb.lottie.LottieAnimationView
                         android:id="@+id/likeButton"
                         android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:layout_marginStart="12dp"
                         android:layout_marginEnd="12dp"
