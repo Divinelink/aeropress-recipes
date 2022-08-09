@@ -76,7 +76,7 @@ class TimerViewModel @AssistedInject constructor(
     }
 
     private fun startTimerStates(brewState: BrewState, timeLeft: Long, animate: Boolean = false) {
-        state = TimerState.StartTimer(brewState)
+        state = TimerState.StartTimer(brewState, animate)
         state = TimerState.StartProgressBar(
             maxValue = brewState.brewTime.inMilliseconds().toInt(),
             timeInMilliseconds = timeLeft,
@@ -163,9 +163,7 @@ interface TimerIntents : MVIBaseView {
 sealed class TimerState {
     object InitialState : TimerState()
     data class ErrorState(val data: String) : TimerState()
-
-    data class StartTimer(val brewState: BrewState) : TimerState()
-
+    data class StartTimer(val brewState: BrewState, val animate: Boolean) : TimerState()
     data class StartProgressBar(val maxValue: Int, val timeInMilliseconds: Long, val animate: Boolean) : TimerState()
     object PlaySoundState : TimerState()
     object ExitState : TimerState()
