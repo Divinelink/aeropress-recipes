@@ -1,5 +1,6 @@
 package aeropresscipe.divinelink.aeropress.timer
 
+import aeropresscipe.divinelink.aeropress.base.di.Preferences
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.getBrewingStates
@@ -12,6 +13,7 @@ import dagger.assisted.AssistedInject
 import gr.divinelink.core.util.extensions.inMilliseconds
 import timber.log.Timber
 import java.lang.ref.WeakReference
+import javax.inject.Inject
 
 class TimerViewModel @AssistedInject constructor(
     private var repository: TimerRepository,
@@ -19,6 +21,9 @@ class TimerViewModel @AssistedInject constructor(
 ) : BaseViewModel<ITimerViewModel>(),
     TimerIntents {
     internal var statesList: MutableList<TimerState> = mutableListOf()
+
+    @Inject
+    lateinit var preferences: Preferences
 
     internal var transferableModel: TimerTransferableModel? = null
 
@@ -110,7 +115,9 @@ class TimerViewModel @AssistedInject constructor(
             } else {
                 startTimerStates(brew.getCurrentState(), brew.getCurrentState().brewTime.inMilliseconds(), animate = true)
             }
-            state = TimerState.PlaySoundState
+            if (!preferences.muteSound) {
+                state = TimerState.PlaySoundState
+            }
         }
     }
 
