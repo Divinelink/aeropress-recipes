@@ -71,7 +71,6 @@ class TimerViewModel @AssistedInject constructor(
         repository.updateBrewingState(false) {
             Timber.d("Recipe finished brewing")
             state = TimerState.FinishState
-            state = TimerState.PlaySoundState
         }
     }
 

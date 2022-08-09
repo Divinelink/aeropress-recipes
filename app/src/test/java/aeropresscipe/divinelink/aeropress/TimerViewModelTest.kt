@@ -82,7 +82,7 @@ class TimerViewModelTest {
         assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Brew)
         assertEquals(viewModel.statesList[1], TimerState.StartTimer(BrewState.Bloom(
             water = response.recipe.bloomWater,
-            time = response.recipe.bloomTime))
+            time = response.recipe.bloomTime), false)
         )
     }
 
@@ -102,7 +102,7 @@ class TimerViewModelTest {
         assertTrue(viewModel.statesList[0] is TimerState.InitialState)
         assertEquals(viewModel.statesList[1], TimerState.StartTimer(BrewState.Bloom(
             water = response.recipe.bloomWater,
-            time = response.recipe.bloomTime))
+            time = response.recipe.bloomTime), false)
         )
         assertTrue(viewModel.statesList[2] is TimerState.StartProgressBar)
     }
@@ -160,6 +160,10 @@ class TimerViewModelTest {
         assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Bloom)
         viewModel.updateTimer()
         assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.BrewWithBloom)
+        assertEquals(viewModel.statesList[3], TimerState.StartTimer(BrewState.BrewWithBloom(
+            water = response.recipe.brewWaterAmount,
+            time = response.recipe.brewTime), true)
+        )
     }
 
     @Test
@@ -189,7 +193,8 @@ class TimerViewModelTest {
         assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Brew)
         assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.BrewWithBloom)
         assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Bloom)
-        assertTrue(viewModel.state is TimerState.FinishState)
+        assertTrue(viewModel.statesList[1] is TimerState.FinishState)
+        assertTrue(viewModel.statesList[2] is TimerState.PlaySoundState)
     }
 
     @Test
