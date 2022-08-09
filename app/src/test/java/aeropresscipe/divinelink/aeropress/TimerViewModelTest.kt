@@ -1,9 +1,11 @@
 package aeropresscipe.divinelink.aeropress
 
+import aeropresscipe.divinelink.aeropress.base.di.Preferences
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.BrewMethod
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.CoffeeGrindSize
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.remainingWater
 import aeropresscipe.divinelink.aeropress.timer.ITimerViewModel
 import aeropresscipe.divinelink.aeropress.timer.TimerIntents
 import aeropresscipe.divinelink.aeropress.timer.TimerRepository
@@ -12,6 +14,7 @@ import aeropresscipe.divinelink.aeropress.timer.TimerState
 import aeropresscipe.divinelink.aeropress.timer.TimerViewModel
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
+import android.content.SharedPreferences
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -37,6 +40,12 @@ class TimerViewModelTest {
     @Mock
     private var remote: TimerServices = mock()
 
+    @Mock
+    private var mockPrefs: SharedPreferences = mock()
+
+    @Mock
+    private var sharedPreferences: Preferences = Preferences(mockPrefs)
+
     private var transferableModel = TimerTransferableModel()
 
     private var repository: TimerRepository = TimerRepository(remote)
@@ -52,6 +61,7 @@ class TimerViewModelTest {
             repository = repository)
 
         viewModelIntent = viewModel
+        viewModel.preferences = this.sharedPreferences
     }
 
     @Before
@@ -161,7 +171,7 @@ class TimerViewModelTest {
         viewModel.updateTimer()
         assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.BrewWithBloom)
         assertEquals(viewModel.statesList[3], TimerState.StartTimer(BrewState.BrewWithBloom(
-            water = response.recipe.brewWaterAmount,
+            water = response.recipe.remainingWater(),
             time = response.recipe.brewTime), true)
         )
     }
@@ -183,6 +193,7 @@ class TimerViewModelTest {
     @Test
     fun `given brew state, when I update timer, then I expect finish state`() = runTest {
         val response = DiceDomain(recipeModel(brewTime = 1, bloomTime = 0), isBrewing = true)
+        whenever(sharedPreferences.muteSound).thenReturn(false)
 
         transferableModel.recipe = response.recipe
 
@@ -202,6 +213,28 @@ class TimerViewModelTest {
         transferableModel.recipe = null
         viewModel.startBrew()
         assert(viewModel.state is TimerState.ErrorState)
+    }
+
+    @Test
+    fun `given mute sound preference true, when updateTimer, then I don't expect PlaySoundState`() = runTest {
+        val response = DiceDomain(recipeModel(brewTime = 1, bloomTime = 1), isBrewing = true)
+        whenever(sharedPreferences.muteSound).thenReturn(true)
+        transferableModel.recipe = response.recipe
+        viewModel.init(transferableModel)
+        viewModel.updateTimer()
+        assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.BrewWithBloom)
+        assertTrue(viewModel.state is TimerState.StartProgressBar)
+    }
+
+    @Test
+    fun `given mute sound preference false, when updateTimer, then I expect PlaySoundState`() = runTest {
+        val response = DiceDomain(recipeModel(brewTime = 1, bloomTime = 1), isBrewing = true)
+        whenever(sharedPreferences.muteSound).thenReturn(false)
+        transferableModel.recipe = response.recipe
+        viewModel.init(transferableModel)
+        viewModel.updateTimer()
+        assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.BrewWithBloom)
+        assertTrue(viewModel.state is TimerState.PlaySoundState)
     }
 
     private fun recipeModel(
