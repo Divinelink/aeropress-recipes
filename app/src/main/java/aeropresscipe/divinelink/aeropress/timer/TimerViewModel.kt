@@ -71,6 +71,7 @@ class TimerViewModel @AssistedInject constructor(
         repository.updateBrewingState(false) {
             Timber.d("Recipe finished brewing")
             state = TimerState.FinishState
+            state = TimerState.PlaySoundState
         }
     }
 
@@ -110,6 +111,7 @@ class TimerViewModel @AssistedInject constructor(
             } else {
                 startTimerStates(brew.getCurrentState(), brew.getCurrentState().brewTime.inMilliseconds(), animate = true)
             }
+            state = TimerState.PlaySoundState
         }
     }
 
@@ -165,19 +167,17 @@ sealed class TimerState {
     data class StartTimer(val brewState: BrewState) : TimerState()
 
     data class StartProgressBar(val maxValue: Int, val timeInMilliseconds: Long, val animate: Boolean) : TimerState()
-
+    object PlaySoundState : TimerState()
     object ExitState : TimerState()
-
     object FinishState : TimerState()
 }
 
 interface TimerStateHandler {
     fun handleInitialState()
     fun handleErrorState(state: TimerState.ErrorState)
-
     fun handleStartTimer(state: TimerState.StartTimer)
     fun handleStartProgressBar(state: TimerState.StartProgressBar)
-
     fun handleExitState()
     fun handleFinishState()
+    fun handlePlaySoundState()
 }

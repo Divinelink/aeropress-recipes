@@ -1,5 +1,6 @@
 package aeropresscipe.divinelink.aeropress.timer
 
+import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.databinding.FragmentTimerBinding
 import aeropresscipe.divinelink.aeropress.finish.FinishActivity
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
@@ -7,6 +8,7 @@ import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
 import aeropresscipe.divinelink.aeropress.timer.util.TimerViewModelAssistedFactory
 import aeropresscipe.divinelink.aeropress.timer.util.TimerViewModelFactory
 import android.animation.ObjectAnimator
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +21,7 @@ import gr.divinelink.core.util.constants.Numbers.ONE_THOUSAND
 import gr.divinelink.core.util.constants.Numbers.SIXTY
 import gr.divinelink.core.util.constants.Numbers.THREE_HUNDRED
 import gr.divinelink.core.util.extensions.getPairOfMinutesSeconds
+import gr.divinelink.core.util.extensions.updateTextWithFade
 import gr.divinelink.core.util.timer.PreciseCountdown
 import java.lang.ref.WeakReference
 import java.util.Locale
@@ -42,6 +45,8 @@ class TimerFragment : Fragment(),
     private var transferableModel = TimerTransferableModel()
 
     private var timer: PreciseCountdown? = null
+    private var mediaPlayer: MediaPlayer? = null
+
     private var milliSecondsLeft = 0L
 
     override fun onCreateView(
@@ -72,6 +77,7 @@ class TimerFragment : Fragment(),
         super.onDestroyView()
         timer?.dispose()
         viewModel.exitTimer(milliSecondsLeft)
+        mediaPlayer?.release()
         binding = null
     }
 
@@ -99,6 +105,7 @@ class TimerFragment : Fragment(),
             is TimerState.StartTimer -> handleStartTimer(state)
             is TimerState.FinishState -> handleFinishState()
             is TimerState.ExitState -> handleExitState()
+            is TimerState.PlaySoundState -> handlePlaySoundState()
         }
     }
 
@@ -108,6 +115,7 @@ class TimerFragment : Fragment(),
 
     override fun handleInitialState() {
         binding?.likeButtonCard?.recipe = transferableModel.recipe
+        mediaPlayer = MediaPlayer.create(context, R.raw.timer_beep)
     }
 
     override fun handleErrorState(state: TimerState.ErrorState) {
@@ -115,8 +123,13 @@ class TimerFragment : Fragment(),
     }
 
     override fun handleStartTimer(state: TimerState.StartTimer) {
-        binding?.timerHeader?.text = resources.getString(state.brewState.title)
-        binding?.waterDescription?.text = resources.getString(state.brewState.description, state.brewState.brewWater)
+        if (state.animate) {
+            binding?.timerHeader updateTextWithFade resources.getString(state.brewState.title)
+            binding?.waterDescription updateTextWithFade resources.getString(state.brewState.description, state.brewState.brewWater)
+        } else {
+            binding?.timerHeader?.text = resources.getString(state.brewState.title)
+            binding?.waterDescription?.text = resources.getString(state.brewState.description, state.brewState.brewWater)
+        }
     }
 
     override fun handleStartProgressBar(state: TimerState.StartProgressBar) {
@@ -150,6 +163,10 @@ class TimerFragment : Fragment(),
         timer?.dispose()
         startActivity(FinishActivity.newIntent(requireContext(), transferableModel.recipe))
         activity?.finish()
+    }
+
+    override fun handlePlaySoundState() {
+        mediaPlayer?.start()
     }
 
     private fun updateCountdownUI(
