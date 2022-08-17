@@ -6,7 +6,15 @@
     <item
         android:id="@+id/favorite"
         android:actionLayout="@layout/layout_favorite_item"
-        android:orderInCategory="100"
+        android:orderInCategory="1"
         android:title="@string/favorites"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_settings"
+        android:orderInCategory="2"
+        android:title="@string/settings"
+        app:showAsAction="ifRoom" />
+
 </menu>
