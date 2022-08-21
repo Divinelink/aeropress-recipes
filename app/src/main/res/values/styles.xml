@@ -50,11 +50,18 @@
         <item name="subtitleTextAppearance">@style/Text.BodyMedium</item>
     </style>
 
-    <style name="ToolbarTheme" parent="@style/Widget.Material3.Light.ActionBar.Solid">
-        <item name="titleTextAppearance">@style/Text.TitleMedium</item>
-        <item name="subtitleTextAppearance">@style/Text.TitleMedium</item>
-        <item name="android:titleTextAppearance">@style/Text.TitleLarge</item>
-        <item name="android:subtitleTextAppearance">@style/Text.TitleMedium</item>
+    <style name="DayNight.Popup.OverflowMenu" parent="@style/Widget.Material3.PopupMenu.Overflow">
+        <item name="overlapAnchor">false</item>
+        <item name="android:popupElevation">4dp</item>
+        <item name="android:dropDownHorizontalOffset">-14dp</item>
+        <item name="android:dropDownVerticalOffset">1px</item>
+        <item name="android:popupBackground">@drawable/rounded_rectangle_surface_2_18</item>
+    </style>
+
+    <style name="ActionBar.Style" parent="Widget.Material3.ActionBar.Solid">
+        <item name="actionOverflowMenuStyle">@style/DayNight.Popup.OverflowMenu</item>
+        <item name="background">@color/colorBackground</item>
+        <item name="android:itemTextAppearance">@style/Text.BodyLarge</item>
     </style>
 
     <style name="BottomNavigationStyle" parent="Widget.Material3.BottomNavigationView">

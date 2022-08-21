@@ -19,8 +19,9 @@
             android:layout_height="wrap_content"
             android:clipChildren="false"
             android:clipToPadding="false"
+            android:theme="?actionBarStyle"
             android:paddingStart="0dp"
-            android:paddingEnd="16dp"
+            android:paddingEnd="4dp"
             app:menu="@menu/recipe_menu"
             tools:title="@string/good_morning" />
 

@@ -11,10 +11,7 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/settings"
-        android:icon="@drawable/ic_settings"
-        android:orderInCategory="2"
-        android:title="@string/settings"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/menu_settings"
+        android:title="@string/settings" />
 
 </menu>

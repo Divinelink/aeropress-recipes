@@ -41,6 +41,7 @@
         <item name="android:windowLightNavigationBar">?attr/isLightTheme</item>
 
         <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
+        <item name="actionBarStyle">@style/ActionBar.Style</item>
 
 
     </style>
