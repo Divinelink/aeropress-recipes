@@ -13,6 +13,6 @@ internal fun View.show(isShown: Boolean = false) {
     }
 }
 
-internal fun isLtr(): Boolean {
+fun isLtr(): Boolean {
     return TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault()) == LayoutDirection.LTR
 }
