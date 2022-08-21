@@ -1,6 +1,7 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe
 
 import aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.components.menu.ContextMenu
 import aeropresscipe.divinelink.aeropress.customviews.Notification
 import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
 import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.DISLIKE_MIN_FRAME
@@ -8,9 +9,14 @@ import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Compani
 import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.LIKE_MIN_FRAME
 import aeropresscipe.divinelink.aeropress.databinding.FragmentGenerateRecipeBinding
 import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
+import aeropresscipe.divinelink.aeropress.settings.SettingsActivity
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -57,7 +63,6 @@ class GenerateRecipeFragment :
 
         val viewModelFactory = GenerateRecipeViewModelFactory(assistedFactory, WeakReference<IGenerateRecipeViewModel>(this))
         viewModel = ViewModelProvider(this, viewModelFactory).get(GenerateRecipeViewModel::class.java)
-
         viewModel.init(datetime.hour)
 
         viewModel.getRecipe()
@@ -190,6 +195,16 @@ class GenerateRecipeFragment :
         }
         lottieFavorite?.setOnClickListener {
             viewModel.likeRecipe()
+        }
+
+        binding?.toolbar?.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.menu_settings -> {
+                    startActivity(Intent(context, SettingsActivity::class.java))
+                    true
+                }
+                else -> false
+            }
         }
     }
 

@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.Aeropress">
         <activity
+            android:name=".settings.SettingsActivity"
+            android:exported="false" />
+        <activity
             android:name=".finish.FinishActivity"
             android:exported="false" />
         <activity android:name=".timer.TimerActivity" />
