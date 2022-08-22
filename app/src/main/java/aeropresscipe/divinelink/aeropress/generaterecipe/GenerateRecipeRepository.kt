@@ -54,7 +54,7 @@ open class GenerateRecipeRemote @Inject constructor(
 
     override suspend fun getRecipe(): DiceDomain {
         return withContext(dispatcher) {
-            recipeDao.singleRecipe
+            recipeDao.singleRecipe ?: createNewRecipe() //FIXME signelRecipe can return null, need to fix this 
         }
     }
 }
