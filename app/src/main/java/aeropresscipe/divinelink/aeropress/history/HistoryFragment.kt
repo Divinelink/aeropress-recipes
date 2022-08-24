@@ -4,6 +4,7 @@ import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.customviews.Notification
 import aeropresscipe.divinelink.aeropress.databinding.FragmentHistoryBinding
 import aeropresscipe.divinelink.aeropress.mapping.MappingAdapter
+import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.EmptyType
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -106,7 +107,7 @@ class HistoryFragment : Fragment(),
     }
 
     override fun handleEmptyHistoryState() {
-//        historyAdapter.submitList(listOf(RecipesAdapter.EmptyHistory))
+        historyAdapter.submitList(listOf(EmptyType.EmptyHistory))
         updateToolbar(false)
     }
 

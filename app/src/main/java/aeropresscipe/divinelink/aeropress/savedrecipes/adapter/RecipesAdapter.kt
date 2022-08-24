@@ -5,6 +5,7 @@ import aeropresscipe.divinelink.aeropress.customviews.RecipeCard
 import aeropresscipe.divinelink.aeropress.databinding.EmptyRecyclerLayoutBinding
 import aeropresscipe.divinelink.aeropress.databinding.ViewSwipeRecipeCardBinding
 import aeropresscipe.divinelink.aeropress.history.History
+import aeropresscipe.divinelink.aeropress.history.HistoryItem
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import android.content.Context
 import android.view.LayoutInflater
@@ -20,7 +21,6 @@ import gr.divinelink.core.util.swipe.SwipeMenuListener
 typealias OnActionClicked = (recipe: Any, action: SwipeAction) -> Unit
 
 class RecipesAdapter(
-    private val context: Context,
     private val onActionClicked: OnActionClicked,
 ) : ListAdapter<Any, RecyclerView.ViewHolder>(
     object : DiffUtil.ItemCallback<Any>() {
@@ -60,7 +60,6 @@ class RecipesAdapter(
     companion object {
         const val Recipe = 0
         const val Empty_Favorites = 2
-        const val Empty_History = 4
         const val Type_Error = 5
     }
 
@@ -83,16 +82,9 @@ class RecipesAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             Recipe -> RecipeViewHolder(ViewSwipeRecipeCardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-            Empty_History -> {
-                EmptyViewHolder(
-                    EmptyRecyclerLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-                    EmptyType.EmptyHistory
-                )
-            }
             Empty_Favorites -> {
-                EmptyViewHolder(
-                    EmptyRecyclerLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-                    EmptyType.EmptyFavorites
+                HistoryItem.EmptyViewHolder(
+                    EmptyRecyclerLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 )
             }
             else -> {
@@ -112,8 +104,8 @@ class RecipesAdapter(
                 holder.updateView(item as SavedRecipeDomain)
                 actionsBindHelper.bind(item.id.toString(), holder.binding.swipeActionLayout)
             }
-            is EmptyViewHolder -> {
-                holder.update()
+            is HistoryItem.EmptyViewHolder -> {
+                holder.bind(EmptyType.EmptyFavorites)
             }
         }
     }
@@ -149,17 +141,4 @@ class RecipesAdapter(
             onActionClicked(currentList[layoutPosition] as SavedRecipeDomain, action)
         }
     }
-
-    inner class EmptyViewHolder(
-        private val binding: EmptyRecyclerLayoutBinding,
-        private val type: EmptyType
-    ) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        fun update() {
-            binding.root.text = context.resources.getString(type.text)
-            binding.root.setCompoundDrawablesWithIntrinsicBounds(type.image, 0, 0, 0)
-        }
-    }
-
 }

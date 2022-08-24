@@ -31,7 +31,6 @@ class SavedRecipesFragment : Fragment(),
 
     private val recipesAdapter by lazy {
         RecipesAdapter(
-            requireContext(),
             onActionClicked = { recipe: Any, swipeAction: SwipeAction ->
                 recipe as SavedRecipeDomain
                 when (swipeAction.actionId) {
