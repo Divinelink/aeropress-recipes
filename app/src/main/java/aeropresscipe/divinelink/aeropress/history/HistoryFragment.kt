@@ -3,7 +3,7 @@ package aeropresscipe.divinelink.aeropress.history
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.customviews.Notification
 import aeropresscipe.divinelink.aeropress.databinding.FragmentHistoryBinding
-import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.RecipesAdapter
+import aeropresscipe.divinelink.aeropress.mapping.MappingAdapter
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,6 +17,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.setDisabled
 import gr.divinelink.core.util.extensions.setEnabled
+import gr.divinelink.core.util.swipe.ActionBindHelper
 import gr.divinelink.core.util.swipe.SwipeAction
 import java.lang.ref.WeakReference
 import javax.inject.Inject
@@ -33,21 +34,7 @@ class HistoryFragment : Fragment(),
     lateinit var assistedFactory: HistoryViewModelAssistedFactory
     private lateinit var viewModel: HistoryViewModel
 
-    private val historyAdapter by lazy {
-        RecipesAdapter(
-            requireContext(),
-            onActionClicked = { recipe: Any, swipeAction: SwipeAction ->
-                recipe as History
-                when (swipeAction.actionId) {
-                    R.id.brew -> viewModel.startBrew(recipe.recipe)
-                }
-            },
-            onLike = { recipe: Any, position: Int ->
-                recipe as History
-                viewModel.likeRecipe(recipe, position)
-            }
-        )
-    }
+    private val historyAdapter = MappingAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHistoryBinding.inflate(inflater, container, false)
@@ -78,8 +65,21 @@ class HistoryFragment : Fragment(),
     }
 
     override fun handleInitialState() {
+        HistoryItem.register(historyAdapter,
+            onActionClicked = { recipe: History, swipeAction: SwipeAction ->
+                when (swipeAction.actionId) {
+                    R.id.brew -> viewModel.startBrew(recipe.recipe)
+                }
+            },
+            onLike = { recipe: History, position: Int ->
+                viewModel.likeRecipe(recipe, position)
+            },
+            actionBindHelper = ActionBindHelper()
+        )
+
         binding?.historyRV?.layoutManager = LinearLayoutManager(activity)
         binding?.historyRV?.adapter = historyAdapter
+
 
         binding?.toolbar?.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -106,7 +106,7 @@ class HistoryFragment : Fragment(),
     }
 
     override fun handleEmptyHistoryState() {
-        historyAdapter.submitList(listOf(RecipesAdapter.EmptyHistory))
+//        historyAdapter.submitList(listOf(RecipesAdapter.EmptyHistory))
         updateToolbar(false)
     }
 

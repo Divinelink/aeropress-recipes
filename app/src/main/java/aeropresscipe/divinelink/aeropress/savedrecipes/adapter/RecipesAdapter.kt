@@ -2,13 +2,8 @@ package aeropresscipe.divinelink.aeropress.savedrecipes.adapter
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.customviews.RecipeCard
-import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
-import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.DISLIKE_MIN_FRAME
-import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.LIKE_MAX_FRAME
-import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.LIKE_MIN_FRAME
 import aeropresscipe.divinelink.aeropress.databinding.EmptyRecyclerLayoutBinding
 import aeropresscipe.divinelink.aeropress.databinding.ViewSwipeRecipeCardBinding
-import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
 import aeropresscipe.divinelink.aeropress.history.History
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import android.content.Context
@@ -24,12 +19,9 @@ import gr.divinelink.core.util.swipe.SwipeMenuListener
 
 typealias OnActionClicked = (recipe: Any, action: SwipeAction) -> Unit
 
-typealias OnLike = (recipe: Any, position: Int) -> Unit
-
 class RecipesAdapter(
     private val context: Context,
     private val onActionClicked: OnActionClicked,
-    private val onLike: OnLike? = null
 ) : ListAdapter<Any, RecyclerView.ViewHolder>(
     object : DiffUtil.ItemCallback<Any>() {
         override fun areItemsTheSame(oldItem: Any, newItem: Any) =
@@ -63,13 +55,11 @@ class RecipesAdapter(
 
     private val actionsBindHelper = ActionBindHelper()
 
-    object EmptyHistory
     object EmptyFavorites
 
     companion object {
         const val Recipe = 0
         const val Empty_Favorites = 2
-        const val History = 3
         const val Empty_History = 4
         const val Type_Error = 5
     }
@@ -78,12 +68,6 @@ class RecipesAdapter(
         return when (getItem(position)) {
             is SavedRecipeDomain -> {
                 Recipe
-            }
-            is History -> {
-                History
-            }
-            is EmptyHistory -> {
-                Empty_History
             }
             is EmptyFavorites -> {
                 Empty_Favorites
@@ -99,7 +83,6 @@ class RecipesAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             Recipe -> RecipeViewHolder(ViewSwipeRecipeCardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-            History -> HistoryViewHolder(ViewSwipeRecipeCardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             Empty_History -> {
                 EmptyViewHolder(
                     EmptyRecyclerLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false),
@@ -125,16 +108,6 @@ class RecipesAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: List<Any>) {
         val item = currentList[position]
         when (holder) {
-            is HistoryViewHolder -> {
-                if (payloads.isEmpty()) {
-                    holder.updateView(item as History)
-                    actionsBindHelper.bind(item.id.toString(), holder.binding.swipeActionLayout)
-                    holder.binding.card.setOnLikeButtonListener { onLike?.invoke(item, position) }
-                } else {
-                    val like = payloads[0] as Boolean
-                    holder.updateWithAnimation(like)
-                }
-            }
             is RecipeViewHolder -> {
                 holder.updateView(item as SavedRecipeDomain)
                 actionsBindHelper.bind(item.id.toString(), holder.binding.swipeActionLayout)
@@ -189,51 +162,4 @@ class RecipesAdapter(
         }
     }
 
-    inner class HistoryViewHolder(val binding: ViewSwipeRecipeCardBinding) :
-        RecyclerView.ViewHolder(binding.root), SwipeMenuListener {
-        private val swipeToAction = binding.swipeActionLayout
-
-        fun updateView(item: History) {
-            binding.card.setRecipe(RecipeCard.HistoryCard(item.recipe, item.dateBrewed))
-            swipeToAction.setActionsRes(R.menu.history_action_menu)
-            swipeToAction.menuListener = this
-
-            LottieHelper.updateLikeButton(binding.card.binding.likeButton)
-
-            update(item.isRecipeLiked)
-        }
-
-        private fun update(like: Boolean) {
-            when (like) {
-                true -> binding.card.binding.likeButton.frame = LIKE_MAX_FRAME
-                false -> binding.card.binding.likeButton.frame = DISLIKE_MAX_FRAME
-            }
-        }
-
-        fun updateWithAnimation(like: Boolean) {
-            when (like) {
-                true -> binding.card.binding.likeButton.setMinAndMaxFrame(LIKE_MIN_FRAME, LIKE_MAX_FRAME)
-                false -> binding.card.binding.likeButton.setMinAndMaxFrame(DISLIKE_MIN_FRAME, DISLIKE_MAX_FRAME)
-            }
-            binding.card.binding.likeButton.clipToCompositionBounds = false
-            binding.card.binding.likeButton.playAnimation()
-        }
-
-        override fun onClosed(view: View) {
-            // Intentionally Empty.
-        }
-
-        override fun onOpened(view: View) {
-            val recipe = currentList[layoutPosition] as History
-            actionsBindHelper.closeOtherThan(recipe.id.toString())
-        }
-
-        override fun onFullyOpened(view: View, quickAction: SwipeAction) {
-            // Intentionally Empty.
-        }
-
-        override fun onActionClicked(view: View, action: SwipeAction) {
-            onActionClicked(currentList[layoutPosition] as History, action)
-        }
-    }
 }
