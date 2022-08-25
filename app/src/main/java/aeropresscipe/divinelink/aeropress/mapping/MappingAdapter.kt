@@ -55,10 +55,17 @@ class MappingAdapter : ListAdapter<MappingModel, MappingViewHolder<MappingModel>
         }
     }
 
+    // Needed to call from Java code
     fun <T : MappingModel> registerFactory(clazz: Class<T>, factory: Factory<T>) {
         val type = typeCount++
         factories[type] = factory
         itemTypes[clazz] = type
+    }
+
+    inline fun <reified T : MappingModel> registerFactory(factory: Factory<T>) {
+        val type = typeCount++
+        factories[type] = factory
+        itemTypes[T::class.java] = type
     }
 
     override fun getItemViewType(position: Int): Int {
