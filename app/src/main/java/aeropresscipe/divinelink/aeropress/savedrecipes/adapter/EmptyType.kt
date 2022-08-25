@@ -6,10 +6,10 @@ import aeropresscipe.divinelink.aeropress.mapping.MappingModel
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 
-sealed class EmptyType(
+sealed class EmptyType<T : MappingModel>(
     @StringRes var text: Int,
     @DrawableRes var image: Int
 ) : EmptyMappingModel {
-    object EmptyHistory : EmptyType(text = R.string.empty_history_text, image = R.drawable.ic_history_fragment_image)
-    object EmptyFavorites : EmptyType(text = R.string.empty_favorites_text, image = R.drawable.ic_heart)
+    object EmptyHistory : EmptyType<EmptyHistory>(text = R.string.empty_history_text, image = R.drawable.ic_history_fragment_image)
+    object EmptyFavorites : EmptyType<EmptyFavorites>(text = R.string.empty_favorites_text, image = R.drawable.ic_heart)
 }
