@@ -8,6 +8,7 @@ import aeropresscipe.divinelink.aeropress.databinding.ViewSwipeRecipeCardBinding
 import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
 import aeropresscipe.divinelink.aeropress.mapping.LayoutFactory
 import aeropresscipe.divinelink.aeropress.mapping.MappingAdapter
+import aeropresscipe.divinelink.aeropress.mapping.MappingModel
 import aeropresscipe.divinelink.aeropress.mapping.MappingViewHolder
 import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.EmptyType
 import android.view.View
@@ -20,7 +21,6 @@ typealias OnLike = (recipe: History, position: Int) -> Unit
 
 object HistoryItem {
 
-    @Suppress("unchecked_cast")
     fun register(
         mappingAdapter: MappingAdapter,
         onActionClicked: OnActionClicked,
@@ -28,30 +28,21 @@ object HistoryItem {
         onLike: OnLike
     ) {
         mappingAdapter.registerFactory(
-            History::class.java,
-            LayoutFactory(
-                viewHolder = { layoutInflater, root ->
-                    HistoryMappingViewHolder(
-                        binding = ViewSwipeRecipeCardBinding.inflate(layoutInflater, root, false),
-                        onActionClicked = onActionClicked,
-                        onLike = onLike,
-                        actionsBindHelper = actionBindHelper
-                    )
-                },
-            )
+            LayoutFactory({ layoutInflater, root ->
+                HistoryMappingViewHolder(
+                    binding = ViewSwipeRecipeCardBinding.inflate(layoutInflater, root, false),
+                    actionsBindHelper = actionBindHelper,
+                    onActionClicked = onActionClicked,
+                    onLike = onLike
+                )
+            })
         )
-        mappingAdapter.registerFactory(
-            EmptyType.EmptyHistory::class.java as Class<EmptyType>,
-            factory = LayoutFactory(
-                viewHolder = { layoutInflater, root ->
-                    EmptyViewHolder(
-                        EmptyRecyclerLayoutBinding.inflate(layoutInflater, root, false),
-                    )
-                }
-            )
+        mappingAdapter.registerFactory<EmptyType.EmptyHistory>(
+            LayoutFactory({ layoutInflater, root ->
+                EmptyViewHolder(EmptyRecyclerLayoutBinding.inflate(layoutInflater, root, false))
+            })
         )
     }
-
 
     class HistoryMappingViewHolder(
         private val binding: ViewSwipeRecipeCardBinding,
@@ -115,12 +106,12 @@ object HistoryItem {
         }
     }
 
-    class EmptyViewHolder(
+    class EmptyViewHolder<T : EmptyType<T>>(
         private val binding: EmptyRecyclerLayoutBinding
     ) :
-        MappingViewHolder<EmptyType>(binding.root) {
+        MappingViewHolder<T>(binding.root) {
 
-        override fun bind(model: EmptyType) {
+        override fun bind(model: T) {
             binding.root.text = context.resources.getString(model.text)
             binding.root.setCompoundDrawablesWithIntrinsicBounds(model.image, 0, 0, 0)
         }
