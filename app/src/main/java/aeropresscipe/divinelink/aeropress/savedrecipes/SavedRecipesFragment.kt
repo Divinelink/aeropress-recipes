@@ -3,7 +3,9 @@ package aeropresscipe.divinelink.aeropress.savedrecipes
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.databinding.FragmentSavedRecipesBinding
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
-import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.RecipesAdapter
+import aeropresscipe.divinelink.aeropress.mapping.MappingAdapter
+import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.EmptyType
+import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.FavoriteItem
 import aeropresscipe.divinelink.aeropress.savedrecipes.util.SavedRecipesViewModelFactory
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
 import android.os.Bundle
@@ -16,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import gr.divinelink.core.util.swipe.ActionBindHelper
 import gr.divinelink.core.util.swipe.SwipeAction
 import java.lang.ref.WeakReference
 
@@ -29,17 +32,7 @@ class SavedRecipesFragment : Fragment(),
 
     private var mFadeAnimation: Animation? = null
 
-    private val recipesAdapter by lazy {
-        RecipesAdapter(
-            onActionClicked = { recipe: Any, swipeAction: SwipeAction ->
-                recipe as SavedRecipeDomain
-                when (swipeAction.actionId) {
-                    R.id.delete -> showDeleteRecipeDialog(recipe.recipe)
-                    R.id.brew -> viewModel.startBrew(recipe.recipe)
-                }
-            }
-        )
-    }
+    private val recipesAdapter = MappingAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,6 +68,16 @@ class SavedRecipesFragment : Fragment(),
     override fun handleInitialState() {
         binding?.savedRecipesRV?.layoutManager = LinearLayoutManager(activity)
         binding?.savedRecipesRV?.adapter = recipesAdapter
+
+        FavoriteItem.register(recipesAdapter,
+            onActionClicked = { recipe: SavedRecipeDomain, swipeAction: SwipeAction ->
+                when (swipeAction.actionId) {
+                    R.id.delete -> showDeleteRecipeDialog(recipe.recipe)
+                    R.id.brew -> viewModel.startBrew(recipe.recipe)
+                }
+            },
+            actionBindHelper = ActionBindHelper()
+        )
     }
 
     override fun handleLoadingState() {
@@ -94,7 +97,7 @@ class SavedRecipesFragment : Fragment(),
     }
 
     override fun handleEmptyRecipesState() {
-        recipesAdapter.submitList(listOf(RecipesAdapter.EmptyFavorites))
+        recipesAdapter.submitList(listOf(EmptyType.EmptyFavorites))
     }
 
     override fun handleRecipesState(state: SavedRecipesState.RecipesState) {

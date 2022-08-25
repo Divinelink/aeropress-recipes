@@ -4,124 +4,54 @@ import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.customviews.RecipeCard
 import aeropresscipe.divinelink.aeropress.databinding.EmptyRecyclerLayoutBinding
 import aeropresscipe.divinelink.aeropress.databinding.ViewSwipeRecipeCardBinding
-import aeropresscipe.divinelink.aeropress.history.History
 import aeropresscipe.divinelink.aeropress.history.HistoryItem
+import aeropresscipe.divinelink.aeropress.mapping.LayoutFactory
+import aeropresscipe.divinelink.aeropress.mapping.MappingAdapter
+import aeropresscipe.divinelink.aeropress.mapping.MappingViewHolder
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
-import android.content.Context
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import gr.divinelink.core.util.swipe.ActionBindHelper
 import gr.divinelink.core.util.swipe.SwipeAction
 import gr.divinelink.core.util.swipe.SwipeMenuListener
 
-typealias OnActionClicked = (recipe: Any, action: SwipeAction) -> Unit
+typealias OnActionClicked = (recipe: SavedRecipeDomain, action: SwipeAction) -> Unit
 
-class RecipesAdapter(
-    private val onActionClicked: OnActionClicked,
-) : ListAdapter<Any, RecyclerView.ViewHolder>(
-    object : DiffUtil.ItemCallback<Any>() {
-        override fun areItemsTheSame(oldItem: Any, newItem: Any) =
-            if (oldItem is History && newItem is History) {
-                oldItem.id == newItem.id
-            } else {
-                oldItem.hashCode() == newItem.hashCode()
-            }
-
-        override fun areContentsTheSame(oldItem: Any, newItem: Any) = compareItems(oldItem, newItem)
-
-        private fun compareItems(oldItem: Any, newItem: Any): Boolean {
-            if (oldItem is History && newItem is History) {
-                return oldItem == newItem
-            }
-            return oldItem.hashCode() == newItem.hashCode()
-        }
-
-        override fun getChangePayload(oldItem: Any, newItem: Any): Any? {
-            if (oldItem is History && newItem is History) {
-                return if (oldItem.isRecipeLiked == newItem.isRecipeLiked) {
-                    super.getChangePayload(oldItem, newItem)
-                } else {
-                    newItem.isRecipeLiked
-                }
-            }
-            return super.getChangePayload(oldItem, newItem)
-        }
-    }
-) {
-
-    private val actionsBindHelper = ActionBindHelper()
-
-    object EmptyFavorites
-
-    companion object {
-        const val Recipe = 0
-        const val Empty_Favorites = 2
-        const val Type_Error = 5
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return when (getItem(position)) {
-            is SavedRecipeDomain -> {
-                Recipe
-            }
-            is EmptyFavorites -> {
-                Empty_Favorites
-            }
-            else -> Type_Error
-        }
-    }
-
-    override fun submitList(list: List<Any>?) {
-        super.submitList(list)
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            Recipe -> RecipeViewHolder(ViewSwipeRecipeCardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-            Empty_Favorites -> {
-                HistoryItem.EmptyViewHolder(
-                    EmptyRecyclerLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+object FavoriteItem {
+    fun register(
+        mappingAdapter: MappingAdapter,
+        onActionClicked: OnActionClicked,
+        actionBindHelper: ActionBindHelper,
+    ) {
+        mappingAdapter.registerFactory(
+            LayoutFactory({ layoutInflater, root ->
+                RecipeViewHolder(
+                    binding = ViewSwipeRecipeCardBinding.inflate(layoutInflater, root, false),
+                    actionsBindHelper = actionBindHelper,
+                    onActionClicked = onActionClicked,
                 )
-            }
-            else -> {
-                throw IllegalArgumentException("Invalid view type")
-            }
-        }
+            })
+        )
+        mappingAdapter.registerFactory<EmptyType.EmptyFavorites>(
+            LayoutFactory({ layoutInflater, root ->
+                HistoryItem.EmptyViewHolder(EmptyRecyclerLayoutBinding.inflate(layoutInflater, root, false))
+            })
+        )
     }
 
-    override fun getItemCount(): Int {
-        return currentList.size
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: List<Any>) {
-        val item = currentList[position]
-        when (holder) {
-            is RecipeViewHolder -> {
-                holder.updateView(item as SavedRecipeDomain)
-                actionsBindHelper.bind(item.id.toString(), holder.binding.swipeActionLayout)
-            }
-            is HistoryItem.EmptyViewHolder -> {
-                holder.bind(EmptyType.EmptyFavorites)
-            }
-        }
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        onBindViewHolder(holder, position, emptyList())
-    }
-
-    inner class RecipeViewHolder(var binding: ViewSwipeRecipeCardBinding) :
-        RecyclerView.ViewHolder(binding.root), SwipeMenuListener {
+    class RecipeViewHolder(
+        private val binding: ViewSwipeRecipeCardBinding,
+        private val actionsBindHelper: ActionBindHelper,
+        private val onActionClicked: OnActionClicked,
+    ) :
+        MappingViewHolder<SavedRecipeDomain>(binding.root), SwipeMenuListener {
         private val swipeToAction = binding.swipeActionLayout
+        private lateinit var model: SavedRecipeDomain
 
-        fun updateView(item: SavedRecipeDomain) {
+        override fun bind(model: SavedRecipeDomain) {
+            this.model = model
             swipeToAction.menuListener = this
             swipeToAction.setActionsRes(R.menu.favorites_action_menu)
-            binding.card.setRecipe(RecipeCard.FavoritesCard(item.recipe, item.dateBrewed))
+            binding.card.setRecipe(RecipeCard.FavoritesCard(model.recipe, model.dateBrewed))
         }
 
         override fun onClosed(view: View) {
@@ -129,8 +59,7 @@ class RecipesAdapter(
         }
 
         override fun onOpened(view: View) {
-            val recipe = currentList[layoutPosition] as SavedRecipeDomain
-            actionsBindHelper.closeOtherThan(recipe.id.toString())
+            actionsBindHelper.closeOtherThan(model.id.toString())
         }
 
         override fun onFullyOpened(view: View, quickAction: SwipeAction) {
@@ -138,7 +67,7 @@ class RecipesAdapter(
         }
 
         override fun onActionClicked(view: View, action: SwipeAction) {
-            onActionClicked(currentList[layoutPosition] as SavedRecipeDomain, action)
+            onActionClicked(model, action)
         }
     }
 }
