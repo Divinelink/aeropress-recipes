@@ -1,11 +1,10 @@
-package aeropresscipe.divinelink.aeropress.mapping
+package aeropresscipe.divinelink.aeropress.util.mapping
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import gr.divinelink.core.util.views.NoCrossfadeChangeDefaultAnimator
-import kotlin.reflect.KClass
 
 /**
  * A reusable and composable [RecyclerView.Adapter] built on-top of [ListAdapter] to

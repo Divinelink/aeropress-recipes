@@ -1,8 +1,8 @@
 package aeropresscipe.divinelink.aeropress.savedrecipes.adapter
 
 import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.mapping.EmptyMappingModel
-import aeropresscipe.divinelink.aeropress.mapping.MappingModel
+import aeropresscipe.divinelink.aeropress.util.mapping.EmptyMappingModel
+import aeropresscipe.divinelink.aeropress.util.mapping.MappingModel
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 

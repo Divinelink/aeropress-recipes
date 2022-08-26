@@ -5,9 +5,9 @@ import aeropresscipe.divinelink.aeropress.customviews.RecipeCard
 import aeropresscipe.divinelink.aeropress.databinding.EmptyRecyclerLayoutBinding
 import aeropresscipe.divinelink.aeropress.databinding.ViewSwipeRecipeCardBinding
 import aeropresscipe.divinelink.aeropress.history.HistoryItem
-import aeropresscipe.divinelink.aeropress.mapping.LayoutFactory
-import aeropresscipe.divinelink.aeropress.mapping.MappingAdapter
-import aeropresscipe.divinelink.aeropress.mapping.MappingViewHolder
+import aeropresscipe.divinelink.aeropress.util.mapping.LayoutFactory
+import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
+import aeropresscipe.divinelink.aeropress.util.mapping.MappingViewHolder
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import android.view.View
 import gr.divinelink.core.util.swipe.ActionBindHelper

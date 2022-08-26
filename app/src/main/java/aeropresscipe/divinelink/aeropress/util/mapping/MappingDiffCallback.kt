@@ -1,4 +1,4 @@
-package aeropresscipe.divinelink.aeropress.mapping
+package aeropresscipe.divinelink.aeropress.util.mapping
 
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil

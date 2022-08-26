@@ -3,7 +3,7 @@ package aeropresscipe.divinelink.aeropress.history
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import aeropresscipe.divinelink.aeropress.mapping.MappingModel
+import aeropresscipe.divinelink.aeropress.util.mapping.MappingModel
 
 @Entity(tableName = "HistoryRecipes")
 data class History(

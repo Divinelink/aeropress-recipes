@@ -1,4 +1,4 @@
-package aeropresscipe.divinelink.aeropress.mapping
+package aeropresscipe.divinelink.aeropress.util.mapping
 
 import android.content.Context
 import android.view.View
