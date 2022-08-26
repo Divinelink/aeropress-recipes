@@ -1,17 +1,16 @@
 package aeropresscipe.divinelink.aeropress
 
-import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.BrewMethod
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.CoffeeGrindSize
+import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeIntents
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeRemote
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeRepository
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeState
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeViewModel
 import aeropresscipe.divinelink.aeropress.generaterecipe.IGenerateRecipeViewModel
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.BrewMethod
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.CoffeeGrindSize
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
-import aeropresscipe.divinelink.aeropress.timer.TimerFragment
 import aeropresscipe.divinelink.aeropress.timer.TimerRepository
 import aeropresscipe.divinelink.aeropress.timer.TimerServices
 import kotlinx.coroutines.ExperimentalCoroutinesApi

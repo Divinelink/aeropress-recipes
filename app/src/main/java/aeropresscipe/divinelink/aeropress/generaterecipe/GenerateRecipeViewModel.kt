@@ -3,8 +3,8 @@ package aeropresscipe.divinelink.aeropress.generaterecipe
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
-import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
-import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.LIKE_MAX_FRAME
+import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
+import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.LIKE_MAX_FRAME
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.RecipeStep

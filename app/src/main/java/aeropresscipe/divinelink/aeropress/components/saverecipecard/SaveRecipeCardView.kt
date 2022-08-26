@@ -1,11 +1,5 @@
-package aeropresscipe.divinelink.aeropress.customviews
+package aeropresscipe.divinelink.aeropress.components.saverecipecard
 
-import aeropresscipe.divinelink.aeropress.components.saverecipecard.ISaveRecipeCardViewModel
-import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardState
-import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardStateHandler
-import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardViewModel
-import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardViewModelAssistedFactory
-import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardViewModelFactory
 import aeropresscipe.divinelink.aeropress.components.snackbar.Notification
 import aeropresscipe.divinelink.aeropress.databinding.ViewSaveRecipeCardBinding
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe

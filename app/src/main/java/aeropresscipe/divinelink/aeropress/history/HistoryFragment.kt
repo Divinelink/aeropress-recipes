@@ -1,11 +1,11 @@
 package aeropresscipe.divinelink.aeropress.history
 
 import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.customviews.Notification
+import aeropresscipe.divinelink.aeropress.components.snackbar.Notification
 import aeropresscipe.divinelink.aeropress.databinding.FragmentHistoryBinding
-import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
 import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.EmptyType
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
+import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -80,7 +80,6 @@ class HistoryFragment : Fragment(),
 
         binding?.historyRV?.layoutManager = LinearLayoutManager(activity)
         binding?.historyRV?.adapter = historyAdapter
-
 
         binding?.toolbar?.setOnMenuItemClickListener { item ->
             when (item.itemId) {

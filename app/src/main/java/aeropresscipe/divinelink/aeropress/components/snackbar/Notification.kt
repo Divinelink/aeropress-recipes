@@ -29,7 +29,7 @@ class Notification(
 
             // Inflate the custom view
             val customView = LayoutInflater.from(view?.context).inflate(
-                R.layout.custom,
+                R.layout.view_custom_notification,
                 parent,
                 false
             ) as NotificationView

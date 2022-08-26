@@ -1,11 +1,11 @@
 package aeropresscipe.divinelink.aeropress
 
-import aeropresscipe.divinelink.aeropress.customviews.ISaveRecipeCardViewModel
-import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardIntents
-import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardState
-import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
-import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView.Companion.LIKE_MAX_FRAME
-import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardViewModel
+import aeropresscipe.divinelink.aeropress.components.saverecipecard.ISaveRecipeCardViewModel
+import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardIntents
+import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardState
+import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
+import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.LIKE_MAX_FRAME
+import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardViewModel
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.BrewMethod
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.CoffeeGrindSize
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
@@ -23,7 +23,6 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import java.lang.ref.WeakReference
 import kotlin.test.assertEquals
-
 
 @ExperimentalCoroutinesApi
 class SaveRecipeCardViewTest {
@@ -60,7 +59,6 @@ class SaveRecipeCardViewTest {
     fun after() {
         viewModel.statesList.forEach { println(it) }
     }
-
 
     @Test
     fun `given recipe is liked, on init return saved state`() = runTest {
@@ -109,8 +107,6 @@ class SaveRecipeCardViewTest {
         assertEquals(viewModel.statesList[0], SaveRecipeCardState.RecipeRemovedState)
         assertEquals(viewModel.statesList[1], SaveRecipeCardState.ShowSnackBar(LikeSnackBar.Remove))
     }
-
-
 
     private fun recipeModel(
         diceTemperature: Int = 0,

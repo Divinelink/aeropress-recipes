@@ -49,6 +49,7 @@ object FavoriteItem {
 
         override fun bind(model: SavedRecipeDomain) {
             this.model = model
+            actionsBindHelper.bind(model.id.toString(), binding.swipeActionLayout)
             swipeToAction.menuListener = this
             swipeToAction.setActionsRes(R.menu.favorites_action_menu)
             binding.card.setRecipe(RecipeCard.FavoritesCard(model.recipe, model.dateBrewed))

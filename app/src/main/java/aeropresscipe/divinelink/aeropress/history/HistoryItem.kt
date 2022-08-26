@@ -2,7 +2,7 @@ package aeropresscipe.divinelink.aeropress.history
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.components.recipecard.RecipeCard
-import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView
+import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView
 import aeropresscipe.divinelink.aeropress.databinding.EmptyRecyclerLayoutBinding
 import aeropresscipe.divinelink.aeropress.databinding.ViewSwipeRecipeCardBinding
 import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
