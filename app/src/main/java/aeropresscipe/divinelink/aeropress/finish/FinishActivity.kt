@@ -1,7 +1,7 @@
 package aeropresscipe.divinelink.aeropress.finish
 
 import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.customviews.RecipeCard
+import aeropresscipe.divinelink.aeropress.components.recipecard.RecipeCard
 import aeropresscipe.divinelink.aeropress.databinding.ActivityFinishBinding
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import android.content.Context
@@ -71,7 +71,6 @@ class FinishActivity :
                 binding.card.setRecipe(RecipeCard.FinishCard(recipe = it))
                 binding.likeButtonCardLayout.recipe = it
             }
-
         }
     }
 
@@ -100,5 +99,4 @@ class FinishActivity :
             return intent
         }
     }
-
 }

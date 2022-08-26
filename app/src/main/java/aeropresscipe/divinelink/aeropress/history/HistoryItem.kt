@@ -1,15 +1,15 @@
 package aeropresscipe.divinelink.aeropress.history
 
 import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.customviews.RecipeCard
+import aeropresscipe.divinelink.aeropress.components.recipecard.RecipeCard
 import aeropresscipe.divinelink.aeropress.customviews.SaveRecipeCardView
 import aeropresscipe.divinelink.aeropress.databinding.EmptyRecyclerLayoutBinding
 import aeropresscipe.divinelink.aeropress.databinding.ViewSwipeRecipeCardBinding
 import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
+import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.EmptyType
 import aeropresscipe.divinelink.aeropress.util.mapping.LayoutFactory
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingViewHolder
-import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.EmptyType
 import android.view.View
 import gr.divinelink.core.util.swipe.ActionBindHelper
 import gr.divinelink.core.util.swipe.SwipeAction
@@ -70,7 +70,6 @@ object HistoryItem {
             }
         }
 
-
         private fun update(like: Boolean) {
             when (like) {
                 true -> binding.card.binding.likeButton.frame = SaveRecipeCardView.LIKE_MAX_FRAME
@@ -86,7 +85,6 @@ object HistoryItem {
             binding.card.binding.likeButton.clipToCompositionBounds = false
             binding.card.binding.likeButton.playAnimation()
         }
-
 
         override fun onClosed(view: View) {
             // Intentionally Empty.
@@ -115,5 +113,4 @@ object HistoryItem {
             binding.root.setCompoundDrawablesWithIntrinsicBounds(model.image, 0, 0, 0)
         }
     }
-
 }

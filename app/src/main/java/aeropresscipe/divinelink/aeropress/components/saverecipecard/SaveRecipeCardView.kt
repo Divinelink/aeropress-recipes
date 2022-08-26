@@ -1,5 +1,12 @@
 package aeropresscipe.divinelink.aeropress.customviews
 
+import aeropresscipe.divinelink.aeropress.components.saverecipecard.ISaveRecipeCardViewModel
+import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardState
+import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardStateHandler
+import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardViewModel
+import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardViewModelAssistedFactory
+import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardViewModelFactory
+import aeropresscipe.divinelink.aeropress.components.snackbar.Notification
 import aeropresscipe.divinelink.aeropress.databinding.ViewSaveRecipeCardBinding
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
@@ -87,5 +94,4 @@ class SaveRecipeCardView :
         const val DISLIKE_MIN_FRAME = 80
         const val DISLIKE_MAX_FRAME = 130
     }
-
 }

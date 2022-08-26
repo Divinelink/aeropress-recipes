@@ -1,4 +1,4 @@
-package aeropresscipe.divinelink.aeropress.customviews
+package aeropresscipe.divinelink.aeropress.components.recipecard
 
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import android.view.View

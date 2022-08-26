@@ -19,7 +19,7 @@
         app:sal_isFullActionSupported="false"
         app:sal_shouldVibrateOnQuickAction="false">
 
-        <aeropresscipe.divinelink.aeropress.customviews.RecipeCardView
+        <aeropresscipe.divinelink.aeropress.components.recipecard.RecipeCardView
             android:id="@+id/card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

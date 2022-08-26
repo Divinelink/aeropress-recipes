@@ -1,4 +1,4 @@
-package aeropresscipe.divinelink.aeropress.customviews
+package aeropresscipe.divinelink.aeropress.components.recipecard
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.databinding.ViewRecipeCardBinding
@@ -54,5 +54,4 @@ class RecipeCardView : CardView {
             action.invoke()
         }
     }
-
 }

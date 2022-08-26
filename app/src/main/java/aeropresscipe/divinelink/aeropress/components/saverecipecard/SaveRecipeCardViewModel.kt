@@ -1,4 +1,4 @@
-package aeropresscipe.divinelink.aeropress.customviews
+package aeropresscipe.divinelink.aeropress.components.saverecipecard
 
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
@@ -41,7 +41,6 @@ class SaveRecipeCardViewModel @AssistedInject constructor(
         }
     }
 
-
     override fun likeRecipe(recipe: Recipe?) {
         if (recipe != null) {
             repository.likeCurrentRecipe(recipe) { recipeLiked ->
@@ -54,9 +53,7 @@ class SaveRecipeCardViewModel @AssistedInject constructor(
                 }
             }
         }
-
     }
-
 }
 
 interface ISaveRecipeCardViewModel {

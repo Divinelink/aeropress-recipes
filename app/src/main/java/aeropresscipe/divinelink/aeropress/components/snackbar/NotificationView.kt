@@ -1,4 +1,4 @@
-package aeropresscipe.divinelink.aeropress.customviews
+package aeropresscipe.divinelink.aeropress.components.snackbar
 
 import aeropresscipe.divinelink.aeropress.databinding.ViewNotificationBinding
 import android.content.Context
