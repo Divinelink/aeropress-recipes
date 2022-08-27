@@ -6,7 +6,6 @@ import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
 import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.EmptyType
 import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.FavoriteItem
-import aeropresscipe.divinelink.aeropress.savedrecipes.util.SavedRecipesViewModelFactory
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,17 +17,24 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.swipe.ActionBindHelper
 import gr.divinelink.core.util.swipe.SwipeAction
 import java.lang.ref.WeakReference
+import javax.inject.Inject
 
+
+@AndroidEntryPoint
 class SavedRecipesFragment : Fragment(),
     SavedRecipesStateHandler,
     ISavedRecipesViewModel {
     private var binding: FragmentSavedRecipesBinding? = null
 
     private lateinit var viewModel: SavedRecipesViewModel
-    private lateinit var viewModelFactory: SavedRecipesViewModelFactory
+
+    @Inject
+    lateinit var assistedFactory: SavedTimerViewModelAssistedFactory
+
 
     private var mFadeAnimation: Animation? = null
 
@@ -43,12 +49,15 @@ class SavedRecipesFragment : Fragment(),
         val view = binding?.root
         binding?.toolbar?.setNavigationOnClickListener { activity?.onBackPressed() }
 
-        viewModelFactory = SavedRecipesViewModelFactory(
-            app = requireActivity().application,
-            delegate = WeakReference<ISavedRecipesViewModel>(this),
-            repository = SavedRecipesRepository(),
-        )
-        viewModel = ViewModelProvider(this, viewModelFactory).get(SavedRecipesViewModel::class.java)
+        val viewModelFactory = SavedRecipesViewModelFactory(assistedFactory, WeakReference<ISavedRecipesViewModel>(this))
+        viewModel = ViewModelProvider(this, viewModelFactory)[SavedRecipesViewModel::class.java]
+
+//        viewModelFactory = SavedRecipesViewModelFactory(
+//            app = requireActivity().application,
+//            delegate = WeakReference<ISavedRecipesViewModel>(this),
+//            repository = SavedRecipesRepository(),
+//        )
+//        viewModel = ViewModelProvider(this, viewModelFactory).get(SavedRecipesViewModel::class.java)
 
         return view
     }
