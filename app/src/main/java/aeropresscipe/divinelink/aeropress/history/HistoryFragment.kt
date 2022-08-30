@@ -41,14 +41,47 @@ class HistoryFragment : Fragment(),
         binding = FragmentHistoryBinding.inflate(inflater, container, false)
         val view = binding?.root
 
-        binding?.toolbar?.setNavigationOnClickListener { activity?.onBackPressed() }
-        clearMenuItem = binding?.toolbar?.menu?.findItem(R.menu.history)
         val viewModelFactory = HistoryViewModelFactory(assistedFactory, WeakReference<IHistoryViewModel>(this))
         viewModel = ViewModelProvider(this, viewModelFactory).get(HistoryViewModel::class.java)
 
-        binding?.toolbar?.inflateMenu(R.menu.history)
-
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding?.toolbar?.apply {
+            setNavigationOnClickListener { activity?.onBackPressed() }
+            inflateMenu(R.menu.history)
+            setOnMenuItemClickListener { item ->
+                clearMenuItem = binding?.toolbar?.menu?.findItem(R.menu.history)
+                when (item.itemId) {
+                    R.id.menu_clear -> {
+                        viewModel.clearHistory(false)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }
+        bindAdapter()
+    }
+
+    private fun bindAdapter() {
+        binding?.recyclerView?.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = historyAdapter
+        }
+        HistoryItem.register(historyAdapter,
+            onActionClicked = { recipe: History, swipeAction: SwipeAction ->
+                when (swipeAction.actionId) {
+                    R.id.brew -> viewModel.startBrew(recipe.recipe)
+                }
+            },
+            onLike = { recipe: History, position: Int ->
+                viewModel.likeRecipe(recipe, position)
+            },
+            actionBindHelper = ActionBindHelper()
+        )
     }
 
     override fun updateState(state: HistoryState) {
@@ -66,30 +99,30 @@ class HistoryFragment : Fragment(),
     }
 
     override fun handleInitialState() {
-        HistoryItem.register(historyAdapter,
-            onActionClicked = { recipe: History, swipeAction: SwipeAction ->
-                when (swipeAction.actionId) {
-                    R.id.brew -> viewModel.startBrew(recipe.recipe)
-                }
-            },
-            onLike = { recipe: History, position: Int ->
-                viewModel.likeRecipe(recipe, position)
-            },
-            actionBindHelper = ActionBindHelper()
-        )
-
-        binding?.historyRV?.layoutManager = LinearLayoutManager(activity)
-        binding?.historyRV?.adapter = historyAdapter
-
-        binding?.toolbar?.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.menu_clear -> {
-                    viewModel.clearHistory(false)
-                    true
-                }
-                else -> false
-            }
-        }
+//        HistoryItem.register(historyAdapter,
+//            onActionClicked = { recipe: History, swipeAction: SwipeAction ->
+//                when (swipeAction.actionId) {
+//                    R.id.brew -> viewModel.startBrew(recipe.recipe)
+//                }
+//            },
+//            onLike = { recipe: History, position: Int ->
+//                viewModel.likeRecipe(recipe, position)
+//            },
+//            actionBindHelper = ActionBindHelper()
+//        )
+//
+//        binding?.historyRV?.layoutManager = LinearLayoutManager(activity)
+//        binding?.historyRV?.adapter = historyAdapter
+//
+//        binding?.toolbar?.setOnMenuItemClickListener { item ->
+//            when (item.itemId) {
+//                R.id.menu_clear -> {
+//                    viewModel.clearHistory(false)
+//                    true
+//                }
+//                else -> false
+//            }
+//        }
     }
 
     override fun handleLoadingState() {
@@ -142,7 +175,7 @@ class HistoryFragment : Fragment(),
     }
 
     override fun handleShowSnackBar(state: HistoryState.ShowSnackBar) {
-        Notification.make(binding?.historyRV, resources.getString(state.value.string, getString(state.value.favorites))).show()
+        Notification.make(binding?.recyclerView, resources.getString(state.value.string, getString(state.value.favorites))).show()
     }
 
     companion object {

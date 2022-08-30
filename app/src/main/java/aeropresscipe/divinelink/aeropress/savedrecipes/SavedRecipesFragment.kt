@@ -35,7 +35,6 @@ class SavedRecipesFragment : Fragment(),
     @Inject
     lateinit var assistedFactory: SavedTimerViewModelAssistedFactory
 
-
     private var mFadeAnimation: Animation? = null
 
     private val recipesAdapter = MappingAdapter()
@@ -47,19 +46,17 @@ class SavedRecipesFragment : Fragment(),
     ): View? {
         binding = FragmentSavedRecipesBinding.inflate(inflater, container, false)
         val view = binding?.root
-        binding?.toolbar?.setNavigationOnClickListener { activity?.onBackPressed() }
 
         val viewModelFactory = SavedRecipesViewModelFactory(assistedFactory, WeakReference<ISavedRecipesViewModel>(this))
         viewModel = ViewModelProvider(this, viewModelFactory)[SavedRecipesViewModel::class.java]
 
-//        viewModelFactory = SavedRecipesViewModelFactory(
-//            app = requireActivity().application,
-//            delegate = WeakReference<ISavedRecipesViewModel>(this),
-//            repository = SavedRecipesRepository(),
-//        )
-//        viewModel = ViewModelProvider(this, viewModelFactory).get(SavedRecipesViewModel::class.java)
-
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding?.toolbar?.setNavigationOnClickListener { activity?.onBackPressed() }
+        bindAdapter()
     }
 
     override fun updateState(state: SavedRecipesState) {
@@ -75,18 +72,7 @@ class SavedRecipesFragment : Fragment(),
     }
 
     override fun handleInitialState() {
-        binding?.savedRecipesRV?.layoutManager = LinearLayoutManager(activity)
-        binding?.savedRecipesRV?.adapter = recipesAdapter
-
-        FavoriteItem.register(recipesAdapter,
-            onActionClicked = { recipe: SavedRecipeDomain, swipeAction: SwipeAction ->
-                when (swipeAction.actionId) {
-                    R.id.delete -> showDeleteRecipeDialog(recipe.recipe)
-                    R.id.brew -> viewModel.startBrew(recipe.recipe)
-                }
-            },
-            actionBindHelper = ActionBindHelper()
-        )
+        // Intentionally Blank.
     }
 
     override fun handleLoadingState() {
@@ -111,7 +97,7 @@ class SavedRecipesFragment : Fragment(),
 
     override fun handleRecipesState(state: SavedRecipesState.RecipesState) {
         mFadeAnimation = AnimationUtils.loadAnimation(activity, R.anim.fade_in_favourites)
-        binding?.savedRecipesRV?.animation = mFadeAnimation
+        binding?.recyclerView?.animation = mFadeAnimation
         recipesAdapter.submitList(state.recipes)
     }
 
@@ -124,6 +110,23 @@ class SavedRecipesFragment : Fragment(),
             }
             .setNegativeButton(R.string.cancel) { _, _ -> }
             .show()
+    }
+
+    private fun bindAdapter() {
+        binding?.recyclerView?.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = recipesAdapter
+        }
+
+        FavoriteItem.register(recipesAdapter,
+            onActionClicked = { recipe: SavedRecipeDomain, swipeAction: SwipeAction ->
+                when (swipeAction.actionId) {
+                    R.id.delete -> showDeleteRecipeDialog(recipe.recipe)
+                    R.id.brew -> viewModel.startBrew(recipe.recipe)
+                }
+            },
+            actionBindHelper = ActionBindHelper()
+        )
     }
 
     companion object {
