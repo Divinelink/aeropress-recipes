@@ -8,8 +8,10 @@ import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCa
 import aeropresscipe.divinelink.aeropress.components.snackbar.Notification
 import aeropresscipe.divinelink.aeropress.databinding.FragmentGenerateRecipeBinding
 import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
+import aeropresscipe.divinelink.aeropress.home.HomeViewModel
 import aeropresscipe.divinelink.aeropress.settings.SettingsActivity
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,10 +20,12 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.airbnb.lottie.LottieAnimationView
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.fadeOut
+import gr.divinelink.core.util.extensions.padding
 import gr.divinelink.core.util.utils.ThreadUtil
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -44,6 +48,7 @@ class GenerateRecipeFragment :
     @Inject
     lateinit var assistedFactory: GenerateRecipeViewModelAssistedFactory
     private lateinit var viewModel: GenerateRecipeViewModel
+    private val parentViewModel: HomeViewModel by activityViewModels()
 
     private lateinit var fadeInAnimation: Animation
     private lateinit var adapterAnimation: Animation
@@ -58,11 +63,9 @@ class GenerateRecipeFragment :
         val view = binding?.root
 
         val viewModelFactory = GenerateRecipeViewModelFactory(assistedFactory, WeakReference<IGenerateRecipeViewModel>(this))
-        viewModel = ViewModelProvider(this, viewModelFactory).get(GenerateRecipeViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory)[GenerateRecipeViewModel::class.java]
         viewModel.init(datetime.hour)
-
         viewModel.getRecipe()
-
         return view
     }
 
