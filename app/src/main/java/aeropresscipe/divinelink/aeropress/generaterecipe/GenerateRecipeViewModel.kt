@@ -44,20 +44,30 @@ class GenerateRecipeViewModel @AssistedInject constructor(
     }
 
     override fun getRecipe() {
-        repository.getRecipe { dice ->
-            state = GenerateRecipeState.ShowRecipeState(dice.recipe.buildSteps())
-            state = when (dice.isBrewing) {
-                true -> GenerateRecipeState.ShowResumeButtonState
-                false -> GenerateRecipeState.HideResumeButtonState
+        if (dice == null) {
+            repository.getRecipe { dice ->
+                Timber.d("Fetching dice from database.")
+                updateRecipeStates(dice)
+                this.dice = dice
             }
-            timerRepository.isRecipeSaved(dice.recipe) { saved ->
-                val frame = when (saved) {
-                    true -> LIKE_MAX_FRAME
-                    false -> DISLIKE_MAX_FRAME
-                }
-                state = GenerateRecipeState.UpdateSavedIndicator(frame)
+        } else {
+            Timber.d("Getting cached dice.")
+            dice?.let { it -> updateRecipeStates(it) }
+        }
+    }
+
+    private fun updateRecipeStates(dice: DiceDomain) {
+        state = GenerateRecipeState.ShowRecipeState(dice.recipe.buildSteps())
+        state = when (dice.isBrewing) {
+            true -> GenerateRecipeState.ShowResumeButtonState
+            false -> GenerateRecipeState.HideResumeButtonState
+        }
+        timerRepository.isRecipeSaved(dice.recipe) { saved ->
+            val frame = when (saved) {
+                true -> LIKE_MAX_FRAME
+                false -> DISLIKE_MAX_FRAME
             }
-            this.dice = dice
+            state = GenerateRecipeState.UpdateSavedIndicator(frame)
         }
     }
 
