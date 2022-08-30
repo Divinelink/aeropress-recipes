@@ -30,3 +30,6 @@ infix fun TextView?.updateTextWithFade(text: CharSequence) {
         })
 }
 
+fun View.padding(left: Int = paddingLeft, top: Int = paddingTop, right: Int = paddingRight, bottom: Int = paddingBottom) {
+    setPadding(left, top, right, bottom)
+}
