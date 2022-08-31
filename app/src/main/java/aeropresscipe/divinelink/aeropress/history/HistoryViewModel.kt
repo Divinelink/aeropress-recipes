@@ -44,7 +44,7 @@ class HistoryViewModel @AssistedInject constructor(
     }
 
     override fun likeRecipe(recipe: History, position: Int) {
-        repository.likeRecipe(SavedRecipeDomain(recipe.recipe, getCurrentDate())) {
+        repository.likeRecipe(SavedRecipeDomain(recipe.recipe, recipe.dateBrewed)) {
             state = HistoryState.RecipeLikedState(it, position)
             val value: LikeSnackBar = when {
                 it.isRecipeLiked -> LikeSnackBar.Like
