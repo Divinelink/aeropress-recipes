@@ -69,6 +69,7 @@ object FavoriteItem {
 
         override fun onActionClicked(view: View, action: SwipeAction) {
             onActionClicked(model, action)
+            actionsBindHelper.closeAll()
         }
     }
 }
