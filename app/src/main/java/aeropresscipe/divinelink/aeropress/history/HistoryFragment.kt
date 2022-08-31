@@ -6,6 +6,7 @@ import aeropresscipe.divinelink.aeropress.databinding.FragmentHistoryBinding
 import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.EmptyType
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -31,13 +32,14 @@ class HistoryFragment : Fragment(),
     IHistoryViewModel {
     private var binding: FragmentHistoryBinding? = null
 
-    private var clearMenuItem: MenuItem? = null
+    private lateinit var callback: Callback
 
     @Inject
     lateinit var assistedFactory: HistoryViewModelAssistedFactory
     private lateinit var viewModel: HistoryViewModel
 
     private val historyAdapter = MappingAdapter()
+    private var clearMenuItem: MenuItem? = null
 
     var onProgress = false
 
@@ -72,7 +74,7 @@ class HistoryFragment : Fragment(),
             val padding = DimensionUnit.DP.toPixels(68F).toInt()
             binding?.recyclerView?.padding(bottom = padding)
         } else {
-            binding?.recyclerView?.padding(bottom = 0)
+            binding?.recyclerView?.padding(bottom = DimensionUnit.DP.toPixels(8F).toInt())
         }
 
         bindAdapter()
@@ -85,7 +87,7 @@ class HistoryFragment : Fragment(),
     }
 
     fun removePadding() {
-        binding?.recyclerView?.padding(bottom = 0)
+        binding?.recyclerView?.padding(bottom = DimensionUnit.DP.toPixels(8F).toInt())
     }
 
     private fun bindAdapter() {
@@ -202,7 +204,7 @@ class HistoryFragment : Fragment(),
     }
 
     override fun handleShowSnackBar(state: HistoryState.ShowSnackBar) {
-        Notification.make(binding?.recyclerView, resources.getString(state.value.string, getString(state.value.favorites))).show()
+        callback.onSnackbarShow(state)
     }
 
     companion object {
@@ -215,8 +217,17 @@ class HistoryFragment : Fragment(),
         }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = context as Callback
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    interface Callback {
+        fun onSnackbarShow(state: HistoryState.ShowSnackBar)
     }
 }

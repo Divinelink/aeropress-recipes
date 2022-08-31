@@ -3,12 +3,13 @@ package aeropresscipe.divinelink.aeropress.base
 import dagger.hilt.android.AndroidEntryPoint
 import android.os.Bundle
 import aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.components.snackbar.Notification
 import aeropresscipe.divinelink.aeropress.databinding.ActivityHomeBinding
 import androidx.core.content.ContextCompat
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeFragment
-import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeListView
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipesFragment
 import aeropresscipe.divinelink.aeropress.history.HistoryFragment
+import aeropresscipe.divinelink.aeropress.history.HistoryState
 import aeropresscipe.divinelink.aeropress.home.HomeState
 import aeropresscipe.divinelink.aeropress.home.HomeStateHandler
 import aeropresscipe.divinelink.aeropress.home.HomeViewModel
@@ -16,20 +17,14 @@ import aeropresscipe.divinelink.aeropress.home.HomeViewModelAssistedFactory
 import aeropresscipe.divinelink.aeropress.home.HomeViewModelFactory
 import aeropresscipe.divinelink.aeropress.home.IHomeViewModel
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
-import android.annotation.SuppressLint
-import android.app.Activity
 import gr.divinelink.core.util.viewBinding.activity.viewBinding
 import android.view.MenuItem
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationBarView
 import gr.divinelink.core.util.extensions.fadeOut
 import gr.divinelink.core.util.utils.setNavigationBarColor
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.ref.WeakReference
 import javax.inject.Inject
@@ -38,7 +33,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class HomeActivity : BaseActivity(),
     IHomeViewModel,
-    HomeStateHandler {
+    HomeStateHandler,
+    HistoryFragment.Callback {
     private val binding: ActivityHomeBinding by viewBinding()
 
     private val fragments: Array<out Fragment> get() = arrayOf(recipeFragment, favoritesFragment, historyFragment)
@@ -204,4 +200,12 @@ class HomeActivity : BaseActivity(),
         )
     }
 
+
+    override fun onSnackbarShow(state: HistoryState.ShowSnackBar) {
+        val anchorView = if (binding.timerProgressView.visibility == View.GONE) binding.bottomNavigation else binding.timerProgressView
+        Notification
+            .make(binding.bottomNavigation, resources.getString(state.value.string, getString(state.value.favorites)))
+            .setAnchorView(anchorView)
+            .show()
+    }
 }
