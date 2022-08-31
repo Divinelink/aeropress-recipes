@@ -6,6 +6,7 @@ import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeDao
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDao
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
+import gr.divinelink.core.util.utils.DateUtil.getCurrentDate
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -24,9 +25,9 @@ class HistoryRepository @Inject constructor(
     ) = performTransaction(completionBlock) { remote.getRecipe(recipe) }
 
     fun likeRecipe(
-        recipe: SavedRecipeDomain,
+        favorite: SavedRecipeDomain,
         completionBlock: (History) -> Unit
-    ) = performTransaction(completionBlock) { remote.likeRecipe(recipe) }
+    ) = performTransaction(completionBlock) { remote.likeRecipe(favorite) }
 
     fun clearHistory(
         completionBlock: () -> Unit
@@ -36,7 +37,7 @@ class HistoryRepository @Inject constructor(
 interface IHistoryRemote {
     suspend fun getHistory(): List<History>
     suspend fun getRecipe(recipe: Recipe): Recipe
-    suspend fun likeRecipe(recipe: SavedRecipeDomain): History
+    suspend fun likeRecipe(favorite: SavedRecipeDomain): History
     suspend fun clearHistory()
 }
 
@@ -60,16 +61,17 @@ class HistoryRemote @Inject constructor(
         }
     }
 
-    override suspend fun likeRecipe(recipe: SavedRecipeDomain): History {
+    override suspend fun likeRecipe(favorite: SavedRecipeDomain): History {
+        val recipe = favorite.recipe
         return withContext(dispatcher) {
-            if (savedRecipeDao.recipeExists(recipe.recipe)) {
-                savedRecipeDao.delete(recipe.recipe)
-                historyDao.updateLike(recipe.recipe, false)
+            if (savedRecipeDao.recipeExists(recipe)) {
+                savedRecipeDao.delete(recipe)
+                historyDao.updateLike(recipe, false)
             } else {
-                savedRecipeDao.insertLikedRecipe(recipe)
-                historyDao.updateLike(recipe.recipe, true)
+                savedRecipeDao.insertLikedRecipe(favorite)
+                historyDao.updateLike(recipe, true)
             }
-            historyDao.getHistoryRecipe(recipe.recipe)
+            historyDao.getHistoryRecipe(recipe) ?: History(recipe, favorite.dateBrewed, true)
         }
     }
 

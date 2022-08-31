@@ -42,7 +42,7 @@ class HistoryFragment : Fragment(),
         val view = binding?.root
 
         val viewModelFactory = HistoryViewModelFactory(assistedFactory, WeakReference<IHistoryViewModel>(this))
-        viewModel = ViewModelProvider(this, viewModelFactory).get(HistoryViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory)[(HistoryViewModel::class.java)]
 
         return view
     }
@@ -82,6 +82,11 @@ class HistoryFragment : Fragment(),
             },
             actionBindHelper = ActionBindHelper()
         )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refresh()
     }
 
     override fun updateState(state: HistoryState) {

@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import timber.log.Timber
 import java.lang.ref.WeakReference
 
 
@@ -26,15 +27,7 @@ class SavedRecipesViewModel @AssistedInject constructor(
 
     init {
         state = SavedRecipesState.InitialState
-        dbRepository.getListsFromDB(
-            completionBlock = { recipes ->
-                state = if (recipes.isNullOrEmpty()) {
-                    SavedRecipesState.EmptyRecipesState
-                } else {
-                    SavedRecipesState.RecipesState(recipes)
-                }
-            }
-        )
+        fetchFavorites()
     }
 
     override fun startBrew(recipe: Recipe) {
@@ -65,6 +58,23 @@ class SavedRecipesViewModel @AssistedInject constructor(
             }
         )
     }
+
+    override fun refresh() {
+        Timber.d("Refreshing favorites.")
+        fetchFavorites()
+    }
+
+    private fun fetchFavorites() {
+        dbRepository.getFavorites(
+            completionBlock = { recipes ->
+                state = if (recipes.isNullOrEmpty()) {
+                    SavedRecipesState.EmptyRecipesState
+                } else {
+                    SavedRecipesState.RecipesState(recipes)
+                }
+            }
+        )
+    }
 }
 
 interface ISavedRecipesViewModel {
@@ -74,6 +84,7 @@ interface ISavedRecipesViewModel {
 interface SavedRecipesIntents : MVIBaseView {
     fun startBrew(recipe: Recipe)
     fun deleteRecipe(recipe: Recipe)
+    fun refresh()
 }
 
 sealed class SavedRecipesState {

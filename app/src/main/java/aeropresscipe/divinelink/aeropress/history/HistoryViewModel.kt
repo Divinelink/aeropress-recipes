@@ -29,13 +29,7 @@ class HistoryViewModel @AssistedInject constructor(
 
     init {
         state = HistoryState.InitialState
-        repository.getHistory {
-            state = if (it.isEmpty()) {
-                HistoryState.EmptyHistoryState
-            } else {
-                HistoryState.ShowHistoryState(it)
-            }
-        }
+        fetchHistory()
     }
 
     override fun startBrew(recipe: Recipe) {
@@ -68,6 +62,20 @@ class HistoryViewModel @AssistedInject constructor(
             false -> state = HistoryState.ClearHistoryPopUpState
         }
     }
+
+    override fun refresh() {
+        fetchHistory()
+    }
+
+    private fun fetchHistory() {
+        repository.getHistory {
+            state = if (it.isEmpty()) {
+                HistoryState.EmptyHistoryState
+            } else {
+                HistoryState.ShowHistoryState(it)
+            }
+        }
+    }
 }
 
 interface IHistoryViewModel {
@@ -78,6 +86,7 @@ interface HistoryIntents : MVIBaseView {
     fun startBrew(recipe: Recipe)
     fun likeRecipe(recipe: History, position: Int)
     fun clearHistory(delete: Boolean)
+    fun refresh()
 }
 
 sealed class HistoryState {

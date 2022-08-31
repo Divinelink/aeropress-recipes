@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 interface ISavedRecipesServices {
-    suspend fun getRecipesFromDB(): List<SavedRecipeDomain>
+    suspend fun getFavorites(): List<SavedRecipeDomain>
     suspend fun deleteRecipe(recipe: Recipe): List<SavedRecipeDomain>
     suspend fun getSingleRecipe(recipe: Recipe): Recipe
 }
@@ -21,7 +21,7 @@ class SavedRecipesServices @Inject constructor(
     private val savedRecipeDao: SavedRecipeDao,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ISavedRecipesServices {
-    override suspend fun getRecipesFromDB(): List<SavedRecipeDomain> {
+    override suspend fun getFavorites(): List<SavedRecipeDomain> {
         return withContext(dispatcher) {
             savedRecipeDao.savedRecipes
         }

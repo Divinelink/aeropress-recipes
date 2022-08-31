@@ -40,7 +40,7 @@ class FinishActivity :
         recipe = intent?.getSerializableExtra(EXTRA_RECIPE) as Recipe?
 
         val viewModelFactory = FinishViewModelFactory(assistedFactory, WeakReference<IFinishViewModel>(this))
-        viewModel = ViewModelProvider(this, viewModelFactory).get(FinishViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory)[(FinishViewModel::class.java)]
     }
 
     override fun updateState(state: FinishState) {

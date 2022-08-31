@@ -59,6 +59,11 @@ class SavedRecipesFragment : Fragment(),
         bindAdapter()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.refresh()
+    }
+
     override fun updateState(state: SavedRecipesState) {
         when (state) {
             is SavedRecipesState.ErrorState -> handleErrorState()

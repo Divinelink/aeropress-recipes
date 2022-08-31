@@ -8,9 +8,9 @@ class SavedRecipesRepository @Inject constructor(
     private val dbRemote: SavedRecipesServices
 ) : BaseRepository() {
 
-    fun getListsFromDB(
+    fun getFavorites(
         completionBlock: (List<SavedRecipeDomain>?) -> Unit
-    ) = performTransaction(completionBlock) { dbRemote.getRecipesFromDB() }
+    ) = performTransaction(completionBlock) { dbRemote.getFavorites() }
 
     fun deleteRecipe(
         recipe: Recipe,
