@@ -68,7 +68,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="12dp"
                     android:text="@string/resume_brew"
-                    android:visibility="invisible"
+                    android:visibility="gone"
                     tools:visibility="visible" />
 
             </LinearLayout>

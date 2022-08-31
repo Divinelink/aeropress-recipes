@@ -16,10 +16,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import gr.divinelink.core.util.extensions.padding
 import gr.divinelink.core.util.extensions.setDisabled
 import gr.divinelink.core.util.extensions.setEnabled
 import gr.divinelink.core.util.swipe.ActionBindHelper
 import gr.divinelink.core.util.swipe.SwipeAction
+import gr.divinelink.core.util.utils.DimensionUnit
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
@@ -36,6 +38,8 @@ class HistoryFragment : Fragment(),
     private lateinit var viewModel: HistoryViewModel
 
     private val historyAdapter = MappingAdapter()
+
+    var onProgress = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHistoryBinding.inflate(inflater, container, false)
@@ -63,7 +67,25 @@ class HistoryFragment : Fragment(),
                 }
             }
         }
+
+        if (onProgress) {
+            val padding = DimensionUnit.DP.toPixels(68F).toInt()
+            binding?.recyclerView?.padding(bottom = padding)
+        } else {
+            binding?.recyclerView?.padding(bottom = 0)
+        }
+
         bindAdapter()
+    }
+
+
+    fun addPadding(viewHeight: Int) {
+        val padding = DimensionUnit.DP.toPixels(viewHeight.toFloat()).toInt()
+        binding?.recyclerView?.padding(bottom = padding)
+    }
+
+    fun removePadding() {
+        binding?.recyclerView?.padding(bottom = 0)
     }
 
     private fun bindAdapter() {

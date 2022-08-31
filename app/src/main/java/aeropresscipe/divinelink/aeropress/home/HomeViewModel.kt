@@ -2,6 +2,8 @@ package aeropresscipe.divinelink.aeropress.home
 
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.timer.TimerFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import dagger.assisted.Assisted
@@ -25,18 +27,24 @@ class HomeViewModel @AssistedInject constructor(
         }
 
     override fun init() {
+        state = HomeState.InitialState
+    }
+
+    override fun resume() {
         repository.checkIfBrewing { isBrewing ->
             state = when (isBrewing) {
                 true -> HomeState.ShowResumeButtonState
                 false -> HomeState.HideResumeButtonState
             }
-            state = HomeState.InitialState
         }
     }
 
-
     override fun generateRecipe() {
         state = HomeState.HideResumeButtonState
+    }
+
+    override fun startTimer(recipe: Recipe, flow: TimerFlow) {
+        state = HomeState.StartTimerState(recipe, flow)
     }
 }
 
@@ -46,19 +54,23 @@ interface IHomeViewModel {
 
 interface HomeIntents : MVIBaseView {
     fun init()
+    fun resume()
     fun generateRecipe()
+    fun startTimer(recipe: Recipe, flow: TimerFlow)
 }
 
 sealed class HomeState {
     object InitialState : HomeState()
     object ShowResumeButtonState : HomeState()
     object HideResumeButtonState : HomeState()
+    data class StartTimerState(val recipe: Recipe, val flow: TimerFlow) : HomeState()
 }
 
 interface HomeStateHandler {
     fun handleInitialState()
     fun handleShowResumeButtonState()
     fun handleHideResumeButtonState()
+    fun handleStartTimerState(state: HomeState.StartTimerState)
 }
 
 @Suppress("UNCHECKED_CAST")
