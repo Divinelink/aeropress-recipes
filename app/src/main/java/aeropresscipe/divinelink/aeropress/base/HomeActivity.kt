@@ -203,16 +203,7 @@ class HomeActivity : BaseActivity(),
     }
 
     override fun handleStartTimerState(state: HomeState.StartTimerState) {
-        launchActivity(
-            intent = TimerActivity.newIntent(this, state.recipe, state.flow),
-            onResult = {
-                if (it.resultCode == RESULT_OK) {
-                    handleHideResumeButtonState()
-                } else {
-                    handleShowResumeButtonState()
-                }
-            }
-        )
+        TimerActivity.newIntent(this, state.recipe, state.flow)
     }
 
     override fun onSnackbarShow(state: HistoryState.ShowSnackBar) {
@@ -221,6 +212,11 @@ class HomeActivity : BaseActivity(),
             .make(binding.bottomNavigation, resources.getString(state.value.string, getString(state.value.favorites)))
             .setAnchorView(anchorView)
             .show()
+    }
+
+    override fun onUpdateRecipe() {
+        Timber.d("Recipe updated. Set refresh to true.")
+        recipeFragment.refresh = true
     }
 }
 

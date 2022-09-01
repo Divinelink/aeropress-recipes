@@ -43,8 +43,8 @@ class GenerateRecipeViewModel @AssistedInject constructor(
         state = GenerateRecipeState.UpdateToolbarState(getGreetingMessage(hour))
     }
 
-    override fun getRecipe() {
-        if (dice == null) {
+    override fun getRecipe(refresh: Boolean) {
+        if (dice == null || refresh) {
             repository.getRecipe { dice ->
                 Timber.d("Fetching dice from database.")
                 updateRecipeStates(dice)
@@ -58,10 +58,6 @@ class GenerateRecipeViewModel @AssistedInject constructor(
 
     private fun updateRecipeStates(dice: DiceDomain) {
         state = GenerateRecipeState.ShowRecipeState(dice.recipe.buildSteps())
-        state = when (dice.isBrewing) {
-            true -> GenerateRecipeState.ShowResumeButtonState
-            false -> GenerateRecipeState.HideResumeButtonState
-        }
         timerRepository.isRecipeSaved(dice.recipe) { saved ->
             val frame = when (saved) {
                 true -> LIKE_MAX_FRAME
@@ -137,7 +133,7 @@ interface IGenerateRecipeViewModel {
 
 interface GenerateRecipeIntents : MVIBaseView {
     fun init(hour: Int)
-    fun getRecipe()
+    fun getRecipe(refresh: Boolean)
 
     fun generateRecipe()
     fun forceGenerateRecipe()
@@ -153,7 +149,6 @@ sealed class GenerateRecipeState {
     data class ErrorState(val data: String) : GenerateRecipeState()
 
     object ShowAlreadyBrewingState : GenerateRecipeState()
-    object ShowResumeButtonState : GenerateRecipeState()
     object HideResumeButtonState : GenerateRecipeState()
 
     data class UpdateToolbarState(@StringRes val title: Int) : GenerateRecipeState()
@@ -175,7 +170,6 @@ interface GenerateRecipeStateHandler {
     fun handleLoadingState()
     fun handleErrorState(state: GenerateRecipeState.ErrorState)
 
-    fun handleShowResumeButtonState()
     fun handleHideResumeButtonState()
 
     fun handleUpdateToolbarState(state: GenerateRecipeState.UpdateToolbarState)

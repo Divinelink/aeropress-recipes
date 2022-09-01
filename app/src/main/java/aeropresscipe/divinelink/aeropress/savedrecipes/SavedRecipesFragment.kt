@@ -5,10 +5,12 @@ import aeropresscipe.divinelink.aeropress.base.HomeActivity.Companion.PAD_BOTTOM
 import aeropresscipe.divinelink.aeropress.base.TimerViewCallback
 import aeropresscipe.divinelink.aeropress.databinding.FragmentSavedRecipesBinding
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.history.HistoryFragment
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
 import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.EmptyType
 import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.FavoriteItem
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -36,13 +38,13 @@ class SavedRecipesFragment : Fragment(),
     TimerViewCallback {
     private var binding: FragmentSavedRecipesBinding? = null
 
+    private lateinit var callback: HistoryFragment.Callback
     private lateinit var viewModel: SavedRecipesViewModel
 
     @Inject
     lateinit var assistedFactory: SavedTimerViewModelAssistedFactory
 
     private var mFadeAnimation: Animation? = null
-
     private val recipesAdapter = MappingAdapter()
 
     @Px
@@ -104,6 +106,7 @@ class SavedRecipesFragment : Fragment(),
 
     override fun handleStartNewBrew(state: SavedRecipesState.StartNewBrewState) {
         startActivity(TimerActivity.newIntent(requireContext(), state.recipe))
+        callback.onUpdateRecipe()
     }
 
     override fun handleEmptyRecipesState() {
@@ -158,6 +161,11 @@ class SavedRecipesFragment : Fragment(),
             fragment.arguments = args
             return fragment
         }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = context as HistoryFragment.Callback
     }
 
     override fun onDestroyView() {

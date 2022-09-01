@@ -151,6 +151,7 @@ class HistoryFragment : Fragment(),
 
     override fun handleStartNewBrewState(state: HistoryState.StartNewBrewState) {
         startActivity(TimerActivity.newIntent(requireContext(), state.recipe))
+        callback.onUpdateRecipe()
     }
 
     override fun handleRecipeLikedState(state: HistoryState.RecipeLikedState) {
@@ -203,5 +204,6 @@ class HistoryFragment : Fragment(),
 
     interface Callback {
         fun onSnackbarShow(state: HistoryState.ShowSnackBar)
+        fun onUpdateRecipe()
     }
 }

@@ -26,7 +26,6 @@ import com.airbnb.lottie.LottieAnimationView
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.padding
 import gr.divinelink.core.util.extensions.updatePaddingAnimator
-import gr.divinelink.core.util.utils.ThreadUtil
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -63,6 +62,8 @@ class GenerateRecipeFragment :
     @Px
     private var coordinatorPadding: Int = 0
 
+    var refresh: Boolean = false
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentGenerateRecipeBinding.inflate(inflater, container, false)
         val view = binding?.root
@@ -91,7 +92,7 @@ class GenerateRecipeFragment :
     override fun onResume() {
         super.onResume()
         Timber.d("Resume")
-        viewModel.getRecipe()
+        viewModel.getRecipe(refresh)
     }
 
     override fun updateBottomPadding(bottomPadding: Int) {
@@ -109,21 +110,11 @@ class GenerateRecipeFragment :
             is GenerateRecipeState.RefreshRecipeState -> handleRefreshRecipeState(state)
             is GenerateRecipeState.StartTimerState -> handleStartTimerState(state)
             is GenerateRecipeState.HideResumeButtonState -> handleHideResumeButtonState()
-            is GenerateRecipeState.ShowResumeButtonState -> handleShowResumeButtonState()
             is GenerateRecipeState.UpdateToolbarState -> handleUpdateToolbarState(state)
             is GenerateRecipeState.ShowSnackBar -> handleShowSnackBar(state)
             is GenerateRecipeState.UpdateSavedIndicator -> handleUpdateSavedIndicator(state)
             is GenerateRecipeState.RecipeRemovedState -> handleRecipeRemovedState()
             is GenerateRecipeState.RecipeSavedState -> handleRecipeSavedState()
-        }
-    }
-
-    override fun handleShowResumeButtonState() {
-        ThreadUtil.runOnMain {
-            if (fadeInAnimation.hasEnded().not()) {
-                fadeInAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in_out)
-                binding?.resumeBrewButton?.startAnimation(fadeInAnimation)
-            }
         }
     }
 
@@ -149,10 +140,12 @@ class GenerateRecipeFragment :
     }
 
     override fun handleShowRecipeState(state: GenerateRecipeState.ShowRecipeState) {
+        Timber.d("Recipe updated. Set refresh to false.")
         binding?.recipeList?.adapter = GenerateRecipeListView(
             steps = state.steps,
             context = requireContext()
         )
+        refresh = false
     }
 
     override fun handleRefreshRecipeState(state: GenerateRecipeState.RefreshRecipeState) {
