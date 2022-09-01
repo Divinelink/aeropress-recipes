@@ -1,6 +1,7 @@
 package aeropresscipe.divinelink.aeropress.timer
 
 import aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.databinding.ActivityTimerBinding
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.TimerFragment.Companion.FLOW
 import aeropresscipe.divinelink.aeropress.timer.TimerFragment.Companion.newInstance
@@ -8,23 +9,24 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentTransaction
 import dagger.hilt.android.AndroidEntryPoint
-import gr.divinelink.core.util.utils.WindowUtil
+import gr.divinelink.core.util.utils.setNavigationBarColor
+import gr.divinelink.core.util.viewBinding.activity.viewBinding
 
 @AndroidEntryPoint
 class TimerActivity : AppCompatActivity() {
+    private val binding: ActivityTimerBinding by viewBinding()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timer)
-        val mToolBar = findViewById<Toolbar>(R.id.toolbar)
-        mToolBar.setNavigationOnClickListener {
+        setNavigationBarColor(ContextCompat.getColor(this, R.color.colorBackground))
+
+        binding.toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
-
-        WindowUtil.setNavigationBarColor(this, ContextCompat.getColor(this, R.color.colorBackground))
 
         val recipe = intent.getSerializableExtra(EXTRA_RECIPE) as Recipe?
         val flow = intent.getSerializableExtra(FLOW) as TimerFlow
