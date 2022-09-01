@@ -1,6 +1,8 @@
 package aeropresscipe.divinelink.aeropress.savedrecipes
 
 import aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.base.HomeActivity.Companion.PAD_BOTTOM_OF_RECYCLER
+import aeropresscipe.divinelink.aeropress.base.TimerViewCallback
 import aeropresscipe.divinelink.aeropress.databinding.FragmentSavedRecipesBinding
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
@@ -13,13 +15,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.annotation.Px
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import gr.divinelink.core.util.extensions.padding
 import gr.divinelink.core.util.swipe.ActionBindHelper
 import gr.divinelink.core.util.swipe.SwipeAction
+import gr.divinelink.core.util.utils.DimensionUnit
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
@@ -27,7 +32,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SavedRecipesFragment : Fragment(),
     SavedRecipesStateHandler,
-    ISavedRecipesViewModel {
+    ISavedRecipesViewModel,
+    TimerViewCallback {
     private var binding: FragmentSavedRecipesBinding? = null
 
     private lateinit var viewModel: SavedRecipesViewModel
@@ -38,6 +44,9 @@ class SavedRecipesFragment : Fragment(),
     private var mFadeAnimation: Animation? = null
 
     private val recipesAdapter = MappingAdapter()
+
+    @Px
+    private var recyclerViewPadding = DimensionUnit.PIXELS.toPixels(PAD_BOTTOM_OF_RECYCLER).toInt()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,6 +65,7 @@ class SavedRecipesFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.toolbar?.setNavigationOnClickListener { activity?.onBackPressed() }
+        binding?.recyclerView?.padding(bottom = recyclerViewPadding)
         bindAdapter()
     }
 
@@ -133,6 +143,12 @@ class SavedRecipesFragment : Fragment(),
             actionBindHelper = ActionBindHelper()
         )
     }
+
+    override fun updateBottomPadding(bottomPadding: Int) {
+        recyclerViewPadding = bottomPadding
+        binding?.recyclerView?.padding(bottom = bottomPadding)
+    }
+
 
     companion object {
         @JvmStatic

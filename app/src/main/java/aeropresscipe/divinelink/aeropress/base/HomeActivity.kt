@@ -17,13 +17,17 @@ import aeropresscipe.divinelink.aeropress.home.HomeViewModelAssistedFactory
 import aeropresscipe.divinelink.aeropress.home.HomeViewModelFactory
 import aeropresscipe.divinelink.aeropress.home.IHomeViewModel
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
+import android.annotation.SuppressLint
 import gr.divinelink.core.util.viewBinding.activity.viewBinding
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.Dimension
+import androidx.annotation.Px
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationBarView
 import gr.divinelink.core.util.extensions.fadeOut
+import gr.divinelink.core.util.utils.DimensionUnit
 import gr.divinelink.core.util.utils.setNavigationBarColor
 import timber.log.Timber
 import java.lang.ref.WeakReference
@@ -47,6 +51,12 @@ class HomeActivity : BaseActivity(),
     private lateinit var recipeFragment: GenerateRecipeFragment
     private lateinit var favoritesFragment: SavedRecipesFragment
     private lateinit var historyFragment: HistoryFragment
+
+    @Px
+    private val padding = DimensionUnit.DP.toPixels(PAD_BOTTOM_OF_TIMER_VIEW).toInt()
+
+    @Px
+    private val recyclerViewPadding = DimensionUnit.DP.toPixels(PAD_BOTTOM_OF_TIMER_VIEW_RECYCLER).toInt()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,7 +103,6 @@ class HomeActivity : BaseActivity(),
 //        selectFragment(recipeFragment)
     }
 
-
     private var onItemSelectedListener = NavigationBarView.OnItemSelectedListener { item: MenuItem ->
         when (item.itemId) {
             R.id.recipe -> {
@@ -126,7 +135,7 @@ class HomeActivity : BaseActivity(),
         bundle.putInt(SELECTED_INDEX, selectedIndex)
     }
 
-    //    @SuppressLint("DetachAndAttachSameFragment")
+    @SuppressLint("DetachAndAttachSameFragment")
     private fun selectFragment(selectedFragment: Fragment) {
         var transaction = supportFragmentManager.beginTransaction()
         fragments.forEachIndexed { index, fragment ->
@@ -154,6 +163,15 @@ class HomeActivity : BaseActivity(),
         private const val FAVORITES_TAG = "FAVORITES"
         private const val HISTORY_TAG = "HISTORY"
         private const val SELECTED_INDEX = "SELECTED_INDEX"
+
+        @Dimension(unit = Dimension.DP)
+        const val PAD_BOTTOM_OF_RECYCLER = 16F
+
+        @Dimension(unit = Dimension.DP)
+        private const val PAD_BOTTOM_OF_TIMER_VIEW = 60F
+
+        @Dimension(unit = Dimension.DP)
+        private const val PAD_BOTTOM_OF_TIMER_VIEW_RECYCLER = 68F
     }
 
 
@@ -172,19 +190,16 @@ class HomeActivity : BaseActivity(),
 
     override fun handleShowResumeButtonState() {
         binding.timerProgressView.visibility = View.VISIBLE
-        recipeFragment.onProgress = true
-        recipeFragment.addPadding(binding.timerProgressView.height)
-        historyFragment.onProgress = true
-        historyFragment.addPadding(binding.timerProgressView.height)
-//        historyFragment.addPadding()
+        recipeFragment.updateBottomPadding(padding)
+        favoritesFragment.updateBottomPadding(recyclerViewPadding)
+        historyFragment.updateBottomPadding(recyclerViewPadding)
     }
 
     override fun handleHideResumeButtonState() {
         binding.timerProgressView.fadeOut()
-        recipeFragment.onProgress = false
-        recipeFragment.removePadding()
-        historyFragment.onProgress = false
-        historyFragment.removePadding()
+        recipeFragment.updateBottomPadding(DimensionUnit.DP.toPixels(0F).toInt())
+        favoritesFragment.updateBottomPadding(DimensionUnit.DP.toPixels(PAD_BOTTOM_OF_RECYCLER).toInt())
+        historyFragment.updateBottomPadding(DimensionUnit.DP.toPixels(PAD_BOTTOM_OF_RECYCLER).toInt())
     }
 
     override fun handleStartTimerState(state: HomeState.StartTimerState) {
@@ -200,7 +215,6 @@ class HomeActivity : BaseActivity(),
         )
     }
 
-
     override fun onSnackbarShow(state: HistoryState.ShowSnackBar) {
         val anchorView = if (binding.timerProgressView.visibility == View.GONE) binding.bottomNavigation else binding.timerProgressView
         Notification
@@ -209,3 +223,8 @@ class HomeActivity : BaseActivity(),
             .show()
     }
 }
+
+interface TimerViewCallback {
+    fun updateBottomPadding(bottomPadding: Int)
+}
+

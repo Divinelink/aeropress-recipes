@@ -1,6 +1,7 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe
 
-import aeropresscipe.divinelink.aeropress.R
+import  aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.base.TimerViewCallback
 import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
 import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.DISLIKE_MIN_FRAME
 import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.LIKE_MAX_FRAME
@@ -10,8 +11,6 @@ import aeropresscipe.divinelink.aeropress.databinding.FragmentGenerateRecipeBind
 import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
 import aeropresscipe.divinelink.aeropress.home.HomeViewModel
 import aeropresscipe.divinelink.aeropress.settings.SettingsActivity
-import aeropresscipe.divinelink.aeropress.timer.TimerActivity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,13 +18,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.annotation.Px
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.airbnb.lottie.LottieAnimationView
 import dagger.hilt.android.AndroidEntryPoint
-import gr.divinelink.core.util.extensions.fadeOut
 import gr.divinelink.core.util.extensions.padding
+import gr.divinelink.core.util.extensions.updatePaddingAnimator
 import gr.divinelink.core.util.utils.ThreadUtil
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -35,6 +35,7 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import timber.log.Timber
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
@@ -42,7 +43,8 @@ import javax.inject.Inject
 class GenerateRecipeFragment :
     Fragment(),
     IGenerateRecipeViewModel,
-    GenerateRecipeStateHandler {
+    GenerateRecipeStateHandler,
+    TimerViewCallback {
     private var binding: FragmentGenerateRecipeBinding? = null
 
     @Inject
@@ -58,15 +60,43 @@ class GenerateRecipeFragment :
 
     private var lottieFavorite: LottieAnimationView? = null
 
+    @Px
+    private var coordinatorPadding: Int = 0
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentGenerateRecipeBinding.inflate(inflater, container, false)
         val view = binding?.root
 
         val viewModelFactory = GenerateRecipeViewModelFactory(assistedFactory, WeakReference<IGenerateRecipeViewModel>(this))
         viewModel = ViewModelProvider(this, viewModelFactory)[GenerateRecipeViewModel::class.java]
-        viewModel.init(datetime.hour)
-        viewModel.getRecipe()
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Timber.d("onViewCreated")
+        viewModel.init(datetime.hour)
+        val favoriteMenuItem = binding?.toolbar?.menu?.findItem(R.id.favorite)
+        favoriteMenuItem?.setActionView(R.layout.layout_favorite_item)
+        lottieFavorite = favoriteMenuItem?.actionView as LottieAnimationView?
+
+        LottieHelper.updateLikeButton(lottieFavorite)
+
+        fadeInAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.initiliaze_animation)
+        adapterAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.adapter_anim)
+        binding?.coordinator?.padding(bottom = coordinatorPadding)
+        initListeners()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Timber.d("Resume")
+        viewModel.getRecipe()
+    }
+
+    override fun updateBottomPadding(bottomPadding: Int) {
+        coordinatorPadding = bottomPadding
+        binding?.coordinator?.updatePaddingAnimator(bottom = bottomPadding)
     }
 
     override fun updateState(state: GenerateRecipeState) {
@@ -98,19 +128,11 @@ class GenerateRecipeFragment :
     }
 
     override fun handleHideResumeButtonState() {
-        binding?.resumeBrewButton?.fadeOut()
+        parentViewModel.generateRecipe()
     }
 
     override fun handleInitialState() {
-        val favoriteMenuItem = binding?.toolbar?.menu?.findItem(R.id.favorite)
-        favoriteMenuItem?.setActionView(R.layout.layout_favorite_item)
-        lottieFavorite = favoriteMenuItem?.actionView as LottieAnimationView?
-
-        LottieHelper.updateLikeButton(lottieFavorite)
-
-        fadeInAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.initiliaze_animation)
-        adapterAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.adapter_anim)
-        initListeners()
+        // Intentionally Blank.
     }
 
     override fun handleLoadingState() {
@@ -145,7 +167,7 @@ class GenerateRecipeFragment :
     }
 
     override fun handleStartTimerState(state: GenerateRecipeState.StartTimerState) {
-        startActivity(TimerActivity.newIntent(requireContext(), state.recipe, state.flow))
+        parentViewModel.startTimer(state.recipe, state.flow)
     }
 
     override fun handleUpdateToolbarState(state: GenerateRecipeState.UpdateToolbarState) {
