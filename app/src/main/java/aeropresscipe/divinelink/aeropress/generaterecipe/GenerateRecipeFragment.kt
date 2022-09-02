@@ -9,8 +9,10 @@ import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCa
 import aeropresscipe.divinelink.aeropress.components.snackbar.Notification
 import aeropresscipe.divinelink.aeropress.databinding.FragmentGenerateRecipeBinding
 import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
+import aeropresscipe.divinelink.aeropress.history.HistoryFragment
 import aeropresscipe.divinelink.aeropress.home.HomeViewModel
 import aeropresscipe.divinelink.aeropress.settings.SettingsActivity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -49,6 +51,7 @@ class GenerateRecipeFragment :
     @Inject
     lateinit var assistedFactory: GenerateRecipeViewModelAssistedFactory
     private lateinit var viewModel: GenerateRecipeViewModel
+    private lateinit var callback: HistoryFragment.Callback
     private val parentViewModel: HomeViewModel by activityViewModels()
 
     private lateinit var fadeInAnimation: Animation
@@ -160,7 +163,7 @@ class GenerateRecipeFragment :
     }
 
     override fun handleStartTimerState(state: GenerateRecipeState.StartTimerState) {
-        parentViewModel.startTimer(state.recipe, state.flow)
+        callback.onUpdateRecipe(state.recipe, state.flow, false)
     }
 
     override fun handleUpdateToolbarState(state: GenerateRecipeState.UpdateToolbarState) {
@@ -225,6 +228,11 @@ class GenerateRecipeFragment :
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = context as HistoryFragment.Callback
     }
 
     companion object {

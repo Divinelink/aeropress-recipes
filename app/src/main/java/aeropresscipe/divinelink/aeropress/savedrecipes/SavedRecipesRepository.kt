@@ -16,9 +16,4 @@ class SavedRecipesRepository @Inject constructor(
         recipe: Recipe,
         completionBlock: (List<SavedRecipeDomain>?) -> Unit
     ) = performTransaction(completionBlock) { dbRemote.deleteRecipe(recipe) }
-
-    fun startBrew(
-        recipe: Recipe,
-        completionBlock: (Recipe?) -> Unit
-    ) = performTransaction(completionBlock) { dbRemote.getSingleRecipe(recipe) }
 }

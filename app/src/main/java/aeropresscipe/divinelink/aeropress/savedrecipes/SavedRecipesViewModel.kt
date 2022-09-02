@@ -31,17 +31,7 @@ class SavedRecipesViewModel @AssistedInject constructor(
     }
 
     override fun startBrew(recipe: Recipe) {
-        dbRepository.startBrew(
-            recipe = recipe,
-            completionBlock = { selectedRecipe ->
-                state = if (selectedRecipe == null) {
-                    SavedRecipesState.ErrorState("Something went wrong!") // //TODO 15/6/22 divinelink: Fix Error State
-                } else {
-                    recipe.isNewRecipe = true
-                    SavedRecipesState.StartNewBrewState(recipe)
-                }
-            }
-        )
+        state = SavedRecipesState.StartNewBrewState(recipe)
     }
 
     override fun deleteRecipe(recipe: Recipe) {

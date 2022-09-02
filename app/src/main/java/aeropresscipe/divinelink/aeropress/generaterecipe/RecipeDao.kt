@@ -32,6 +32,6 @@ interface RecipeDao {
     @Transaction
     fun updateRecipe(recipe: Recipe) {
         deleteAll()
-        insertRecipe(DiceDomain(recipe, false))
+        insertRecipe(DiceDomain(recipe))
     }
 }

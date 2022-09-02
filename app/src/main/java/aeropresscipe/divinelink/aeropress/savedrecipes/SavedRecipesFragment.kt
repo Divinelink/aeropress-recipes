@@ -9,7 +9,7 @@ import aeropresscipe.divinelink.aeropress.history.HistoryFragment
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
 import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.EmptyType
 import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.FavoriteItem
-import aeropresscipe.divinelink.aeropress.timer.TimerActivity
+import aeropresscipe.divinelink.aeropress.timer.TimerFlow
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -105,8 +105,7 @@ class SavedRecipesFragment : Fragment(),
     }
 
     override fun handleStartNewBrew(state: SavedRecipesState.StartNewBrewState) {
-        startActivity(TimerActivity.newIntent(requireContext(), state.recipe))
-        callback.onUpdateRecipe()
+        callback.onUpdateRecipe(state.recipe, TimerFlow.START, true)
     }
 
     override fun handleEmptyRecipesState() {
