@@ -8,6 +8,7 @@ import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
 import aeropresscipe.divinelink.aeropress.timer.util.TimerViewModelAssistedFactory
 import aeropresscipe.divinelink.aeropress.timer.util.TimerViewModelFactory
 import android.animation.ObjectAnimator
+import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -41,6 +42,7 @@ class TimerFragment : Fragment(),
     @Inject
     lateinit var assistedFactory: TimerViewModelAssistedFactory
     private lateinit var viewModel: TimerViewModel
+    private lateinit var callback: Callback
 
     private var transferableModel = TimerTransferableModel()
 
@@ -110,7 +112,7 @@ class TimerFragment : Fragment(),
     }
 
     override fun handleExitState() {
-        // Do nothing yet.
+        callback.onExitTimer()
     }
 
     override fun handleInitialState() {
@@ -162,7 +164,7 @@ class TimerFragment : Fragment(),
     override fun handleFinishState() {
         timer?.dispose()
         startActivity(FinishActivity.newIntent(requireContext(), transferableModel.recipe))
-        activity?.finish()
+        callback.onExitTimer()
     }
 
     override fun handlePlaySoundState() {
@@ -186,5 +188,14 @@ class TimerFragment : Fragment(),
         }
         binding?.brewingTimeTextView?.text = String.format(Locale.US, "%d:%02d", minutes, seconds)
         binding?.progressBar?.progress = timeInMilliseconds.toInt()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = context as Callback
+    }
+
+    interface Callback {
+        fun onExitTimer()
     }
 }

@@ -1,6 +1,7 @@
 package aeropresscipe.divinelink.aeropress.timer
 
 import aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.base.TimerExitEvent
 import aeropresscipe.divinelink.aeropress.databinding.ActivityTimerBinding
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.TimerFragment.Companion.FLOW
@@ -14,9 +15,13 @@ import androidx.fragment.app.FragmentTransaction
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.utils.setNavigationBarColor
 import gr.divinelink.core.util.viewBinding.activity.viewBinding
+import org.greenrobot.eventbus.EventBus
+
 
 @AndroidEntryPoint
-class TimerActivity : AppCompatActivity() {
+class TimerActivity :
+    AppCompatActivity(),
+    TimerFragment.Callback {
     private val binding: ActivityTimerBinding by viewBinding()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +41,11 @@ class TimerActivity : AppCompatActivity() {
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .replace(R.id.timerRoot, newInstance(recipe, flow))
             .commit()
+    }
+
+    override fun onExitTimer() {
+        EventBus.getDefault().post(TimerExitEvent())
+        finish()
     }
 
     companion object {

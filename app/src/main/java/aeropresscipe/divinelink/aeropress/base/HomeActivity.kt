@@ -1,13 +1,10 @@
 package aeropresscipe.divinelink.aeropress.base
 
-import dagger.hilt.android.AndroidEntryPoint
-import android.os.Bundle
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.components.snackbar.Notification
 import aeropresscipe.divinelink.aeropress.databinding.ActivityHomeBinding
-import androidx.core.content.ContextCompat
 import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeFragment
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipesFragment
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.history.HistoryFragment
 import aeropresscipe.divinelink.aeropress.history.HistoryState
 import aeropresscipe.divinelink.aeropress.home.HomeState
@@ -16,19 +13,28 @@ import aeropresscipe.divinelink.aeropress.home.HomeViewModel
 import aeropresscipe.divinelink.aeropress.home.HomeViewModelAssistedFactory
 import aeropresscipe.divinelink.aeropress.home.HomeViewModelFactory
 import aeropresscipe.divinelink.aeropress.home.IHomeViewModel
+import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipesFragment
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
+import aeropresscipe.divinelink.aeropress.timer.TimerFlow
 import android.annotation.SuppressLint
-import gr.divinelink.core.util.viewBinding.activity.viewBinding
+import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.annotation.Dimension
 import androidx.annotation.Px
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationBarView
+import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.fadeOut
 import gr.divinelink.core.util.utils.DimensionUnit
+import gr.divinelink.core.util.utils.ThreadUtil
 import gr.divinelink.core.util.utils.setNavigationBarColor
+import gr.divinelink.core.util.viewBinding.activity.viewBinding
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 import java.lang.ref.WeakReference
 import javax.inject.Inject
@@ -96,7 +102,7 @@ class HomeActivity : BaseActivity(),
     override fun onResume() {
         super.onResume()
         Timber.d("Activity resume.")
-        viewModel.resume()
+//        viewModel.resume()
 //       When leaving from Timer Activity, set bottomNavigation to be the recipe button
 //       and restart the fragment, so we can see the resume button flashing.
 //        binding.bottomNavigation.selectedItemId = R.id.recipe
@@ -178,32 +184,37 @@ class HomeActivity : BaseActivity(),
     override fun updateState(state: HomeState) {
         when (state) {
             is HomeState.InitialState -> handleInitialState()
-            is HomeState.ShowResumeButtonState -> handleShowResumeButtonState()
+            is HomeState.ShowResumeButtonState -> handleShowResumeButtonState(state)
             is HomeState.HideResumeButtonState -> handleHideResumeButtonState()
             is HomeState.StartTimerState -> handleStartTimerState(state)
         }
     }
 
     override fun handleInitialState() {
-//        TODO("Not yet implemented")
+        binding.timerProgressView.setOnClickListener { viewModel.resumeTimer() }
     }
 
-    override fun handleShowResumeButtonState() {
-        binding.timerProgressView.visibility = View.VISIBLE
-        recipeFragment.updateBottomPadding(padding)
-        favoritesFragment.updateBottomPadding(recyclerViewPadding)
-        historyFragment.updateBottomPadding(recyclerViewPadding)
+    override fun handleShowResumeButtonState(state: HomeState.ShowResumeButtonState) {
+        ThreadUtil.runOnMain {
+            binding.timerProgressView.setTimerView(
+                dice = state.dice,
+                onViewAttached = {
+                    recipeFragment.updateBottomPadding(padding)
+                    favoritesFragment.updateBottomPadding(recyclerViewPadding)
+                    historyFragment.updateBottomPadding(recyclerViewPadding)
+                })
+        }
     }
 
     override fun handleHideResumeButtonState() {
-        binding.timerProgressView.fadeOut()
+        binding.timerProgressView.dispose()
         recipeFragment.updateBottomPadding(DimensionUnit.DP.toPixels(0F).toInt())
         favoritesFragment.updateBottomPadding(DimensionUnit.DP.toPixels(PAD_BOTTOM_OF_RECYCLER).toInt())
         historyFragment.updateBottomPadding(DimensionUnit.DP.toPixels(PAD_BOTTOM_OF_RECYCLER).toInt())
     }
 
     override fun handleStartTimerState(state: HomeState.StartTimerState) {
-        TimerActivity.newIntent(this, state.recipe, state.flow)
+        startActivity(TimerActivity.newIntent(this, state.recipe, state.flow))
     }
 
     override fun onSnackbarShow(state: HistoryState.ShowSnackBar) {
@@ -214,9 +225,25 @@ class HomeActivity : BaseActivity(),
             .show()
     }
 
-    override fun onUpdateRecipe() {
+    override fun onUpdateRecipe(recipe: Recipe, flow: TimerFlow, update: Boolean) {
         Timber.d("Recipe updated. Set refresh to true.")
         recipeFragment.refresh = true
+        viewModel.startTimer(recipe, flow, update)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onTimerFinished(event: TimerExitEvent) {
+        viewModel.resume()
     }
 }
 
@@ -224,3 +251,4 @@ interface TimerViewCallback {
     fun updateBottomPadding(bottomPadding: Int)
 }
 
+class TimerExitEvent
