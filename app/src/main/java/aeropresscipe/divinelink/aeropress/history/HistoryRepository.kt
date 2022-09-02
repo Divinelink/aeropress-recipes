@@ -19,11 +19,6 @@ class HistoryRepository @Inject constructor(
         completionBlock: (List<History>) -> Unit
     ) = performTransaction(completionBlock) { remote.getHistory() }
 
-    fun startBrew(
-        recipe: Recipe,
-        completionBlock: (Recipe?) -> Unit
-    ) = performTransaction(completionBlock) { remote.getRecipe(recipe) }
-
     fun likeRecipe(
         favorite: SavedRecipeDomain,
         completionBlock: (History) -> Unit
@@ -36,7 +31,6 @@ class HistoryRepository @Inject constructor(
 
 interface IHistoryRemote {
     suspend fun getHistory(): List<History>
-    suspend fun getRecipe(recipe: Recipe): Recipe
     suspend fun likeRecipe(favorite: SavedRecipeDomain): History
     suspend fun clearHistory()
 }
@@ -51,13 +45,6 @@ class HistoryRemote @Inject constructor(
     override suspend fun getHistory(): List<History> {
         return withContext(dispatcher) {
             historyDao.historyRecipes ?: emptyList()
-        }
-    }
-
-    override suspend fun getRecipe(recipe: Recipe): Recipe {
-        return withContext(dispatcher) {
-            recipeDao.updateRecipe(recipe)
-            recipe
         }
     }
 

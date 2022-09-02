@@ -4,8 +4,9 @@ import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.base.HomeActivity.Companion.PAD_BOTTOM_OF_RECYCLER
 import aeropresscipe.divinelink.aeropress.base.TimerViewCallback
 import aeropresscipe.divinelink.aeropress.databinding.FragmentHistoryBinding
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.EmptyType
-import aeropresscipe.divinelink.aeropress.timer.TimerActivity
+import aeropresscipe.divinelink.aeropress.timer.TimerFlow
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
 import android.content.Context
 import android.os.Bundle
@@ -150,8 +151,7 @@ class HistoryFragment : Fragment(),
     }
 
     override fun handleStartNewBrewState(state: HistoryState.StartNewBrewState) {
-        startActivity(TimerActivity.newIntent(requireContext(), state.recipe))
-        callback.onUpdateRecipe()
+        callback.onUpdateRecipe(state.recipe, TimerFlow.START, true)
     }
 
     override fun handleRecipeLikedState(state: HistoryState.RecipeLikedState) {
@@ -204,6 +204,6 @@ class HistoryFragment : Fragment(),
 
     interface Callback {
         fun onSnackbarShow(state: HistoryState.ShowSnackBar)
-        fun onUpdateRecipe()
+        fun onUpdateRecipe(recipe: Recipe, flow: TimerFlow, update: Boolean)
     }
 }

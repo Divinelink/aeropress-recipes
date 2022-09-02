@@ -36,7 +36,7 @@ class SaveRecipeCardView :
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         val viewModelFactory = SaveRecipeCardViewModelFactory(assistedFactory, WeakReference<ISaveRecipeCardViewModel>(this))
-        viewModel = ViewModelProvider(ViewTreeViewModelStoreOwner.get(this)!!, viewModelFactory).get(SaveRecipeCardViewModel::class.java)
+        viewModel = ViewModelProvider(ViewTreeViewModelStoreOwner.get(this)!!, viewModelFactory)[SaveRecipeCardViewModel::class.java]
         viewModel.init(recipe)
     }
 

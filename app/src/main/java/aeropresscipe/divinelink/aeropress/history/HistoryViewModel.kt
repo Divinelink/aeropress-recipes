@@ -33,14 +33,7 @@ class HistoryViewModel @AssistedInject constructor(
     }
 
     override fun startBrew(recipe: Recipe) {
-        repository.startBrew(recipe) {
-            state = if (it == null) {
-                HistoryState.ErrorState("Something went wrong!") // //TODO 15/6/22 divinelink: Fix Error State
-            } else {
-                recipe.isNewRecipe = true
-                HistoryState.StartNewBrewState(recipe)
-            }
-        }
+        state = HistoryState.StartNewBrewState(recipe)
     }
 
     override fun likeRecipe(recipe: History, position: Int) {
