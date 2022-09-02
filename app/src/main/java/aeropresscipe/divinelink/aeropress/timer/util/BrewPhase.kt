@@ -4,7 +4,7 @@ import aeropresscipe.divinelink.aeropress.R
 import androidx.annotation.StringRes
 
 class BrewPhase private constructor(
-    var brewStates: MutableList<BrewState>,
+    var brewStates: MutableList<BrewState>?,
 ) {
     data class Builder(
         var brewStates: MutableList<BrewState>? = null,
@@ -12,16 +12,16 @@ class BrewPhase private constructor(
     ) {
         fun brewStates(brewStates: MutableList<BrewState>?) = apply { this.brewStates = brewStates }
         fun build() = BrewPhase(
-            brewStates = brewStates!!,
+            brewStates = brewStates,
         )
     }
 
     fun getCurrentState(): BrewState {
-        return brewStates.firstOrNull() ?: BrewState.Finished
+        return brewStates?.firstOrNull() ?: BrewState.Finished
     }
 
     fun removeCurrentPhase() {
-        brewStates.removeFirstOrNull()
+        brewStates?.removeFirstOrNull()
     }
 }
 
@@ -54,7 +54,7 @@ sealed class BrewState(
         Phase.Brew
     )
 
-    object Finished : BrewState(title = 0, description = 0, brewWater = 0, brewTime = 0, Phase.Finish)
+    object Finished : BrewState(title = R.string.finishPhaseTitle, description = R.string.finishPhaseDescription, brewWater = 0, brewTime = 0, Phase.Finish)
 }
 
 enum class Phase {
