@@ -18,6 +18,20 @@ fun View?.fadeOut() {
         })
 }
 
+fun View?.fadeIn() {
+    this?.alpha = 0f
+    this?.animate()
+        ?.alpha(1f)
+        ?.setDuration(500L)
+        ?.setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                this@fadeIn.alpha = 1f
+                this@fadeIn.visibility = View.VISIBLE
+            }
+        })
+}
+
+
 fun View?.updatePaddingAnimator(
     start: Int? = null,
     end: Int? = null,
