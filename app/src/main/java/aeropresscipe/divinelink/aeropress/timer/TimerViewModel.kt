@@ -3,6 +3,7 @@ package aeropresscipe.divinelink.aeropress.timer
 import aeropresscipe.divinelink.aeropress.base.di.Preferences
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.getBrewingStates
 import aeropresscipe.divinelink.aeropress.timer.util.BrewPhase
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
@@ -72,9 +73,10 @@ class TimerViewModel @AssistedInject constructor(
     }
 
     private fun finishRecipeBrewing() {
-        repository.updateTimes(bloomEnds = 0L, brewEnds = 0L)
-        repository.updateBrewingState(false) {
+        repository.updateTimes(bloomEnds = 0L, brewEnds = 0L) {
             Timber.d("Recipe finished brewing")
+        }
+        repository.updateBrewingState(false) {
             state = TimerState.FinishState
         }
     }
@@ -99,9 +101,8 @@ class TimerViewModel @AssistedInject constructor(
                     startTimers()
                 }
             )
-
             repository.updateBrewingState(true) {
-                Timber.d("Recipe is brewing")
+                Timber.d("Recipe is brewing.")
             }
         }
     }
@@ -128,19 +129,21 @@ class TimerViewModel @AssistedInject constructor(
             is BrewState.Bloom -> {
                 bloomEnds = millisecondsLeft + System.currentTimeMillis()
                 brewEnds = transferableModel?.recipe?.brewTime?.inMilliseconds()?.plus(millisecondsLeft)?.plus(System.currentTimeMillis()) ?: 0L
-                repository.updateTimes(bloomEnds = bloomEnds, brewEnds = brewEnds)
             }
             is BrewState, is BrewState.BrewWithBloom -> {
                 bloomEnds = 0
                 brewEnds = millisecondsLeft + System.currentTimeMillis()
-                repository.updateTimes(bloomEnds = bloomEnds, brewEnds = brewEnds)
             }
             else -> {
-                repository.updateTimes(bloomEnds = 0L, brewEnds = 0L)
+                bloomEnds = 0L
+                brewEnds = 0L
                 repository.updateBrewingState(false) {
-                    state = TimerState.ExitState
+                    Timber.d("Recipe is not brewing.")
                 }
             }
+        }
+        repository.updateTimes(bloomEnds = bloomEnds, brewEnds = brewEnds) {
+            state = TimerState.ExitState
         }
     }
 
