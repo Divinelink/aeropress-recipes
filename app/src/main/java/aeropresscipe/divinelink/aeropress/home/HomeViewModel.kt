@@ -2,6 +2,7 @@ package aeropresscipe.divinelink.aeropress.home
 
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.TimerFlow
 import androidx.lifecycle.ViewModel
@@ -19,6 +20,9 @@ class HomeViewModel @AssistedInject constructor(
     HomeIntents {
     internal var statesList: MutableList<HomeState> = mutableListOf()
 
+    private lateinit var dice: DiceDomain
+    private var canResume = false
+
     var state: HomeState = HomeState.InitialState
         set(value) {
             Timber.d(value.toString())
@@ -28,23 +32,41 @@ class HomeViewModel @AssistedInject constructor(
 
     override fun init() {
         state = HomeState.InitialState
+        getResumeState()
     }
 
     override fun resume() {
-        repository.checkIfBrewing { isBrewing ->
-            state = when (isBrewing) {
-                true -> HomeState.ShowResumeButtonState
+        getResumeState()
+    }
+
+    private fun getResumeState() {
+        repository.getRecipe { dice ->
+            this.dice = dice
+            state = when (dice.isBrewing) {
+                true -> HomeState.ShowResumeButtonState(dice)
                 false -> HomeState.HideResumeButtonState
             }
+            canResume = dice.isBrewing
         }
     }
 
     override fun generateRecipe() {
         state = HomeState.HideResumeButtonState
+        canResume = false
     }
 
-    override fun startTimer(recipe: Recipe, flow: TimerFlow) {
-        state = HomeState.StartTimerState(recipe, flow)
+    override fun startTimer(recipe: Recipe, flow: TimerFlow, update: Boolean) {
+        repository.updateRecipe(recipe, update) { dice ->
+            Timber.d("Starting timer with recipeId: ${dice.id}")
+            this.dice = dice
+            state = HomeState.StartTimerState(dice.recipe, flow)
+        }
+    }
+
+    override fun resumeTimer() {
+        if (canResume) {
+            state = HomeState.StartTimerState(dice.recipe, TimerFlow.RESUME)
+        }
     }
 }
 
@@ -55,20 +77,21 @@ interface IHomeViewModel {
 interface HomeIntents : MVIBaseView {
     fun init()
     fun resume()
+    fun resumeTimer()
     fun generateRecipe()
-    fun startTimer(recipe: Recipe, flow: TimerFlow)
+    fun startTimer(recipe: Recipe, flow: TimerFlow, update: Boolean)
 }
 
 sealed class HomeState {
     object InitialState : HomeState()
-    object ShowResumeButtonState : HomeState()
+    data class ShowResumeButtonState(val dice: DiceDomain) : HomeState()
     object HideResumeButtonState : HomeState()
     data class StartTimerState(val recipe: Recipe, val flow: TimerFlow) : HomeState()
 }
 
 interface HomeStateHandler {
     fun handleInitialState()
-    fun handleShowResumeButtonState()
+    fun handleShowResumeButtonState(state: HomeState.ShowResumeButtonState)
     fun handleHideResumeButtonState()
     fun handleStartTimerState(state: HomeState.StartTimerState)
 }
