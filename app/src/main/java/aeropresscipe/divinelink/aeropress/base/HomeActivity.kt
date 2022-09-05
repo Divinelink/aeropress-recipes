@@ -22,12 +22,12 @@ import android.view.MenuItem
 import android.view.View
 import androidx.annotation.Dimension
 import androidx.annotation.Px
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationBarView
 import dagger.hilt.android.AndroidEntryPoint
-import gr.divinelink.core.util.extensions.fadeOut
 import gr.divinelink.core.util.utils.DimensionUnit
 import gr.divinelink.core.util.utils.ThreadUtil
 import gr.divinelink.core.util.utils.setNavigationBarColor
@@ -41,7 +41,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class HomeActivity : BaseActivity(),
+class HomeActivity : AppCompatActivity(),
     IHomeViewModel,
     HomeStateHandler,
     HistoryFragment.Callback {
@@ -66,7 +66,6 @@ class HomeActivity : BaseActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setNavigationBarColor(ContextCompat.getColor(this, R.color.colorSurface2))
         binding.bottomNavigation.setOnItemSelectedListener(onItemSelectedListener)
 //        binding.bottomNavigation.setOnItemReselectedListener(onItemReselectedListener)
