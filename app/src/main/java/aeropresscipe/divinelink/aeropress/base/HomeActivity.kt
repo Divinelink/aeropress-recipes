@@ -24,12 +24,12 @@ import androidx.annotation.Dimension
 import androidx.annotation.Px
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.doOnAttach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationBarView
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.utils.DimensionUnit
-import gr.divinelink.core.util.utils.ThreadUtil
 import gr.divinelink.core.util.utils.setNavigationBarColor
 import gr.divinelink.core.util.viewBinding.activity.viewBinding
 import org.greenrobot.eventbus.EventBus
@@ -38,7 +38,6 @@ import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 import java.lang.ref.WeakReference
 import javax.inject.Inject
-
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity(),
@@ -179,7 +178,6 @@ class HomeActivity : AppCompatActivity(),
         private const val PAD_BOTTOM_OF_TIMER_VIEW_RECYCLER = 68F
     }
 
-
     override fun updateState(state: HomeState) {
         when (state) {
             is HomeState.InitialState -> handleInitialState()
@@ -194,14 +192,17 @@ class HomeActivity : AppCompatActivity(),
     }
 
     override fun handleShowResumeButtonState(state: HomeState.ShowResumeButtonState) {
-        ThreadUtil.runOnMain {
-            binding.timerProgressView.setTimerView(
-                dice = state.dice,
-                onViewAttached = {
-                    recipeFragment.updateBottomPadding(padding)
-                    favoritesFragment.updateBottomPadding(recyclerViewPadding)
-                    historyFragment.updateBottomPadding(recyclerViewPadding)
-                })
+        binding.timerProgressView.apply {
+            doOnAttach {
+                setTimerView(
+                    dice = state.dice,
+                    onViewAttached = {
+                        recipeFragment.updateBottomPadding(padding)
+                        favoritesFragment.updateBottomPadding(recyclerViewPadding)
+                        historyFragment.updateBottomPadding(recyclerViewPadding)
+                    }
+                )
+            }
         }
     }
 
@@ -241,6 +242,7 @@ class HomeActivity : AppCompatActivity(),
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    @Suppress("UnusedPrivateMember")
     fun onTimerFinished(event: TimerExitEvent) {
         viewModel.resume()
     }
