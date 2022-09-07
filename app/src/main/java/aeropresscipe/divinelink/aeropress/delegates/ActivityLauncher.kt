@@ -9,10 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 
 class ActivityLauncher : IActivityLauncher {
     private var onActivityResultAction: ((result: ActivityResult) -> Unit)? = null
-    private var activityLauncher: ActivityResultLauncher<Intent>? = null
+    private var launcher: ActivityResultLauncher<Intent>? = null
 
     override fun registerLauncher(activity: AppCompatActivity) {
-        activityLauncher = activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        launcher = activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 onActivityResultAction?.invoke(it)
             }
@@ -22,10 +22,9 @@ class ActivityLauncher : IActivityLauncher {
     override fun launchActivity(intent: Intent?, onResult: ((result: ActivityResult) -> Unit)?) {
         onActivityResultAction = onResult
         if (intent != null) {
-            activityLauncher?.launch(intent)
+            launcher?.launch(intent)
         }
     }
-
 }
 
 interface IActivityLauncher {

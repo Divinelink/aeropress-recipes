@@ -2,8 +2,6 @@ package aeropresscipe.divinelink.aeropress.components.timerprogressview
 
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
-import aeropresscipe.divinelink.aeropress.components.saverecipecard.ISaveRecipeCardViewModel
-import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardViewModel
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.getBrewingStates
 import aeropresscipe.divinelink.aeropress.timer.TimerRepository
@@ -20,7 +18,7 @@ import timber.log.Timber
 import java.lang.ref.WeakReference
 
 class TimerProgressViewModel @AssistedInject constructor(
-    private var repository: TimerRepository,
+    @Suppress("UnusedPrivateMember") private var repository: TimerRepository,
     @Assisted override var delegate: WeakReference<ITimerProgressViewModel>? = null
 ) : BaseViewModel<ITimerProgressViewModel>(),
     TimerProgressIntents {
@@ -61,16 +59,15 @@ class TimerProgressViewModel @AssistedInject constructor(
         Timber.d("brew time left: $brewTimeLeft")
 
         if (bloomTimeLeft > 0) {
-            startTimerStates(bloomState!!, bloomTimeLeft)
+            startTimerStates(bloomState, bloomTimeLeft)
         } else if (brewTimeLeft > 0) {
             // Remove bloomState from list and get BrewState for new timer.
             states?.remove(bloomState)
             val brewState = states?.find { state -> state.phase == Phase.Brew }
-            startTimerStates(brewState!!, brewTimeLeft)
+            startTimerStates(brewState, brewTimeLeft)
         } else {
-            state = TimerProgressState.FinishState
+            state = TimerProgressState.UpdateProgressState(BrewState.Finished, false)
         }
-
     }
 
     override fun updateTimer() {
@@ -78,7 +75,7 @@ class TimerProgressViewModel @AssistedInject constructor(
         brew?.let { brew ->
             // Update current brew state
             if (brew.getCurrentState() == BrewState.Finished) {
-                state = TimerProgressState.StartTimer(brewState = BrewState.Finished, true)
+                state = TimerProgressState.UpdateProgressState(brewState = BrewState.Finished, true)
             } else {
                 startTimerStates(brew.getCurrentState(), brew.getCurrentState().brewTime.inMilliseconds(), animate = true)
             }
@@ -88,11 +85,12 @@ class TimerProgressViewModel @AssistedInject constructor(
         }
     }
 
-    private fun startTimerStates(brewState: BrewState, timeLeft: Long, animate: Boolean = false) {
+    private fun startTimerStates(brewState: BrewState?, timeLeft: Long, animate: Boolean = false) {
+        if (brewState == null) return
         Timber.d("Update brewState: $brewState")
         Timber.d("Title: ${brewState.title}")
         Timber.d("Description: ${brewState.description}")
-        state = TimerProgressState.StartTimer(brewState, animate)
+        state = TimerProgressState.UpdateProgressState(brewState, animate)
         state = TimerProgressState.StartProgressBar(
             maxValue = brewState.brewTime.inMilliseconds().toInt(),
             timeInMilliseconds = timeLeft,
@@ -113,16 +111,15 @@ interface TimerProgressIntents : MVIBaseView {
 
 sealed class TimerProgressState {
     object InitialState : TimerProgressState()
-    data class StartTimer(val brewState: BrewState, val animate: Boolean) : TimerProgressState()
+    data class UpdateProgressState(val brewState: BrewState, val animate: Boolean) : TimerProgressState()
     data class StartProgressBar(val maxValue: Int, val timeInMilliseconds: Long, val animate: Boolean) : TimerProgressState()
     object RetryState : TimerProgressState()
     object FinishState : TimerProgressState()
-
 }
 
 interface TimerProgressStateHandler {
     fun handleInitialState()
-    fun handleStartTimer(state: TimerProgressState.StartTimer)
+    fun handleUpdateProgressState(state: TimerProgressState.UpdateProgressState)
     fun handleStartProgressBar(state: TimerProgressState.StartProgressBar)
     fun handleRetryState()
     fun handleFinishState()
@@ -144,9 +141,4 @@ class TimerProgressViewModelFactory(
 @AssistedFactory
 interface TimerProgressViewModelAssistedFactory {
     fun create(delegate: WeakReference<ITimerProgressViewModel>?): TimerProgressViewModel
-}
-
-@AssistedFactory
-interface SaveRecipeCardViewModelAssistedFactory {
-    fun create(delegate: WeakReference<ISaveRecipeCardViewModel>?): SaveRecipeCardViewModel
 }

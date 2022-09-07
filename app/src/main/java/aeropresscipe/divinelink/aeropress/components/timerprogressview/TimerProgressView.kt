@@ -12,8 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewTreeViewModelStoreOwner
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.fadeOut
-import gr.divinelink.core.util.extensions.updateTextWithFade
 import gr.divinelink.core.util.timer.PreciseCountdown
+import timber.log.Timber
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
@@ -52,7 +52,7 @@ class TimerProgressView : FrameLayout,
             is TimerProgressState.RetryState -> handleRetryState()
             is TimerProgressState.FinishState -> handleFinishState()
             is TimerProgressState.StartProgressBar -> handleStartProgressBar(state)
-            is TimerProgressState.StartTimer -> handleStartTimer(state)
+            is TimerProgressState.UpdateProgressState -> handleUpdateProgressState(state)
         }
     }
 
@@ -64,7 +64,7 @@ class TimerProgressView : FrameLayout,
         dice?.let { viewModel.init(it) }
     }
 
-    override fun handleStartTimer(state: TimerProgressState.StartTimer) {
+    override fun handleUpdateProgressState(state: TimerProgressState.UpdateProgressState) {
         callback?.onTimerAttached()
 //        if (state.animate) {
 //            binding.brewStateTitle updateTextWithFade resources.getString(state.brewState.title)
@@ -114,6 +114,7 @@ class TimerProgressView : FrameLayout,
      * Automatically shows root's view.
      */
     fun setTimerView(dice: DiceDomain, onViewAttached: (() -> Unit)) {
+        Timber.d("Set Timer View")
         // Reset timer if already initialised
         timer?.dispose()
         milliSecondsLeft = 0L
@@ -143,7 +144,6 @@ class TimerProgressView : FrameLayout,
     private fun show() {
         binding.root.visibility = View.VISIBLE
     }
-
 
     private fun interface Callback {
         fun onTimerAttached()
