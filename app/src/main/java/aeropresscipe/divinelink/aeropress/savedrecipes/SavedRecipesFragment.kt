@@ -6,10 +6,10 @@ import aeropresscipe.divinelink.aeropress.base.TimerViewCallback
 import aeropresscipe.divinelink.aeropress.databinding.FragmentSavedRecipesBinding
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.history.HistoryFragment
-import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
 import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.EmptyType
 import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.FavoriteItem
 import aeropresscipe.divinelink.aeropress.timer.TimerFlow
+import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -29,7 +29,6 @@ import gr.divinelink.core.util.swipe.SwipeAction
 import gr.divinelink.core.util.utils.DimensionUnit
 import java.lang.ref.WeakReference
 import javax.inject.Inject
-
 
 @AndroidEntryPoint
 class SavedRecipesFragment : Fragment(),
@@ -113,7 +112,7 @@ class SavedRecipesFragment : Fragment(),
     }
 
     override fun handleRecipesState(state: SavedRecipesState.RecipesState) {
-        mFadeAnimation = AnimationUtils.loadAnimation(activity, R.anim.fade_in_favourites)
+        mFadeAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in_favourites)
         binding?.recyclerView?.animation = mFadeAnimation
         recipesAdapter.submitList(state.recipes)
     }
@@ -150,7 +149,6 @@ class SavedRecipesFragment : Fragment(),
         recyclerViewPadding = bottomPadding
         binding?.recyclerView?.padding(bottom = bottomPadding)
     }
-
 
     companion object {
         @JvmStatic

@@ -31,7 +31,7 @@
     <string name="bloomPhaseWaterText">Pour in %dg of water</string>
 
     <string name="brewPhase">Brewing Phase</string>
-    <string name="finishPhaseTitle">Your timer is finished. Press &amp; enjoy!</string>
+    <string name="finishPhaseTitle">Your timer is finished!</string>
     <string name="finishPhaseDescription">Click for more details.</string>
 
     <string name="brewPhaseWithBloom">Pour in the remaining %dg of water</string>
