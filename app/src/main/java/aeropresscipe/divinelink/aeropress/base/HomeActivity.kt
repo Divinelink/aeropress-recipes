@@ -69,22 +69,25 @@ class HomeActivity : AppCompatActivity(),
         binding.bottomNavigation.setOnItemSelectedListener(onItemSelectedListener)
 //        binding.bottomNavigation.setOnItemReselectedListener(onItemReselectedListener)
 
-        if (savedInstanceState == null) {
-            recipeFragment = GenerateRecipeFragment.newInstance()
-            favoritesFragment = SavedRecipesFragment.newInstance()
-            historyFragment = HistoryFragment.newInstance()
-
-            supportFragmentManager.beginTransaction()
-                .add(R.id.fragment, recipeFragment, RECIPE_TAG)
-                .add(R.id.fragment, favoritesFragment, FAVORITES_TAG)
-                .add(R.id.fragment, historyFragment, HISTORY_TAG)
-                .commitNow()
-        } else {
+        recipeFragment = GenerateRecipeFragment.newInstance()
+        favoritesFragment = SavedRecipesFragment.newInstance()
+        historyFragment = HistoryFragment.newInstance()
+        if (savedInstanceState != null) {
+//            recipeFragment = GenerateRecipeFragment.newInstance()
+//            favoritesFragment = SavedRecipesFragment.newInstance()
+//            historyFragment = HistoryFragment.newInstance()
+//
+////            supportFragmentManager.beginTransaction()
+////                .add(R.id.fragment, recipeFragment, recipeFragment.tag)
+////                .add(R.id.fragment, favoritesFragment, favoritesFragment.tag)
+////                .add(R.id.fragment, historyFragment, historyFragment.tag)
+////                .commitNow()
+//        } else {
             selectedIndex = savedInstanceState.getInt(SELECTED_INDEX, 0)
-
-            recipeFragment = supportFragmentManager.findFragmentByTag(RECIPE_TAG) as GenerateRecipeFragment
-            favoritesFragment = supportFragmentManager.findFragmentByTag(FAVORITES_TAG) as SavedRecipesFragment
-            historyFragment = supportFragmentManager.findFragmentByTag(HISTORY_TAG) as HistoryFragment
+//
+//            recipeFragment = supportFragmentManager.findFragmentByTag(recipeFragment.tag) as GenerateRecipeFragment
+//            favoritesFragment = supportFragmentManager.findFragmentByTag(favoritesFragment.tag) as SavedRecipesFragment
+//            historyFragment = supportFragmentManager.findFragmentByTag(historyFragment.tag) as HistoryFragment
         }
 
         val selectedFragment = fragments[selectedIndex]
@@ -141,16 +144,20 @@ class HomeActivity : AppCompatActivity(),
 
     @SuppressLint("DetachAndAttachSameFragment")
     private fun selectFragment(selectedFragment: Fragment) {
-        var transaction = supportFragmentManager.beginTransaction()
-        fragments.forEachIndexed { index, fragment ->
-            if (selectedFragment == fragment) {
-                transaction = transaction.attach(fragment)
-                selectedIndex = index
-            } else {
-                transaction = transaction.detach(fragment)
-            }
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment, selectedFragment, selectedFragment.tag)
+            commit()
         }
-        transaction.commit()
+//        var transaction = supportFragmentManager.beginTransaction()
+//        fragments.forEachIndexed { index, fragment ->
+//            if (selectedFragment == fragment) {
+//                transaction = transaction.attach(fragment)
+//                selectedIndex = index
+//            } else {
+//                transaction = transaction.detach(fragment)
+//            }
+//        }
+//        transaction.commit()
     }
 
     override fun onBackPressed() {
@@ -163,9 +170,9 @@ class HomeActivity : AppCompatActivity(),
     }
 
     companion object {
-        private const val RECIPE_TAG = "RECIPE"
-        private const val FAVORITES_TAG = "FAVORITES"
-        private const val HISTORY_TAG = "HISTORY"
+//        private const val RECIPE_TAG = "RECIPE"
+//        private const val FAVORITES_TAG = "FAVORITES"
+//        private const val HISTORY_TAG = "HISTORY"
         private const val SELECTED_INDEX = "SELECTED_INDEX"
 
         @Dimension(unit = Dimension.DP)
