@@ -16,6 +16,8 @@ import aeropresscipe.divinelink.aeropress.home.IHomeViewModel
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipesFragment
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
 import aeropresscipe.divinelink.aeropress.timer.TimerFlow
+import aeropresscipe.divinelink.aeropress.util.DynamicNoActionBarTheme
+import aeropresscipe.divinelink.aeropress.util.DynamicTheme
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.MenuItem
@@ -36,7 +38,6 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
-import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -46,6 +47,10 @@ class HomeActivity : AppCompatActivity(),
     HistoryFragment.Callback {
     private val binding: ActivityHomeBinding by viewBinding()
 
+    private var recipeFragment = GenerateRecipeFragment.newInstance()
+    private var favoritesFragment = SavedRecipesFragment.newInstance()
+    private var historyFragment = HistoryFragment.newInstance()
+
     private val fragments: Array<out Fragment> get() = arrayOf(recipeFragment, favoritesFragment, historyFragment)
     private var selectedIndex = 0
 
@@ -53,9 +58,7 @@ class HomeActivity : AppCompatActivity(),
     lateinit var assistedFactory: HomeViewModelAssistedFactory
     private lateinit var viewModel: HomeViewModel
 
-    private lateinit var recipeFragment: GenerateRecipeFragment
-    private lateinit var favoritesFragment: SavedRecipesFragment
-    private lateinit var historyFragment: HistoryFragment
+    private val dynamicTheme: DynamicTheme = DynamicNoActionBarTheme() // app is shown correctly when saveInstanceState = null
 
     @Px
     private val padding = DimensionUnit.DP.toPixels(PAD_BOTTOM_OF_TIMER_VIEW).toInt()
@@ -65,36 +68,28 @@ class HomeActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        dynamicTheme.onCreate(this)
         setNavigationBarColor(ContextCompat.getColor(this, R.color.colorSurface2))
         binding.bottomNavigation.setOnItemSelectedListener(onItemSelectedListener)
 //        binding.bottomNavigation.setOnItemReselectedListener(onItemReselectedListener)
 
-        recipeFragment = GenerateRecipeFragment.newInstance()
-        favoritesFragment = SavedRecipesFragment.newInstance()
-        historyFragment = HistoryFragment.newInstance()
-        if (savedInstanceState != null) {
-//            recipeFragment = GenerateRecipeFragment.newInstance()
-//            favoritesFragment = SavedRecipesFragment.newInstance()
-//            historyFragment = HistoryFragment.newInstance()
-//
-////            supportFragmentManager.beginTransaction()
-////                .add(R.id.fragment, recipeFragment, recipeFragment.tag)
-////                .add(R.id.fragment, favoritesFragment, favoritesFragment.tag)
-////                .add(R.id.fragment, historyFragment, historyFragment.tag)
-////                .commitNow()
-//        } else {
+//        recipeFragment = GenerateRecipeFragment.newInstance()
+//        favoritesFragment = SavedRecipesFragment.newInstance()
+//        historyFragment = HistoryFragment.newInstance()
+        if (savedInstanceState == null) {
+            // nothing :/
+        } else {
             selectedIndex = savedInstanceState.getInt(SELECTED_INDEX, 0)
-//
-//            recipeFragment = supportFragmentManager.findFragmentByTag(recipeFragment.tag) as GenerateRecipeFragment
-//            favoritesFragment = supportFragmentManager.findFragmentByTag(favoritesFragment.tag) as SavedRecipesFragment
-//            historyFragment = supportFragmentManager.findFragmentByTag(historyFragment.tag) as HistoryFragment
         }
+//        recipeFragment = GenerateRecipeFragment.newInstance()
+//        favoritesFragment = SavedRecipesFragment.newInstance()
+//        historyFragment = HistoryFragment.newInstance()
 
         val selectedFragment = fragments[selectedIndex]
 
         selectFragment(selectedFragment)
 
-        val viewModelFactory = HomeViewModelFactory(assistedFactory, WeakReference<IHomeViewModel>(this))
+        val viewModelFactory = HomeViewModelFactory(assistedFactory, this)
         viewModel = ViewModelProvider(this, viewModelFactory)[HomeViewModel::class.java]
 
         viewModel.init()
@@ -102,6 +97,7 @@ class HomeActivity : AppCompatActivity(),
 
     override fun onResume() {
         super.onResume()
+//        dynamicTheme.onResume(this)
         Timber.d("Activity resume.")
 //        viewModel.resume()
 //       When leaving from Timer Activity, set bottomNavigation to be the recipe button
@@ -148,16 +144,6 @@ class HomeActivity : AppCompatActivity(),
             replace(R.id.fragment, selectedFragment, selectedFragment.tag)
             commit()
         }
-//        var transaction = supportFragmentManager.beginTransaction()
-//        fragments.forEachIndexed { index, fragment ->
-//            if (selectedFragment == fragment) {
-//                transaction = transaction.attach(fragment)
-//                selectedIndex = index
-//            } else {
-//                transaction = transaction.detach(fragment)
-//            }
-//        }
-//        transaction.commit()
     }
 
     override fun onBackPressed() {
@@ -170,9 +156,9 @@ class HomeActivity : AppCompatActivity(),
     }
 
     companion object {
-//        private const val RECIPE_TAG = "RECIPE"
-//        private const val FAVORITES_TAG = "FAVORITES"
-//        private const val HISTORY_TAG = "HISTORY"
+        private const val RECIPE_TAG = "RECIPE"
+        private const val FAVORITES_TAG = "FAVORITES"
+        private const val HISTORY_TAG = "HISTORY"
         private const val SELECTED_INDEX = "SELECTED_INDEX"
 
         @Dimension(unit = Dimension.DP)
