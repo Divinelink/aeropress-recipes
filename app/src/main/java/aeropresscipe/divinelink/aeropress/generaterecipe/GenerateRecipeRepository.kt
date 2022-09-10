@@ -49,7 +49,7 @@ open class GenerateRecipeRemote @Inject constructor(
         return withContext(dispatcher) {
             val recipe = RecipeBuilder().recipe
             recipeDao.updateRecipe(recipe)
-            DiceDomain(recipe, false)
+            return@withContext DiceDomain(recipe, false)
         }
     }
 
