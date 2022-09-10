@@ -69,19 +69,19 @@ open class TimerServices @Inject constructor(
         brewing: Boolean
     ) {
         withContext(dispatcher) {
-            recipeDao.updateBrewingState(brewing, recipeDao.singleRecipe.id)
+            recipeDao.updateBrewingState(brewing, recipeDao.getRecipe().id)
         }
     }
 
     override suspend fun updateTimes(bloomEndTimeMillis: Long, brewEndTimeMillis: Long) {
         return withContext(dispatcher) {
-            recipeDao.updateTimes(bloomEndTimeMillis, brewEndTimeMillis, recipeDao.singleRecipe.id)
+            recipeDao.updateTimes(bloomEndTimeMillis, brewEndTimeMillis, recipeDao.getRecipe().id)
         }
     }
 
     override suspend fun getResumeTimes(): DiceDomain {
         return withContext(dispatcher) {
-            recipeDao.singleRecipe
+            recipeDao.getRecipe()
         }
     }
 }

@@ -1,5 +1,6 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe
 
+import aeropresscipe.divinelink.aeropress.generaterecipe.factory.RecipeBuilder
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import androidx.room.Dao
@@ -15,7 +16,7 @@ interface RecipeDao {
     fun insertRecipe(recipe: DiceDomain)
 
     @get:Query("SELECT * FROM Recipe ORDER BY id DESC LIMIT 1")
-    val singleRecipe: DiceDomain
+    val singleRecipe: DiceDomain?
 
     @Query("DELETE FROM Recipe")
     fun deleteAll()
@@ -33,5 +34,15 @@ interface RecipeDao {
     fun updateRecipe(recipe: Recipe) {
         deleteAll()
         insertRecipe(DiceDomain(recipe))
+    }
+
+    fun getRecipe(): DiceDomain {
+        return if (singleRecipe == null) {
+            val recipe = RecipeBuilder().recipe
+            updateRecipe(recipe)
+            DiceDomain(RecipeBuilder().recipe, false)
+        } else {
+            singleRecipe as DiceDomain
+        }
     }
 }

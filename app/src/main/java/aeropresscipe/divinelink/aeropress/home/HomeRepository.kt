@@ -38,7 +38,7 @@ class HomeRemote @Inject constructor(
 
     override suspend fun getRecipe(): DiceDomain {
         return withContext(dispatcher) {
-            recipeDao.singleRecipe
+            return@withContext recipeDao.getRecipe()
         }
     }
 
@@ -47,7 +47,7 @@ class HomeRemote @Inject constructor(
             if (update) {
                 recipeDao.updateRecipe(recipe)
             }
-            val updatedRecipe = recipeDao.singleRecipe
+            val updatedRecipe = recipeDao.getRecipe()
             Timber.d("Recipe updated with id ${updatedRecipe.id}")
             return@withContext updatedRecipe
         }

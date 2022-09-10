@@ -2,6 +2,7 @@ package aeropresscipe.divinelink.aeropress.generaterecipe
 
 import aeropresscipe.divinelink.aeropress.base.di.IoDispatcher
 import aeropresscipe.divinelink.aeropress.base.mvi.logic.BaseRepository
+import aeropresscipe.divinelink.aeropress.generaterecipe.factory.RecipeBuilder
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -40,13 +41,13 @@ open class GenerateRecipeRemote @Inject constructor(
 
     override suspend fun alreadyBrewing(): Boolean {
         return withContext(dispatcher) {
-            recipeDao.singleRecipe.isBrewing
+            recipeDao.getRecipe().isBrewing
         }
     }
 
     override suspend fun createNewRecipe(): DiceDomain {
         return withContext(dispatcher) {
-            val recipe = GenerateRecipe().finalRecipe
+            val recipe = RecipeBuilder().recipe
             recipeDao.updateRecipe(recipe)
             DiceDomain(recipe, false)
         }
@@ -54,7 +55,7 @@ open class GenerateRecipeRemote @Inject constructor(
 
     override suspend fun getRecipe(): DiceDomain {
         return withContext(dispatcher) {
-            recipeDao.singleRecipe ?: createNewRecipe() //FIXME signelRecipe can return null, need to fix this 
+            recipeDao.getRecipe()
         }
     }
 }
