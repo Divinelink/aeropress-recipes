@@ -40,11 +40,6 @@
         <item name="android:backgroundTint">@color/colorPrimaryContainer</item>
     </style>
 
-
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-
-    </style>
-
     <style name="AppTheme.Toolbar" parent="@style/Widget.Material3.Toolbar">
         <item name="titleTextAppearance">@style/Text.TitleMedium</item>
         <item name="subtitleTextAppearance">@style/Text.BodyMedium</item>

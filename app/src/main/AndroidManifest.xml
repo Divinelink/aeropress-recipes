@@ -15,11 +15,15 @@
             android:exported="false" />
         <activity
             android:name=".finish.FinishActivity"
-            android:exported="false" />
-        <activity android:name=".timer.TimerActivity" />
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".timer.TimerActivity"
+            android:launchMode="singleTask" />
         <activity
             android:name=".base.HomeActivity"
             android:exported="true"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/Base.Theme.Aeropress">
             <intent-filter>
