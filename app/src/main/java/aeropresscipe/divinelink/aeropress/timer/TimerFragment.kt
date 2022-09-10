@@ -63,7 +63,7 @@ class TimerFragment : Fragment(),
         val flow = arguments?.getSerializable(FLOW) as TimerFlow
 
         val viewModelFactory = TimerViewModelFactory(assistedFactory, WeakReference<ITimerViewModel>(this))
-        viewModel = ViewModelProvider(this, viewModelFactory).get(TimerViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory)[TimerViewModel::class.java]
 
         viewModel.init(transferableModel)
 

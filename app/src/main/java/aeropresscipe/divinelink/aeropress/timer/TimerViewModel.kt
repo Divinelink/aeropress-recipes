@@ -3,7 +3,7 @@ package aeropresscipe.divinelink.aeropress.timer
 import aeropresscipe.divinelink.aeropress.base.di.Preferences
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.getBrewTimeLeft
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.getBrewingStates
 import aeropresscipe.divinelink.aeropress.timer.util.BrewPhase
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
@@ -51,17 +51,16 @@ class TimerViewModel @AssistedInject constructor(
     override fun resume() {
         repository.resume {
             val states = transferableModel?.brew?.brewStates
-            val bloomTimeLeft = it.bloomEndTimeMillis - System.currentTimeMillis()
-            val brewTimeLeft = it.brewEndTimeMillis - System.currentTimeMillis()
+            val timeLeft: Pair<Long, Long> = it.getBrewTimeLeft()
             val bloomState = states?.find { state -> state.phase == Phase.Bloom }
 
-            if (bloomTimeLeft > 0) {
-                startTimerStates(bloomState!!, bloomTimeLeft)
-            } else if (brewTimeLeft > 0) {
+            if (timeLeft.first > 0) {
+                startTimerStates(bloomState!!, timeLeft.first)
+            } else if (timeLeft.second > 0) {
                 // Remove bloomState from list and get BrewState for new timer.
                 states?.remove(bloomState)
                 val brewState = states?.find { state -> state.phase == Phase.Brew }
-                startTimerStates(brewState!!, brewTimeLeft)
+                startTimerStates(brewState!!, timeLeft.second)
             } else {
                 finishRecipeBrewing()
             }
@@ -73,10 +72,7 @@ class TimerViewModel @AssistedInject constructor(
     }
 
     private fun finishRecipeBrewing() {
-        repository.updateTimes(bloomEnds = 0L, brewEnds = 0L) {
-            Timber.d("Recipe finished brewing")
-        }
-        repository.updateBrewingState(false) {
+        repository.updateBrewingState(false, 0L) {
             state = TimerState.FinishState
         }
     }
@@ -101,7 +97,7 @@ class TimerViewModel @AssistedInject constructor(
                     startTimers()
                 }
             )
-            repository.updateBrewingState(true) {
+            repository.updateBrewingState(true, System.currentTimeMillis()) {
                 Timber.d("Recipe is brewing.")
             }
         }
@@ -123,28 +119,12 @@ class TimerViewModel @AssistedInject constructor(
     }
 
     override fun exitTimer(millisecondsLeft: Long) {
-        val bloomEnds: Long
-        val brewEnds: Long
-        when (transferableModel?.brew?.getCurrentState()) {
-            is BrewState.Bloom -> {
-                bloomEnds = millisecondsLeft + System.currentTimeMillis()
-                brewEnds = transferableModel?.recipe?.brewTime?.inMilliseconds()?.plus(millisecondsLeft)?.plus(System.currentTimeMillis()) ?: 0L
-            }
-            is BrewState, is BrewState.BrewWithBloom -> {
-                bloomEnds = 0
-                brewEnds = millisecondsLeft + System.currentTimeMillis()
-            }
-            else -> {
-                bloomEnds = 0L
-                brewEnds = 0L
-                repository.updateBrewingState(false) {
-                    Timber.d("Recipe is not brewing.")
-                }
+        if (transferableModel?.brew?.getCurrentState() is BrewState.Finished) {
+            repository.updateBrewingState(false, 0L) {
+                Timber.d("Recipe is not brewing.")
             }
         }
-        repository.updateTimes(bloomEnds = bloomEnds, brewEnds = brewEnds) {
-            state = TimerState.ExitState
-        }
+        state = TimerState.ExitState
     }
 
     private fun startTimers() {

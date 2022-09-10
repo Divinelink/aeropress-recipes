@@ -24,11 +24,8 @@ interface RecipeDao {
     @Update
     suspend fun updateBrewing(recipe: DiceDomain)
 
-    @Query("UPDATE Recipe SET isBrewing=:isBrewing WHERE id = :id")
-    fun updateBrewingState(isBrewing: Boolean, id: Int)
-
-    @Query("UPDATE Recipe SET bloomEndTimeMillis=:bloomEndTimeMillis, brewEndTimeMillis=:brewEndTimeMillis  WHERE id = :id")
-    fun updateTimes(bloomEndTimeMillis: Long, brewEndTimeMillis: Long, id: Int)
+    @Query("UPDATE Recipe SET isBrewing=:isBrewing, timeStartedMillis=:timeStartedMillis WHERE id = :id")
+    fun updateBrewingState(isBrewing: Boolean, timeStartedMillis: Long, id: Int)
 
     @Transaction
     fun updateRecipe(recipe: Recipe) {

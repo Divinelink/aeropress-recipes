@@ -3,6 +3,7 @@ package aeropresscipe.divinelink.aeropress.components.timerprogressview
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.getBrewTimeLeft
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.getBrewingStates
 import aeropresscipe.divinelink.aeropress.timer.TimerRepository
 import aeropresscipe.divinelink.aeropress.timer.util.BrewPhase
@@ -51,20 +52,19 @@ class TimerProgressViewModel @AssistedInject constructor(
 
     override fun getView() {
         val states = brew?.brewStates
-        val bloomTimeLeft = dice?.bloomEndTimeMillis!! - System.currentTimeMillis()
-        val brewTimeLeft = dice?.brewEndTimeMillis!! - System.currentTimeMillis()
+        val timeLeft: Pair<Long, Long> = dice.getBrewTimeLeft()
         val bloomState = states?.find { state -> state.phase == Phase.Bloom }
 
-        Timber.d("bloom time left: $bloomTimeLeft")
-        Timber.d("brew time left: $brewTimeLeft")
+        Timber.d("bloom time left: ${timeLeft.first}")
+        Timber.d("brew time left: ${timeLeft.second}")
 
-        if (bloomTimeLeft > 0) {
-            startTimerStates(bloomState, bloomTimeLeft)
-        } else if (brewTimeLeft > 0) {
+        if (timeLeft.first > 0) {
+            startTimerStates(bloomState, timeLeft.first)
+        } else if (timeLeft.second > 0) {
             // Remove bloomState from list and get BrewState for new timer.
             states?.remove(bloomState)
             val brewState = states?.find { state -> state.phase == Phase.Brew }
-            startTimerStates(brewState, brewTimeLeft)
+            startTimerStates(brewState, timeLeft.second)
         } else {
             state = TimerProgressState.UpdateProgressState(BrewState.Finished, false)
         }

@@ -17,8 +17,7 @@ interface ITimerServices {
     suspend fun likeCurrentRecipe(recipe: Recipe): Boolean
     suspend fun addToHistory(recipe: Recipe)
     suspend fun isRecipeSaved(recipe: Recipe?): Boolean
-    suspend fun updateBrewingState(brewing: Boolean)
-    suspend fun updateTimes(bloomEndTimeMillis: Long, brewEndTimeMillis: Long)
+    suspend fun updateBrewingState(brewing: Boolean, timeStartedMillis: Long)
     suspend fun getResumeTimes(): DiceDomain
 }
 
@@ -66,16 +65,11 @@ open class TimerServices @Inject constructor(
     }
 
     override suspend fun updateBrewingState(
-        brewing: Boolean
+        brewing: Boolean,
+        timeStartedMillis: Long
     ) {
         withContext(dispatcher) {
-            recipeDao.updateBrewingState(brewing, recipeDao.getRecipe().id)
-        }
-    }
-
-    override suspend fun updateTimes(bloomEndTimeMillis: Long, brewEndTimeMillis: Long) {
-        return withContext(dispatcher) {
-            recipeDao.updateTimes(bloomEndTimeMillis, brewEndTimeMillis, recipeDao.getRecipe().id)
+            recipeDao.updateBrewingState(brewing, timeStartedMillis, recipeDao.getRecipe().id)
         }
     }
 

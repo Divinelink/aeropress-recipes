@@ -26,14 +26,9 @@ class TimerRepository @Inject constructor(
 
     fun updateBrewingState(
         setBrewing: Boolean,
+        timeStartedMillis: Long,
         completionBlock: () -> Unit
-    ) = performTransaction(completionBlock) { dbRemote.updateBrewingState(setBrewing) }
-
-    fun updateTimes(
-        bloomEnds: Long,
-        brewEnds: Long,
-        completionBlock: () -> Unit
-    ) = performTransaction(completionBlock) { dbRemote.updateTimes(bloomEnds, brewEnds) }
+    ) = performTransaction(completionBlock) { dbRemote.updateBrewingState(setBrewing, timeStartedMillis) }
 
     fun resume(
         completionBlock: (DiceDomain) -> Unit
