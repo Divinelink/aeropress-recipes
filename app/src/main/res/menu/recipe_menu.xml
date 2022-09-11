@@ -9,9 +9,10 @@
         android:orderInCategory="1"
         android:title="@string/favorites"
         app:showAsAction="always" />
-
-    <item
-        android:id="@+id/menu_settings"
-        android:title="@string/settings" />
+    
+<!-- //TODO 11/9/22 divinelink: Add Settings Menu and Activity -->
+<!--    <item-->
+<!--        android:id="@+id/menu_settings"-->
+<!--        android:title="@string/settings" />-->
 
 </menu>
