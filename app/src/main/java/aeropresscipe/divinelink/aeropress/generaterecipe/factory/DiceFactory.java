@@ -41,17 +41,16 @@ class GroundSize extends Dice {
 
     @Override
     public void setDice() {
-//        dice.add(new GroundSizeDice(CoffeeGroundSize.FINE, 60));
-//        dice.add(new GroundSizeDice(CoffeeGroundSize.MEDIUM_FINE, 90));
-//        dice.add(new GroundSizeDice(CoffeeGroundSize.MEDIUM, 120));
-//        dice.add(new GroundSizeDice(CoffeeGroundSize.COARSE, 240));
-        dice.add(new RecipeDice.GroundSizeDice(CoffeeGrindSize.FINE, 10));
-        dice.add(new RecipeDice.GroundSizeDice(CoffeeGrindSize.MEDIUM_FINE, 10));
-        dice.add(new RecipeDice.GroundSizeDice(CoffeeGrindSize.MEDIUM, 10));
-        dice.add(new RecipeDice.GroundSizeDice(CoffeeGrindSize.COARSE, 10));
-        dice.add(new RecipeDice.GroundSizeDice(CoffeeGrindSize.COARSE, 60));
-        dice.add(new RecipeDice.GroundSizeDice(CoffeeGrindSize.COARSE, 65));
-
+        dice.add(new RecipeDice.GroundSizeDice(CoffeeGrindSize.FINE, 60));
+        dice.add(new RecipeDice.GroundSizeDice(CoffeeGrindSize.MEDIUM_FINE, 90));
+        dice.add(new RecipeDice.GroundSizeDice(CoffeeGrindSize.MEDIUM, 120));
+        dice.add(new RecipeDice.GroundSizeDice(CoffeeGrindSize.COARSE, 240));
+//        dice.add(new RecipeDice.GroundSizeDice(CoffeeGrindSize.FINE, 10));
+//        dice.add(new RecipeDice.GroundSizeDice(CoffeeGrindSize.MEDIUM_FINE, 10));
+//        dice.add(new RecipeDice.GroundSizeDice(CoffeeGrindSize.MEDIUM, 10));
+//        dice.add(new RecipeDice.GroundSizeDice(CoffeeGrindSize.COARSE, 10));
+//        dice.add(new RecipeDice.GroundSizeDice(CoffeeGrindSize.COARSE, 60));
+//        dice.add(new RecipeDice.GroundSizeDice(CoffeeGrindSize.COARSE, 65));
     }
 
     public GroundSize() {
@@ -65,23 +64,22 @@ class BrewMethodDice extends Dice {
 
     @Override
     public void setDice() {
-//        dice.add(new MethodDice("Standard", 0, 0));
-//        dice.add(new MethodDice("Standard", 30, 30));
-//        dice.add(new MethodDice("Standard", 30, 60));
-//        dice.add(new MethodDice("Inverted", 0, 0));
-//        dice.add(new MethodDice("Inverted", 30, 30));
-//        dice.add(new MethodDice("Inverted", 30, 60));
-//        dice.add(new MethodDice("Standard", 45, 30));
-//        dice.add(new MethodDice("Standard", 45, 60));
-//        dice.add(new MethodDice("Inverted", 45, 30));
-//        dice.add(new MethodDice("Inverted", 45, 60));
+        dice.add(new RecipeDice.MethodDice(BrewMethod.STANDARD, 0, 0));
+        dice.add(new RecipeDice.MethodDice(BrewMethod.STANDARD, 30, 30));
+        dice.add(new RecipeDice.MethodDice(BrewMethod.STANDARD, 30, 60));
+        dice.add(new RecipeDice.MethodDice(BrewMethod.INVERTED, 0, 0));
+        dice.add(new RecipeDice.MethodDice(BrewMethod.INVERTED, 30, 30));
+        dice.add(new RecipeDice.MethodDice(BrewMethod.INVERTED, 30, 60));
+        dice.add(new RecipeDice.MethodDice(BrewMethod.STANDARD, 45, 30));
+        dice.add(new RecipeDice.MethodDice(BrewMethod.STANDARD, 45, 60));
+        dice.add(new RecipeDice.MethodDice(BrewMethod.INVERTED, 45, 30));
+        dice.add(new RecipeDice.MethodDice(BrewMethod.INVERTED, 45, 60));
 
 //        dice.add(new DiceDomain("TestNoBloom", 0, 0));
 
-        dice.add(new RecipeDice.MethodDice(BrewMethod.INVERTED, 5, 60));
-        dice.add(new RecipeDice.MethodDice(BrewMethod.STANDARD, 5, 60));
-
-        dice.add(new RecipeDice.MethodDice(BrewMethod.STANDARD, 0, 0));
+//        dice.add(new RecipeDice.MethodDice(BrewMethod.INVERTED, 5, 60));
+//        dice.add(new RecipeDice.MethodDice(BrewMethod.STANDARD, 5, 60));
+//        dice.add(new RecipeDice.MethodDice(BrewMethod.STANDARD, 0, 0));
 
 //        dice.add(new DiceDomain("Test", 1, 0));
 
