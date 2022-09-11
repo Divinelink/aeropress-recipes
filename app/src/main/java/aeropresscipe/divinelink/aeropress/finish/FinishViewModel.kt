@@ -9,9 +9,8 @@ import dagger.assisted.AssistedInject
 import timber.log.Timber
 import java.lang.ref.WeakReference
 
-
 class FinishViewModel @AssistedInject constructor(
-    private var repository: TimerRepository,
+    @Suppress("UnusedPrivateMember") private var repository: TimerRepository,
     @Assisted public override var delegate: WeakReference<IFinishViewModel>? = null
 ) : BaseViewModel<IFinishViewModel>(),
     FinishIntents {
@@ -39,7 +38,6 @@ class FinishViewModel @AssistedInject constructor(
     override fun closeButtonClicked() {
         state = FinishState.CloseState
     }
-
 }
 
 interface IFinishViewModel {
@@ -66,4 +64,3 @@ interface FinishStateHandler {
     fun handleCloseState()
     fun handleSetupRecipeState(state: FinishState.SetupRecipeState)
 }
-

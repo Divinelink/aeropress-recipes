@@ -77,10 +77,7 @@ class TimerViewModelTest {
     @Test
     fun `given bloom state with 5 seconds left, when I resume then I expect Bloom State`() = runTest {
         // Given
-        val response = DiceDomain(recipeModel(bloomTime = 5, brewTime = 10), isBrewing = true,
-            bloomEndTimeMillis = 5000 + System.currentTimeMillis(),
-            brewEndTimeMillis = 10000 + System.currentTimeMillis()
-        )
+        val response = DiceDomain(recipeModel(bloomTime = 5, brewTime = 10), isBrewing = true, timeStartedMillis = System.currentTimeMillis())
         whenever(remote.getResumeTimes()).thenReturn(response)
         transferableModel.recipe = response.recipe
         viewModel.init(transferableModel)
@@ -100,8 +97,7 @@ class TimerViewModelTest {
     fun `given bloom state, when I resume then I expect StartProgressBar state`() = runTest {
         // Given
         val response = DiceDomain(recipeModel(bloomTime = 5, brewTime = 10), isBrewing = true,
-            bloomEndTimeMillis = 5000 + System.currentTimeMillis(),
-            brewEndTimeMillis = 10000 + System.currentTimeMillis()
+            timeStartedMillis = System.currentTimeMillis()
         )
         whenever(remote.getResumeTimes()).thenReturn(response)
         transferableModel.recipe = response.recipe
@@ -117,14 +113,10 @@ class TimerViewModelTest {
         assertTrue(viewModel.statesList[2] is TimerState.StartProgressBar)
     }
 
-
     @Test
     fun `given bloom state with 0 seconds left, when I resume then I expect Brew State`() = runTest {
         // Given
-        val response = DiceDomain(recipeModel(bloomTime = 5, brewTime = 100), isBrewing = true,
-            bloomEndTimeMillis = 0,
-            brewEndTimeMillis = 10000 + System.currentTimeMillis()
-        )
+        val response = DiceDomain(recipeModel(bloomTime = 50, brewTime = 100), isBrewing = true, timeStartedMillis = System.currentTimeMillis() - 50000)
         whenever(remote.getResumeTimes()).thenReturn(response)
         transferableModel.recipe = response.recipe
         viewModel.init(transferableModel)
@@ -139,10 +131,7 @@ class TimerViewModelTest {
     @Test
     fun `given brew state, when I resume then I expect Brew State`() = runTest {
         // Given
-        val response = DiceDomain(recipeModel(bloomTime = 0, brewTime = 100), isBrewing = true,
-            bloomEndTimeMillis = 0,
-            brewEndTimeMillis = 10000 + System.currentTimeMillis()
-        )
+        val response = DiceDomain(recipeModel(bloomTime = 0, brewTime = 100), isBrewing = true, timeStartedMillis = System.currentTimeMillis())
         whenever(remote.getResumeTimes()).thenReturn(response)
         transferableModel.recipe = response.recipe
         viewModel.init(transferableModel)
