@@ -76,6 +76,11 @@ class TimerProgressView : FrameLayout,
 //        }
     }
 
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        timer?.dispose()
+    }
+
     override fun handleStartProgressBar(state: TimerProgressState.StartProgressBar) {
         binding.progressBar.max = state.maxValue
         milliSecondsLeft = state.timeInMilliseconds
