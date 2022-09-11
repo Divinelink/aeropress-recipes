@@ -6,8 +6,6 @@
     style="@style/customSnackBarStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/startEndMargin"
-    android:layout_marginEnd="@dimen/startEndMargin"
     app:cardCornerRadius="8dp"
     app:cardElevation="0dp">
 
@@ -16,8 +14,6 @@
         style="@style/Text.LabelMedium"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/startEndMargin"
-        android:layout_marginEnd="@dimen/startEndMargin"
         android:gravity="start|center"
         android:paddingStart="16dp"
         android:paddingTop="12dp"

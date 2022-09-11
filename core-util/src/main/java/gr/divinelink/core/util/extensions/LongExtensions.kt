@@ -3,8 +3,8 @@ package gr.divinelink.core.util.extensions
 import gr.divinelink.core.util.constants.Numbers.ONE_THOUSAND
 import gr.divinelink.core.util.constants.Numbers.SIXTY
 
-fun Long.inMilliseconds(): Long {
-    return this * ONE_THOUSAND
+fun Long?.inMilliseconds(): Long {
+    return this?.times(ONE_THOUSAND) ?: 0L
 }
 
 fun Long.getPairOfMinutesSeconds(): Pair<Long, Long> {

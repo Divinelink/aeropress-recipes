@@ -6,6 +6,10 @@ import android.os.Build
 import android.view.Window
 import androidx.annotation.ColorInt
 
+fun Activity.setNavigationBarColor(@ColorInt color: Int) {
+    WindowUtil.setNavigationBarColor(this, this.window, color)
+}
+
 object WindowUtil {
 
     fun setNavigationBarColor(activity: Activity, @ColorInt color: Int) {

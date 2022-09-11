@@ -1,46 +1,53 @@
 package aeropresscipe.divinelink.aeropress.savedrecipes
 
 import aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.base.HomeActivity.Companion.PAD_BOTTOM_OF_RECYCLER
+import aeropresscipe.divinelink.aeropress.base.TimerViewCallback
 import aeropresscipe.divinelink.aeropress.databinding.FragmentSavedRecipesBinding
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
-import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.RecipesAdapter
-import aeropresscipe.divinelink.aeropress.savedrecipes.util.SavedRecipesViewModelFactory
-import aeropresscipe.divinelink.aeropress.timer.TimerActivity
+import aeropresscipe.divinelink.aeropress.history.HistoryFragment
+import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.EmptyType
+import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.FavoriteItem
+import aeropresscipe.divinelink.aeropress.timer.TimerFlow
+import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.annotation.Px
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
+import gr.divinelink.core.util.extensions.padding
+import gr.divinelink.core.util.swipe.ActionBindHelper
 import gr.divinelink.core.util.swipe.SwipeAction
+import gr.divinelink.core.util.utils.DimensionUnit
 import java.lang.ref.WeakReference
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SavedRecipesFragment : Fragment(),
     SavedRecipesStateHandler,
-    ISavedRecipesViewModel {
+    ISavedRecipesViewModel,
+    TimerViewCallback {
     private var binding: FragmentSavedRecipesBinding? = null
 
+    private lateinit var callback: HistoryFragment.Callback
     private lateinit var viewModel: SavedRecipesViewModel
-    private lateinit var viewModelFactory: SavedRecipesViewModelFactory
+
+    @Inject
+    lateinit var assistedFactory: SavedTimerViewModelAssistedFactory
 
     private var mFadeAnimation: Animation? = null
+    private val recipesAdapter = MappingAdapter()
 
-    private val recipesAdapter by lazy {
-        RecipesAdapter(
-            requireContext(),
-            onActionClicked = { recipe: Any, swipeAction: SwipeAction ->
-                recipe as SavedRecipeDomain
-                when (swipeAction.actionId) {
-                    R.id.delete -> showDeleteRecipeDialog(recipe.recipe)
-                    R.id.brew -> viewModel.startBrew(recipe.recipe)
-                }
-            }
-        )
-    }
+    @Px
+    private var recyclerViewPadding = DimensionUnit.PIXELS.toPixels(PAD_BOTTOM_OF_RECYCLER).toInt()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,16 +56,23 @@ class SavedRecipesFragment : Fragment(),
     ): View? {
         binding = FragmentSavedRecipesBinding.inflate(inflater, container, false)
         val view = binding?.root
-        binding?.toolbar?.setNavigationOnClickListener { activity?.onBackPressed() }
 
-        viewModelFactory = SavedRecipesViewModelFactory(
-            app = requireActivity().application,
-            delegate = WeakReference<ISavedRecipesViewModel>(this),
-            repository = SavedRecipesRepository(),
-        )
-        viewModel = ViewModelProvider(this, viewModelFactory).get(SavedRecipesViewModel::class.java)
-
+        val viewModelFactory = SavedRecipesViewModelFactory(assistedFactory, WeakReference<ISavedRecipesViewModel>(this))
+        viewModel = ViewModelProvider(this, viewModelFactory)[SavedRecipesViewModel::class.java]
+        viewModel.delegate = WeakReference(this)
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding?.toolbar?.setNavigationOnClickListener { activity?.onBackPressed() }
+        binding?.recyclerView?.padding(bottom = recyclerViewPadding)
+        bindAdapter()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refresh()
     }
 
     override fun updateState(state: SavedRecipesState) {
@@ -74,8 +88,7 @@ class SavedRecipesFragment : Fragment(),
     }
 
     override fun handleInitialState() {
-        binding?.savedRecipesRV?.layoutManager = LinearLayoutManager(activity)
-        binding?.savedRecipesRV?.adapter = recipesAdapter
+        // Intentionally Blank.
     }
 
     override fun handleLoadingState() {
@@ -91,16 +104,16 @@ class SavedRecipesFragment : Fragment(),
     }
 
     override fun handleStartNewBrew(state: SavedRecipesState.StartNewBrewState) {
-        startActivity(TimerActivity.newIntent(requireContext(), state.recipe))
+        callback.onUpdateRecipe(state.recipe, TimerFlow.START, true)
     }
 
     override fun handleEmptyRecipesState() {
-        recipesAdapter.submitList(listOf(RecipesAdapter.EmptyFavorites))
+        recipesAdapter.submitList(listOf(EmptyType.EmptyFavorites))
     }
 
     override fun handleRecipesState(state: SavedRecipesState.RecipesState) {
-        mFadeAnimation = AnimationUtils.loadAnimation(activity, R.anim.fade_in_favourites)
-        binding?.savedRecipesRV?.animation = mFadeAnimation
+        mFadeAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in_favourites)
+        binding?.recyclerView?.animation = mFadeAnimation
         recipesAdapter.submitList(state.recipes)
     }
 
@@ -115,6 +128,28 @@ class SavedRecipesFragment : Fragment(),
             .show()
     }
 
+    private fun bindAdapter() {
+        binding?.recyclerView?.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = recipesAdapter
+        }
+
+        FavoriteItem.register(recipesAdapter,
+            onActionClicked = { recipe: SavedRecipeDomain, swipeAction: SwipeAction ->
+                when (swipeAction.actionId) {
+                    R.id.delete -> showDeleteRecipeDialog(recipe.recipe)
+                    R.id.brew -> viewModel.startBrew(recipe.recipe)
+                }
+            },
+            actionBindHelper = ActionBindHelper()
+        )
+    }
+
+    override fun updateBottomPadding(bottomPadding: Int) {
+        recyclerViewPadding = bottomPadding
+        binding?.recyclerView?.padding(bottom = bottomPadding)
+    }
+
     companion object {
         @JvmStatic
         fun newInstance(): SavedRecipesFragment {
@@ -123,6 +158,11 @@ class SavedRecipesFragment : Fragment(),
             fragment.arguments = args
             return fragment
         }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = context as HistoryFragment.Callback
     }
 
     override fun onDestroyView() {

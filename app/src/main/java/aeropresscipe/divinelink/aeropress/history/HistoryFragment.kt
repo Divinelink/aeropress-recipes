@@ -1,66 +1,108 @@
 package aeropresscipe.divinelink.aeropress.history
 
 import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.customviews.Notification
+import aeropresscipe.divinelink.aeropress.base.HomeActivity.Companion.PAD_BOTTOM_OF_RECYCLER
+import aeropresscipe.divinelink.aeropress.base.TimerViewCallback
 import aeropresscipe.divinelink.aeropress.databinding.FragmentHistoryBinding
-import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.RecipesAdapter
-import aeropresscipe.divinelink.aeropress.timer.TimerActivity
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.EmptyType
+import aeropresscipe.divinelink.aeropress.timer.TimerFlow
+import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.Px
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import gr.divinelink.core.util.extensions.padding
 import gr.divinelink.core.util.extensions.setDisabled
 import gr.divinelink.core.util.extensions.setEnabled
+import gr.divinelink.core.util.swipe.ActionBindHelper
 import gr.divinelink.core.util.swipe.SwipeAction
+import gr.divinelink.core.util.utils.DimensionUnit
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class HistoryFragment : Fragment(),
     HistoryStateHandler,
-    IHistoryViewModel {
+    IHistoryViewModel,
+    TimerViewCallback {
     private var binding: FragmentHistoryBinding? = null
 
-    private var clearMenuItem: MenuItem? = null
+    private lateinit var callback: Callback
 
     @Inject
     lateinit var assistedFactory: HistoryViewModelAssistedFactory
     private lateinit var viewModel: HistoryViewModel
 
-    private val historyAdapter by lazy {
-        RecipesAdapter(
-            requireContext(),
-            onActionClicked = { recipe: Any, swipeAction: SwipeAction ->
-                recipe as History
-                when (swipeAction.actionId) {
-                    R.id.brew -> viewModel.startBrew(recipe.recipe)
-                }
-            },
-            onLike = { recipe: Any, position: Int ->
-                recipe as History
-                viewModel.likeRecipe(recipe, position)
-            }
-        )
-    }
+    private val historyAdapter = MappingAdapter()
+    private var clearMenuItem: MenuItem? = null
+
+    @Px
+    private var recyclerViewPadding: Int = DimensionUnit.PIXELS.toPixels(PAD_BOTTOM_OF_RECYCLER).toInt()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHistoryBinding.inflate(inflater, container, false)
         val view = binding?.root
 
-        binding?.toolbar?.setNavigationOnClickListener { activity?.onBackPressed() }
-        clearMenuItem = binding?.toolbar?.menu?.findItem(R.menu.history)
         val viewModelFactory = HistoryViewModelFactory(assistedFactory, WeakReference<IHistoryViewModel>(this))
-        viewModel = ViewModelProvider(this, viewModelFactory).get(HistoryViewModel::class.java)
-
-        binding?.toolbar?.inflateMenu(R.menu.history)
-
+        viewModel = ViewModelProvider(this, viewModelFactory)[(HistoryViewModel::class.java)]
+        viewModel.delegate = WeakReference(this)
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding?.recyclerView?.padding(bottom = recyclerViewPadding)
+        setToolbar()
+        bindAdapter()
+    }
+
+    private fun setToolbar() {
+        binding?.toolbar?.apply {
+            setNavigationOnClickListener { activity?.onBackPressed() }
+            inflateMenu(R.menu.history)
+            setOnMenuItemClickListener { item ->
+                clearMenuItem = binding?.toolbar?.menu?.findItem(R.menu.history)
+                when (item.itemId) {
+                    R.id.menu_clear -> {
+                        viewModel.clearHistory(false)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }
+    }
+
+    private fun bindAdapter() {
+        binding?.recyclerView?.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = historyAdapter
+        }
+        HistoryItem.register(historyAdapter,
+            onActionClicked = { recipe: History, swipeAction: SwipeAction ->
+                when (swipeAction.actionId) {
+                    R.id.brew -> viewModel.startBrew(recipe.recipe)
+                }
+            },
+            onLike = { recipe: History, position: Int ->
+                viewModel.likeRecipe(recipe, position)
+            },
+            actionBindHelper = ActionBindHelper()
+        )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refresh()
     }
 
     override fun updateState(state: HistoryState) {
@@ -78,18 +120,7 @@ class HistoryFragment : Fragment(),
     }
 
     override fun handleInitialState() {
-        binding?.historyRV?.layoutManager = LinearLayoutManager(activity)
-        binding?.historyRV?.adapter = historyAdapter
-
-        binding?.toolbar?.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.menu_clear -> {
-                    viewModel.clearHistory(false)
-                    true
-                }
-                else -> false
-            }
-        }
+        // Intentionally Blank.
     }
 
     override fun handleLoadingState() {
@@ -106,7 +137,7 @@ class HistoryFragment : Fragment(),
     }
 
     override fun handleEmptyHistoryState() {
-        historyAdapter.submitList(listOf(RecipesAdapter.EmptyHistory))
+        historyAdapter.submitList(listOf(EmptyType.EmptyHistory))
         updateToolbar(false)
     }
 
@@ -119,7 +150,7 @@ class HistoryFragment : Fragment(),
     }
 
     override fun handleStartNewBrewState(state: HistoryState.StartNewBrewState) {
-        startActivity(TimerActivity.newIntent(requireContext(), state.recipe))
+        callback.onUpdateRecipe(state.recipe, TimerFlow.START, true)
     }
 
     override fun handleRecipeLikedState(state: HistoryState.RecipeLikedState) {
@@ -142,7 +173,12 @@ class HistoryFragment : Fragment(),
     }
 
     override fun handleShowSnackBar(state: HistoryState.ShowSnackBar) {
-        Notification.make(binding?.historyRV, resources.getString(state.value.string, getString(state.value.favorites))).show()
+        callback.onSnackbarShow(state)
+    }
+
+    override fun updateBottomPadding(bottomPadding: Int) {
+        recyclerViewPadding = bottomPadding
+        binding?.recyclerView?.padding(bottom = bottomPadding)
     }
 
     companion object {
@@ -155,8 +191,18 @@ class HistoryFragment : Fragment(),
         }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = context as Callback
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    interface Callback {
+        fun onSnackbarShow(state: HistoryState.ShowSnackBar)
+        fun onUpdateRecipe(recipe: Recipe, flow: TimerFlow, update: Boolean)
     }
 }

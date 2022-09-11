@@ -3,13 +3,14 @@ package aeropresscipe.divinelink.aeropress.generaterecipe
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
+import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
+import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.LIKE_MAX_FRAME
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.RecipeStep
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.buildSteps
 import aeropresscipe.divinelink.aeropress.history.LikeSnackBar
 import aeropresscipe.divinelink.aeropress.timer.TimerFlow
-import aeropresscipe.divinelink.aeropress.timer.TimerFragment
 import aeropresscipe.divinelink.aeropress.timer.TimerRepository
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
@@ -23,9 +24,8 @@ import java.lang.ref.WeakReference
 class GenerateRecipeViewModel @AssistedInject constructor(
     private var repository: GenerateRecipeRepository,
     private var timerRepository: TimerRepository,
-    @Assisted override var delegate: WeakReference<IGenerateRecipeViewModel>? = null
+    @Assisted public override var delegate: WeakReference<IGenerateRecipeViewModel>? = null
 ) : BaseViewModel<IGenerateRecipeViewModel>(),
-
     GenerateRecipeIntents {
     internal var statesList: MutableList<GenerateRecipeState> = mutableListOf()
     private var dice: DiceDomain? = null
@@ -43,21 +43,27 @@ class GenerateRecipeViewModel @AssistedInject constructor(
         state = GenerateRecipeState.UpdateToolbarState(getGreetingMessage(hour))
     }
 
-    override fun getRecipe() {
-        repository.getRecipe { dice ->
-            state = GenerateRecipeState.ShowRecipeState(dice.recipe.buildSteps())
-            state = when (dice.isBrewing) {
-                true -> GenerateRecipeState.ShowResumeButtonState
-                false -> GenerateRecipeState.HideResumeButtonState
+    override fun getRecipe(refresh: Boolean) {
+        if (dice == null || refresh) {
+            repository.getRecipe { dice ->
+                Timber.d("Fetching dice from database.")
+                updateRecipeStates(dice)
+                this.dice = dice
             }
-            timerRepository.isRecipeSaved(dice.recipe) { saved ->
-                val frame = when (saved) {
-                    true -> TimerFragment.LIKE_MAX_FRAME
-                    false -> TimerFragment.DISLIKE_MAX_FRAME
-                }
-                state = GenerateRecipeState.UpdateSavedIndicator(frame)
+        } else {
+            Timber.d("Getting cached dice.")
+            dice?.let { it -> updateRecipeStates(it) }
+        }
+    }
+
+    private fun updateRecipeStates(dice: DiceDomain) {
+        state = GenerateRecipeState.ShowRecipeState(dice.recipe.buildSteps())
+        timerRepository.isRecipeSaved(dice.recipe) { saved ->
+            val frame = when (saved) {
+                true -> LIKE_MAX_FRAME
+                false -> DISLIKE_MAX_FRAME
             }
-            this.dice = dice
+            state = GenerateRecipeState.UpdateSavedIndicator(frame)
         }
     }
 
@@ -78,7 +84,7 @@ class GenerateRecipeViewModel @AssistedInject constructor(
     private fun generateRandomRecipe() {
         repository.createNewRecipe { dice ->
             state = GenerateRecipeState.RefreshRecipeState(dice.recipe.buildSteps())
-            state = GenerateRecipeState.UpdateSavedIndicator(TimerFragment.DISLIKE_MAX_FRAME)
+            state = GenerateRecipeState.UpdateSavedIndicator(DISLIKE_MAX_FRAME)
             this.dice = dice
         }
     }
@@ -127,7 +133,7 @@ interface IGenerateRecipeViewModel {
 
 interface GenerateRecipeIntents : MVIBaseView {
     fun init(hour: Int)
-    fun getRecipe()
+    fun getRecipe(refresh: Boolean)
 
     fun generateRecipe()
     fun forceGenerateRecipe()
@@ -143,7 +149,6 @@ sealed class GenerateRecipeState {
     data class ErrorState(val data: String) : GenerateRecipeState()
 
     object ShowAlreadyBrewingState : GenerateRecipeState()
-    object ShowResumeButtonState : GenerateRecipeState()
     object HideResumeButtonState : GenerateRecipeState()
 
     data class UpdateToolbarState(@StringRes val title: Int) : GenerateRecipeState()
@@ -165,7 +170,6 @@ interface GenerateRecipeStateHandler {
     fun handleLoadingState()
     fun handleErrorState(state: GenerateRecipeState.ErrorState)
 
-    fun handleShowResumeButtonState()
     fun handleHideResumeButtonState()
 
     fun handleUpdateToolbarState(state: GenerateRecipeState.UpdateToolbarState)

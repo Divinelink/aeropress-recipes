@@ -1,12 +1,14 @@
 <resources>
-    <string name="app_name">Aeropress Recipes</string>
+    <string name="app_name">AeroPress Recipes</string>
+
+    <string name="close">Close</string>
 
     <string name="heatWaterText">Heat &lt;b&gt;%dg&lt;/b&gt; of water to &lt;b&gt;%d°C / %d°F&lt;/b&gt;.</string>
 
     <string name="grindCoffeeText">Grind &lt;b&gt;%dg&lt;/b&gt; of coffee to a &lt;b&gt;%s&lt;/b&gt; grind.</string>
 
-    <string name="normal_orientation_text">Place the aeropress on the mug in the normal orientation with wet filter and cap on.</string>
-    <string name="inverted_orientation_text">Place the aeropress in the upside-down orientation.</string>
+    <string name="normal_orientation_text">Place the aeropress on the mug in the &lt;b&gt;normal orientation&lt;/b&gt; with wet filter and cap on.</string>
+    <string name="inverted_orientation_text">Place the aeropress in the &lt;b&gt;upside-down&lt;/b&gt; orientation.</string>
 
     <string name="addWaterText">Add &lt;b&gt;%dg&lt;/b&gt; of water and wait &lt;b&gt;%d&lt;/b&gt; seconds for the coffee to bloom.</string>
 
@@ -29,11 +31,13 @@
     <string name="bloomPhaseWaterText">Pour in %dg of water</string>
 
     <string name="brewPhase">Brewing Phase</string>
+    <string name="finishPhaseTitle">Your timer is finished!</string>
+    <string name="finishPhaseDescription">Click for more details.</string>
 
     <string name="brewPhaseWithBloom">Pour in the remaining %dg of water</string>
     <string name="brewPhaseNoBloom">Pour in %dg of water</string>
 
-    <string name="enjoyCoffee">Press and enjoy your coffee!</string>
+    <string name="enjoyCoffee">Your coffee is ready.\nPress &amp; enjoy!</string>
     <string name="brew">Start Timer</string>
     <string name="resume_brew">Resume Brew</string>
     <string name="alreadyBrewingDialog">You\'re brewing. Hold to get a new recipe.</string>
@@ -86,5 +90,7 @@
     <string name="good_morning">Good morning</string>
     <string name="good_afternoon">Good afternoon</string>
     <string name="good_evening">Good evening</string>
+
+    <string name="settings">Settings</string>
 
 </resources>

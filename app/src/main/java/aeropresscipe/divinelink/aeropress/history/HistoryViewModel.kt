@@ -9,13 +9,12 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import gr.divinelink.core.util.utils.DateUtil.getCurrentDate
 import timber.log.Timber
 import java.lang.ref.WeakReference
 
 class HistoryViewModel @AssistedInject constructor(
     private var repository: HistoryRepository,
-    @Assisted override var delegate: WeakReference<IHistoryViewModel>? = null
+    @Assisted public override var delegate: WeakReference<IHistoryViewModel>? = null
 ) : BaseViewModel<IHistoryViewModel>(),
     HistoryIntents {
     internal var statesList: MutableList<HistoryState> = mutableListOf()
@@ -29,28 +28,15 @@ class HistoryViewModel @AssistedInject constructor(
 
     init {
         state = HistoryState.InitialState
-        repository.getHistory {
-            state = if (it.isEmpty()) {
-                HistoryState.EmptyHistoryState
-            } else {
-                HistoryState.ShowHistoryState(it)
-            }
-        }
+        fetchHistory()
     }
 
     override fun startBrew(recipe: Recipe) {
-        repository.startBrew(recipe) {
-            state = if (it == null) {
-                HistoryState.ErrorState("Something went wrong!") // //TODO 15/6/22 divinelink: Fix Error State
-            } else {
-                recipe.isNewRecipe = true
-                HistoryState.StartNewBrewState(recipe)
-            }
-        }
+        state = HistoryState.StartNewBrewState(recipe)
     }
 
     override fun likeRecipe(recipe: History, position: Int) {
-        repository.likeRecipe(SavedRecipeDomain(recipe.recipe, getCurrentDate())) {
+        repository.likeRecipe(SavedRecipeDomain(recipe.recipe, recipe.dateBrewed)) {
             state = HistoryState.RecipeLikedState(it, position)
             val value: LikeSnackBar = when {
                 it.isRecipeLiked -> LikeSnackBar.Like
@@ -68,6 +54,20 @@ class HistoryViewModel @AssistedInject constructor(
             false -> state = HistoryState.ClearHistoryPopUpState
         }
     }
+
+    override fun refresh() {
+        fetchHistory()
+    }
+
+    private fun fetchHistory() {
+        repository.getHistory {
+            state = if (it.isEmpty()) {
+                HistoryState.EmptyHistoryState
+            } else {
+                HistoryState.ShowHistoryState(it)
+            }
+        }
+    }
 }
 
 interface IHistoryViewModel {
@@ -78,6 +78,7 @@ interface HistoryIntents : MVIBaseView {
     fun startBrew(recipe: Recipe)
     fun likeRecipe(recipe: History, position: Int)
     fun clearHistory(delete: Boolean)
+    fun refresh()
 }
 
 sealed class HistoryState {

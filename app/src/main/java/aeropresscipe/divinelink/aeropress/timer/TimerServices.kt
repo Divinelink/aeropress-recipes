@@ -15,11 +15,9 @@ import javax.inject.Inject
 
 interface ITimerServices {
     suspend fun likeCurrentRecipe(recipe: Recipe): Boolean
-    suspend fun updateHistory(recipe: Recipe, isLiked: Boolean)
     suspend fun addToHistory(recipe: Recipe)
     suspend fun isRecipeSaved(recipe: Recipe?): Boolean
-    suspend fun updateBrewingState(brewing: Boolean)
-    suspend fun updateTimes(bloomEndTimeMillis: Long, brewEndTimeMillis: Long)
+    suspend fun updateBrewingState(brewing: Boolean, timeStartedMillis: Long)
     suspend fun getResumeTimes(): DiceDomain
 }
 
@@ -44,21 +42,17 @@ open class TimerServices @Inject constructor(
         }
     }
 
-    override suspend fun updateHistory(
-        recipe: Recipe,
-        isLiked: Boolean
-    ) {
-        withContext(dispatcher) {
-            historyDao.updateLike(recipe, isLiked)
-        }
-    }
-
     override suspend fun addToHistory(
         recipe: Recipe
     ) {
         withContext(dispatcher) {
             val isLiked = savedRecipeDao.recipeExists(recipe)
-            historyDao.updateRecipe(History(recipe, getCurrentDate(), isLiked))
+            val historyRecipe = historyDao.getHistoryRecipe(recipe)
+            historyRecipe?.apply {
+                dateBrewed = getCurrentDate()
+                isRecipeLiked = isLiked
+            }
+            historyDao.updateRecipe(historyRecipe ?: History(recipe, getCurrentDate(), isLiked))
         }
     }
 
@@ -71,22 +65,17 @@ open class TimerServices @Inject constructor(
     }
 
     override suspend fun updateBrewingState(
-        brewing: Boolean
+        brewing: Boolean,
+        timeStartedMillis: Long
     ) {
         withContext(dispatcher) {
-            recipeDao.updateBrewingState(brewing, recipeDao.singleRecipe.id)
-        }
-    }
-
-    override suspend fun updateTimes(bloomEndTimeMillis: Long, brewEndTimeMillis: Long) {
-        return withContext(dispatcher) {
-            recipeDao.updateTimes(bloomEndTimeMillis, brewEndTimeMillis, recipeDao.singleRecipe.id)
+            recipeDao.updateBrewingState(brewing, timeStartedMillis, recipeDao.getRecipe().id)
         }
     }
 
     override suspend fun getResumeTimes(): DiceDomain {
         return withContext(dispatcher) {
-            recipeDao.singleRecipe
+            recipeDao.getRecipe()
         }
     }
 }

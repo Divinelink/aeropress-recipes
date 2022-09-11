@@ -1,6 +1,6 @@
 package gr.divinelink.core.util.swipe
 
-import java.util.*
+import java.util.Collections
 
 class ActionBindHelper {
 
@@ -28,6 +28,12 @@ class ActionBindHelper {
                 continue
             }
 
+            actionLayout.close()
+        }
+    }
+
+    fun closeAll() {
+        for ((_, actionLayout) in actions.entries) {
             actionLayout.close()
         }
     }
