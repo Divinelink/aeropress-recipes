@@ -15,11 +15,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.utils.setNavigationBarColor
 import gr.divinelink.core.util.viewBinding.activity.viewBinding
 
+
 @AndroidEntryPoint
 class TimerActivity :
     AppCompatActivity(),
     TimerFragment.Callback {
     private val binding: ActivityTimerBinding by viewBinding()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,11 +35,20 @@ class TimerActivity :
         val recipe = intent.getSerializableExtra(EXTRA_RECIPE) as Recipe?
         val flow = intent.getSerializableExtra(FLOW) as TimerFlow
 
-        supportFragmentManager
-            .beginTransaction()
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            .replace(R.id.timerRoot, newInstance(recipe, flow))
-            .commit()
+        getFragment(recipe, flow)
+    }
+
+    private fun getFragment(recipe: Recipe?, flow: TimerFlow?) {
+        val fManager = supportFragmentManager
+        val fTransaction: FragmentTransaction = fManager.beginTransaction()
+        val fragment = fManager.findFragmentById(R.id.timer_fragment) as? TimerFragment?
+
+        if (fragment == null) {
+            fTransaction.add(R.id.timer_fragment, newInstance(recipe, flow), TIMER_TAG)
+        } else { // re-use the old fragment
+            fTransaction.replace(R.id.timer_fragment, fragment, TIMER_TAG)
+        }
+        fTransaction.commitNowAllowingStateLoss()
     }
 
     override fun onExitTimer() {
@@ -46,6 +57,7 @@ class TimerActivity :
 
     companion object {
         private const val EXTRA_RECIPE = "EXTRA_RECIPE"
+        private const val TIMER_TAG = "Timer_Fragment"
 
         @JvmStatic
         fun newIntent(

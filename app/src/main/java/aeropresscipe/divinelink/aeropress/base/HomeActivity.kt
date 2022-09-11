@@ -34,10 +34,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.utils.DimensionUnit
 import gr.divinelink.core.util.utils.setNavigationBarColor
 import gr.divinelink.core.util.viewBinding.activity.viewBinding
-import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
+import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -89,8 +89,9 @@ class HomeActivity : AppCompatActivity(),
 
         selectFragment(selectedFragment)
 
-        val viewModelFactory = HomeViewModelFactory(assistedFactory, this)
+        val viewModelFactory = HomeViewModelFactory(assistedFactory, WeakReference<IHomeViewModel>(this))
         viewModel = ViewModelProvider(this, viewModelFactory)[HomeViewModel::class.java]
+        viewModel.delegate = WeakReference(this)
 
         viewModel.init()
     }

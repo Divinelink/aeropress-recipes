@@ -17,7 +17,7 @@ import java.lang.ref.WeakReference
 
 class SaveRecipeCardViewModel @AssistedInject constructor(
     private var repository: TimerRepository,
-    @Assisted override var delegate: WeakReference<ISaveRecipeCardViewModel>? = null
+    @Assisted public override var delegate: WeakReference<ISaveRecipeCardViewModel>? = null
 ) : BaseViewModel<ISaveRecipeCardViewModel>(),
     SaveRecipeCardIntents {
     internal var statesList: MutableList<SaveRecipeCardState> = mutableListOf()

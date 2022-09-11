@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 class TimerViewModel @AssistedInject constructor(
     private var repository: TimerRepository,
-    @Assisted override var delegate: WeakReference<ITimerViewModel>? = null,
+    @Assisted public override var delegate: WeakReference<ITimerViewModel>? = null
 ) : BaseViewModel<ITimerViewModel>(),
     TimerIntents {
     internal var statesList: MutableList<TimerState> = mutableListOf()
@@ -28,6 +28,8 @@ class TimerViewModel @AssistedInject constructor(
 
     internal var transferableModel: TimerTransferableModel? = null
 
+    private var isBrewing: Boolean = false
+
     var state: TimerState = TimerState.InitialState
         set(value) {
             Timber.d(state.javaClass.simpleName)
@@ -36,11 +38,8 @@ class TimerViewModel @AssistedInject constructor(
             delegate?.get()?.updateState(value)
         }
 
-    init {
-        state = TimerState.InitialState
-    }
-
     override fun init(transferableModel: TimerTransferableModel) {
+        state = TimerState.InitialState
         this.transferableModel = transferableModel
         val brewPhase = BrewPhase.Builder()
             .brewStates(transferableModel.recipe?.getBrewingStates())
@@ -87,19 +86,24 @@ class TimerViewModel @AssistedInject constructor(
     }
 
     override fun startBrew() {
-        if (transferableModel?.recipe == null) {
-            state = TimerState.ErrorState("Something went wrong!")
+        if (isBrewing) {
+            resume()
         } else {
-            // Initialise Timer
-            repository.addToHistory(
-                recipe = transferableModel?.recipe!!,
-                completionBlock = {
-                    startTimers()
+            if (transferableModel?.recipe == null) {
+                state = TimerState.ErrorState("Something went wrong!")
+            } else {
+                // Initialise Timer
+                repository.addToHistory(
+                    recipe = transferableModel?.recipe!!,
+                    completionBlock = {
+                        startTimers()
+                    }
+                )
+                repository.updateBrewingState(true, System.currentTimeMillis()) {
+                    Timber.d("Recipe is brewing.")
                 }
-            )
-            repository.updateBrewingState(true, System.currentTimeMillis()) {
-                Timber.d("Recipe is brewing.")
             }
+            isBrewing = true
         }
     }
 

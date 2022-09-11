@@ -15,7 +15,7 @@ import java.lang.ref.WeakReference
 
 class HomeViewModel @AssistedInject constructor(
     var repository: HomeRepository,
-    @Assisted override var delegate: WeakReference<IHomeViewModel>? = null
+    @Assisted public override var delegate: WeakReference<IHomeViewModel>? = null
 ) : BaseViewModel<IHomeViewModel>(),
     HomeIntents {
     internal var statesList: MutableList<HomeState> = mutableListOf()

@@ -20,7 +20,7 @@ import java.lang.ref.WeakReference
 
 class TimerProgressViewModel @AssistedInject constructor(
     @Suppress("UnusedPrivateMember") private var repository: TimerRepository,
-    @Assisted override var delegate: WeakReference<ITimerProgressViewModel>? = null
+    @Assisted public override var delegate: WeakReference<ITimerProgressViewModel>? = null
 ) : BaseViewModel<ITimerProgressViewModel>(),
     TimerProgressIntents {
     internal var statesList: MutableList<TimerProgressState> = mutableListOf()

@@ -37,6 +37,7 @@ class SaveRecipeCardView :
         super.onAttachedToWindow()
         val viewModelFactory = SaveRecipeCardViewModelFactory(assistedFactory, WeakReference<ISaveRecipeCardViewModel>(this))
         viewModel = ViewModelProvider(ViewTreeViewModelStoreOwner.get(this)!!, viewModelFactory)[SaveRecipeCardViewModel::class.java]
+        viewModel.delegate = WeakReference(this)
         viewModel.init(recipe)
     }
 

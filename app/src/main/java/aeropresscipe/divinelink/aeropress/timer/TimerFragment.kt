@@ -59,26 +59,29 @@ class TimerFragment : Fragment(),
         binding = FragmentTimerBinding.inflate(inflater, container, false)
         val view = binding?.root
 
-        transferableModel.recipe = arguments?.getSerializable(TIMER) as Recipe?
-        val flow = arguments?.getSerializable(FLOW) as TimerFlow
-
         val viewModelFactory = TimerViewModelFactory(assistedFactory, WeakReference<ITimerViewModel>(this))
         viewModel = ViewModelProvider(this, viewModelFactory)[TimerViewModel::class.java]
+        viewModel.delegate = WeakReference(this)
 
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        transferableModel.recipe = arguments?.getSerializable(TIMER) as Recipe?
+
+        val flow = arguments?.getSerializable(FLOW) as TimerFlow
         viewModel.init(transferableModel)
 
         when (flow) {
             TimerFlow.START -> viewModel.startBrew()
             TimerFlow.RESUME -> viewModel.resume()
         }
-
-        return view
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         timer?.dispose()
-        viewModel.exitTimer(milliSecondsLeft)
         mediaPlayer?.release()
         binding = null
     }

@@ -38,6 +38,7 @@ class TimerProgressView : FrameLayout,
         super.onAttachedToWindow()
         val viewModelFactory = TimerProgressViewModelFactory(assistedFactory, WeakReference<ITimerProgressViewModel>(this))
         viewModel = ViewModelProvider(ViewTreeViewModelStoreOwner.get(this)!!, viewModelFactory)[TimerProgressViewModel::class.java]
+        viewModel.delegate = WeakReference(this)
     }
 
     constructor(context: Context) : this(context, null)
