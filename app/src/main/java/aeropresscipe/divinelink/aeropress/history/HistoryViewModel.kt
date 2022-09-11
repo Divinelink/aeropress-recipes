@@ -9,13 +9,12 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import gr.divinelink.core.util.utils.DateUtil.getCurrentDate
 import timber.log.Timber
 import java.lang.ref.WeakReference
 
 class HistoryViewModel @AssistedInject constructor(
     private var repository: HistoryRepository,
-    @Assisted override var delegate: WeakReference<IHistoryViewModel>? = null
+    @Assisted public override var delegate: WeakReference<IHistoryViewModel>? = null
 ) : BaseViewModel<IHistoryViewModel>(),
     HistoryIntents {
     internal var statesList: MutableList<HistoryState> = mutableListOf()

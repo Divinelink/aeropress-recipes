@@ -16,8 +16,6 @@ import aeropresscipe.divinelink.aeropress.home.IHomeViewModel
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipesFragment
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
 import aeropresscipe.divinelink.aeropress.timer.TimerFlow
-import aeropresscipe.divinelink.aeropress.util.DynamicNoActionBarTheme
-import aeropresscipe.divinelink.aeropress.util.DynamicTheme
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.MenuItem
@@ -47,18 +45,18 @@ class HomeActivity : AppCompatActivity(),
     HistoryFragment.Callback {
     private val binding: ActivityHomeBinding by viewBinding()
 
-    private var recipeFragment = GenerateRecipeFragment.newInstance()
-    private var favoritesFragment = SavedRecipesFragment.newInstance()
-    private var historyFragment = HistoryFragment.newInstance()
-
     private val fragments: Array<out Fragment> get() = arrayOf(recipeFragment, favoritesFragment, historyFragment)
     private var selectedIndex = 0
+
+    private lateinit var recipeFragment: GenerateRecipeFragment
+    private lateinit var favoritesFragment: SavedRecipesFragment
+    private lateinit var historyFragment: HistoryFragment
 
     @Inject
     lateinit var assistedFactory: HomeViewModelAssistedFactory
     private lateinit var viewModel: HomeViewModel
 
-    private val dynamicTheme: DynamicTheme = DynamicNoActionBarTheme() // app is shown correctly when saveInstanceState = null
+//    private val dynamicTheme: DynamicTheme = DynamicNoActionBarTheme()
 
     @Px
     private val padding = DimensionUnit.DP.toPixels(PAD_BOTTOM_OF_TIMER_VIEW).toInt()
@@ -73,17 +71,22 @@ class HomeActivity : AppCompatActivity(),
         binding.bottomNavigation.setOnItemSelectedListener(onItemSelectedListener)
 //        binding.bottomNavigation.setOnItemReselectedListener(onItemReselectedListener)
 
-//        recipeFragment = GenerateRecipeFragment.newInstance()
-//        favoritesFragment = SavedRecipesFragment.newInstance()
-//        historyFragment = HistoryFragment.newInstance()
         if (savedInstanceState == null) {
-            // nothing :/
+            recipeFragment = GenerateRecipeFragment.newInstance()
+            favoritesFragment = SavedRecipesFragment.newInstance()
+            historyFragment = HistoryFragment.newInstance()
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragment, recipeFragment, RECIPE_TAG)
+                .add(R.id.fragment, favoritesFragment, FAVORITES_TAG)
+                .add(R.id.fragment, historyFragment, HISTORY_TAG)
+                .commitNow()
         } else {
             selectedIndex = savedInstanceState.getInt(SELECTED_INDEX, 0)
+
+            recipeFragment = supportFragmentManager.findFragmentByTag(RECIPE_TAG) as GenerateRecipeFragment
+            favoritesFragment = supportFragmentManager.findFragmentByTag(FAVORITES_TAG) as SavedRecipesFragment
+            historyFragment = supportFragmentManager.findFragmentByTag(HISTORY_TAG) as HistoryFragment
         }
-//        recipeFragment = GenerateRecipeFragment.newInstance()
-//        favoritesFragment = SavedRecipesFragment.newInstance()
-//        historyFragment = HistoryFragment.newInstance()
 
         val selectedFragment = fragments[selectedIndex]
 
@@ -101,10 +104,6 @@ class HomeActivity : AppCompatActivity(),
 //        dynamicTheme.onResume(this)
         Timber.d("Activity resume.")
         viewModel.resume()
-//       When leaving from Timer Activity, set bottomNavigation to be the recipe button
-//       and restart the fragment, so we can see the resume button flashing.
-//        binding.bottomNavigation.selectedItemId = R.id.recipe
-//        selectFragment(recipeFragment)
     }
 
     private var onItemSelectedListener = NavigationBarView.OnItemSelectedListener { item: MenuItem ->
@@ -141,10 +140,16 @@ class HomeActivity : AppCompatActivity(),
 
     @SuppressLint("DetachAndAttachSameFragment")
     private fun selectFragment(selectedFragment: Fragment) {
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragment, selectedFragment, selectedFragment.tag)
-            commit()
+        var transaction = supportFragmentManager.beginTransaction()
+        fragments.forEachIndexed { index, fragment ->
+            if (selectedFragment == fragment) {
+                transaction = transaction.attach(fragment)
+                selectedIndex = index
+            } else {
+                transaction = transaction.detach(fragment)
+            }
         }
+        transaction.commit()
     }
 
     override fun onBackPressed() {

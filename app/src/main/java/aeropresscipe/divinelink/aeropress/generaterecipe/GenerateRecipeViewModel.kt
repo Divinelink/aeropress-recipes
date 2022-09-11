@@ -24,7 +24,7 @@ import java.lang.ref.WeakReference
 class GenerateRecipeViewModel @AssistedInject constructor(
     private var repository: GenerateRecipeRepository,
     private var timerRepository: TimerRepository,
-    @Assisted override var delegate: WeakReference<IGenerateRecipeViewModel>? = null
+    @Assisted public override var delegate: WeakReference<IGenerateRecipeViewModel>? = null
 ) : BaseViewModel<IGenerateRecipeViewModel>(),
     GenerateRecipeIntents {
     internal var statesList: MutableList<GenerateRecipeState> = mutableListOf()

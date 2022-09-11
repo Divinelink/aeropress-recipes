@@ -11,9 +11,8 @@ import dagger.assisted.AssistedInject
 import timber.log.Timber
 import java.lang.ref.WeakReference
 
-
 class SavedRecipesViewModel @AssistedInject constructor(
-    @Assisted override var delegate: WeakReference<ISavedRecipesViewModel>?,
+    @Assisted public override var delegate: WeakReference<ISavedRecipesViewModel>?,
     private var dbRepository: SavedRecipesRepository
 ) : BaseViewModel<ISavedRecipesViewModel>(), SavedRecipesIntents {
     internal var statesList: MutableList<SavedRecipesState> = mutableListOf()
@@ -99,7 +98,6 @@ interface SavedRecipesStateHandler {
     fun handleStartNewBrew(state: SavedRecipesState.StartNewBrewState)
 }
 
-
 @Suppress("UNCHECKED_CAST")
 class SavedRecipesViewModelFactory(
     private val assistedFactory: SavedTimerViewModelAssistedFactory,
@@ -117,4 +115,3 @@ class SavedRecipesViewModelFactory(
 interface SavedTimerViewModelAssistedFactory {
     fun create(delegate: WeakReference<ISavedRecipesViewModel>?): SavedRecipesViewModel
 }
-

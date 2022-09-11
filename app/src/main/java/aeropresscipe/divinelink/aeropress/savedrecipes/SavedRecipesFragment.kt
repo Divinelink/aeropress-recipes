@@ -59,7 +59,7 @@ class SavedRecipesFragment : Fragment(),
 
         val viewModelFactory = SavedRecipesViewModelFactory(assistedFactory, WeakReference<ISavedRecipesViewModel>(this))
         viewModel = ViewModelProvider(this, viewModelFactory)[SavedRecipesViewModel::class.java]
-
+        viewModel.delegate = WeakReference(this)
         return view
     }
 

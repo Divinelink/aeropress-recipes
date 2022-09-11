@@ -1,6 +1,6 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe
 
-import  aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.base.TimerViewCallback
 import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
 import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.DISLIKE_MIN_FRAME
@@ -73,6 +73,7 @@ class GenerateRecipeFragment :
 
         val viewModelFactory = GenerateRecipeViewModelFactory(assistedFactory, WeakReference<IGenerateRecipeViewModel>(this))
         viewModel = ViewModelProvider(this, viewModelFactory)[GenerateRecipeViewModel::class.java]
+        viewModel.delegate = WeakReference(this)
         return view
     }
 

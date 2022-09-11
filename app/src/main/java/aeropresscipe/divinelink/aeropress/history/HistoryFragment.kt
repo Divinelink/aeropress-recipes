@@ -54,7 +54,7 @@ class HistoryFragment : Fragment(),
 
         val viewModelFactory = HistoryViewModelFactory(assistedFactory, WeakReference<IHistoryViewModel>(this))
         viewModel = ViewModelProvider(this, viewModelFactory)[(HistoryViewModel::class.java)]
-
+        viewModel.delegate = WeakReference(this)
         return view
     }
 
@@ -81,7 +81,6 @@ class HistoryFragment : Fragment(),
             }
         }
     }
-
 
     private fun bindAdapter() {
         binding?.recyclerView?.apply {

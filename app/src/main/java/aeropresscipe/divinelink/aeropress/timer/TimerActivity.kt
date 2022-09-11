@@ -15,13 +15,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.utils.setNavigationBarColor
 import gr.divinelink.core.util.viewBinding.activity.viewBinding
 
-
 @AndroidEntryPoint
 class TimerActivity :
     AppCompatActivity(),
     TimerFragment.Callback {
     private val binding: ActivityTimerBinding by viewBinding()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,16 +37,14 @@ class TimerActivity :
     }
 
     private fun getFragment(recipe: Recipe?, flow: TimerFlow?) {
-        val fManager = supportFragmentManager
-        val fTransaction: FragmentTransaction = fManager.beginTransaction()
-        val fragment = fManager.findFragmentById(R.id.timer_fragment) as? TimerFragment?
-
+        val fTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+        val fragment = supportFragmentManager.findFragmentByTag(TIMER_TAG)
         if (fragment == null) {
             fTransaction.add(R.id.timer_fragment, newInstance(recipe, flow), TIMER_TAG)
         } else { // re-use the old fragment
             fTransaction.replace(R.id.timer_fragment, fragment, TIMER_TAG)
         }
-        fTransaction.commitNowAllowingStateLoss()
+        fTransaction.commitNow()
     }
 
     override fun onExitTimer() {
