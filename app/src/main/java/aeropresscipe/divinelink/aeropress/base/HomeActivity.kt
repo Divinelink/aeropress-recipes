@@ -32,8 +32,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.utils.DimensionUnit
 import gr.divinelink.core.util.utils.setNavigationBarColor
 import gr.divinelink.core.util.viewBinding.activity.viewBinding
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 import java.lang.ref.WeakReference
 import javax.inject.Inject
@@ -229,16 +227,8 @@ class HomeActivity : AppCompatActivity(),
         recipeFragment.refresh = true
         viewModel.startTimer(recipe, flow, update)
     }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    @Suppress("UnusedPrivateMember")
-    fun onTimerFinished(event: TimerExitEvent) {
-        viewModel.resume()
-    }
 }
 
 interface TimerViewCallback {
     fun updateBottomPadding(bottomPadding: Int)
 }
-
-class TimerExitEvent
