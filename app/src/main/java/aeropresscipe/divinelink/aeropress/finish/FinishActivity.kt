@@ -28,7 +28,7 @@ class FinishActivity :
     lateinit var assistedFactory: FinishViewModelAssistedFactory
     private lateinit var viewModel: FinishViewModel
 
-    var recipe: Recipe? = null
+    private var recipe: Recipe? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +41,9 @@ class FinishActivity :
 
         val viewModelFactory = FinishViewModelFactory(assistedFactory, WeakReference<IFinishViewModel>(this))
         viewModel = ViewModelProvider(this, viewModelFactory)[(FinishViewModel::class.java)]
+        viewModel.delegate = WeakReference(this)
+
+        viewModel.init(recipe)
     }
 
     override fun updateState(state: FinishState) {
@@ -49,6 +52,7 @@ class FinishActivity :
             is FinishState.InitialState -> handleInitialState()
             is FinishState.LoadingState -> handleLoadingState()
             is FinishState.CloseState -> handleCloseState()
+            is FinishState.SetupRecipeState -> handleSetupRecipeState(state)
         }
     }
 
@@ -66,20 +70,20 @@ class FinishActivity :
 
             close.setOnClickListener { viewModel.closeButtonClicked() }
             toolbar.setNavigationOnClickListener { viewModel.closeButtonClicked() }
-
-            recipe?.let {
-                binding.card.setRecipe(RecipeCard.FinishCard(recipe = it))
-                binding.likeButtonCardLayout.recipe = it
-            }
         }
     }
 
+    override fun handleSetupRecipeState(state: FinishState.SetupRecipeState) {
+        binding.card.setRecipe(RecipeCard.FinishCard(recipe = state.recipe))
+        binding.likeButtonCardLayout.recipe = state.recipe
+    }
+
     override fun handleLoadingState() {
-        TODO("Not yet implemented")
+        // Intentionally Blank.
     }
 
     override fun handleErrorState(state: FinishState.ErrorState) {
-        TODO("Not yet implemented")
+        // Intentionally Blank.
     }
 
     override fun handleCloseState() {
