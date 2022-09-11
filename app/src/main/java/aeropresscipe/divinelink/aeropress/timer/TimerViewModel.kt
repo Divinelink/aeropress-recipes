@@ -118,7 +118,7 @@ class TimerViewModel @AssistedInject constructor(
         }
     }
 
-    override fun exitTimer(millisecondsLeft: Long) {
+    override fun exitTimer() {
         if (transferableModel?.brew?.getCurrentState() is BrewState.Finished) {
             repository.updateBrewingState(false, 0L) {
                 Timber.d("Recipe is not brewing.")
@@ -145,7 +145,7 @@ interface TimerIntents : MVIBaseView {
     fun init(transferableModel: TimerTransferableModel)
     fun startBrew()
     fun resume()
-    fun exitTimer(millisecondsLeft: Long)
+    fun exitTimer()
     fun updateTimer()
 }
 

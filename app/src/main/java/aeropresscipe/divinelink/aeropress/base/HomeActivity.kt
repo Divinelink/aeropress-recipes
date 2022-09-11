@@ -99,7 +99,7 @@ class HomeActivity : AppCompatActivity(),
         super.onResume()
 //        dynamicTheme.onResume(this)
         Timber.d("Activity resume.")
-//        viewModel.resume()
+        viewModel.resume()
 //       When leaving from Timer Activity, set bottomNavigation to be the recipe button
 //       and restart the fragment, so we can see the resume button flashing.
 //        binding.bottomNavigation.selectedItemId = R.id.recipe
@@ -222,16 +222,6 @@ class HomeActivity : AppCompatActivity(),
         Timber.d("Recipe updated. Set refresh to true.")
         recipeFragment.refresh = true
         viewModel.startTimer(recipe, flow, update)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        EventBus.getDefault().register(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        EventBus.getDefault().unregister(this)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
