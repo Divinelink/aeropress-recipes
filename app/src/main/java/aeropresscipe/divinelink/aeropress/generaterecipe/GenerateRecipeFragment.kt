@@ -11,9 +11,7 @@ import aeropresscipe.divinelink.aeropress.databinding.FragmentGenerateRecipeBind
 import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
 import aeropresscipe.divinelink.aeropress.history.HistoryFragment
 import aeropresscipe.divinelink.aeropress.home.HomeViewModel
-import aeropresscipe.divinelink.aeropress.settings.SettingsActivity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -215,15 +213,16 @@ class GenerateRecipeFragment :
             viewModel.likeRecipe()
         }
 
-        binding?.toolbar?.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.menu_settings -> {
-                    startActivity(Intent(context, SettingsActivity::class.java))
-                    true
-                }
-                else -> false
-            }
-        }
+        // //TODO 11/9/22 divinelink: add Settings Activity
+//        binding?.toolbar?.setOnMenuItemClickListener { item ->
+//            when (item.itemId) {
+//                R.id.menu_settings -> {
+//                    startActivity(Intent(context, SettingsActivity::class.java))
+//                    true
+//                }
+//                else -> false
+//            }
+//        }
     }
 
     override fun onDestroyView() {
