@@ -7,15 +7,13 @@ import aeropresscipe.divinelink.aeropress.history.HistoryDao
 import aeropresscipe.divinelink.aeropress.savedrecipes.Converters
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDao
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @Database(
     entities = [DiceDomain::class, SavedRecipeDomain::class, History::class],
-    version = 21,
+    version = 22,
     exportSchema = true
 )
 @TypeConverters(
@@ -28,21 +26,6 @@ abstract class HomeDatabase : RoomDatabase() {
     abstract fun historyDao(): HistoryDao
 
     companion object {
-        private var INSTANCE: HomeDatabase? = null
         const val DB_NAME = "Home_Database"
-
-        @JvmStatic
-        fun getDatabase(ctx: Context): HomeDatabase {
-            if (INSTANCE == null) {
-                INSTANCE = Room.databaseBuilder(
-                    ctx.applicationContext,
-                    HomeDatabase::class.java,
-                    DB_NAME
-                )
-                    .fallbackToDestructiveMigration()
-                    .build()
-            }
-            return INSTANCE!!
-        }
     }
 }

@@ -39,8 +39,8 @@
         <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
         <item name="android:windowLightNavigationBar">?attr/isLightTheme</item>
 
-        <!--        <item name="appBarLayoutStyle">@style/AppTheme.AppBarOverlay</item>-->
         <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
+        <item name="actionBarStyle">@style/ActionBar.Style</item>
 
         <!--        <item name="textAppearanceDisplaySmall">@style/TextAppearance.MyApp.DisplaySmall</item>-->
         <!--        <item name="textAppearanceTitleLarge">@style/TextAppearance.MyApp.</item>-->

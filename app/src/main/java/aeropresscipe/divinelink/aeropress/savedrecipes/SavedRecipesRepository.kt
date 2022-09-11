@@ -2,29 +2,18 @@ package aeropresscipe.divinelink.aeropress.savedrecipes
 
 import aeropresscipe.divinelink.aeropress.base.mvi.logic.BaseRepository
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
-import android.content.Context
-import kotlinx.coroutines.Dispatchers
-import kotlin.coroutines.CoroutineContext
+import javax.inject.Inject
 
-class SavedRecipesRepository(
-    override var coroutineContext: CoroutineContext = Dispatchers.Main,
-    private val dbRemote: ISavedRecipesServices = SavedRecipesServicesImpl()
+class SavedRecipesRepository @Inject constructor(
+    private val dbRemote: SavedRecipesServices
 ) : BaseRepository() {
 
-    fun getListsFromDB(
-        context: Context,
+    fun getFavorites(
         completionBlock: (List<SavedRecipeDomain>?) -> Unit
-    ) = performTransaction(completionBlock) { dbRemote.getRecipesFromDB(context) }
+    ) = performTransaction(completionBlock) { dbRemote.getFavorites() }
 
     fun deleteRecipe(
         recipe: Recipe,
-        context: Context,
         completionBlock: (List<SavedRecipeDomain>?) -> Unit
-    ) = performTransaction(completionBlock) { dbRemote.deleteRecipe(recipe, context) }
-
-    fun startBrew(
-        recipe: Recipe,
-        context: Context,
-        completionBlock: (Recipe?) -> Unit
-    ) = performTransaction(completionBlock) { dbRemote.getSingleRecipe(recipe, context) }
+    ) = performTransaction(completionBlock) { dbRemote.deleteRecipe(recipe) }
 }

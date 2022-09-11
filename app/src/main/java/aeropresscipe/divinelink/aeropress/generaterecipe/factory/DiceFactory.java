@@ -51,7 +51,6 @@ class GroundSize extends Dice {
 //        dice.add(new RecipeDice.GroundSizeDice(CoffeeGrindSize.COARSE, 10));
 //        dice.add(new RecipeDice.GroundSizeDice(CoffeeGrindSize.COARSE, 60));
 //        dice.add(new RecipeDice.GroundSizeDice(CoffeeGrindSize.COARSE, 65));
-
     }
 
     public GroundSize() {
@@ -75,14 +74,12 @@ class BrewMethodDice extends Dice {
         dice.add(new RecipeDice.MethodDice(BrewMethod.STANDARD, 45, 60));
         dice.add(new RecipeDice.MethodDice(BrewMethod.INVERTED, 45, 30));
         dice.add(new RecipeDice.MethodDice(BrewMethod.INVERTED, 45, 60));
-//
+
 //        dice.add(new DiceDomain("TestNoBloom", 0, 0));
 //        dice.add(new RecipeDice.MethodDice(BrewMethod.INVERTED, 5, 60));
 //        dice.add(new RecipeDice.MethodDice(BrewMethod.STANDARD, 5, 60));
 //        dice.add(new RecipeDice.MethodDice(BrewMethod.STANDARD, 0, 0));
-
 //        dice.add(new DiceDomain("Test", 1, 0));
-
     }
 
     public BrewMethodDice() {

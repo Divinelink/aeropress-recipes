@@ -6,7 +6,12 @@
     <item
         android:id="@+id/favorite"
         android:actionLayout="@layout/layout_favorite_item"
-        android:orderInCategory="100"
+        android:orderInCategory="1"
         android:title="@string/favorites"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_settings"
+        android:title="@string/settings" />
+
 </menu>

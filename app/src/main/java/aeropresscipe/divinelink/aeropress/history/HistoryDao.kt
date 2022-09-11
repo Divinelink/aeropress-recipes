@@ -17,7 +17,7 @@ interface HistoryDao {
     val historyRecipes: List<History>?
 
     @Query("SELECT * FROM HistoryRecipes WHERE recipe = :recipe")
-    fun getHistoryRecipe(recipe: Recipe): History
+    fun getHistoryRecipe(recipe: Recipe): History?
 
     @Query("SELECT Recipe FROM HistoryRecipes WHERE recipe = :recipe")
     fun getSpecificRecipe(recipe: Recipe?): Recipe?

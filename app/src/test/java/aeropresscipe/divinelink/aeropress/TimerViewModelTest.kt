@@ -1,11 +1,12 @@
 package aeropresscipe.divinelink.aeropress
 
-import aeropresscipe.divinelink.aeropress.generaterecipe.BrewMethod
-import aeropresscipe.divinelink.aeropress.generaterecipe.CoffeeGrindSize
+import aeropresscipe.divinelink.aeropress.base.di.Preferences
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.BrewMethod
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.CoffeeGrindSize
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.generaterecipe.models.remainingWater
 import aeropresscipe.divinelink.aeropress.timer.ITimerViewModel
-import aeropresscipe.divinelink.aeropress.timer.TimerFragment
 import aeropresscipe.divinelink.aeropress.timer.TimerIntents
 import aeropresscipe.divinelink.aeropress.timer.TimerRepository
 import aeropresscipe.divinelink.aeropress.timer.TimerServices
@@ -13,6 +14,7 @@ import aeropresscipe.divinelink.aeropress.timer.TimerState
 import aeropresscipe.divinelink.aeropress.timer.TimerViewModel
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
+import android.content.SharedPreferences
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -38,6 +40,12 @@ class TimerViewModelTest {
     @Mock
     private var remote: TimerServices = mock()
 
+    @Mock
+    private var mockPrefs: SharedPreferences = mock()
+
+    @Mock
+    private var sharedPreferences: Preferences = Preferences(mockPrefs)
+
     private var transferableModel = TimerTransferableModel()
 
     private var repository: TimerRepository = TimerRepository(remote)
@@ -53,6 +61,7 @@ class TimerViewModelTest {
             repository = repository)
 
         viewModelIntent = viewModel
+        viewModel.preferences = this.sharedPreferences
     }
 
     @Before
@@ -68,9 +77,27 @@ class TimerViewModelTest {
     @Test
     fun `given bloom state with 5 seconds left, when I resume then I expect Bloom State`() = runTest {
         // Given
+        val response = DiceDomain(recipeModel(bloomTime = 5, brewTime = 10), isBrewing = true, timeStartedMillis = System.currentTimeMillis())
+        whenever(remote.getResumeTimes()).thenReturn(response)
+        transferableModel.recipe = response.recipe
+        viewModel.init(transferableModel)
+        // When
+        viewModel.resume()
+        // Then
+        assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Bloom)
+        assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.BrewWithBloom)
+        assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Brew)
+        assertEquals(viewModel.statesList[1], TimerState.StartTimer(BrewState.Bloom(
+            water = response.recipe.bloomWater,
+            time = response.recipe.bloomTime), false)
+        )
+    }
+
+    @Test
+    fun `given bloom state, when I resume then I expect StartProgressBar state`() = runTest {
+        // Given
         val response = DiceDomain(recipeModel(bloomTime = 5, brewTime = 10), isBrewing = true,
-            bloomEndTimeMillis = 5000 + System.currentTimeMillis(),
-            brewEndTimeMillis = 10000 + System.currentTimeMillis()
+            timeStartedMillis = System.currentTimeMillis()
         )
         whenever(remote.getResumeTimes()).thenReturn(response)
         transferableModel.recipe = response.recipe
@@ -78,69 +105,47 @@ class TimerViewModelTest {
         // When
         viewModel.resume()
         // Then
-        assertTrue(viewModel.transferableModel?.currentBrewState is BrewState.Bloom)
-        assertFalse(viewModel.transferableModel?.currentBrewState is BrewState.BrewWithBloom)
-        assertFalse(viewModel.transferableModel?.currentBrewState is BrewState.Brew)
+        assertTrue(viewModel.statesList[0] is TimerState.InitialState)
+        assertEquals(viewModel.statesList[1], TimerState.StartTimer(BrewState.Bloom(
+            water = response.recipe.bloomWater,
+            time = response.recipe.bloomTime), false)
+        )
+        assertTrue(viewModel.statesList[2] is TimerState.StartProgressBar)
     }
 
     @Test
     fun `given bloom state with 0 seconds left, when I resume then I expect Brew State`() = runTest {
         // Given
-        val response = DiceDomain(recipeModel(bloomTime = 5, brewTime = 100), isBrewing = true,
-            bloomEndTimeMillis = 0,
-            brewEndTimeMillis = 10000 + System.currentTimeMillis()
-        )
+        val response = DiceDomain(recipeModel(bloomTime = 50, brewTime = 100), isBrewing = true, timeStartedMillis = System.currentTimeMillis() - 50000)
         whenever(remote.getResumeTimes()).thenReturn(response)
         transferableModel.recipe = response.recipe
         viewModel.init(transferableModel)
         // When
         viewModel.resume()
         // Then
-        assertTrue(viewModel.transferableModel?.currentBrewState is BrewState.BrewWithBloom)
-        assertFalse(viewModel.transferableModel?.currentBrewState is BrewState.Bloom)
-        assertFalse(viewModel.transferableModel?.currentBrewState is BrewState.Brew)
+        assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.BrewWithBloom)
+        assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Bloom)
+        assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Brew)
     }
 
     @Test
     fun `given brew state, when I resume then I expect Brew State`() = runTest {
         // Given
-        val response = DiceDomain(recipeModel(bloomTime = 0, brewTime = 100), isBrewing = true,
-            bloomEndTimeMillis = 0,
-            brewEndTimeMillis = 10000 + System.currentTimeMillis()
-        )
+        val response = DiceDomain(recipeModel(bloomTime = 0, brewTime = 100), isBrewing = true, timeStartedMillis = System.currentTimeMillis())
         whenever(remote.getResumeTimes()).thenReturn(response)
         transferableModel.recipe = response.recipe
         viewModel.init(transferableModel)
         // When
         viewModel.resume()
         // Then
-        assertTrue(viewModel.transferableModel?.currentBrewState is BrewState.Brew)
-        assertFalse(viewModel.transferableModel?.currentBrewState is BrewState.Bloom)
-        assertFalse(viewModel.transferableModel?.currentBrewState is BrewState.BrewWithBloom)
-    }
-
-    @Test
-    fun `given recipe is liked, on init return saved state`() = runTest {
-        val response = DiceDomain(recipeModel())
-
-        whenever(remote.isRecipeSaved(response.recipe)).thenReturn(true)
-        transferableModel.recipe = response.recipe
-
-        viewModel.init(transferableModel)
-
-        assertEquals(viewModel.state, TimerState.UpdateSavedIndicator(TimerFragment.LIKE_MAX_FRAME))
-    }
-
-    @Test
-    fun `given recipe is not liked, on init return saved state`() = runTest {
-        val response = DiceDomain(recipeModel())
-
-        whenever(remote.isRecipeSaved(response.recipe)).thenReturn(false)
-        transferableModel.recipe = response.recipe
-
-        viewModel.init(transferableModel)
-
-        assertEquals(viewModel.state, TimerState.UpdateSavedIndicator(TimerFragment.DISLIKE_MAX_FRAME))
+        val states = mutableListOf(
+            BrewState.Brew(response.recipe.brewWaterAmount, response.recipe.brewTime),
+            BrewState.Finished
+        )
+        assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Brew)
+        assertEquals(viewModel.transferableModel?.brew?.brewStates, states)
+        assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Bloom)
+        assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.BrewWithBloom)
     }
 
     @Test
@@ -154,6 +159,10 @@ class TimerViewModelTest {
         assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Bloom)
         viewModel.updateTimer()
         assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.BrewWithBloom)
+        assertEquals(viewModel.statesList[3], TimerState.StartTimer(BrewState.BrewWithBloom(
+            water = response.recipe.remainingWater(),
+            time = response.recipe.brewTime), true)
+        )
     }
 
     @Test
@@ -173,22 +182,57 @@ class TimerViewModelTest {
     @Test
     fun `given brew state, when I update timer, then I expect finish state`() = runTest {
         val response = DiceDomain(recipeModel(brewTime = 1, bloomTime = 0), isBrewing = true)
+        whenever(sharedPreferences.muteSound).thenReturn(false)
 
         transferableModel.recipe = response.recipe
 
         viewModel.init(transferableModel)
+        assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Brew)
         viewModel.updateTimer()
         assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Finished)
-        assertTrue(viewModel.state is TimerState.FinishState)
+        assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Brew)
+        assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.BrewWithBloom)
+        assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Bloom)
+        assertTrue(viewModel.statesList[1] is TimerState.FinishState)
+        assertTrue(viewModel.statesList[2] is TimerState.PlaySoundState)
+    }
+
+    @Test
+    fun `given recipe is null, when I startBrew, then I expect ErrorState`() = runTest {
+        transferableModel.recipe = null
+        viewModel.startBrew()
+        assert(viewModel.state is TimerState.ErrorState)
+    }
+
+    @Test
+    fun `given mute sound preference true, when updateTimer, then I don't expect PlaySoundState`() = runTest {
+        val response = DiceDomain(recipeModel(brewTime = 1, bloomTime = 1), isBrewing = true)
+        whenever(sharedPreferences.muteSound).thenReturn(true)
+        transferableModel.recipe = response.recipe
+        viewModel.init(transferableModel)
+        viewModel.updateTimer()
+        assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.BrewWithBloom)
+        assertTrue(viewModel.state is TimerState.StartProgressBar)
+    }
+
+    @Test
+    fun `given mute sound preference false, when updateTimer, then I expect PlaySoundState`() = runTest {
+        val response = DiceDomain(recipeModel(brewTime = 1, bloomTime = 1), isBrewing = true)
+        whenever(sharedPreferences.muteSound).thenReturn(false)
+        transferableModel.recipe = response.recipe
+        viewModel.init(transferableModel)
+        viewModel.updateTimer()
+        assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.BrewWithBloom)
+        assertTrue(viewModel.state is TimerState.PlaySoundState)
     }
 
     private fun recipeModel(
         diceTemperature: Int = 0,
         brewTime: Long = 0,
         bloomTime: Long = 0,
-        bloomWater: Int = 0,
+        bloomWater: Int = 10,
         coffeeAmount: Int = 0,
-        brewWaterAmount: Int = 0,
+        brewWaterAmount: Int = 15,
         groundSize: CoffeeGrindSize = CoffeeGrindSize.MEDIUM,
         brewingMethod: BrewMethod = BrewMethod.STANDARD,
         isNewRecipe: Boolean = false,

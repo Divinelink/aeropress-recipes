@@ -1,7 +1,5 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe.models
 
-import aeropresscipe.divinelink.aeropress.generaterecipe.BrewMethod
-import aeropresscipe.divinelink.aeropress.generaterecipe.CoffeeGrindSize
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
 import gr.divinelink.core.util.extensions.getPairOfMinutesSeconds
 import java.io.Serializable

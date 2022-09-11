@@ -1,7 +1,6 @@
 package aeropresscipe.divinelink.aeropress.generaterecipe.models
 
 import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.generaterecipe.CoffeeGrindSize
 import androidx.annotation.StringRes
 
 sealed class RecipeStep(

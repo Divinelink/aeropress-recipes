@@ -19,11 +19,14 @@
     </style>
 
 
-    <style name="SavedRecipeItemTextViewStyle">
-        <item name="android:layout_width">0dp</item>
+    <style name="RecipeItemStyle">
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">4dp</item>
-        <item name="android:layout_weight">3</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:drawablePadding">12dp</item>
     </style>
 
     <style name="SavedRecipeImageViewStyle">
@@ -33,20 +36,8 @@
         <item name="android:layout_weight">1</item>
     </style>
 
-    <style name="SavedRecipeLinearLayoutForViewsStyle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_marginBottom">4dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:orientation">horizontal</item>
-    </style>
-
     <style name="customSnackBarStyle">
         <item name="android:backgroundTint">@color/colorPrimaryContainer</item>
-    </style>
-
-
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-
     </style>
 
     <style name="AppTheme.Toolbar" parent="@style/Widget.Material3.Toolbar">
@@ -54,11 +45,18 @@
         <item name="subtitleTextAppearance">@style/Text.BodyMedium</item>
     </style>
 
-    <style name="ToolbarTheme" parent="@style/Widget.Material3.Light.ActionBar.Solid">
-        <item name="titleTextAppearance">@style/Text.TitleMedium</item>
-        <item name="subtitleTextAppearance">@style/Text.TitleMedium</item>
-        <item name="android:titleTextAppearance">@style/Text.TitleLarge</item>
-        <item name="android:subtitleTextAppearance">@style/Text.TitleMedium</item>
+    <style name="DayNight.Popup.OverflowMenu" parent="@style/Widget.Material3.PopupMenu.Overflow">
+        <item name="overlapAnchor">false</item>
+        <item name="android:popupElevation">4dp</item>
+        <item name="android:dropDownHorizontalOffset">-14dp</item>
+        <item name="android:dropDownVerticalOffset">1px</item>
+        <item name="android:popupBackground">@drawable/rounded_rectangle_surface_2_18</item>
+    </style>
+
+    <style name="ActionBar.Style" parent="Widget.Material3.ActionBar.Solid">
+        <item name="actionOverflowMenuStyle">@style/DayNight.Popup.OverflowMenu</item>
+        <item name="background">@color/colorBackground</item>
+        <item name="android:itemTextAppearance">@style/Text.BodyLarge</item>
     </style>
 
     <style name="BottomNavigationStyle" parent="Widget.Material3.BottomNavigationView">
