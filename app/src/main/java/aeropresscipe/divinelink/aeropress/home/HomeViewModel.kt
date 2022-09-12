@@ -32,7 +32,6 @@ class HomeViewModel @AssistedInject constructor(
 
     override fun init() {
         state = HomeState.InitialState
-        getResumeState()
     }
 
     override fun resume() {

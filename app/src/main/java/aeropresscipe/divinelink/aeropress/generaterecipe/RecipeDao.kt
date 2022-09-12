@@ -9,14 +9,15 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
+import timber.log.Timber
 
 @Dao
 interface RecipeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRecipe(recipe: DiceDomain)
 
-    @get:Query("SELECT * FROM Recipe ORDER BY id DESC LIMIT 1")
-    val singleRecipe: DiceDomain?
+    @Query("SELECT * FROM Recipe ORDER BY id DESC LIMIT 1")
+    fun singleRecipe(): DiceDomain?
 
     @Query("DELETE FROM Recipe")
     fun deleteAll()
@@ -28,18 +29,21 @@ interface RecipeDao {
     fun updateBrewingState(isBrewing: Boolean, timeStartedMillis: Long, id: Int)
 
     @Transaction
-    fun updateRecipe(recipe: Recipe) {
+    suspend fun updateRecipe(recipe: Recipe) {
         deleteAll()
         insertRecipe(DiceDomain(recipe))
     }
 
-    fun getRecipe(): DiceDomain {
-        return if (singleRecipe == null) {
+    @Transaction
+    suspend fun getRecipe(): DiceDomain {
+        return if (singleRecipe() == null) {
+            Timber.d("Recipe is null, generating a new one.")
             val recipe = RecipeBuilder().recipe
             updateRecipe(recipe)
-            DiceDomain(RecipeBuilder().recipe, false)
+            DiceDomain(recipe, false)
         } else {
-            singleRecipe as DiceDomain
+            Timber.d("Fetching existing recipe.")
+            singleRecipe() as DiceDomain
         }
     }
 }
