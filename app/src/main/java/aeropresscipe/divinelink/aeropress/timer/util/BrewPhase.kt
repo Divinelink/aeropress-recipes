@@ -30,20 +30,26 @@ sealed class BrewState(
     @StringRes open val description: Int,
     open val brewWater: Int,
     open val brewTime: Long,
-    open val phase: Phase
+    open val phase: Phase,
+    open val update: Boolean,
+    open val animate: Boolean
 ) {
     data class Bloom(val water: Int, val time: Long) : BrewState(
         title = R.string.bloomPhase,
         description = R.string.bloomPhaseWaterText,
         water,
         time,
-        Phase.Bloom)
+        Phase.Bloom,
+        true,
+        false)
 
     data class Brew(val water: Int, val time: Long) : BrewState(
         title = R.string.brewPhase,
         description = R.string.brewPhaseNoBloom,
         water, time,
-        Phase.Brew
+        Phase.Brew,
+        true,
+        true
     )
 
     data class BrewWithBloom(val water: Int, val time: Long) : BrewState(
@@ -51,10 +57,20 @@ sealed class BrewState(
         description = R.string.brewPhaseWithBloom,
         water,
         time,
-        Phase.Brew
+        Phase.Brew,
+        true,
+        true
     )
 
-    object Finished : BrewState(title = R.string.finishPhaseTitle, description = R.string.finishPhaseDescription, brewWater = 0, brewTime = 0, Phase.Finish)
+    object Finished : BrewState(
+        title = R.string.finishPhaseTitle,
+        description = R.string.finishPhaseDescription,
+        brewWater = 0,
+        brewTime = 0,
+        Phase.Finish,
+        false,
+        true
+    )
 }
 
 enum class Phase {

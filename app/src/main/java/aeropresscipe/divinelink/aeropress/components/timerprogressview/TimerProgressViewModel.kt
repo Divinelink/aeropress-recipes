@@ -66,35 +66,32 @@ class TimerProgressViewModel @AssistedInject constructor(
             val brewState = states?.find { state -> state.phase == Phase.Brew }
             startTimerStates(brewState, timeLeft.second)
         } else {
-            state = TimerProgressState.UpdateProgressState(BrewState.Finished, false)
+            state = TimerProgressState.UpdateDescriptionState(BrewState.Finished)
         }
     }
 
-    override fun updateTimer() {
-        brew?.removeCurrentPhase()
-        brew?.let { brew ->
-            // Update current brew state
-            if (brew.getCurrentState() == BrewState.Finished) {
-                state = TimerProgressState.UpdateProgressState(brewState = BrewState.Finished, true)
-            } else {
-                startTimerStates(brew.getCurrentState(), brew.getCurrentState().brewTime.inMilliseconds(), animate = true)
-            }
+    override fun updateTimer(update: Boolean) {
+        if (update) {
+            brew?.removeCurrentPhase()
+            val state = brew?.getCurrentState()
+            startTimerStates(state, state?.brewTime.inMilliseconds())
 //            if (!preferences.muteSound) {
 //                state = TimerState.PlaySoundState
 //            }
         }
     }
 
-    private fun startTimerStates(brewState: BrewState?, timeLeft: Long, animate: Boolean = false) {
+    private fun startTimerStates(brewState: BrewState?, timeLeft: Long) {
         if (brewState == null) return
         Timber.d("Update brewState: $brewState")
         Timber.d("Title: ${brewState.title}")
         Timber.d("Description: ${brewState.description}")
-        state = TimerProgressState.UpdateProgressState(brewState, animate)
-        state = TimerProgressState.StartProgressBar(
+        state = TimerProgressState.UpdateDescriptionState(brewState)
+        state = TimerProgressState.UpdateProgressBar(
             maxValue = brewState.brewTime.inMilliseconds().toInt(),
             timeInMilliseconds = timeLeft,
-            animate = animate
+            animate = brewState.animate,
+            update = brewState.update
         )
     }
 }
@@ -106,21 +103,21 @@ interface ITimerProgressViewModel {
 interface TimerProgressIntents : MVIBaseView {
     fun init(dice: DiceDomain?)
     fun getView()
-    fun updateTimer()
+    fun updateTimer(update: Boolean)
 }
 
 sealed class TimerProgressState {
     object InitialState : TimerProgressState()
-    data class UpdateProgressState(val brewState: BrewState, val animate: Boolean) : TimerProgressState()
-    data class StartProgressBar(val maxValue: Int, val timeInMilliseconds: Long, val animate: Boolean) : TimerProgressState()
+    data class UpdateDescriptionState(val brewState: BrewState) : TimerProgressState()
+    data class UpdateProgressBar(val maxValue: Int, val timeInMilliseconds: Long, val animate: Boolean, val update: Boolean) : TimerProgressState()
     object RetryState : TimerProgressState()
     object FinishState : TimerProgressState()
 }
 
 interface TimerProgressStateHandler {
     fun handleInitialState()
-    fun handleUpdateProgressState(state: TimerProgressState.UpdateProgressState)
-    fun handleStartProgressBar(state: TimerProgressState.StartProgressBar)
+    fun handleUpdateDescriptionState(state: TimerProgressState.UpdateDescriptionState)
+    fun handleUpdateProgressBar(state: TimerProgressState.UpdateProgressBar)
     fun handleRetryState()
     fun handleFinishState()
 }

@@ -52,8 +52,8 @@ class TimerProgressView : FrameLayout,
             is TimerProgressState.InitialState -> handleInitialState()
             is TimerProgressState.RetryState -> handleRetryState()
             is TimerProgressState.FinishState -> handleFinishState()
-            is TimerProgressState.StartProgressBar -> handleStartProgressBar(state)
-            is TimerProgressState.UpdateProgressState -> handleUpdateProgressState(state)
+            is TimerProgressState.UpdateProgressBar -> handleUpdateProgressBar(state)
+            is TimerProgressState.UpdateDescriptionState -> handleUpdateDescriptionState(state)
         }
     }
 
@@ -65,9 +65,9 @@ class TimerProgressView : FrameLayout,
         dice?.let { viewModel.init(it) }
     }
 
-    override fun handleUpdateProgressState(state: TimerProgressState.UpdateProgressState) {
+    override fun handleUpdateDescriptionState(state: TimerProgressState.UpdateDescriptionState) {
         callback?.onTimerAttached()
-//        if (state.animate) {
+//        if (state.brewState.animate) {
 //            binding.brewStateTitle updateTextWithFade resources.getString(state.brewState.title)
 //            binding.stateDescription updateTextWithFade resources.getString(state.brewState.description, state.brewState.brewWater)
 //        } else {
@@ -81,7 +81,7 @@ class TimerProgressView : FrameLayout,
         timer?.dispose()
     }
 
-    override fun handleStartProgressBar(state: TimerProgressState.StartProgressBar) {
+    override fun handleUpdateProgressBar(state: TimerProgressState.UpdateProgressBar) {
         binding.progressBar.max = state.maxValue
         milliSecondsLeft = state.timeInMilliseconds
 
@@ -99,7 +99,7 @@ class TimerProgressView : FrameLayout,
                 updateCountdown(it)
             },
             onFinish = {
-                viewModel.updateTimer()
+                viewModel.updateTimer(state.update)
             }
         )
         timer?.start()
