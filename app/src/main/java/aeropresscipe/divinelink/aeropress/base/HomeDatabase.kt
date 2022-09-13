@@ -13,7 +13,7 @@ import androidx.room.TypeConverters
 
 @Database(
     entities = [DiceDomain::class, SavedRecipeDomain::class, History::class],
-    version = 22,
+    version = HomeDatabase.LATEST_VERSION,
     exportSchema = true
 )
 @TypeConverters(
@@ -27,5 +27,6 @@ abstract class HomeDatabase : RoomDatabase() {
 
     companion object {
         const val DB_NAME = "Home_Database"
+        const val LATEST_VERSION = 22
     }
 }
