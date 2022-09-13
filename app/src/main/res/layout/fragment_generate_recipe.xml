@@ -9,11 +9,92 @@
     android:tag="@string/recipe"
     tools:context=".generaterecipe.GenerateRecipeFragment">
 
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <gr.divinelink.core.util.customViews.NonScrollListView
+            android:id="@+id/recipeList"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:clipToPadding="false"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:listSelector="@color/transparent"
+            android:overScrollMode="never"
+            android:paddingBottom="180dp"
+            tools:layout_height="250dp" />
+
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:animateLayoutChanges="true"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:gravity="end"
+            android:orientation="vertical"
+            app:layout_behavior="gr.divinelink.core.util.views.SlideUpWithSnackbarBehavior">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/generateRecipeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:minWidth="140dp"
+                android:text="@string/get_another_recipe"
+                android:textColor="@color/colorOnSecondaryContainer"
+                app:backgroundTint="@color/colorSecondaryContainer"
+                app:layout_constraintBottom_toTopOf="@+id/startTimerButton"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/startTimerButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:minWidth="140dp"
+                android:text="@string/brew"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </LinearLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_scrollFlags="scroll|enterAlways">
 
         <!-- set 4dp when Settings are added. -->
         <com.google.android.material.appbar.MaterialToolbar
@@ -29,108 +110,5 @@
             tools:title="@string/good_morning" />
 
     </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nested_scroll"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:fillViewport="true"
-            android:scrollbars="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:nestedScrollingEnabled="true"
-                android:orientation="vertical"
-                android:paddingBottom="16dp">
-
-                <gr.divinelink.core.util.customViews.NonScrollListView
-                    android:id="@+id/recipeList"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:divider="@null"
-                    android:dividerHeight="0dp"
-                    android:listSelector="@color/transparent"
-                    android:overScrollMode="never"
-                    tools:layout_height="250dp" />
-
-                <Button
-                    android:id="@+id/resumeBrewButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="12dp"
-                    android:text="@string/resume_brew"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
-
-            </LinearLayout>
-
-
-        </androidx.core.widget.NestedScrollView>
-
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/coordinator"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:animateLayoutChanges="true"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                android:gravity="end"
-                android:orientation="vertical"
-                app:layout_behavior="gr.divinelink.core.util.views.SlideUpWithSnackbarBehavior">
-
-                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                    android:id="@+id/generateRecipeButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:minWidth="140dp"
-                    android:text="@string/get_another_recipe"
-                    android:textColor="@color/colorOnSecondaryContainer"
-                    app:backgroundTint="@color/colorSecondaryContainer"
-                    app:layout_constraintBottom_toTopOf="@+id/startTimerButton"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                    android:id="@+id/startTimerButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:minWidth="140dp"
-                    android:text="@string/brew"
-                    android:textAlignment="center"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-            </LinearLayout>
-
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

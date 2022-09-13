@@ -205,9 +205,6 @@ class GenerateRecipeFragment :
             startTimerButton.setOnClickListener {
                 viewModel.startTimer(resume = false)
             }
-            resumeBrewButton.setOnClickListener {
-                viewModel.startTimer(resume = true)
-            }
         }
         lottieFavorite?.setOnClickListener {
             viewModel.likeRecipe()
