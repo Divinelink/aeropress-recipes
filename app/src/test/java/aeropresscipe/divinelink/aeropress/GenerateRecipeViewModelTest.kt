@@ -136,8 +136,7 @@ class GenerateRecipeViewModelTest {
         coffeeAmount: Int = 0,
         brewWaterAmount: Int = 0,
         groundSize: CoffeeGrindSize = CoffeeGrindSize.MEDIUM,
-        brewingMethod: BrewMethod = BrewMethod.STANDARD,
-        isNewRecipe: Boolean = false,
+        brewingMethod: BrewMethod = BrewMethod.STANDARD
     ): Recipe {
         return Recipe(
             diceTemperature = diceTemperature,
@@ -147,7 +146,6 @@ class GenerateRecipeViewModelTest {
             coffeeAmount = coffeeAmount,
             brewWaterAmount = brewWaterAmount,
             grindSize = groundSize,
-            brewMethod = brewingMethod,
-            isNewRecipe = isNewRecipe)
+            brewMethod = brewingMethod)
     }
 }

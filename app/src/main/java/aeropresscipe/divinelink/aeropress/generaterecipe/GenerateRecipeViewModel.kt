@@ -94,7 +94,6 @@ class GenerateRecipeViewModel @AssistedInject constructor(
             true -> TimerFlow.RESUME
             false -> TimerFlow.START
         }
-        dice?.recipe?.isNewRecipe = resume
         dice?.recipe?.let { recipe -> state = GenerateRecipeState.StartTimerState(recipe, flow) }
     }
 

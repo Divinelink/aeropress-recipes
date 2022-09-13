@@ -12,8 +12,7 @@ data class Recipe(
     var coffeeAmount: Int,
     var brewWaterAmount: Int,
     var grindSize: CoffeeGrindSize,
-    var brewMethod: BrewMethod,
-    @Transient var isNewRecipe: Boolean = false,
+    var brewMethod: BrewMethod
 ) : Serializable {
     companion object {
         private const val serialVersionUID: Long = 1L

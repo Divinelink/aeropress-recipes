@@ -234,8 +234,7 @@ class TimerViewModelTest {
         coffeeAmount: Int = 0,
         brewWaterAmount: Int = 15,
         groundSize: CoffeeGrindSize = CoffeeGrindSize.MEDIUM,
-        brewingMethod: BrewMethod = BrewMethod.STANDARD,
-        isNewRecipe: Boolean = false,
+        brewingMethod: BrewMethod = BrewMethod.STANDARD
     ): Recipe {
         return Recipe(
             diceTemperature = diceTemperature,
@@ -245,7 +244,6 @@ class TimerViewModelTest {
             coffeeAmount = coffeeAmount,
             brewWaterAmount = brewWaterAmount,
             grindSize = groundSize,
-            brewMethod = brewingMethod,
-            isNewRecipe = isNewRecipe)
+            brewMethod = brewingMethod)
     }
 }

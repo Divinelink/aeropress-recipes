@@ -31,8 +31,7 @@ class RecipeBuilder {
             coffeeAmount = brewWater.coffeeAmount,
             brewWaterAmount = brewWater.brewWater,
             grindSize = groundSize.groundSize,
-            brewMethod = method.brewMethod,
-            isNewRecipe = true
+            brewMethod = method.brewMethod
         )
     }
 
