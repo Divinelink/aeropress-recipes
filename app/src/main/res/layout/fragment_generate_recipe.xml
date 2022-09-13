@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
+    android:fitsSystemWindows="true"
     android:tag="@string/recipe"
     tools:context=".generaterecipe.GenerateRecipeFragment">
 
@@ -103,10 +104,11 @@
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                     android:id="@+id/generateRecipeButton"
-                    android:layout_width="140dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
+                    android:minWidth="140dp"
                     android:text="@string/get_another_recipe"
                     android:textColor="@color/colorOnSecondaryContainer"
                     app:backgroundTint="@color/colorSecondaryContainer"
@@ -115,10 +117,11 @@
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                     android:id="@+id/startTimerButton"
-                    android:layout_width="140dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
+                    android:minWidth="140dp"
                     android:text="@string/brew"
                     android:textAlignment="center"
                     app:layout_constraintBottom_toBottomOf="parent"
