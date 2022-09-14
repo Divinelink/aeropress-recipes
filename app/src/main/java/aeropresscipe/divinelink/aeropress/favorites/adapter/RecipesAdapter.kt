@@ -1,11 +1,11 @@
-package aeropresscipe.divinelink.aeropress.savedrecipes.adapter
+package aeropresscipe.divinelink.aeropress.favorites.adapter
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.components.recipecard.RecipeCard
 import aeropresscipe.divinelink.aeropress.databinding.EmptyRecyclerLayoutBinding
 import aeropresscipe.divinelink.aeropress.databinding.ViewSwipeRecipeCardBinding
 import aeropresscipe.divinelink.aeropress.history.HistoryItem
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
+import aeropresscipe.divinelink.aeropress.favorites.Favorites
 import aeropresscipe.divinelink.aeropress.util.mapping.LayoutFactory
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingViewHolder
@@ -14,7 +14,7 @@ import gr.divinelink.core.util.swipe.ActionBindHelper
 import gr.divinelink.core.util.swipe.SwipeAction
 import gr.divinelink.core.util.swipe.SwipeMenuListener
 
-typealias OnActionClicked = (recipe: SavedRecipeDomain, action: SwipeAction) -> Unit
+typealias OnActionClicked = (recipe: Favorites, action: SwipeAction) -> Unit
 
 object FavoriteItem {
     fun register(
@@ -43,11 +43,11 @@ object FavoriteItem {
         private val actionsBindHelper: ActionBindHelper,
         private val onActionClicked: OnActionClicked,
     ) :
-        MappingViewHolder<SavedRecipeDomain>(binding.root), SwipeMenuListener {
+        MappingViewHolder<Favorites>(binding.root), SwipeMenuListener {
         private val swipeToAction = binding.swipeActionLayout
-        private lateinit var model: SavedRecipeDomain
+        private lateinit var model: Favorites
 
-        override fun bind(model: SavedRecipeDomain) {
+        override fun bind(model: Favorites) {
             this.model = model
             actionsBindHelper.bind(model.id.toString(), binding.swipeActionLayout)
             swipeToAction.menuListener = this

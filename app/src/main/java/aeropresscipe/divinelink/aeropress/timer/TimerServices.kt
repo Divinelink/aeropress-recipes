@@ -6,8 +6,8 @@ import aeropresscipe.divinelink.aeropress.recipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.history.History
 import aeropresscipe.divinelink.aeropress.history.HistoryDao
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDao
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
+import aeropresscipe.divinelink.aeropress.favorites.FavoritesDao
+import aeropresscipe.divinelink.aeropress.favorites.Favorites
 import gr.divinelink.core.util.utils.DateUtil.getCurrentDate
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -24,7 +24,7 @@ interface ITimerServices {
 open class TimerServices @Inject constructor(
     private val recipeDao: RecipeDao,
     private val historyDao: HistoryDao,
-    private val savedRecipeDao: SavedRecipeDao,
+    private val savedRecipeDao: FavoritesDao,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ITimerServices {
 
@@ -35,7 +35,7 @@ open class TimerServices @Inject constructor(
                 historyDao.updateLike(recipe, false)
                 false
             } else {
-                savedRecipeDao.insertLikedRecipe(SavedRecipeDomain(recipe, getCurrentDate()))
+                savedRecipeDao.insertLikedRecipe(Favorites(recipe, getCurrentDate()))
                 historyDao.updateLike(recipe, true)
                 true
             }

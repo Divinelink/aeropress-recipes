@@ -3,8 +3,8 @@ package aeropresscipe.divinelink.aeropress.history
 import aeropresscipe.divinelink.aeropress.base.di.IoDispatcher
 import aeropresscipe.divinelink.aeropress.base.mvi.logic.BaseRepository
 import aeropresscipe.divinelink.aeropress.recipe.RecipeDao
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDao
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
+import aeropresscipe.divinelink.aeropress.favorites.FavoritesDao
+import aeropresscipe.divinelink.aeropress.favorites.Favorites
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -18,7 +18,7 @@ class HistoryRepository @Inject constructor(
     ) = performTransaction(completionBlock) { remote.getHistory() }
 
     fun likeRecipe(
-        favorite: SavedRecipeDomain,
+        favorite: Favorites,
         completionBlock: (History) -> Unit
     ) = performTransaction(completionBlock) { remote.likeRecipe(favorite) }
 
@@ -29,14 +29,14 @@ class HistoryRepository @Inject constructor(
 
 interface IHistoryRemote {
     suspend fun getHistory(): List<History>
-    suspend fun likeRecipe(favorite: SavedRecipeDomain): History
+    suspend fun likeRecipe(favorite: Favorites): History
     suspend fun clearHistory()
 }
 
 class HistoryRemote @Inject constructor(
     private val recipeDao: RecipeDao,
     private val historyDao: HistoryDao,
-    private val savedRecipeDao: SavedRecipeDao,
+    private val savedRecipeDao: FavoritesDao,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : IHistoryRemote {
 
@@ -46,7 +46,7 @@ class HistoryRemote @Inject constructor(
         }
     }
 
-    override suspend fun likeRecipe(favorite: SavedRecipeDomain): History {
+    override suspend fun likeRecipe(favorite: Favorites): History {
         val recipe = favorite.recipe
         return withContext(dispatcher) {
             if (savedRecipeDao.recipeExists(recipe)) {

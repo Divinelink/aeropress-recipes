@@ -5,7 +5,7 @@ import aeropresscipe.divinelink.aeropress.base.HomeActivity.Companion.PAD_BOTTOM
 import aeropresscipe.divinelink.aeropress.base.TimerViewCallback
 import aeropresscipe.divinelink.aeropress.databinding.FragmentHistoryBinding
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
-import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.EmptyType
+import aeropresscipe.divinelink.aeropress.favorites.adapter.EmptyType
 import aeropresscipe.divinelink.aeropress.timer.TimerFlow
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
 import android.content.Context

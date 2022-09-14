@@ -38,7 +38,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideSavedRecipeDao(db: HomeDatabase) = db.savedRecipeDao()
+    fun provideSavedRecipeDao(db: HomeDatabase) = db.favoritesDao()
 
     @ApplicationContext
     @Provides

@@ -1,4 +1,4 @@
-package aeropresscipe.divinelink.aeropress.savedrecipes;
+package aeropresscipe.divinelink.aeropress.favorites;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

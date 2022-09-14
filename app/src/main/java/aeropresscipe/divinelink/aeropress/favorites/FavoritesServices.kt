@@ -1,4 +1,4 @@
-package aeropresscipe.divinelink.aeropress.savedrecipes
+package aeropresscipe.divinelink.aeropress.favorites
 
 import aeropresscipe.divinelink.aeropress.base.di.IoDispatcher
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
@@ -7,31 +7,31 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-interface ISavedRecipesServices {
-    suspend fun getFavorites(): List<SavedRecipeDomain>
-    suspend fun deleteRecipe(recipe: Recipe): List<SavedRecipeDomain>
+interface IFavoritesServices {
+    suspend fun getFavorites(): List<Favorites>
+    suspend fun deleteRecipe(recipe: Recipe): List<Favorites>
 }
 
-class SavedRecipesServices @Inject constructor(
+class FavoritesServices @Inject constructor(
     private val historyDao: HistoryDao,
-    private val savedRecipeDao: SavedRecipeDao,
+    private val favoritesDao: FavoritesDao,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
-) : ISavedRecipesServices {
-    override suspend fun getFavorites(): List<SavedRecipeDomain> {
+) : IFavoritesServices {
+    override suspend fun getFavorites(): List<Favorites> {
         return withContext(dispatcher) {
-            savedRecipeDao.savedRecipes
+            favoritesDao.favorites
         }
     }
 
-    override suspend fun deleteRecipe(recipe: Recipe): List<SavedRecipeDomain> {
+    override suspend fun deleteRecipe(recipe: Recipe): List<Favorites> {
         return withContext(dispatcher) {
-            val recipes = savedRecipeDao
+            val recipes = favoritesDao
             val history = historyDao
 
             recipes.delete(recipe)
             history.updateLike(recipe = recipe, false)
 
-            return@withContext recipes.savedRecipes
+            return@withContext recipes.favorites
         }
     }
 }

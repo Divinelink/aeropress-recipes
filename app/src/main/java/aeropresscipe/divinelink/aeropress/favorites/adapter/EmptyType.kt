@@ -1,4 +1,4 @@
-package aeropresscipe.divinelink.aeropress.savedrecipes.adapter
+package aeropresscipe.divinelink.aeropress.favorites.adapter
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.util.mapping.EmptyMappingModel

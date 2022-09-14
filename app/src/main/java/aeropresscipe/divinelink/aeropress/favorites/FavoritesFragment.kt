@@ -1,4 +1,4 @@
-package aeropresscipe.divinelink.aeropress.savedrecipes
+package aeropresscipe.divinelink.aeropress.favorites
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.base.HomeActivity.Companion.PAD_BOTTOM_OF_RECYCLER
@@ -6,8 +6,8 @@ import aeropresscipe.divinelink.aeropress.base.TimerViewCallback
 import aeropresscipe.divinelink.aeropress.databinding.FragmentSavedRecipesBinding
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.history.HistoryFragment
-import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.EmptyType
-import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.FavoriteItem
+import aeropresscipe.divinelink.aeropress.favorites.adapter.EmptyType
+import aeropresscipe.divinelink.aeropress.favorites.adapter.FavoriteItem
 import aeropresscipe.divinelink.aeropress.timer.TimerFlow
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
 import android.content.Context
@@ -31,17 +31,17 @@ import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SavedRecipesFragment : Fragment(),
-    SavedRecipesStateHandler,
-    ISavedRecipesViewModel,
+class FavoritesFragment : Fragment(),
+    FavoritesStateHandler,
+    IFavoritesViewModel,
     TimerViewCallback {
     private var binding: FragmentSavedRecipesBinding? = null
 
     private lateinit var callback: HistoryFragment.Callback
-    private lateinit var viewModel: SavedRecipesViewModel
+    private lateinit var viewModel: FavoritesViewModel
 
     @Inject
-    lateinit var assistedFactory: SavedTimerViewModelAssistedFactory
+    lateinit var assistedFactory: FavoritesViewModelAssistedFactory
 
     private var mFadeAnimation: Animation? = null
     private val recipesAdapter = MappingAdapter()
@@ -57,8 +57,8 @@ class SavedRecipesFragment : Fragment(),
         binding = FragmentSavedRecipesBinding.inflate(inflater, container, false)
         val view = binding?.root
 
-        val viewModelFactory = SavedRecipesViewModelFactory(assistedFactory, WeakReference<ISavedRecipesViewModel>(this))
-        viewModel = ViewModelProvider(this, viewModelFactory)[SavedRecipesViewModel::class.java]
+        val viewModelFactory = FavoritesViewModelFactory(assistedFactory, WeakReference<IFavoritesViewModel>(this))
+        viewModel = ViewModelProvider(this, viewModelFactory)[FavoritesViewModel::class.java]
         viewModel.delegate = WeakReference(this)
         return view
     }
@@ -75,15 +75,15 @@ class SavedRecipesFragment : Fragment(),
         viewModel.refresh()
     }
 
-    override fun updateState(state: SavedRecipesState) {
+    override fun updateState(state: FavoritesState) {
         when (state) {
-            is SavedRecipesState.ErrorState -> handleErrorState()
-            is SavedRecipesState.InitialState -> handleInitialState()
-            is SavedRecipesState.LoadingState -> handleLoadingState()
-            is SavedRecipesState.RecipesState -> handleRecipesState(state)
-            is SavedRecipesState.EmptyRecipesState -> handleEmptyRecipesState()
-            is SavedRecipesState.RecipeDeletedState -> handleRecipeDeletedState(state)
-            is SavedRecipesState.StartNewBrewState -> handleStartNewBrew(state)
+            is FavoritesState.ErrorState -> handleErrorState()
+            is FavoritesState.InitialState -> handleInitialState()
+            is FavoritesState.LoadingState -> handleLoadingState()
+            is FavoritesState.RecipesState -> handleRecipesState(state)
+            is FavoritesState.EmptyRecipesState -> handleEmptyRecipesState()
+            is FavoritesState.RecipeDeletedState -> handleRecipeDeletedState(state)
+            is FavoritesState.StartNewBrewState -> handleStartNewBrew(state)
         }
     }
 
@@ -99,11 +99,11 @@ class SavedRecipesFragment : Fragment(),
         // Intentionally Blank.
     }
 
-    override fun handleRecipeDeletedState(state: SavedRecipesState.RecipeDeletedState) {
+    override fun handleRecipeDeletedState(state: FavoritesState.RecipeDeletedState) {
         recipesAdapter.submitList(state.recipes)
     }
 
-    override fun handleStartNewBrew(state: SavedRecipesState.StartNewBrewState) {
+    override fun handleStartNewBrew(state: FavoritesState.StartNewBrewState) {
         callback.onUpdateRecipe(state.recipe, TimerFlow.START, true)
     }
 
@@ -111,7 +111,7 @@ class SavedRecipesFragment : Fragment(),
         recipesAdapter.submitList(listOf(EmptyType.EmptyFavorites))
     }
 
-    override fun handleRecipesState(state: SavedRecipesState.RecipesState) {
+    override fun handleRecipesState(state: FavoritesState.RecipesState) {
         mFadeAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in_favourites)
         binding?.recyclerView?.animation = mFadeAnimation
         recipesAdapter.submitList(state.recipes)
@@ -135,7 +135,7 @@ class SavedRecipesFragment : Fragment(),
         }
 
         FavoriteItem.register(recipesAdapter,
-            onActionClicked = { recipe: SavedRecipeDomain, swipeAction: SwipeAction ->
+            onActionClicked = { recipe: Favorites, swipeAction: SwipeAction ->
                 when (swipeAction.actionId) {
                     R.id.delete -> showDeleteRecipeDialog(recipe.recipe)
                     R.id.brew -> viewModel.startBrew(recipe.recipe)
@@ -152,8 +152,8 @@ class SavedRecipesFragment : Fragment(),
 
     companion object {
         @JvmStatic
-        fun newInstance(): SavedRecipesFragment {
-            val fragment = SavedRecipesFragment()
+        fun newInstance(): FavoritesFragment {
+            val fragment = FavoritesFragment()
             val args = Bundle()
             fragment.arguments = args
             return fragment

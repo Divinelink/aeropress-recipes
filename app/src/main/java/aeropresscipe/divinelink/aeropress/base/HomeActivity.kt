@@ -13,7 +13,7 @@ import aeropresscipe.divinelink.aeropress.home.HomeViewModel
 import aeropresscipe.divinelink.aeropress.home.HomeViewModelAssistedFactory
 import aeropresscipe.divinelink.aeropress.home.HomeViewModelFactory
 import aeropresscipe.divinelink.aeropress.home.IHomeViewModel
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipesFragment
+import aeropresscipe.divinelink.aeropress.favorites.FavoritesFragment
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
 import aeropresscipe.divinelink.aeropress.timer.TimerFlow
 import android.annotation.SuppressLint
@@ -47,7 +47,7 @@ class HomeActivity : AppCompatActivity(),
     private var selectedIndex = 0
 
     private lateinit var recipeFragment: RecipeFragment
-    private lateinit var favoritesFragment: SavedRecipesFragment
+    private lateinit var favoritesFragment: FavoritesFragment
     private lateinit var historyFragment: HistoryFragment
 
     @Inject
@@ -71,7 +71,7 @@ class HomeActivity : AppCompatActivity(),
 
         if (savedInstanceState == null) {
             recipeFragment = RecipeFragment.newInstance()
-            favoritesFragment = SavedRecipesFragment.newInstance()
+            favoritesFragment = FavoritesFragment.newInstance()
             historyFragment = HistoryFragment.newInstance()
             supportFragmentManager.beginTransaction()
                 .add(R.id.fragment, recipeFragment, RECIPE_TAG)
@@ -82,7 +82,7 @@ class HomeActivity : AppCompatActivity(),
             selectedIndex = savedInstanceState.getInt(SELECTED_INDEX, 0)
 
             recipeFragment = supportFragmentManager.findFragmentByTag(RECIPE_TAG) as RecipeFragment
-            favoritesFragment = supportFragmentManager.findFragmentByTag(FAVORITES_TAG) as SavedRecipesFragment
+            favoritesFragment = supportFragmentManager.findFragmentByTag(FAVORITES_TAG) as FavoritesFragment
             historyFragment = supportFragmentManager.findFragmentByTag(HISTORY_TAG) as HistoryFragment
         }
 

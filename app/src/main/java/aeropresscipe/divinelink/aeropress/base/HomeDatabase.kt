@@ -4,15 +4,15 @@ import aeropresscipe.divinelink.aeropress.recipe.RecipeDao
 import aeropresscipe.divinelink.aeropress.recipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.history.History
 import aeropresscipe.divinelink.aeropress.history.HistoryDao
-import aeropresscipe.divinelink.aeropress.savedrecipes.Converters
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDao
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
+import aeropresscipe.divinelink.aeropress.favorites.Converters
+import aeropresscipe.divinelink.aeropress.favorites.FavoritesDao
+import aeropresscipe.divinelink.aeropress.favorites.Favorites
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @Database(
-    entities = [DiceDomain::class, SavedRecipeDomain::class, History::class],
+    entities = [DiceDomain::class, Favorites::class, History::class],
     version = HomeDatabase.LATEST_VERSION,
     exportSchema = true
 )
@@ -22,7 +22,7 @@ import androidx.room.TypeConverters
 abstract class HomeDatabase : RoomDatabase() {
 
     abstract fun recipeDao(): RecipeDao
-    abstract fun savedRecipeDao(): SavedRecipeDao
+    abstract fun favoritesDao(): FavoritesDao
     abstract fun historyDao(): HistoryDao
 
     companion object {

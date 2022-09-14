@@ -6,7 +6,7 @@ import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCa
 import aeropresscipe.divinelink.aeropress.databinding.EmptyRecyclerLayoutBinding
 import aeropresscipe.divinelink.aeropress.databinding.ViewSwipeRecipeCardBinding
 import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
-import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.EmptyType
+import aeropresscipe.divinelink.aeropress.favorites.adapter.EmptyType
 import aeropresscipe.divinelink.aeropress.util.mapping.LayoutFactory
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingViewHolder

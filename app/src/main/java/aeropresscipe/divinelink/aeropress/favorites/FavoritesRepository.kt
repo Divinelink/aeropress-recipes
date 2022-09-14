@@ -1,19 +1,19 @@
-package aeropresscipe.divinelink.aeropress.savedrecipes
+package aeropresscipe.divinelink.aeropress.favorites
 
 import aeropresscipe.divinelink.aeropress.base.mvi.logic.BaseRepository
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import javax.inject.Inject
 
-class SavedRecipesRepository @Inject constructor(
-    private val dbRemote: SavedRecipesServices
+class FavoritesRepository @Inject constructor(
+    private val dbRemote: FavoritesServices
 ) : BaseRepository() {
 
     fun getFavorites(
-        completionBlock: (List<SavedRecipeDomain>?) -> Unit
+        completionBlock: (List<Favorites>?) -> Unit
     ) = performTransaction(completionBlock) { dbRemote.getFavorites() }
 
     fun deleteRecipe(
         recipe: Recipe,
-        completionBlock: (List<SavedRecipeDomain>?) -> Unit
+        completionBlock: (List<Favorites>?) -> Unit
     ) = performTransaction(completionBlock) { dbRemote.deleteRecipe(recipe) }
 }
