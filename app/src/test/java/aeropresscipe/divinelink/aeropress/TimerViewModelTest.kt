@@ -150,7 +150,7 @@ class TimerViewModelTest {
 
     @Test
     fun `given bloom state, when update timer, then I expect brew state`() = runTest {
-        val response = DiceDomain(recipeModel(brewTime = 1, bloomTime = 1), isBrewing = true)
+        val response = DiceDomain(recipeModel(brewTime = 1, bloomTime = 1, brewWaterAmount = 200, bloomWater = 50), isBrewing = true)
 
         transferableModel.recipe = response.recipe
 
@@ -161,7 +161,7 @@ class TimerViewModelTest {
         assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.BrewWithBloom)
         assertEquals(viewModel.statesList[3], TimerState.UpdateDescriptionState(BrewState.BrewWithBloom(
             water = response.recipe.remainingWater(),
-            time = response.recipe.brewTime))
+            time = response.recipe.brewTime, totalWater = response.recipe.brewWaterAmount))
         )
     }
 

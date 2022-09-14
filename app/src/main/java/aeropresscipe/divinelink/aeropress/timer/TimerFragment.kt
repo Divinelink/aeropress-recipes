@@ -128,12 +128,12 @@ class TimerFragment : Fragment(),
     }
 
     override fun handleUpdateDescriptionState(state: TimerState.UpdateDescriptionState) {
-        if (state.brewState.animate) {
+        if (state.animateDescription) {
             binding?.timerHeader updateTextWithFade resources.getString(state.brewState.title)
-            binding?.waterDescription updateTextWithFade resources.getString(state.brewState.description, state.brewState.brewWater)
+            binding?.waterDescription updateTextWithFade resources.getString(state.brewState.description, state.brewState.phaseWater, state.brewState.totalWater)
         } else {
             binding?.timerHeader?.text = resources.getString(state.brewState.title)
-            binding?.waterDescription?.text = resources.getString(state.brewState.description, state.brewState.brewWater)
+            binding?.waterDescription?.text = resources.getString(state.brewState.description, state.brewState.phaseWater, state.brewState.totalWater)
         }
     }
 

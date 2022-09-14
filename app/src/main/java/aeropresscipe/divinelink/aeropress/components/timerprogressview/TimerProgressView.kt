@@ -72,7 +72,7 @@ class TimerProgressView : FrameLayout,
 //            binding.stateDescription updateTextWithFade resources.getString(state.brewState.description, state.brewState.brewWater)
 //        } else {
         binding.brewStateTitle.text = resources.getString(state.brewState.title)
-        binding.stateDescription.text = resources.getString(state.brewState.description, state.brewState.brewWater)
+        binding.stateDescription.text = resources.getString(state.brewState.description, state.brewState.phaseWater, state.brewState.totalWater)
 //        }
     }
 

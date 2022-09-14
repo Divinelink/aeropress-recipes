@@ -34,7 +34,7 @@
     <string name="finishPhaseTitle">Your timer is finished!</string>
     <string name="finishPhaseDescription">Click for more details.</string>
 
-    <string name="brewPhaseWithBloom">Pour in the remaining %dg of water</string>
+    <string name="brewPhaseWithBloom">Pour in the remaining %dg for a total of %dg water</string>
     <string name="brewPhaseNoBloom">Pour in %dg of water</string>
 
     <string name="enjoyCoffee">Your coffee is ready.\nPress &amp; enjoy!</string>

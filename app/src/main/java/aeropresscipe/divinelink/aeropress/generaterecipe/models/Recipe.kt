@@ -31,7 +31,7 @@ fun Recipe.getBrewingStates(): MutableList<BrewState> {
     val brewStates: MutableList<BrewState> = mutableListOf()
     if (this.withBloom()) {
         brewStates.add(BrewState.Bloom(water = this.bloomWater, time = this.bloomTime))
-        brewStates.add(BrewState.BrewWithBloom(water = this.remainingWater(), time = this.brewTime))
+        brewStates.add(BrewState.BrewWithBloom(water = this.remainingWater(), time = this.brewTime, totalWater = this.brewWaterAmount))
     } else {
         brewStates.add(BrewState.Brew(water = this.brewWaterAmount, time = this.brewTime))
     }
