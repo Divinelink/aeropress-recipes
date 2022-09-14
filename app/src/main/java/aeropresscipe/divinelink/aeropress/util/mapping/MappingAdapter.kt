@@ -32,7 +32,7 @@ import gr.divinelink.core.util.views.NoCrossfadeChangeDefaultAnimator
  */
 
 
-class MappingAdapter : ListAdapter<MappingModel, MappingViewHolder<MappingModel>>(MappingDiffCallback()) {
+open class MappingAdapter : ListAdapter<MappingModel, MappingViewHolder<MappingModel>>(MappingDiffCallback()) {
     var factories: MutableMap<Int, Factory<*>> = HashMap()
     var itemTypes: MutableMap<Any, Int> = HashMap()
     var typeCount: Int = 0
