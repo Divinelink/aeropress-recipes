@@ -1,10 +1,10 @@
-package aeropresscipe.divinelink.aeropress.generaterecipe.factory;
+package aeropresscipe.divinelink.aeropress.recipe.factory;
 
 import java.util.ArrayList;
 
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.BrewMethod;
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.CoffeeGrindSize;
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.RecipeDice;
+import aeropresscipe.divinelink.aeropress.recipe.models.BrewMethod;
+import aeropresscipe.divinelink.aeropress.recipe.models.CoffeeGrindSize;
+import aeropresscipe.divinelink.aeropress.recipe.models.RecipeDice;
 
 abstract class Dice {
 

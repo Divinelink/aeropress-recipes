@@ -7,7 +7,7 @@
     android:background="@color/colorBackground"
     android:fitsSystemWindows="true"
     android:tag="@string/recipe"
-    tools:context=".generaterecipe.RecipeFragment">
+    tools:context=".recipe.RecipeFragment">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_scroll"

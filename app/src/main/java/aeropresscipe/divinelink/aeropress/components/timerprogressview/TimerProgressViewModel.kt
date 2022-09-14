@@ -2,9 +2,9 @@ package aeropresscipe.divinelink.aeropress.components.timerprogressview
 
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.getBrewTimeLeft
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.getBrewingStates
+import aeropresscipe.divinelink.aeropress.recipe.models.DiceDomain
+import aeropresscipe.divinelink.aeropress.recipe.models.getBrewTimeLeft
+import aeropresscipe.divinelink.aeropress.recipe.models.getBrewingStates
 import aeropresscipe.divinelink.aeropress.timer.TimerRepository
 import aeropresscipe.divinelink.aeropress.timer.util.BrewPhase
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState

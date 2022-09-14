@@ -4,7 +4,7 @@ import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.base.HomeActivity.Companion.PAD_BOTTOM_OF_RECYCLER
 import aeropresscipe.divinelink.aeropress.base.TimerViewCallback
 import aeropresscipe.divinelink.aeropress.databinding.FragmentSavedRecipesBinding
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.history.HistoryFragment
 import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.EmptyType
 import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.FavoriteItem

@@ -2,7 +2,7 @@ package aeropresscipe.divinelink.aeropress.timer
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.databinding.ActivityTimerBinding
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.TimerFragment.Companion.FLOW
 import aeropresscipe.divinelink.aeropress.timer.TimerFragment.Companion.newInstance
 import android.content.Context

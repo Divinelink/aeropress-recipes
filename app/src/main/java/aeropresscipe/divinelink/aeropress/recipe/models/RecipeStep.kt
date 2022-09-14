@@ -1,4 +1,4 @@
-package aeropresscipe.divinelink.aeropress.generaterecipe.models
+package aeropresscipe.divinelink.aeropress.recipe.models
 
 import aeropresscipe.divinelink.aeropress.R
 import androidx.annotation.StringRes

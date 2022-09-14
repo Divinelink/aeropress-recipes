@@ -1,4 +1,4 @@
-package aeropresscipe.divinelink.aeropress.generaterecipe.models
+package aeropresscipe.divinelink.aeropress.recipe.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

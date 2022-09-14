@@ -1,7 +1,7 @@
 package aeropresscipe.divinelink.aeropress.savedrecipes
 
 import aeropresscipe.divinelink.aeropress.base.mvi.logic.BaseRepository
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import javax.inject.Inject
 
 class SavedRecipesRepository @Inject constructor(

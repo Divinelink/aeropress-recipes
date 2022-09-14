@@ -2,9 +2,9 @@ package aeropresscipe.divinelink.aeropress.home
 
 import aeropresscipe.divinelink.aeropress.base.di.IoDispatcher
 import aeropresscipe.divinelink.aeropress.base.mvi.logic.BaseRepository
-import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeDao
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.recipe.RecipeDao
+import aeropresscipe.divinelink.aeropress.recipe.models.DiceDomain
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import timber.log.Timber

@@ -2,7 +2,7 @@ package aeropresscipe.divinelink.aeropress.components.saverecipecard
 
 import aeropresscipe.divinelink.aeropress.components.snackbar.Notification
 import aeropresscipe.divinelink.aeropress.databinding.ViewSaveRecipeCardBinding
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
 import android.content.Context
 import android.util.AttributeSet

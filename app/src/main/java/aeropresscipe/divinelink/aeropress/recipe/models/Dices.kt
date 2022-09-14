@@ -1,4 +1,4 @@
-package aeropresscipe.divinelink.aeropress.generaterecipe.models
+package aeropresscipe.divinelink.aeropress.recipe.models
 
 enum class BrewMethod(val method: String) {
     STANDARD("Standard"),

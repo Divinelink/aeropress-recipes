@@ -1,7 +1,7 @@
 package aeropresscipe.divinelink.aeropress.savedrecipes
 
 import aeropresscipe.divinelink.aeropress.base.di.IoDispatcher
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.history.HistoryDao
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

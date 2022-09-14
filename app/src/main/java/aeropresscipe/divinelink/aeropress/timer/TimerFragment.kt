@@ -3,7 +3,7 @@ package aeropresscipe.divinelink.aeropress.timer
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.databinding.FragmentTimerBinding
 import aeropresscipe.divinelink.aeropress.finish.FinishActivity
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
 import aeropresscipe.divinelink.aeropress.timer.util.TimerViewModelAssistedFactory
 import aeropresscipe.divinelink.aeropress.timer.util.TimerViewModelFactory

@@ -1,11 +1,11 @@
 package aeropresscipe.divinelink.aeropress
 
 import aeropresscipe.divinelink.aeropress.base.di.Preferences
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.BrewMethod
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.CoffeeGrindSize
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.remainingWater
+import aeropresscipe.divinelink.aeropress.recipe.models.BrewMethod
+import aeropresscipe.divinelink.aeropress.recipe.models.CoffeeGrindSize
+import aeropresscipe.divinelink.aeropress.recipe.models.DiceDomain
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.recipe.models.remainingWater
 import aeropresscipe.divinelink.aeropress.timer.ITimerViewModel
 import aeropresscipe.divinelink.aeropress.timer.TimerIntents
 import aeropresscipe.divinelink.aeropress.timer.TimerRepository

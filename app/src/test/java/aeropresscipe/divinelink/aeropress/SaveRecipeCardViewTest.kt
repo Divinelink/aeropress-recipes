@@ -6,9 +6,9 @@ import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCa
 import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
 import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.LIKE_MAX_FRAME
 import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardViewModel
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.BrewMethod
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.CoffeeGrindSize
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.recipe.models.BrewMethod
+import aeropresscipe.divinelink.aeropress.recipe.models.CoffeeGrindSize
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.history.LikeSnackBar
 import aeropresscipe.divinelink.aeropress.timer.TimerRepository
 import aeropresscipe.divinelink.aeropress.timer.TimerServices

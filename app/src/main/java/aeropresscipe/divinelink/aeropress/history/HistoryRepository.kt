@@ -2,11 +2,9 @@ package aeropresscipe.divinelink.aeropress.history
 
 import aeropresscipe.divinelink.aeropress.base.di.IoDispatcher
 import aeropresscipe.divinelink.aeropress.base.mvi.logic.BaseRepository
-import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeDao
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.recipe.RecipeDao
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDao
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
-import gr.divinelink.core.util.utils.DateUtil.getCurrentDate
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

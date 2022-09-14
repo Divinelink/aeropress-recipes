@@ -1,7 +1,7 @@
 package aeropresscipe.divinelink.aeropress.components.timerprogressview
 
 import aeropresscipe.divinelink.aeropress.databinding.ViewTimerProgressBinding
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
+import aeropresscipe.divinelink.aeropress.recipe.models.DiceDomain
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.util.AttributeSet

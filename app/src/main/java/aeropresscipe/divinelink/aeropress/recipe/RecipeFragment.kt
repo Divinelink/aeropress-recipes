@@ -1,4 +1,4 @@
-package aeropresscipe.divinelink.aeropress.generaterecipe
+package aeropresscipe.divinelink.aeropress.recipe
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.base.TimerViewCallback

@@ -2,7 +2,7 @@ package aeropresscipe.divinelink.aeropress.history
 
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipeDomain
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

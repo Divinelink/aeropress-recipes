@@ -1,8 +1,8 @@
-package aeropresscipe.divinelink.aeropress.generaterecipe
+package aeropresscipe.divinelink.aeropress.recipe
 
-import aeropresscipe.divinelink.aeropress.generaterecipe.factory.RecipeBuilder
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.recipe.factory.RecipeBuilder
+import aeropresscipe.divinelink.aeropress.recipe.models.DiceDomain
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy

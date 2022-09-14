@@ -1,14 +1,14 @@
-package aeropresscipe.divinelink.aeropress.generaterecipe
+package aeropresscipe.divinelink.aeropress.recipe
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
 import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
 import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.LIKE_MAX_FRAME
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.RecipeStep
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.buildSteps
+import aeropresscipe.divinelink.aeropress.recipe.models.DiceDomain
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.recipe.models.RecipeStep
+import aeropresscipe.divinelink.aeropress.recipe.models.buildSteps
 import aeropresscipe.divinelink.aeropress.history.LikeSnackBar
 import aeropresscipe.divinelink.aeropress.timer.TimerFlow
 import aeropresscipe.divinelink.aeropress.timer.TimerRepository

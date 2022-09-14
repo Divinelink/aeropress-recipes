@@ -1,6 +1,6 @@
 package aeropresscipe.divinelink.aeropress.history
 
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingModel

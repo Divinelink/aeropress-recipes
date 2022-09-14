@@ -1,8 +1,8 @@
-package aeropresscipe.divinelink.aeropress.generaterecipe.factory
+package aeropresscipe.divinelink.aeropress.recipe.factory
 
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Dices
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.RecipeDice
+import aeropresscipe.divinelink.aeropress.recipe.models.Dices
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.recipe.models.RecipeDice
 
 class RecipeBuilder {
     val recipe = Builder().build(

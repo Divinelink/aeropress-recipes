@@ -3,7 +3,7 @@ package aeropresscipe.divinelink.aeropress.finish
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.components.recipecard.RecipeCard
 import aeropresscipe.divinelink.aeropress.databinding.ActivityFinishBinding
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle

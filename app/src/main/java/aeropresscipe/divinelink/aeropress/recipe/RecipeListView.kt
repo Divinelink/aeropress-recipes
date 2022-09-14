@@ -1,8 +1,8 @@
-package aeropresscipe.divinelink.aeropress.generaterecipe
+package aeropresscipe.divinelink.aeropress.recipe
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.databinding.ListRecipeItemBinding
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.RecipeStep
+import aeropresscipe.divinelink.aeropress.recipe.models.RecipeStep
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View

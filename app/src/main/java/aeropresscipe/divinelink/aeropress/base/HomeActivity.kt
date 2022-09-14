@@ -3,8 +3,8 @@ package aeropresscipe.divinelink.aeropress.base
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.components.snackbar.Notification
 import aeropresscipe.divinelink.aeropress.databinding.ActivityHomeBinding
-import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeFragment
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.recipe.RecipeFragment
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.history.HistoryFragment
 import aeropresscipe.divinelink.aeropress.history.HistoryState
 import aeropresscipe.divinelink.aeropress.home.HomeState
