@@ -3,7 +3,7 @@ package aeropresscipe.divinelink.aeropress.base
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.components.snackbar.Notification
 import aeropresscipe.divinelink.aeropress.databinding.ActivityHomeBinding
-import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeFragment
+import aeropresscipe.divinelink.aeropress.generaterecipe.RecipeFragment
 import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.history.HistoryFragment
 import aeropresscipe.divinelink.aeropress.history.HistoryState
@@ -46,7 +46,7 @@ class HomeActivity : AppCompatActivity(),
     private val fragments: Array<out Fragment> get() = arrayOf(recipeFragment, favoritesFragment, historyFragment)
     private var selectedIndex = 0
 
-    private lateinit var recipeFragment: GenerateRecipeFragment
+    private lateinit var recipeFragment: RecipeFragment
     private lateinit var favoritesFragment: SavedRecipesFragment
     private lateinit var historyFragment: HistoryFragment
 
@@ -70,7 +70,7 @@ class HomeActivity : AppCompatActivity(),
 //        binding.bottomNavigation.setOnItemReselectedListener(onItemReselectedListener)
 
         if (savedInstanceState == null) {
-            recipeFragment = GenerateRecipeFragment.newInstance()
+            recipeFragment = RecipeFragment.newInstance()
             favoritesFragment = SavedRecipesFragment.newInstance()
             historyFragment = HistoryFragment.newInstance()
             supportFragmentManager.beginTransaction()
@@ -81,7 +81,7 @@ class HomeActivity : AppCompatActivity(),
         } else {
             selectedIndex = savedInstanceState.getInt(SELECTED_INDEX, 0)
 
-            recipeFragment = supportFragmentManager.findFragmentByTag(RECIPE_TAG) as GenerateRecipeFragment
+            recipeFragment = supportFragmentManager.findFragmentByTag(RECIPE_TAG) as RecipeFragment
             favoritesFragment = supportFragmentManager.findFragmentByTag(FAVORITES_TAG) as SavedRecipesFragment
             historyFragment = supportFragmentManager.findFragmentByTag(HISTORY_TAG) as HistoryFragment
         }

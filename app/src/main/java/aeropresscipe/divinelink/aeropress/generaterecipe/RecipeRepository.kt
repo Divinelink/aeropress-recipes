@@ -8,7 +8,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class GenerateRecipeRepository @Inject constructor(
+class RecipeRepository @Inject constructor(
     private val dbRemote: GenerateRecipeRemote,
 ) : BaseRepository() {
 

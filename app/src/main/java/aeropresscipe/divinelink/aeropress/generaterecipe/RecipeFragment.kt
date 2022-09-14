@@ -39,16 +39,16 @@ import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class GenerateRecipeFragment :
+class RecipeFragment :
     Fragment(),
-    IGenerateRecipeViewModel,
+    IRecipeViewModel,
     GenerateRecipeStateHandler,
     TimerViewCallback {
     private var binding: FragmentGenerateRecipeBinding? = null
 
     @Inject
-    lateinit var assistedFactory: GenerateRecipeViewModelAssistedFactory
-    private lateinit var viewModel: GenerateRecipeViewModel
+    lateinit var assistedFactory: RecipeViewModelAssistedFactory
+    private lateinit var viewModel: RecipeViewModel
     private lateinit var callback: HistoryFragment.Callback
     private val parentViewModel: HomeViewModel by activityViewModels()
 
@@ -69,8 +69,8 @@ class GenerateRecipeFragment :
         binding = FragmentGenerateRecipeBinding.inflate(inflater, container, false)
         val view = binding?.root
 
-        val viewModelFactory = GenerateRecipeViewModelFactory(assistedFactory, WeakReference<IGenerateRecipeViewModel>(this))
-        viewModel = ViewModelProvider(this, viewModelFactory)[GenerateRecipeViewModel::class.java]
+        val viewModelFactory = RecipeViewModelFactory(assistedFactory, WeakReference<IRecipeViewModel>(this))
+        viewModel = ViewModelProvider(this, viewModelFactory)[RecipeViewModel::class.java]
         viewModel.delegate = WeakReference(this)
         return view
     }
@@ -102,21 +102,21 @@ class GenerateRecipeFragment :
         binding?.coordinator?.updatePaddingAnimator(bottom = bottomPadding)
     }
 
-    override fun updateState(state: GenerateRecipeState) {
+    override fun updateState(state: RecipeState) {
         when (state) {
-            is GenerateRecipeState.InitialState -> handleInitialState()
-            is GenerateRecipeState.ErrorState -> handleErrorState(state)
-            is GenerateRecipeState.LoadingState -> handleLoadingState()
-            is GenerateRecipeState.ShowAlreadyBrewingState -> handleShowAlreadyBrewingState()
-            is GenerateRecipeState.ShowRecipeState -> handleShowRecipeState(state)
-            is GenerateRecipeState.RefreshRecipeState -> handleRefreshRecipeState(state)
-            is GenerateRecipeState.StartTimerState -> handleStartTimerState(state)
-            is GenerateRecipeState.HideResumeButtonState -> handleHideResumeButtonState()
-            is GenerateRecipeState.UpdateToolbarState -> handleUpdateToolbarState(state)
-            is GenerateRecipeState.ShowSnackBar -> handleShowSnackBar(state)
-            is GenerateRecipeState.UpdateSavedIndicator -> handleUpdateSavedIndicator(state)
-            is GenerateRecipeState.RecipeRemovedState -> handleRecipeRemovedState()
-            is GenerateRecipeState.RecipeSavedState -> handleRecipeSavedState()
+            is RecipeState.InitialState -> handleInitialState()
+            is RecipeState.ErrorState -> handleErrorState(state)
+            is RecipeState.LoadingState -> handleLoadingState()
+            is RecipeState.ShowAlreadyBrewingState -> handleShowAlreadyBrewingState()
+            is RecipeState.ShowRecipeState -> handleShowRecipeState(state)
+            is RecipeState.RefreshRecipeState -> handleRefreshRecipeState(state)
+            is RecipeState.StartTimerState -> handleStartTimerState(state)
+            is RecipeState.HideResumeButtonState -> handleHideResumeButtonState()
+            is RecipeState.UpdateToolbarState -> handleUpdateToolbarState(state)
+            is RecipeState.ShowSnackBar -> handleShowSnackBar(state)
+            is RecipeState.UpdateSavedIndicator -> handleUpdateSavedIndicator(state)
+            is RecipeState.RecipeRemovedState -> handleRecipeRemovedState()
+            is RecipeState.RecipeSavedState -> handleRecipeSavedState()
         }
     }
 
@@ -132,7 +132,7 @@ class GenerateRecipeFragment :
         // Nothing yet
     }
 
-    override fun handleErrorState(state: GenerateRecipeState.ErrorState) {
+    override fun handleErrorState(state: RecipeState.ErrorState) {
         // Nothing yet
     }
 
@@ -141,40 +141,40 @@ class GenerateRecipeFragment :
             .show()
     }
 
-    override fun handleShowRecipeState(state: GenerateRecipeState.ShowRecipeState) {
+    override fun handleShowRecipeState(state: RecipeState.ShowRecipeState) {
         Timber.d("Recipe updated. Set refresh to false.")
-        binding?.recipeList?.adapter = GenerateRecipeListView(
+        binding?.recipeList?.adapter = RecipeListView(
             steps = state.steps,
             context = requireContext()
         )
         refresh = false
     }
 
-    override fun handleRefreshRecipeState(state: GenerateRecipeState.RefreshRecipeState) {
+    override fun handleRefreshRecipeState(state: RecipeState.RefreshRecipeState) {
         binding?.recipeList?.startAnimation(adapterAnimation)
         MainScope().launch {
             delay(adapterAnimation.duration)
-            binding?.recipeList?.adapter = GenerateRecipeListView(
+            binding?.recipeList?.adapter = RecipeListView(
                 steps = state.steps,
                 context = requireContext()
             )
         }
     }
 
-    override fun handleStartTimerState(state: GenerateRecipeState.StartTimerState) {
+    override fun handleStartTimerState(state: RecipeState.StartTimerState) {
         callback.onUpdateRecipe(state.recipe, state.flow, false)
     }
 
-    override fun handleUpdateToolbarState(state: GenerateRecipeState.UpdateToolbarState) {
+    override fun handleUpdateToolbarState(state: RecipeState.UpdateToolbarState) {
         binding?.toolbar?.title = resources.getString(state.title)
     }
 
-    override fun handleUpdateSavedIndicator(state: GenerateRecipeState.UpdateSavedIndicator) {
+    override fun handleUpdateSavedIndicator(state: RecipeState.UpdateSavedIndicator) {
         lottieFavorite?.setMinAndMaxFrame(state.frame, state.frame)
         lottieFavorite?.playAnimation()
     }
 
-    override fun handleShowSnackBar(state: GenerateRecipeState.ShowSnackBar) {
+    override fun handleShowSnackBar(state: RecipeState.ShowSnackBar) {
         Notification.make(binding?.generateRecipeButton, resources.getString(state.value.string, getString(state.value.favorites)))
             .show()
     }
@@ -234,9 +234,9 @@ class GenerateRecipeFragment :
 
     companion object {
         @JvmStatic
-        fun newInstance(): GenerateRecipeFragment {
+        fun newInstance(): RecipeFragment {
             val args = Bundle()
-            val fragment = GenerateRecipeFragment()
+            val fragment = RecipeFragment()
             fragment.arguments = args
             return fragment
         }

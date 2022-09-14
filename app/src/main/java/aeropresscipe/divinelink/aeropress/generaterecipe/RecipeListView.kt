@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import gr.divinelink.core.util.extensions.toFahrenheit
 import gr.divinelink.core.util.extensions.toSpanned
 
-class GenerateRecipeListView(
+class RecipeListView(
     private var steps: MutableList<RecipeStep>,
     context: Context,
 ) : ArrayAdapter<RecipeStep>(
