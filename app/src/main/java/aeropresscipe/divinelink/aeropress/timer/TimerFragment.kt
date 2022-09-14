@@ -106,8 +106,8 @@ class TimerFragment : Fragment(),
         when (state) {
             is TimerState.InitialState -> handleInitialState()
             is TimerState.ErrorState -> handleErrorState(state)
-            is TimerState.StartProgressBar -> handleStartProgressBar(state)
-            is TimerState.StartTimer -> handleStartTimer(state)
+            is TimerState.UpdateProgressBar -> handleUpdateProgressBar(state)
+            is TimerState.UpdateDescriptionState -> handleUpdateDescriptionState(state)
             is TimerState.FinishState -> handleFinishState()
             is TimerState.ExitState -> handleExitState()
             is TimerState.PlaySoundState -> handlePlaySoundState()
@@ -127,8 +127,8 @@ class TimerFragment : Fragment(),
         // Do nothing yet.
     }
 
-    override fun handleStartTimer(state: TimerState.StartTimer) {
-        if (state.animate) {
+    override fun handleUpdateDescriptionState(state: TimerState.UpdateDescriptionState) {
+        if (state.brewState.animate) {
             binding?.timerHeader updateTextWithFade resources.getString(state.brewState.title)
             binding?.waterDescription updateTextWithFade resources.getString(state.brewState.description, state.brewState.brewWater)
         } else {
@@ -137,7 +137,7 @@ class TimerFragment : Fragment(),
         }
     }
 
-    override fun handleStartProgressBar(state: TimerState.StartProgressBar) {
+    override fun handleUpdateProgressBar(state: TimerState.UpdateProgressBar) {
         binding?.progressBar?.max = state.maxValue
         milliSecondsLeft = state.timeInMilliseconds
 

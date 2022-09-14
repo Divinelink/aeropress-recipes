@@ -87,14 +87,14 @@ class TimerViewModelTest {
         assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Bloom)
         assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.BrewWithBloom)
         assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Brew)
-        assertEquals(viewModel.statesList[1], TimerState.StartTimer(BrewState.Bloom(
+        assertEquals(viewModel.statesList[1], TimerState.UpdateDescriptionState(BrewState.Bloom(
             water = response.recipe.bloomWater,
-            time = response.recipe.bloomTime), false)
+            time = response.recipe.bloomTime))
         )
     }
 
     @Test
-    fun `given bloom state, when I resume then I expect StartProgressBar state`() = runTest {
+    fun `given bloom state, when I resume then I expect UpdateProgressBar state`() = runTest {
         // Given
         val response = DiceDomain(recipeModel(bloomTime = 5, brewTime = 10), isBrewing = true,
             timeStartedMillis = System.currentTimeMillis()
@@ -106,11 +106,11 @@ class TimerViewModelTest {
         viewModel.resume()
         // Then
         assertTrue(viewModel.statesList[0] is TimerState.InitialState)
-        assertEquals(viewModel.statesList[1], TimerState.StartTimer(BrewState.Bloom(
+        assertEquals(viewModel.statesList[1], TimerState.UpdateDescriptionState(BrewState.Bloom(
             water = response.recipe.bloomWater,
-            time = response.recipe.bloomTime), false)
+            time = response.recipe.bloomTime))
         )
-        assertTrue(viewModel.statesList[2] is TimerState.StartProgressBar)
+        assertTrue(viewModel.statesList[2] is TimerState.UpdateProgressBar)
     }
 
     @Test
@@ -159,9 +159,9 @@ class TimerViewModelTest {
         assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Bloom)
         viewModel.updateTimer()
         assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.BrewWithBloom)
-        assertEquals(viewModel.statesList[3], TimerState.StartTimer(BrewState.BrewWithBloom(
+        assertEquals(viewModel.statesList[3], TimerState.UpdateDescriptionState(BrewState.BrewWithBloom(
             water = response.recipe.remainingWater(),
-            time = response.recipe.brewTime), true)
+            time = response.recipe.brewTime))
         )
     }
 
@@ -175,8 +175,8 @@ class TimerViewModelTest {
         viewModel.startBrew()
         assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Brew)
         assertTrue(viewModel.statesList[0] is TimerState.InitialState)
-        assertTrue(viewModel.statesList[1] is TimerState.StartTimer)
-        assertTrue(viewModel.statesList[2] is TimerState.StartProgressBar)
+        assertTrue(viewModel.statesList[1] is TimerState.UpdateDescriptionState)
+        assertTrue(viewModel.statesList[2] is TimerState.UpdateProgressBar)
     }
 
     @Test
@@ -212,7 +212,7 @@ class TimerViewModelTest {
         viewModel.init(transferableModel)
         viewModel.updateTimer()
         assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.BrewWithBloom)
-        assertTrue(viewModel.state is TimerState.StartProgressBar)
+        assertTrue(viewModel.state is TimerState.UpdateProgressBar)
     }
 
     @Test
