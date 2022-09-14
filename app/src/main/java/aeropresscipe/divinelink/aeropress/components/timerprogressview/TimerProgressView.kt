@@ -67,13 +67,9 @@ class TimerProgressView : FrameLayout,
 
     override fun handleUpdateDescriptionState(state: TimerProgressState.UpdateDescriptionState) {
         callback?.onTimerAttached()
-//        if (state.brewState.animate) {
-//            binding.brewStateTitle updateTextWithFade resources.getString(state.brewState.title)
-//            binding.stateDescription updateTextWithFade resources.getString(state.brewState.description, state.brewState.brewWater)
-//        } else {
         binding.brewStateTitle.text = resources.getString(state.brewState.title)
         binding.stateDescription.text = resources.getString(state.brewState.description, state.brewState.phaseWater, state.brewState.totalWater)
-//        }
+        binding.stateDescription.isSelected = true
     }
 
     override fun onDetachedFromWindow() {
