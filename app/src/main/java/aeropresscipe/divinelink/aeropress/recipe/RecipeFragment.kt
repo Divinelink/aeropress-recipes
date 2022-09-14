@@ -7,7 +7,7 @@ import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCa
 import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.LIKE_MAX_FRAME
 import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.LIKE_MIN_FRAME
 import aeropresscipe.divinelink.aeropress.components.snackbar.Notification
-import aeropresscipe.divinelink.aeropress.databinding.FragmentGenerateRecipeBinding
+import aeropresscipe.divinelink.aeropress.databinding.FragmentRecipeBinding
 import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
 import aeropresscipe.divinelink.aeropress.history.HistoryFragment
 import aeropresscipe.divinelink.aeropress.home.HomeViewModel
@@ -46,7 +46,7 @@ class RecipeFragment :
     IRecipeViewModel,
     GenerateRecipeStateHandler,
     TimerViewCallback {
-    private var binding: FragmentGenerateRecipeBinding? = null
+    private var binding: FragmentRecipeBinding? = null
 
     @Inject
     lateinit var assistedFactory: RecipeViewModelAssistedFactory
@@ -68,7 +68,7 @@ class RecipeFragment :
     var refresh: Boolean = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentGenerateRecipeBinding.inflate(inflater, container, false)
+        binding = FragmentRecipeBinding.inflate(inflater, container, false)
         val view = binding?.root
 
         val viewModelFactory = RecipeViewModelFactory(assistedFactory, WeakReference<IRecipeViewModel>(this))
