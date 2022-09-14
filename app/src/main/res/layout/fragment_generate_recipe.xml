@@ -96,7 +96,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_scrollFlags="scroll|enterAlways">
 
-        <!-- set 4dp when Settings are added. -->
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -104,7 +103,7 @@
             android:clipChildren="false"
             android:clipToPadding="false"
             android:paddingStart="0dp"
-            android:paddingEnd="12dp"
+            android:paddingEnd="4dp"
             android:theme="?actionBarStyle"
             app:menu="@menu/recipe_menu"
             tools:title="@string/good_morning" />
