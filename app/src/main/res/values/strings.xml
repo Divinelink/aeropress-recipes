@@ -93,4 +93,7 @@
 
     <string name="settings">Settings</string>
 
+    <!-- preferences.xml -->
+    <string name="preferences__none">None</string>
+
 </resources>
