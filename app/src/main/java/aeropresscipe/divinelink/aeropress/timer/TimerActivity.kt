@@ -30,8 +30,8 @@ class TimerActivity :
             onBackPressed()
         }
 
-        val recipe = intent.getSerializableExtra(EXTRA_RECIPE) as Recipe?
-        val flow = intent.getSerializableExtra(FLOW) as TimerFlow
+        val recipe = intent.getSerializable<Recipe>(EXTRA_RECIPE)
+        val flow = intent.getSerializable<TimerFlow>(FLOW)
 
         getFragment(recipe, flow)
     }
