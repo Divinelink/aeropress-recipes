@@ -65,7 +65,7 @@ class FavoritesFragment : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.toolbar?.setNavigationOnClickListener { activity?.onBackPressed() }
+        binding?.toolbar?.setNavigationOnClickListener { callback.handleBackPressed() }
         binding?.recyclerView?.padding(bottom = recyclerViewPadding)
         bindAdapter()
     }

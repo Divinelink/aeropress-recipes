@@ -215,18 +215,18 @@ class HomeActivity : AppCompatActivity(),
             .show()
     }
 
-    override fun onUpdateRecipe(recipe: Recipe, flow: TimerFlow, update: Boolean) {
-        Timber.d("Recipe updated. Set refresh to true.")
-        recipeFragment.refresh = true
-        viewModel.startTimer(recipe, flow, update)
-    }
-
-    private fun handleBackPressed() {
+    override fun handleBackPressed() {
         if (binding.bottomNavigation.selectedItemId == R.id.recipe) {
             finish()
         } else {
             binding.bottomNavigation.selectedItemId = R.id.recipe
         }
+    }
+
+    override fun onUpdateRecipe(recipe: Recipe, flow: TimerFlow, update: Boolean) {
+        Timber.d("Recipe updated. Set refresh to true.")
+        recipeFragment.refresh = true
+        viewModel.startTimer(recipe, flow, update)
     }
 }
 
