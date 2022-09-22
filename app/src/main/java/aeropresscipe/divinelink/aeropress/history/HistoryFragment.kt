@@ -67,7 +67,7 @@ class HistoryFragment : Fragment(),
 
     private fun setToolbar() {
         binding?.toolbar?.apply {
-            setNavigationOnClickListener { callback.handleBackPressed() }
+            setNavigationOnClickListener { callback.onBackPressed() }
             inflateMenu(R.menu.history)
             setOnMenuItemClickListener { item ->
                 clearMenuItem = binding?.toolbar?.menu?.findItem(R.menu.history)
@@ -204,6 +204,6 @@ class HistoryFragment : Fragment(),
     interface Callback {
         fun onSnackbarShow(state: HistoryState.ShowSnackBar)
         fun onUpdateRecipe(recipe: Recipe, flow: TimerFlow, update: Boolean)
-        fun handleBackPressed()
+        fun onBackPressed()
     }
 }

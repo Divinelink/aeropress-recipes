@@ -67,7 +67,7 @@ class HomeActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
 //        dynamicTheme.onCreate(this)
         setNavigationBarColor(ContextCompat.getColor(this, R.color.colorSurface2))
-        onBackPressedDispatcher.addBackPressCallback(this) { handleBackPressed() }
+        onBackPressedDispatcher.addBackPressCallback(this) { onBackPressed() }
         binding.bottomNavigation.setOnItemSelectedListener(onItemSelectedListener)
 //        binding.bottomNavigation.setOnItemReselectedListener(onItemReselectedListener)
 
@@ -215,7 +215,7 @@ class HomeActivity : AppCompatActivity(),
             .show()
     }
 
-    override fun handleBackPressed() {
+    override fun onBackPressed() {
         if (binding.bottomNavigation.selectedItemId == R.id.recipe) {
             finish()
         } else {
