@@ -21,6 +21,7 @@ import gr.divinelink.core.util.constants.Numbers.ONE
 import gr.divinelink.core.util.constants.Numbers.ONE_THOUSAND
 import gr.divinelink.core.util.constants.Numbers.SIXTY
 import gr.divinelink.core.util.constants.Numbers.THREE_HUNDRED
+import gr.divinelink.core.util.extensions.getBundleSerializable
 import gr.divinelink.core.util.extensions.getPairOfMinutesSeconds
 import gr.divinelink.core.util.extensions.updateTextWithFade
 import gr.divinelink.core.util.timer.PreciseCountdown
@@ -68,14 +69,15 @@ class TimerFragment : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        transferableModel.recipe = arguments?.getSerializable(TIMER) as Recipe?
+        transferableModel.recipe = arguments?.getBundleSerializable(TIMER)
 
-        val flow = arguments?.getSerializable(FLOW) as TimerFlow
+        val flow = arguments?.getBundleSerializable<TimerFlow>(FLOW)
         viewModel.init(transferableModel)
 
         when (flow) {
             TimerFlow.START -> viewModel.startBrew()
             TimerFlow.RESUME -> viewModel.resume()
+            else -> throw AssertionError("Flow could not be determined.")
         }
     }
 

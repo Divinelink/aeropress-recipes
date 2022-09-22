@@ -29,6 +29,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationBarView
 import dagger.hilt.android.AndroidEntryPoint
+import gr.divinelink.core.util.extensions.addBackPressCallback
 import gr.divinelink.core.util.utils.DimensionUnit
 import gr.divinelink.core.util.utils.setNavigationBarColor
 import gr.divinelink.core.util.viewBinding.activity.viewBinding
@@ -66,6 +67,7 @@ class HomeActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
 //        dynamicTheme.onCreate(this)
         setNavigationBarColor(ContextCompat.getColor(this, R.color.colorSurface2))
+        onBackPressedDispatcher.addBackPressCallback(this) { handleBackPressed() }
         binding.bottomNavigation.setOnItemSelectedListener(onItemSelectedListener)
 //        binding.bottomNavigation.setOnItemReselectedListener(onItemReselectedListener)
 
@@ -150,15 +152,6 @@ class HomeActivity : AppCompatActivity(),
         transaction.commit()
     }
 
-    override fun onBackPressed() {
-        if (binding.bottomNavigation.selectedItemId == R.id.recipe) {
-            super.onBackPressed()
-            finish()
-        } else {
-            binding.bottomNavigation.selectedItemId = R.id.recipe
-        }
-    }
-
     companion object {
         private const val RECIPE_TAG = "RECIPE"
         private const val FAVORITES_TAG = "FAVORITES"
@@ -226,6 +219,14 @@ class HomeActivity : AppCompatActivity(),
         Timber.d("Recipe updated. Set refresh to true.")
         recipeFragment.refresh = true
         viewModel.startTimer(recipe, flow, update)
+    }
+
+    private fun handleBackPressed() {
+        if (binding.bottomNavigation.selectedItemId == R.id.recipe) {
+            finish()
+        } else {
+            binding.bottomNavigation.selectedItemId = R.id.recipe
+        }
     }
 }
 
