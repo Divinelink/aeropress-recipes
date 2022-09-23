@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.Aeropress">
         <activity
-            android:name=".settings.SettingsActivity"
+            android:name=".settings.app.AppSettingsActivity"
             android:exported="false" />
         <activity
             android:name=".finish.FinishActivity"

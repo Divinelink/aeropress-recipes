@@ -31,6 +31,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.switchmaterial.SwitchMaterial
 import gr.divinelink.core.util.extensions.visible
 import gr.divinelink.core.util.swipe.utils.isLtr
+import gr.divinelink.core.util.utils.CommunicationActions
 import gr.divinelink.core.util.utils.DimensionUnit
 import timber.log.Timber
 
@@ -239,7 +240,7 @@ class ExternalLinkPreferenceViewHolder(binding: DslPreferenceItemBinding) : Pref
             titleView.setCompoundDrawables(externalLinkIcon, null, null, null)
         }
 
-//        itemView.setOnClickListener { CommunicationActions.openBrowserLink(itemView.context, itemView.context.getString(model.linkId)) } todo add implementation
+        itemView.setOnClickListener { CommunicationActions.openBrowserLink(itemView.context, itemView.context.getString(model.linkId)) }
     }
 }
 

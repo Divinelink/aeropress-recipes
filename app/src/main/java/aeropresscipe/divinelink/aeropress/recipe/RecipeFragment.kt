@@ -11,7 +11,7 @@ import aeropresscipe.divinelink.aeropress.databinding.FragmentRecipeBinding
 import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
 import aeropresscipe.divinelink.aeropress.history.HistoryFragment
 import aeropresscipe.divinelink.aeropress.home.HomeViewModel
-import aeropresscipe.divinelink.aeropress.settings.SettingsActivity
+import aeropresscipe.divinelink.aeropress.settings.app.AppSettingsActivity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -215,7 +215,7 @@ class RecipeFragment :
         binding?.toolbar?.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.menu_settings -> {
-                    startActivity(Intent(context, SettingsActivity::class.java))
+                    startActivity(Intent(context, AppSettingsActivity::class.java))
                     true
                 }
                 else -> false
