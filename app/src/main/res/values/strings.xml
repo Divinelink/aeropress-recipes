@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">AeroPress Recipes</string>
+    <string name="terms_and_privacy_policy_url" translatable="false">https://andreo-harry.medium.com/aeropress-recipes-78539908d37b</string>
 
     <string name="close">Close</string>
 
@@ -95,5 +96,10 @@
 
     <!-- preferences.xml -->
     <string name="preferences__none">None</string>
+
+    <!-- HelpSettingsFragment -->
+    <string name="HelpSettingsFragment__help">Help</string>
+    <string name="HelpSettingsFragment__terms_amp_privacy_policy">Terms &amp; Privacy Policy</string>
+    <string name="HelpSettingsFragment__version">Version</string>
 
 </resources>
