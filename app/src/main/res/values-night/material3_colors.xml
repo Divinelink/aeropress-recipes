@@ -56,9 +56,9 @@
 <!--    <color name="text_toolbar_title">@color/dark_text_toolbar_title</color>-->
 <!--    <color name="text_toolbar_subtitle">@color/dark_text_toolbar_subtitle</color>-->
 
-<!--    <color name="icon_tint_primary">@color/dark_icon_tint_primary</color>-->
-<!--    <color name="icon_tint_secondary">@color/dark_icon_tint_secondary</color>-->
-<!--    <color name="icon_tint_action">@color/dark_icon_tint_action</color>-->
+    <color name="icon_tint_primary">@color/dark_icon_tint_primary</color>
+    <color name="icon_tint_secondary">@color/dark_icon_tint_secondary</color>
+    <color name="icon_tint_action">@color/dark_icon_tint_action</color>
 
 <!--    <color name="icon_tint_tab_selected">@color/dark_icon_tint_tab_selected</color>-->
 <!--    <color name="icon_tint_tab_unselected">@color/dark_icon_tint_tab_unselected</color>-->

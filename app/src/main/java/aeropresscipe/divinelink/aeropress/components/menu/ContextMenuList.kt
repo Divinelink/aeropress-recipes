@@ -122,5 +122,4 @@ class ContextMenuList(recyclerView: RecyclerView, onItemClick: () -> Unit) {
     enum class DisplayType {
         TOP, BOTTOM, MIDDLE, ONLY
     }
-
 }

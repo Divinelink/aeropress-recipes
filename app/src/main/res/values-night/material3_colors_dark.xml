@@ -75,9 +75,9 @@
 <!--    <color name="text_toolbar_title">@color/colorBackground</color>-->
 <!--    <color name="text_toolbar_subtitle">@color/transparent_white_90</color>-->
 
-<!--    <color name="icon_tint_primary">@color/colorOnSurface</color>-->
-<!--    <color name="icon_tint_secondary">@color/colorOnSurfaceVariant</color>-->
-<!--    <color name="icon_tint_action">@color/core_black</color>-->
+    <color name="dark_icon_tint_primary">@color/colorOnSurface</color>
+    <color name="dark_icon_tint_secondary">@color/colorOnSurfaceVariant</color>
+    <color name="dark_icon_tint_action">@color/core_black</color>
 
 <!--    <color name="icon_tint_tab_selected">@color/colorOnSurface</color>-->
 <!--    <color name="icon_tint_tab_unselected">@color/colorOnSurfaceVariant</color>-->
