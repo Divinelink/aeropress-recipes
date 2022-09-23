@@ -4,8 +4,8 @@ import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.components.recipecard.RecipeCard
 import aeropresscipe.divinelink.aeropress.databinding.EmptyRecyclerLayoutBinding
 import aeropresscipe.divinelink.aeropress.databinding.ViewSwipeRecipeCardBinding
-import aeropresscipe.divinelink.aeropress.history.HistoryItem
 import aeropresscipe.divinelink.aeropress.favorites.Favorites
+import aeropresscipe.divinelink.aeropress.history.HistoryItem
 import aeropresscipe.divinelink.aeropress.util.mapping.LayoutFactory
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingViewHolder

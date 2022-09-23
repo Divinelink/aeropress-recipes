@@ -2,18 +2,13 @@ package aeropresscipe.divinelink.aeropress.components.menu
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.databinding.ContextMenuItemBinding
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-
-/**
- * Handles the setup and display of actions shown in a context menu.
- */
-
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
@@ -86,7 +81,6 @@ class ContextMenuAdapter(
     }
 }
 
-
 class ContextMenuList(recyclerView: RecyclerView, onItemClick: () -> Unit) {
 
 //    private val mappingAdapter = MappingAdapter().apply {
@@ -128,6 +122,5 @@ class ContextMenuList(recyclerView: RecyclerView, onItemClick: () -> Unit) {
     enum class DisplayType {
         TOP, BOTTOM, MIDDLE, ONLY
     }
-
 
 }

@@ -1,8 +1,8 @@
 package aeropresscipe.divinelink.aeropress.favorites
 
 import aeropresscipe.divinelink.aeropress.base.di.IoDispatcher
-import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.history.HistoryDao
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

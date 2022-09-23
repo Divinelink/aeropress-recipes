@@ -1,9 +1,9 @@
 package aeropresscipe.divinelink.aeropress.favorites
 
-import androidx.room.Dao
-import androidx.room.OnConflictStrategy
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
+import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao

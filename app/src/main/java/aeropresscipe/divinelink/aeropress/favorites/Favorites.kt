@@ -21,5 +21,4 @@ data class Favorites(
     override fun areContentsTheSame(newItem: Any): Boolean {
         return hashCode() == newItem.hashCode()
     }
-
 }

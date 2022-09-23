@@ -8,7 +8,6 @@ import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 
-
 class BaseSettingsAdapter : MappingAdapter() {
 
     init {
@@ -29,7 +28,4 @@ class BaseSettingsAdapter : MappingAdapter() {
 //        registerFactory(CustomizableSingleSelectSetting.Item::class.java,
 //            LayoutFactory({ v -> ViewHolder(v, selectionListener) }, R.layout.customizable_single_select_item))
 //    }
-
 }
-
-

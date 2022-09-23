@@ -25,7 +25,6 @@ class SettingsViewModel @AssistedInject constructor(
             delegate?.get()?.updateState(value)
             statesList.add(value)
         }
-
 }
 
 interface ISettingsViewModel {
@@ -33,7 +32,7 @@ interface ISettingsViewModel {
 }
 
 interface SettingsIntents : MVIBaseView {
-    //TODO add your code here
+    // TODO add your code here
 }
 
 sealed class SettingsState {

@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN
 import gr.divinelink.core.util.extensions.addBackPressCallback
 
-
 open class DSLSettingsActivity : AppCompatActivity() {
     protected open val dynamicTheme: DynamicTheme = DynamicNoActionBarTheme()
 

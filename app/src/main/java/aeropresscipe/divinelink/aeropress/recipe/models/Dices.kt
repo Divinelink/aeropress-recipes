@@ -29,12 +29,10 @@ sealed class RecipeDice {
         val brewTime: Int
     ) : RecipeDice()
 
-
     data class BrewWaterDice(
         val coffeeAmount: Int,
         val brewWater: Int
     ) : RecipeDice()
-
 }
 
 enum class Dices {

@@ -39,4 +39,3 @@ abstract class MappingViewHolder<Model>(itemView: View) : RecyclerView.ViewHolde
         payload = LinkedList()
     }
 }
-

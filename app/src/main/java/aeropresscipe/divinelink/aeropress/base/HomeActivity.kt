@@ -3,8 +3,7 @@ package aeropresscipe.divinelink.aeropress.base
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.components.snackbar.Notification
 import aeropresscipe.divinelink.aeropress.databinding.ActivityHomeBinding
-import aeropresscipe.divinelink.aeropress.recipe.RecipeFragment
-import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.favorites.FavoritesFragment
 import aeropresscipe.divinelink.aeropress.history.HistoryFragment
 import aeropresscipe.divinelink.aeropress.history.HistoryState
 import aeropresscipe.divinelink.aeropress.home.HomeState
@@ -13,7 +12,8 @@ import aeropresscipe.divinelink.aeropress.home.HomeViewModel
 import aeropresscipe.divinelink.aeropress.home.HomeViewModelAssistedFactory
 import aeropresscipe.divinelink.aeropress.home.HomeViewModelFactory
 import aeropresscipe.divinelink.aeropress.home.IHomeViewModel
-import aeropresscipe.divinelink.aeropress.favorites.FavoritesFragment
+import aeropresscipe.divinelink.aeropress.recipe.RecipeFragment
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
 import aeropresscipe.divinelink.aeropress.timer.TimerFlow
 import android.annotation.SuppressLint

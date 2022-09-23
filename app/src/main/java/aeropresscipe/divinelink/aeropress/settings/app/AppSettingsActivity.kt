@@ -30,7 +30,6 @@ class AppSettingsActivity :
     lateinit var assistedFactory: SettingsViewModelAssistedFactory
     private lateinit var viewModel: SettingsViewModel
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setNavigationBarColor(ContextCompat.getColor(this, R.color.colorBackground))

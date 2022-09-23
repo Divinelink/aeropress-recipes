@@ -2,9 +2,9 @@ package aeropresscipe.divinelink.aeropress.history
 
 import aeropresscipe.divinelink.aeropress.base.di.IoDispatcher
 import aeropresscipe.divinelink.aeropress.base.mvi.logic.BaseRepository
-import aeropresscipe.divinelink.aeropress.recipe.RecipeDao
-import aeropresscipe.divinelink.aeropress.favorites.FavoritesDao
 import aeropresscipe.divinelink.aeropress.favorites.Favorites
+import aeropresscipe.divinelink.aeropress.favorites.FavoritesDao
+import aeropresscipe.divinelink.aeropress.recipe.RecipeDao
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

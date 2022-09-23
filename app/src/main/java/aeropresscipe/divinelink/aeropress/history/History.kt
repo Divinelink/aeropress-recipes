@@ -1,9 +1,9 @@
 package aeropresscipe.divinelink.aeropress.history
 
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.util.mapping.MappingModel
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import aeropresscipe.divinelink.aeropress.util.mapping.MappingModel
 
 @Entity(tableName = "HistoryRecipes")
 data class History(
@@ -32,5 +32,4 @@ data class History(
             newItem.isRecipeLiked
         }
     }
-
 }

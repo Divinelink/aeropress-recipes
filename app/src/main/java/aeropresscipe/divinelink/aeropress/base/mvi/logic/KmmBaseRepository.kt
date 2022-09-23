@@ -95,7 +95,6 @@ open class BaseRepository {
         }
     }
 
-
     protected fun <T : Any?> performTransaction(
         completionBlock: (T) -> Unit,
         transaction: suspend () -> T

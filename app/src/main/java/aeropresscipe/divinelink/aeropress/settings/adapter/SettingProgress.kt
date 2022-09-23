@@ -18,5 +18,4 @@ class SettingProgress {
             return areItemsTheSame(newItem)
         }
     }
-
 }

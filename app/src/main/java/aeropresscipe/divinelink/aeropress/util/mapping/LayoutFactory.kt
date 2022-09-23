@@ -3,7 +3,6 @@ package aeropresscipe.divinelink.aeropress.util.mapping
 import android.view.LayoutInflater
 import android.view.ViewGroup
 
-
 class LayoutFactory<T : MappingModel>(
     private val viewHolder: (layoutInflater: LayoutInflater, parent: ViewGroup) -> MappingViewHolder<T>,
     private val layoutInflater: (parent: ViewGroup) -> LayoutInflater = { parent -> LayoutInflater.from(parent.context) }

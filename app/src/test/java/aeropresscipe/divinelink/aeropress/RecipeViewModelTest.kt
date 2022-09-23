@@ -1,12 +1,12 @@
 package aeropresscipe.divinelink.aeropress
 
 import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
-import aeropresscipe.divinelink.aeropress.recipe.RecipeIntents
 import aeropresscipe.divinelink.aeropress.recipe.GenerateRecipeRemote
+import aeropresscipe.divinelink.aeropress.recipe.IRecipeViewModel
+import aeropresscipe.divinelink.aeropress.recipe.RecipeIntents
 import aeropresscipe.divinelink.aeropress.recipe.RecipeRepository
 import aeropresscipe.divinelink.aeropress.recipe.RecipeState
 import aeropresscipe.divinelink.aeropress.recipe.RecipeViewModel
-import aeropresscipe.divinelink.aeropress.recipe.IRecipeViewModel
 import aeropresscipe.divinelink.aeropress.recipe.models.BrewMethod
 import aeropresscipe.divinelink.aeropress.recipe.models.CoffeeGrindSize
 import aeropresscipe.divinelink.aeropress.recipe.models.DiceDomain

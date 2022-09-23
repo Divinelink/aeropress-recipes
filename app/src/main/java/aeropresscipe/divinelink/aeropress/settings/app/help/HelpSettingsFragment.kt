@@ -28,7 +28,6 @@ class HelpSettingsFragment : DSLSettingsFragment(R.string.HelpSettingsFragment__
                 title = DSLSettingsText.from(R.string.HelpSettingsFragment__terms_amp_privacy_policy),
                 linkId = R.string.terms_and_privacy_policy_url
             )
-
         }
     }
 }

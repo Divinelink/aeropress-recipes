@@ -23,7 +23,6 @@ class HomeRepository @Inject constructor(
         update: Boolean,
         completionBlock: (DiceDomain) -> Unit
     ) = performTransaction(completionBlock) { remote.updateRecipe(recipe, update) }
-
 }
 
 interface IHomeRemote {
