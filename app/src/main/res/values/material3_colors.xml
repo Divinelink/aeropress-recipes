@@ -108,5 +108,4 @@
     <color name="colorOutline_38">@color/light_colorOutline_38</color>
     <color name="colorBackground_0">@color/light_colorBackground_0</color>
 
-    <color name="settings_ripple_color">@color/transparent_black_10</color>
 </resources>

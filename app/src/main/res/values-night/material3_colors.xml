@@ -103,6 +103,4 @@
 <!--    <color name="colorOnBackground_60">@color/dark_colorOnBackground_60</color>-->
 <!--    <color name="colorOutline_38">@color/dark_colorOutline_38</color>-->
 <!--    <color name="colorBackground_0">@color/dark_colorBackground_0</color>-->
-
-    <color name="settings_ripple_color">@color/transparent_black_10</color>
 </resources>

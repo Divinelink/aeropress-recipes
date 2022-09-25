@@ -2,16 +2,13 @@ package aeropresscipe.divinelink.aeropress.settings
 
 import aeropresscipe.divinelink.aeropress.R
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.EdgeEffect
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.annotation.MenuRes
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -46,7 +43,6 @@ abstract class DSLSettingsFragment(
         val settingsAdapter = DSLSettingsAdapter()
 
         recyclerView = view.findViewById<RecyclerView>(R.id.recycler).apply {
-            edgeEffectFactory = EdgeEffectFactory()
             layoutManager = layoutManagerProducer(requireContext())
             adapter = settingsAdapter
         }
@@ -64,14 +60,4 @@ abstract class DSLSettingsFragment(
     }
 
     abstract fun bindAdapter(adapter: DSLSettingsAdapter)
-
-    private class EdgeEffectFactory : RecyclerView.EdgeEffectFactory() {
-        override fun createEdgeEffect(view: RecyclerView, direction: Int): EdgeEffect {
-            return super.createEdgeEffect(view, direction).apply {
-                if (Build.VERSION.SDK_INT > 21) {
-                    color = requireNotNull(ContextCompat.getColor(view.context, R.color.settings_ripple_color))
-                }
-            }
-        }
-    }
 }
