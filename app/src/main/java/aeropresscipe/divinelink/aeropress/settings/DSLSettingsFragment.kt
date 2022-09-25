@@ -20,6 +20,8 @@ abstract class DSLSettingsFragment(
     protected var layoutManagerProducer: (Context) -> RecyclerView.LayoutManager = { context -> LinearLayoutManager(context) }
 ) : Fragment(layoutId) {
 
+    private lateinit var callback: Callback
+
     protected var recyclerView: RecyclerView? = null
         private set
 
@@ -51,7 +53,7 @@ abstract class DSLSettingsFragment(
     }
 
     open fun onToolbarNavigationClicked() {
-        requireActivity().onBackPressed()
+        callback.onBackPressed()
     }
 
     override fun onDestroyView() {
@@ -59,5 +61,14 @@ abstract class DSLSettingsFragment(
         recyclerView = null
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = context as Callback
+    }
+
     abstract fun bindAdapter(adapter: DSLSettingsAdapter)
+
+    interface Callback {
+        fun onBackPressed()
+    }
 }

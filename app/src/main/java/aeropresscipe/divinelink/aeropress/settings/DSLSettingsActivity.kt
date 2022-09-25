@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN
 import gr.divinelink.core.util.extensions.addBackPressCallback
 
-open class DSLSettingsActivity : AppCompatActivity() {
+open class DSLSettingsActivity : AppCompatActivity(), DSLSettingsFragment.Callback {
     protected open val dynamicTheme: DynamicTheme = DynamicNoActionBarTheme()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +23,7 @@ open class DSLSettingsActivity : AppCompatActivity() {
 
         dynamicTheme.onCreate(this)
 
-        onBackPressedDispatcher.addBackPressCallback(this) { onNavigateUp() }
+        onBackPressedDispatcher.addBackPressCallback(this) { onBackPressed() }
     }
 
     override fun onResume() {
@@ -43,5 +43,9 @@ open class DSLSettingsActivity : AppCompatActivity() {
 
     protected open fun onWillFinish() {
         // Intentionally Blank.
+    }
+
+    override fun onBackPressed() {
+        onNavigateUp()
     }
 }

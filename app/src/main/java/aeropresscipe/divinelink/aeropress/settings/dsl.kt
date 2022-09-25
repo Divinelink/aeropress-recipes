@@ -197,6 +197,7 @@ class DSLConfiguration {
     fun toMappingModelList(): MappingModelList = MappingModelList().apply { addAll(children) }
 }
 
+@Suppress("UNCHECKED_CAST")
 abstract class PreferenceModel<T : PreferenceModel<T>>(
     open val title: DSLSettingsText? = null,
     open val summary: DSLSettingsText? = null,
