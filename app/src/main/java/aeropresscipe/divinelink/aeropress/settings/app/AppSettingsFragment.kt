@@ -20,7 +20,6 @@ class AppSettingsFragment : DSLSettingsFragment(R.string.settings) {
     private fun getConfiguration(): DSLConfiguration {
         return configure {
 
-
             clickPref(
                 title = DSLSettingsText.from(R.string.preferences__appearance),
                 icon = DSLSettingsIcon.from(R.drawable.ic_appearance_24),
