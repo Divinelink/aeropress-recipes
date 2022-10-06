@@ -38,6 +38,7 @@ class RecipeViewModelTest {
 
     @Mock
     private var remote: GenerateRecipeRemote = mock()
+
     @Mock
     private var timerRemote: TimerServices = mock()
 

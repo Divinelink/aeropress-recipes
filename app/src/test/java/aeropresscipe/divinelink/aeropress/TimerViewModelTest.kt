@@ -53,11 +53,11 @@ class TimerViewModelTest {
     private fun initViewModel() {
         viewModel = TimerViewModel(
             delegate = WeakReference(object :
-                    ITimerViewModel {
-                    override fun updateState(state: TimerState) {
-                        // do nothing
-                    }
-                }),
+                ITimerViewModel {
+                override fun updateState(state: TimerState) {
+                    // do nothing
+                }
+            }),
             repository = repository
         )
 
@@ -130,7 +130,11 @@ class TimerViewModelTest {
     @Test
     fun `given bloom state with 0 seconds left, when I resume then I expect Brew State`() = runTest {
         // Given
-        val response = DiceDomain(recipeModel(bloomTime = 50, brewTime = 100), isBrewing = true, timeStartedMillis = System.currentTimeMillis() - 50000)
+        val response = DiceDomain(
+            recipeModel(bloomTime = 50, brewTime = 100),
+            isBrewing = true,
+            timeStartedMillis = System.currentTimeMillis() - 50000
+        )
         whenever(remote.getResumeTimes()).thenReturn(response)
         transferableModel.recipe = response.recipe
         viewModel.init(transferableModel)
@@ -145,7 +149,9 @@ class TimerViewModelTest {
     @Test
     fun `given brew state, when I resume then I expect Brew State`() = runTest {
         // Given
-        val response = DiceDomain(recipeModel(bloomTime = 0, brewTime = 100), isBrewing = true, timeStartedMillis = System.currentTimeMillis())
+        val response = DiceDomain(
+            recipeModel(bloomTime = 0, brewTime = 100), isBrewing = true, timeStartedMillis = System.currentTimeMillis()
+        )
         whenever(remote.getResumeTimes()).thenReturn(response)
         transferableModel.recipe = response.recipe
         viewModel.init(transferableModel)
@@ -164,7 +170,10 @@ class TimerViewModelTest {
 
     @Test
     fun `given bloom state, when update timer, then I expect brew state`() = runTest {
-        val response = DiceDomain(recipeModel(brewTime = 1, bloomTime = 1, brewWaterAmount = 200, bloomWater = 50), isBrewing = true)
+        val response = DiceDomain(
+            recipeModel(brewTime = 1, bloomTime = 1, brewWaterAmount = 200, bloomWater = 50),
+            isBrewing = true
+        )
 
         transferableModel.recipe = response.recipe
 

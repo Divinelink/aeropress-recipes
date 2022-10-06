@@ -1,3 +1,4 @@
+@file:Suppress("LongParameterList", "MaximumLineLength", "TooManyFunctions")
 package aeropresscipe.divinelink.aeropress.settings
 
 import aeropresscipe.divinelink.aeropress.settings.models.AsyncSwitch

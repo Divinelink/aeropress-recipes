@@ -19,7 +19,7 @@ data class Space(
 
     companion object {
         fun register(mappingAdapter: MappingAdapter) {
-            mappingAdapter.registerFactory(LayoutFactory({ inflater: LayoutInflater, parent: ViewGroup -> ViewHolder(DslSpacePreferenceBinding.inflate(inflater, parent, false)) }))
+            mappingAdapter.registerFactory(LayoutFactory({ i: LayoutInflater, r: ViewGroup -> ViewHolder(DslSpacePreferenceBinding.inflate(i, r, false)) }))
         }
     }
 

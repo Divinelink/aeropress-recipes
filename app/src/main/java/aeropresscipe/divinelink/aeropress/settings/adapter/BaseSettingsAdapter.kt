@@ -11,8 +11,8 @@ import android.view.ViewGroup
 class BaseSettingsAdapter : MappingAdapter() {
 
     init {
-        registerFactory(LayoutFactory({ layoutInflater, root -> SettingHeader.ViewHolder(BaseSettingsHeaderItemBinding.inflate(layoutInflater, root, false)) }))
-        registerFactory(LayoutFactory({ layoutInflater, root -> SettingProgress.ViewHolder(BaseSettingsProgressItemBinding.inflate(layoutInflater, root, false)) }))
+        registerFactory(LayoutFactory({ i, r -> SettingHeader.ViewHolder(BaseSettingsHeaderItemBinding.inflate(i, r, false)) }))
+        registerFactory(LayoutFactory({ i, r -> SettingProgress.ViewHolder(BaseSettingsProgressItemBinding.inflate(i, r, false)) }))
     }
 
     fun configureSingleSelect(onSelectionChanged: onSelectionChanged) {

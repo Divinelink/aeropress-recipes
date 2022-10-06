@@ -12,7 +12,7 @@ import android.view.ViewGroup
 object AsyncSwitch {
 
     fun register(adapter: MappingAdapter) {
-        adapter.registerFactory(LayoutFactory({ inflater: LayoutInflater, parent: ViewGroup -> ViewHolder(DslAsyncSwitchPreferenceItemBinding.inflate(inflater, parent, false)) }))
+        adapter.registerFactory(LayoutFactory({ i: LayoutInflater, r: ViewGroup -> ViewHolder(DslAsyncSwitchPreferenceItemBinding.inflate(i, r, false)) }))
     }
 
     class Model(

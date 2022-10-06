@@ -56,7 +56,7 @@ class TimerFragment :
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentTimerBinding.inflate(inflater, container, false)
         val view = binding?.root
@@ -133,7 +133,11 @@ class TimerFragment :
     override fun handleUpdateDescriptionState(state: TimerState.UpdateDescriptionState) {
         if (state.animateDescription) {
             binding?.timerHeader updateTextWithFade resources.getString(state.brewState.title)
-            binding?.waterDescription updateTextWithFade resources.getString(state.brewState.description, state.brewState.phaseWater, state.brewState.totalWater)
+            binding?.waterDescription updateTextWithFade resources.getString(
+                state.brewState.description,
+                state.brewState.phaseWater,
+                state.brewState.totalWater
+            )
         } else {
             binding?.timerHeader?.text = resources.getString(state.brewState.title)
             binding?.waterDescription?.text = resources.getString(state.brewState.description, state.brewState.phaseWater, state.brewState.totalWater)

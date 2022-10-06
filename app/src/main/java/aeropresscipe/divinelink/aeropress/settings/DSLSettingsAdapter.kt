@@ -1,3 +1,5 @@
+@file:Suppress("LongParameterList", "MaxLineLength", "MagicNumbers")
+
 package aeropresscipe.divinelink.aeropress.settings
 
 import aeropresscipe.divinelink.aeropress.R
@@ -232,7 +234,12 @@ class ExternalLinkPreferenceViewHolder(binding: DslPreferenceItemBinding) : Pref
         super.bind(model)
 
         val externalLinkIcon = requireNotNull(ContextCompat.getDrawable(context, R.drawable.ic_open_20))
-        externalLinkIcon.setBounds(0, 0, DimensionUnit.DP.toPixels(20F).toInt(), DimensionUnit.DP.toPixels(20F).toInt())
+        externalLinkIcon.setBounds(
+            0,
+            0,
+            DimensionUnit.DP.toPixels(context.resources.getDimension(R.dimen.dimen_20)).toInt(),
+            DimensionUnit.DP.toPixels(context.resources.getDimension(R.dimen.dimen_20)).toInt(),
+        )
 
         if (isLtr()) {
             titleView.setCompoundDrawables(null, null, externalLinkIcon, null)

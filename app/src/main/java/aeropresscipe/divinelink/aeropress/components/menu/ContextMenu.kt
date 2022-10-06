@@ -1,3 +1,4 @@
+@file:Suppress("MagicNumber")
 package aeropresscipe.divinelink.aeropress.components.menu
 
 import aeropresscipe.divinelink.aeropress.R

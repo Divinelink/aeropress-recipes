@@ -1,3 +1,4 @@
+@file:Suppress("MaxLineLength")
 package aeropresscipe.divinelink.aeropress.settings.models
 
 import aeropresscipe.divinelink.aeropress.R

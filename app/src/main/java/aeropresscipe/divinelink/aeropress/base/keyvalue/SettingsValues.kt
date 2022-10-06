@@ -4,7 +4,7 @@ import aeropresscipe.divinelink.aeropress.base.BaseApplication
 import aeropresscipe.divinelink.aeropress.base.di.PreferencesEntryPoint
 import dagger.hilt.EntryPoints
 
-class SettingsValues : StoreValues() {
+class SettingsValues : StoreValues {
     private val entryPoint = EntryPoints.get(BaseApplication.instance.applicationContext, PreferencesEntryPoint::class.java)
     private val preferences = entryPoint.getPreferences()
 

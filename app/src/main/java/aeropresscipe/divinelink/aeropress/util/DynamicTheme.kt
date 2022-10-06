@@ -21,13 +21,16 @@ open class DynamicTheme {
         globalNightModeConfiguration = onCreateNightModeConfiguration
         activity.setTheme(theme)
         if (previousGlobalConfiguration != globalNightModeConfiguration) {
-            Timber.d("Previous night mode has changed previous: " + previousGlobalConfiguration + " now: " + globalNightModeConfiguration)
+            Timber.d("Previous night mode has changed previous: $previousGlobalConfiguration now: $globalNightModeConfiguration")
         }
     }
 
     fun onResume(activity: Activity) {
         if (onCreateNightModeConfiguration != ConfigurationUtil.getNightModeConfiguration(activity)) {
-            Timber.d("Create configuration different from current previous: " + onCreateNightModeConfiguration + " now: " + ConfigurationUtil.getNightModeConfiguration(activity))
+            Timber.d(
+                "Create configuration different from current previous: " + onCreateNightModeConfiguration +
+                    " now: " + ConfigurationUtil.getNightModeConfiguration(activity)
+            )
         }
     }
 

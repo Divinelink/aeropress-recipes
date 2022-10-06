@@ -1,8 +1,7 @@
 package aeropresscipe.divinelink.aeropress.base.keyvalue
 
-abstract class StoreValues {
+interface StoreValues {
+    fun onFirstEverAppLaunch()
 
-    abstract fun onFirstEverAppLaunch()
-
-    abstract fun getKeysToIncludeInBackup(): List<String>
+    fun getKeysToIncludeInBackup(): List<String>
 }

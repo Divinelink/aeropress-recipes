@@ -1,10 +1,11 @@
 package aeropresscipe.divinelink.aeropress.base
 
-import android.content.Context
+// TODO Implement feature!
 
-class AppInitialization {
+// import android.content.Context
 
-    fun onFirstEverAppLaunch(context: Context) {
-        Store.onFirstEverAppLaunch()
-    }
-}
+// class AppInitialization {
+//    fun onFirstEverAppLaunch(context: Context) {
+//        Store.onFirstEverAppLaunch()
+//    }
+// }

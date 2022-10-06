@@ -22,7 +22,7 @@ data class Text(
 
     companion object {
         fun register(adapter: MappingAdapter) {
-            adapter.registerFactory(LayoutFactory({ inflater: LayoutInflater, parent: ViewGroup -> ViewHolder(DslTextPreferenceBinding.inflate(inflater, parent, false)) }))
+            adapter.registerFactory(LayoutFactory({ i: LayoutInflater, r: ViewGroup -> ViewHolder(DslTextPreferenceBinding.inflate(i, r, false)) }))
         }
     }
 
