@@ -1,4 +1,4 @@
-  apply plugin: "io.gitlab.arturbosch.detekt"
+apply plugin: "io.gitlab.arturbosch.detekt"
 
 configurations { detekt }
 dependencies {
@@ -70,7 +70,7 @@ private static def execute(cmd, output) {
     ['sh', '-c', cmd].execute().waitForProcessOutput(output, System.err)
 }
 
-task dsqRunUnitTests {
+task RunUnitTests {
     group 'CI'
     description 'Runs all module\'s unit tests if there are changes in this module'
 

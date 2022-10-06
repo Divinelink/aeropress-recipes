@@ -31,7 +31,8 @@ import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class FavoritesFragment : Fragment(),
+class FavoritesFragment :
+    Fragment(),
     FavoritesStateHandler,
     IFavoritesViewModel,
     TimerViewCallback {
@@ -134,7 +135,8 @@ class FavoritesFragment : Fragment(),
             adapter = recipesAdapter
         }
 
-        FavoriteItem.register(recipesAdapter,
+        FavoriteItem.register(
+            recipesAdapter,
             onActionClicked = { recipe: Favorites, swipeAction: SwipeAction ->
                 when (swipeAction.actionId) {
                     R.id.delete -> showDeleteRecipeDialog(recipe.recipe)

@@ -2,7 +2,7 @@
 
 buildscript {
     ext.kotlin_version = '1.7.10'
-    ext.detektVersion = "1.19.0-RC2"
+    ext.detektVersion = "1.22.0-RC1"
     ext.hilt_version = "2.42"
 
     repositories {
@@ -14,9 +14,9 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${detektVersion}"
         classpath "com.google.dagger:hilt-android-gradle-plugin:2.42"
-        classpath 'com.google.gms:google-services:4.3.13'
+        classpath 'com.google.gms:google-services:4.3.14'
         // Add the Crashlytics Gradle plugin
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.1'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.2'
 
 
         // NOTE: Do not place your application dependencies here; they belong

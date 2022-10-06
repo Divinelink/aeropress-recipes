@@ -30,7 +30,8 @@ import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HistoryFragment : Fragment(),
+class HistoryFragment :
+    Fragment(),
     HistoryStateHandler,
     IHistoryViewModel,
     TimerViewCallback {
@@ -87,7 +88,8 @@ class HistoryFragment : Fragment(),
             layoutManager = LinearLayoutManager(activity)
             adapter = historyAdapter
         }
-        HistoryItem.register(historyAdapter,
+        HistoryItem.register(
+            historyAdapter,
             onActionClicked = { recipe: History, swipeAction: SwipeAction ->
                 when (swipeAction.actionId) {
                     R.id.brew -> viewModel.startBrew(recipe.recipe)

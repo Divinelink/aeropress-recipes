@@ -80,7 +80,8 @@ class ContextMenu private constructor(
         val offsetY: Int
 
         if (verticalPosition == VerticalPosition.ABOVE && menuTopBound > screenTopBound ||
-            menuTopBound > screenTopBound) {
+            menuTopBound > screenTopBound
+        ) {
             offsetY = -(anchorRect.height() + contentView.measuredHeight + baseOffsetY)
             contextMenuList.setItems(items.reversed())
         } else if (menuBottomBound < screenBottomBound) {

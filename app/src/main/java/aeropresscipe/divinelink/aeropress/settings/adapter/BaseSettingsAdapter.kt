@@ -16,12 +16,14 @@ class BaseSettingsAdapter : MappingAdapter() {
     }
 
     fun configureSingleSelect(onSelectionChanged: onSelectionChanged) {
-        registerFactory(LayoutFactory({ layoutInflater: LayoutInflater, root: ViewGroup ->
-            SingleSelectSetting.ViewHolder(
-                binding = SingleSelectItemBinding.inflate(layoutInflater, root, false),
-                onSelectionChanged = onSelectionChanged
-            )
-        }))
+        registerFactory(
+            LayoutFactory({ layoutInflater: LayoutInflater, root: ViewGroup ->
+                SingleSelectSetting.ViewHolder(
+                    binding = SingleSelectItemBinding.inflate(layoutInflater, root, false),
+                    onSelectionChanged = onSelectionChanged
+                )
+            })
+        )
     }
 
 //    fun configureCustomizableSingleSelect(selectionListener: CustomizableSingleSelectSetting.CustomizableSingleSelectionListener) {

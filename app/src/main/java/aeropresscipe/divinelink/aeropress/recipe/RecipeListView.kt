@@ -18,7 +18,8 @@ class RecipeListView(
 ) : ArrayAdapter<RecipeStep>(
     context,
     R.layout.list_recipe_item,
-    steps) {
+    steps
+) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val viewHolder: RecipeViewHolder
@@ -40,8 +41,10 @@ class RecipeListView(
             is RecipeStep.BloomStep -> context.getString(step.stepText, step.bloomWater, step.bloomTime)
             is RecipeStep.RemainingWaterStep -> context.getString(step.stepText, step.remainingWater)
             is RecipeStep.PourWaterStep -> context.getString(step.stepText, step.waterAmount)
-            is RecipeStep.WaitToBrewStep -> context.getString(step.stepText, step.minutes, step.seconds,
-                context.resources.getQuantityString(R.plurals.minutes, step.minutes.toInt() + step.seconds.toInt()))
+            is RecipeStep.WaitToBrewStep -> context.getString(
+                step.stepText, step.minutes, step.seconds,
+                context.resources.getQuantityString(R.plurals.minutes, step.minutes.toInt() + step.seconds.toInt())
+            )
             is RecipeStep.FlipToNormalOrientation -> context.getString(step.stepText)
             is RecipeStep.PressStep -> context.getString(step.stepText)
         }

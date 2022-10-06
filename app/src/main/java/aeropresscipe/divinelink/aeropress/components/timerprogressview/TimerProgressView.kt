@@ -18,7 +18,8 @@ import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TimerProgressView : FrameLayout,
+class TimerProgressView :
+    FrameLayout,
     ITimerProgressViewModel,
     TimerProgressStateHandler {
     var binding: ViewTimerProgressBinding = ViewTimerProgressBinding.inflate(LayoutInflater.from(context), this, false)

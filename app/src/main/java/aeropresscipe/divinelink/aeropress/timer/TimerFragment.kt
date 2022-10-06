@@ -35,7 +35,8 @@ enum class TimerFlow {
 }
 
 @AndroidEntryPoint
-class TimerFragment : Fragment(),
+class TimerFragment :
+    Fragment(),
     ITimerViewModel,
     TimerStateHandler {
     private var binding: FragmentTimerBinding? = null

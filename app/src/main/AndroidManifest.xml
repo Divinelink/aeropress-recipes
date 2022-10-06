@@ -24,7 +24,7 @@
             android:name=".base.HomeActivity"
             android:exported="true"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:theme="@style/Base.Theme.Aeropress">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

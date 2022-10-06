@@ -4,7 +4,6 @@ import aeropresscipe.divinelink.aeropress.base.di.IoDispatcher
 import aeropresscipe.divinelink.aeropress.base.mvi.logic.BaseRepository
 import aeropresscipe.divinelink.aeropress.favorites.Favorites
 import aeropresscipe.divinelink.aeropress.favorites.FavoritesDao
-import aeropresscipe.divinelink.aeropress.recipe.RecipeDao
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -34,7 +33,6 @@ interface IHistoryRemote {
 }
 
 class HistoryRemote @Inject constructor(
-    private val recipeDao: RecipeDao,
     private val historyDao: HistoryDao,
     private val savedRecipeDao: FavoritesDao,
     @IoDispatcher private val dispatcher: CoroutineDispatcher

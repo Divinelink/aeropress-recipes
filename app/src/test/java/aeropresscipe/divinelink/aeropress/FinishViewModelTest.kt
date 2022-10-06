@@ -34,11 +34,13 @@ class FinishViewModelTest {
     private fun initViewModel() {
         viewModel = FinishViewModel(
             delegate = WeakReference(object :
-                IFinishViewModel {
-                override fun updateState(state: FinishState) {
-                    // do nothing
-                }
-            }), repository = repository)
+                    IFinishViewModel {
+                    override fun updateState(state: FinishState) {
+                        // do nothing
+                    }
+                }),
+            repository = repository
+        )
 
         viewModelIntent = viewModel
     }
@@ -85,6 +87,7 @@ class FinishViewModelTest {
             coffeeAmount = coffeeAmount,
             brewWaterAmount = brewWaterAmount,
             grindSize = groundSize,
-            brewMethod = brewingMethod)
+            brewMethod = brewingMethod
+        )
     }
 }

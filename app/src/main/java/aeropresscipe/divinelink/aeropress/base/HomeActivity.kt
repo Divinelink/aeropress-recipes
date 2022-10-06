@@ -38,7 +38,8 @@ import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeActivity : AppCompatActivity(),
+class HomeActivity :
+    AppCompatActivity(),
     IHomeViewModel,
     HomeStateHandler,
     HistoryFragment.Callback {

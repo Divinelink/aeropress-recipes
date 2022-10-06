@@ -51,13 +51,14 @@ class RecipeViewModelTest {
     private fun initViewModel() {
         viewModel = RecipeViewModel(
             delegate = WeakReference(object :
-                IRecipeViewModel {
-                override fun updateState(state: RecipeState) {
-                    // do nothing
-                }
-            }),
+                    IRecipeViewModel {
+                    override fun updateState(state: RecipeState) {
+                        // do nothing
+                    }
+                }),
             repository = repository,
-            timerRepository = timerRepository)
+            timerRepository = timerRepository
+        )
 
         viewModelIntent = viewModel
     }
@@ -146,6 +147,7 @@ class RecipeViewModelTest {
             coffeeAmount = coffeeAmount,
             brewWaterAmount = brewWaterAmount,
             grindSize = groundSize,
-            brewMethod = brewingMethod)
+            brewMethod = brewingMethod
+        )
     }
 }

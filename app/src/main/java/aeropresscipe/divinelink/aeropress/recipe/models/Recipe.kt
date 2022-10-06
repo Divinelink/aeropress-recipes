@@ -43,9 +43,11 @@ fun Recipe.buildSteps(): MutableList<RecipeStep> {
     val steps: MutableList<RecipeStep> = mutableListOf()
 
     steps.add(RecipeStep.HeatWaterStep(this.brewWaterAmount, this.diceTemperature))
-    steps.add(RecipeStep.CoffeeGrindStep(
-        coffeeAmount = this.coffeeAmount,
-        grindSize = this.grindSize)
+    steps.add(
+        RecipeStep.CoffeeGrindStep(
+            coffeeAmount = this.coffeeAmount,
+            grindSize = this.grindSize
+        )
     )
 
     when (this.brewMethod) {

@@ -40,12 +40,13 @@ class SaveRecipeCardViewTest {
     private fun initViewModel() {
         viewModel = SaveRecipeCardViewModel(
             delegate = WeakReference(object :
-                ISaveRecipeCardViewModel {
-                override fun updateState(state: SaveRecipeCardState) {
-                    // do nothing
-                }
-            }),
-            repository = repository)
+                    ISaveRecipeCardViewModel {
+                    override fun updateState(state: SaveRecipeCardState) {
+                        // do nothing
+                    }
+                }),
+            repository = repository
+        )
 
         viewModelIntent = viewModel
     }
@@ -126,6 +127,7 @@ class SaveRecipeCardViewTest {
             coffeeAmount = coffeeAmount,
             brewWaterAmount = brewWaterAmount,
             grindSize = groundSize,
-            brewMethod = brewingMethod)
+            brewMethod = brewingMethod
+        )
     }
 }

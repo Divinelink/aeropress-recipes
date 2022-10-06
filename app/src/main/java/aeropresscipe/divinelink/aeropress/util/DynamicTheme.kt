@@ -39,7 +39,7 @@ open class DynamicTheme {
         private var globalNightModeConfiguration = 0
 
         fun systemThemeAvailable(): Boolean {
-            return Build.VERSION.SDK_INT >= 29
+            return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
         }
 
         fun setDefaultDayNightMode(context: Context) {

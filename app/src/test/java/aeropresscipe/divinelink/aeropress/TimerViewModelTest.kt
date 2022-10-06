@@ -53,12 +53,13 @@ class TimerViewModelTest {
     private fun initViewModel() {
         viewModel = TimerViewModel(
             delegate = WeakReference(object :
-                ITimerViewModel {
-                override fun updateState(state: TimerState) {
-                    // do nothing
-                }
-            }),
-            repository = repository)
+                    ITimerViewModel {
+                    override fun updateState(state: TimerState) {
+                        // do nothing
+                    }
+                }),
+            repository = repository
+        )
 
         viewModelIntent = viewModel
         viewModel.preferences = this.sharedPreferences
@@ -87,16 +88,23 @@ class TimerViewModelTest {
         assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Bloom)
         assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.BrewWithBloom)
         assertFalse(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Brew)
-        assertEquals(viewModel.statesList[1], TimerState.UpdateDescriptionState(BrewState.Bloom(
-            water = response.recipe.bloomWater,
-            time = response.recipe.bloomTime))
+        assertEquals(
+            viewModel.statesList[1],
+            TimerState.UpdateDescriptionState(
+                BrewState.Bloom(
+                    water = response.recipe.bloomWater,
+                    time = response.recipe.bloomTime
+                ),
+                true
+            )
         )
     }
 
     @Test
     fun `given bloom state, when I resume then I expect UpdateProgressBar state`() = runTest {
         // Given
-        val response = DiceDomain(recipeModel(bloomTime = 5, brewTime = 10), isBrewing = true,
+        val response = DiceDomain(
+            recipeModel(bloomTime = 5, brewTime = 10), isBrewing = true,
             timeStartedMillis = System.currentTimeMillis()
         )
         whenever(remote.getResumeTimes()).thenReturn(response)
@@ -106,9 +114,15 @@ class TimerViewModelTest {
         viewModel.resume()
         // Then
         assertTrue(viewModel.statesList[0] is TimerState.InitialState)
-        assertEquals(viewModel.statesList[1], TimerState.UpdateDescriptionState(BrewState.Bloom(
-            water = response.recipe.bloomWater,
-            time = response.recipe.bloomTime))
+        assertEquals(
+            viewModel.statesList[1],
+            TimerState.UpdateDescriptionState(
+                BrewState.Bloom(
+                    water = response.recipe.bloomWater,
+                    time = response.recipe.bloomTime
+                ),
+                true
+            )
         )
         assertTrue(viewModel.statesList[2] is TimerState.UpdateProgressBar)
     }
@@ -159,9 +173,15 @@ class TimerViewModelTest {
         assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.Bloom)
         viewModel.updateTimer()
         assertTrue(viewModel.transferableModel?.brew?.getCurrentState() is BrewState.BrewWithBloom)
-        assertEquals(viewModel.statesList[3], TimerState.UpdateDescriptionState(BrewState.BrewWithBloom(
-            water = response.recipe.remainingWater(),
-            time = response.recipe.brewTime, totalWater = response.recipe.brewWaterAmount))
+        assertEquals(
+            viewModel.statesList[3],
+            TimerState.UpdateDescriptionState(
+                BrewState.BrewWithBloom(
+                    water = response.recipe.remainingWater(),
+                    time = response.recipe.brewTime, totalWater = response.recipe.brewWaterAmount
+                ),
+                true
+            )
         )
     }
 
@@ -244,6 +264,7 @@ class TimerViewModelTest {
             coffeeAmount = coffeeAmount,
             brewWaterAmount = brewWaterAmount,
             grindSize = groundSize,
-            brewMethod = brewingMethod)
+            brewMethod = brewingMethod
+        )
     }
 }

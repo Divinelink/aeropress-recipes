@@ -43,7 +43,8 @@ sealed class BrewState(
         time,
         Phase.Bloom,
         true,
-        false)
+        false
+    )
 
     data class Brew(val water: Int, val time: Long) : BrewState(
         title = R.string.brewPhase,
