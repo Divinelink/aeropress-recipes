@@ -80,9 +80,9 @@ task RunUnitTests {
         println("No kotlin files changed! Skipping task...")
         return
     } else {
-        if (changedFilesList.contains("kmmsharedmodule")) {
-            println("Running KMM tests:")
-            dependsOn(":kmmsharedmodule:testDebugUnitTest")
+        if (changedFilesList.contains("app")) {
+            println("Running tests:")
+            dependsOn(":app:testDebugUnitTest")
         }
         //N/A in project yet
 //        if (changedFilesList.contains("androidApp/")) {
