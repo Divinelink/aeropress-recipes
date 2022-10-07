@@ -1,3 +1,4 @@
+@file:Suppress("MagicNumber")
 package aeropresscipe.divinelink.aeropress.components.menu
 
 import aeropresscipe.divinelink.aeropress.R
@@ -9,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.PopupWindow
 import androidx.core.content.ContextCompat
 import gr.divinelink.core.util.swipe.utils.isLtr
-
 
 /**
  * A custom context menu that will show next to an anchor view and display several options. Basically a PopupMenu with custom UI and positioning rules.
@@ -80,8 +80,9 @@ class ContextMenu private constructor(
 
         val offsetY: Int
 
-        if (verticalPosition == VerticalPosition.ABOVE && menuTopBound > screenTopBound
-            || menuTopBound > screenTopBound) {
+        if (verticalPosition == VerticalPosition.ABOVE && menuTopBound > screenTopBound ||
+            menuTopBound > screenTopBound
+        ) {
             offsetY = -(anchorRect.height() + contentView.measuredHeight + baseOffsetY)
             contextMenuList.setItems(items.reversed())
         } else if (menuBottomBound < screenBottomBound) {

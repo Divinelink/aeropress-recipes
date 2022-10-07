@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.Aeropress">
         <activity
-            android:name=".settings.SettingsActivity"
+            android:name=".settings.app.AppSettingsActivity"
             android:exported="false" />
         <activity
             android:name=".finish.FinishActivity"
@@ -24,7 +24,7 @@
             android:name=".base.HomeActivity"
             android:exported="true"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:theme="@style/Base.Theme.Aeropress">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

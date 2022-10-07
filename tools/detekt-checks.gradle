@@ -1,4 +1,4 @@
-  apply plugin: "io.gitlab.arturbosch.detekt"
+apply plugin: "io.gitlab.arturbosch.detekt"
 
 configurations { detekt }
 dependencies {
@@ -70,7 +70,7 @@ private static def execute(cmd, output) {
     ['sh', '-c', cmd].execute().waitForProcessOutput(output, System.err)
 }
 
-task dsqRunUnitTests {
+task RunUnitTests {
     group 'CI'
     description 'Runs all module\'s unit tests if there are changes in this module'
 
@@ -80,9 +80,9 @@ task dsqRunUnitTests {
         println("No kotlin files changed! Skipping task...")
         return
     } else {
-        if (changedFilesList.contains("kmmsharedmodule")) {
-            println("Running KMM tests:")
-            dependsOn(":kmmsharedmodule:testDebugUnitTest")
+        if (changedFilesList.contains("app")) {
+            println("Running tests:")
+            dependsOn(":app:testDebugUnitTest")
         }
         //N/A in project yet
 //        if (changedFilesList.contains("androidApp/")) {

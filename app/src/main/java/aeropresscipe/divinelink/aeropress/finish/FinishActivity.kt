@@ -3,7 +3,7 @@ package aeropresscipe.divinelink.aeropress.finish
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.components.recipecard.RecipeCard
 import aeropresscipe.divinelink.aeropress.databinding.ActivityFinishBinding
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.airbnb.lottie.model.KeyPath
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.changeLayersColor
+import gr.divinelink.core.util.extensions.getSerializable
 import gr.divinelink.core.util.utils.WindowUtil.setNavigationBarColor
 import java.lang.ref.WeakReference
 import javax.inject.Inject
@@ -37,7 +38,7 @@ class FinishActivity :
         setContentView(view)
         setNavigationBarColor(this, ContextCompat.getColor(this, R.color.colorBackground))
 
-        recipe = intent?.getSerializableExtra(EXTRA_RECIPE) as Recipe?
+        recipe = intent?.getSerializable<Recipe>(EXTRA_RECIPE)
 
         val viewModelFactory = FinishViewModelFactory(assistedFactory, WeakReference<IFinishViewModel>(this))
         viewModel = ViewModelProvider(this, viewModelFactory)[(FinishViewModel::class.java)]

@@ -1,5 +1,7 @@
 package aeropresscipe.divinelink.aeropress.base.di
 
+import aeropresscipe.divinelink.aeropress.base.keyvalue.SettingsValues
+import aeropresscipe.divinelink.aeropress.util.DynamicTheme
 import android.content.SharedPreferences
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -11,14 +13,11 @@ class Preferences @Inject constructor(var preferences: SharedPreferences) {
         set(value) = preferences.edit().putBoolean(MUTE_SOUND, value).apply()
 
     // Settings
-    var theme: String?
-        get() = preferences.getString(THEME, "system")
-        set(value) = preferences.edit().putString(THEME, value).apply()
+    var theme: String
+        get() = preferences.getString(SettingsValues.THEME, if (DynamicTheme.systemThemeAvailable()) "system" else "light") ?: "light"
+        set(value) = preferences.edit().putString(SettingsValues.THEME, value).apply()
 
     companion object {
         private const val MUTE_SOUND = "MUTE_SOUND"
-
-        // Settings
-        private const val THEME = "settings.theme"
     }
 }

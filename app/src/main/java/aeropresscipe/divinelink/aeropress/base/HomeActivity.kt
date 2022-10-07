@@ -3,8 +3,7 @@ package aeropresscipe.divinelink.aeropress.base
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.components.snackbar.Notification
 import aeropresscipe.divinelink.aeropress.databinding.ActivityHomeBinding
-import aeropresscipe.divinelink.aeropress.generaterecipe.GenerateRecipeFragment
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.favorites.FavoritesFragment
 import aeropresscipe.divinelink.aeropress.history.HistoryFragment
 import aeropresscipe.divinelink.aeropress.history.HistoryState
 import aeropresscipe.divinelink.aeropress.home.HomeState
@@ -13,7 +12,8 @@ import aeropresscipe.divinelink.aeropress.home.HomeViewModel
 import aeropresscipe.divinelink.aeropress.home.HomeViewModelAssistedFactory
 import aeropresscipe.divinelink.aeropress.home.HomeViewModelFactory
 import aeropresscipe.divinelink.aeropress.home.IHomeViewModel
-import aeropresscipe.divinelink.aeropress.savedrecipes.SavedRecipesFragment
+import aeropresscipe.divinelink.aeropress.recipe.RecipeFragment
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
 import aeropresscipe.divinelink.aeropress.timer.TimerFlow
 import android.annotation.SuppressLint
@@ -29,6 +29,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationBarView
 import dagger.hilt.android.AndroidEntryPoint
+import gr.divinelink.core.util.extensions.addBackPressCallback
 import gr.divinelink.core.util.utils.DimensionUnit
 import gr.divinelink.core.util.utils.setNavigationBarColor
 import gr.divinelink.core.util.viewBinding.activity.viewBinding
@@ -37,7 +38,8 @@ import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeActivity : AppCompatActivity(),
+class HomeActivity :
+    AppCompatActivity(),
     IHomeViewModel,
     HomeStateHandler,
     HistoryFragment.Callback {
@@ -46,8 +48,8 @@ class HomeActivity : AppCompatActivity(),
     private val fragments: Array<out Fragment> get() = arrayOf(recipeFragment, favoritesFragment, historyFragment)
     private var selectedIndex = 0
 
-    private lateinit var recipeFragment: GenerateRecipeFragment
-    private lateinit var favoritesFragment: SavedRecipesFragment
+    private lateinit var recipeFragment: RecipeFragment
+    private lateinit var favoritesFragment: FavoritesFragment
     private lateinit var historyFragment: HistoryFragment
 
     @Inject
@@ -66,12 +68,13 @@ class HomeActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
 //        dynamicTheme.onCreate(this)
         setNavigationBarColor(ContextCompat.getColor(this, R.color.colorSurface2))
+        onBackPressedDispatcher.addBackPressCallback(this) { onBackPressed() }
         binding.bottomNavigation.setOnItemSelectedListener(onItemSelectedListener)
 //        binding.bottomNavigation.setOnItemReselectedListener(onItemReselectedListener)
 
         if (savedInstanceState == null) {
-            recipeFragment = GenerateRecipeFragment.newInstance()
-            favoritesFragment = SavedRecipesFragment.newInstance()
+            recipeFragment = RecipeFragment.newInstance()
+            favoritesFragment = FavoritesFragment.newInstance()
             historyFragment = HistoryFragment.newInstance()
             supportFragmentManager.beginTransaction()
                 .add(R.id.fragment, recipeFragment, RECIPE_TAG)
@@ -81,8 +84,8 @@ class HomeActivity : AppCompatActivity(),
         } else {
             selectedIndex = savedInstanceState.getInt(SELECTED_INDEX, 0)
 
-            recipeFragment = supportFragmentManager.findFragmentByTag(RECIPE_TAG) as GenerateRecipeFragment
-            favoritesFragment = supportFragmentManager.findFragmentByTag(FAVORITES_TAG) as SavedRecipesFragment
+            recipeFragment = supportFragmentManager.findFragmentByTag(RECIPE_TAG) as RecipeFragment
+            favoritesFragment = supportFragmentManager.findFragmentByTag(FAVORITES_TAG) as FavoritesFragment
             historyFragment = supportFragmentManager.findFragmentByTag(HISTORY_TAG) as HistoryFragment
         }
 
@@ -150,15 +153,6 @@ class HomeActivity : AppCompatActivity(),
         transaction.commit()
     }
 
-    override fun onBackPressed() {
-        if (binding.bottomNavigation.selectedItemId == R.id.recipe) {
-            super.onBackPressed()
-            finish()
-        } else {
-            binding.bottomNavigation.selectedItemId = R.id.recipe
-        }
-    }
-
     companion object {
         private const val RECIPE_TAG = "RECIPE"
         private const val FAVORITES_TAG = "FAVORITES"
@@ -220,6 +214,14 @@ class HomeActivity : AppCompatActivity(),
             .make(binding.bottomNavigation, resources.getString(state.value.string, getString(state.value.favorites)))
             .setAnchorView(anchorView)
             .show()
+    }
+
+    override fun onBackPressed() {
+        if (binding.bottomNavigation.selectedItemId == R.id.recipe) {
+            finish()
+        } else {
+            binding.bottomNavigation.selectedItemId = R.id.recipe
+        }
     }
 
     override fun onUpdateRecipe(recipe: Recipe, flow: TimerFlow, update: Boolean) {

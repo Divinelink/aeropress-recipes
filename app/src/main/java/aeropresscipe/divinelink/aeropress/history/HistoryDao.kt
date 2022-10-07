@@ -1,6 +1,6 @@
 package aeropresscipe.divinelink.aeropress.history
 
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy

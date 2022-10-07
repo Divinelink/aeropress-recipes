@@ -12,8 +12,8 @@ import timber.log.Timber
 import java.lang.ref.WeakReference
 
 class SettingsViewModel @AssistedInject constructor(
-    private var repository: TimerRepository,
-    @Assisted override var delegate: WeakReference<ISettingsViewModel>? = null
+    @Suppress("UnusedPrivateMember") private var repository: TimerRepository,
+    @Assisted override var delegate: WeakReference<ISettingsViewModel>? = null,
 ) : BaseViewModel<ISettingsViewModel>(),
     SettingsIntents {
     internal var statesList: MutableList<SettingsState> = mutableListOf()
@@ -25,7 +25,6 @@ class SettingsViewModel @AssistedInject constructor(
             delegate?.get()?.updateState(value)
             statesList.add(value)
         }
-
 }
 
 interface ISettingsViewModel {
@@ -33,7 +32,7 @@ interface ISettingsViewModel {
 }
 
 interface SettingsIntents : MVIBaseView {
-    //TODO add your code here
+    // TODO add your code here
 }
 
 sealed class SettingsState {

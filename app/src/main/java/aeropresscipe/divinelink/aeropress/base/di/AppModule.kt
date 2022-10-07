@@ -13,7 +13,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
@@ -38,7 +37,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideSavedRecipeDao(db: HomeDatabase) = db.savedRecipeDao()
+    fun provideSavedRecipeDao(db: HomeDatabase) = db.favoritesDao()
 
     @ApplicationContext
     @Provides
@@ -52,5 +51,4 @@ object AppModule {
             Context.MODE_PRIVATE
         )
     }
-
 }

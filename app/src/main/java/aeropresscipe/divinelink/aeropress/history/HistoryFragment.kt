@@ -4,8 +4,8 @@ import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.base.HomeActivity.Companion.PAD_BOTTOM_OF_RECYCLER
 import aeropresscipe.divinelink.aeropress.base.TimerViewCallback
 import aeropresscipe.divinelink.aeropress.databinding.FragmentHistoryBinding
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
-import aeropresscipe.divinelink.aeropress.savedrecipes.adapter.EmptyType
+import aeropresscipe.divinelink.aeropress.favorites.adapter.EmptyType
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.TimerFlow
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
 import android.content.Context
@@ -30,7 +30,8 @@ import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HistoryFragment : Fragment(),
+class HistoryFragment :
+    Fragment(),
     HistoryStateHandler,
     IHistoryViewModel,
     TimerViewCallback {
@@ -67,7 +68,7 @@ class HistoryFragment : Fragment(),
 
     private fun setToolbar() {
         binding?.toolbar?.apply {
-            setNavigationOnClickListener { activity?.onBackPressed() }
+            setNavigationOnClickListener { callback.onBackPressed() }
             inflateMenu(R.menu.history)
             setOnMenuItemClickListener { item ->
                 clearMenuItem = binding?.toolbar?.menu?.findItem(R.menu.history)
@@ -87,7 +88,8 @@ class HistoryFragment : Fragment(),
             layoutManager = LinearLayoutManager(activity)
             adapter = historyAdapter
         }
-        HistoryItem.register(historyAdapter,
+        HistoryItem.register(
+            historyAdapter,
             onActionClicked = { recipe: History, swipeAction: SwipeAction ->
                 when (swipeAction.actionId) {
                     R.id.brew -> viewModel.startBrew(recipe.recipe)
@@ -204,5 +206,6 @@ class HistoryFragment : Fragment(),
     interface Callback {
         fun onSnackbarShow(state: HistoryState.ShowSnackBar)
         fun onUpdateRecipe(recipe: Recipe, flow: TimerFlow, update: Boolean)
+        fun onBackPressed()
     }
 }

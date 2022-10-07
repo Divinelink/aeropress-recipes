@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:background="@color/colorBackground"
     android:tag="@string/favorites"
-    tools:context=".savedrecipes.SavedRecipesFragment">
+    tools:context=".favorites.FavoritesFragment">
 
 
     <com.google.android.material.appbar.AppBarLayout

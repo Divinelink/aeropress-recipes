@@ -3,8 +3,8 @@ package aeropresscipe.divinelink.aeropress.timer
 import aeropresscipe.divinelink.aeropress.base.di.Preferences
 import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
 import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.getBrewTimeLeft
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.getBrewingStates
+import aeropresscipe.divinelink.aeropress.recipe.models.getBrewTimeLeft
+import aeropresscipe.divinelink.aeropress.recipe.models.getBrewingStates
 import aeropresscipe.divinelink.aeropress.timer.util.BrewPhase
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
 import aeropresscipe.divinelink.aeropress.timer.util.Phase
@@ -54,12 +54,12 @@ class TimerViewModel @AssistedInject constructor(
             val bloomState = states?.find { state -> state.phase == Phase.Bloom }
 
             if (timeLeft.first > 0) {
-                startTimerStates(bloomState!!, timeLeft.first)
+                startTimerStates(bloomState!!, timeLeft.first, false)
             } else if (timeLeft.second > 0) {
                 // Remove bloomState from list and get BrewState for new timer.
                 states?.remove(bloomState)
                 val brewState = states?.find { state -> state.phase == Phase.Brew }
-                startTimerStates(brewState!!, timeLeft.second)
+                startTimerStates(brewState!!, timeLeft.second, false)
             } else {
                 finishRecipeBrewing()
             }
@@ -76,12 +76,14 @@ class TimerViewModel @AssistedInject constructor(
         }
     }
 
-    private fun startTimerStates(brewState: BrewState, timeLeft: Long, animate: Boolean = false) {
-        state = TimerState.StartTimer(brewState, animate)
-        state = TimerState.StartProgressBar(
+    private fun startTimerStates(brewState: BrewState?, timeLeft: Long, animate: Boolean) {
+        if (brewState == null) return
+        state = TimerState.UpdateDescriptionState(brewState, animate)
+        state = TimerState.UpdateProgressBar(
             maxValue = brewState.brewTime.inMilliseconds().toInt(),
             timeInMilliseconds = timeLeft,
-            animate = animate
+            animate = animate,
+            update = brewState.update
         )
     }
 
@@ -108,17 +110,16 @@ class TimerViewModel @AssistedInject constructor(
     }
 
     override fun updateTimer() {
-        transferableModel?.brew?.removeCurrentPhase()
-        transferableModel?.brew?.let { brew ->
-            // Update current brew state
-            if (brew.getCurrentState() == BrewState.Finished) {
-                finishRecipeBrewing()
-            } else {
-                startTimerStates(brew.getCurrentState(), brew.getCurrentState().brewTime.inMilliseconds(), animate = true)
-            }
-            if (!preferences.muteSound) {
-                state = TimerState.PlaySoundState
-            }
+        val brew = transferableModel?.brew
+        brew?.removeCurrentPhase()
+        // Update current brew state
+        if (brew?.getCurrentState() == BrewState.Finished) {
+            finishRecipeBrewing()
+        } else {
+            startTimerStates(brew?.getCurrentState(), brew?.getCurrentState()?.brewTime.inMilliseconds(), true)
+        }
+        if (!preferences.muteSound) {
+            state = TimerState.PlaySoundState
         }
     }
 
@@ -134,7 +135,7 @@ class TimerViewModel @AssistedInject constructor(
     private fun startTimers() {
         val brewState = transferableModel?.brew?.getCurrentState()
         if (brewState?.brewTime != null) {
-            startTimerStates(brewState, brewState.brewTime.inMilliseconds())
+            startTimerStates(brewState, brewState.brewTime.inMilliseconds(), false)
         } else {
             state = TimerState.ErrorState("Something went wrong!")
         }
@@ -156,8 +157,8 @@ interface TimerIntents : MVIBaseView {
 sealed class TimerState {
     object InitialState : TimerState()
     data class ErrorState(val data: String) : TimerState()
-    data class StartTimer(val brewState: BrewState, val animate: Boolean) : TimerState()
-    data class StartProgressBar(val maxValue: Int, val timeInMilliseconds: Long, val animate: Boolean) : TimerState()
+    data class UpdateDescriptionState(val brewState: BrewState, val animateDescription: Boolean) : TimerState()
+    data class UpdateProgressBar(val maxValue: Int, val timeInMilliseconds: Long, val animate: Boolean, val update: Boolean) : TimerState()
     object PlaySoundState : TimerState()
     object ExitState : TimerState()
     object FinishState : TimerState()
@@ -166,8 +167,8 @@ sealed class TimerState {
 interface TimerStateHandler {
     fun handleInitialState()
     fun handleErrorState(state: TimerState.ErrorState)
-    fun handleStartTimer(state: TimerState.StartTimer)
-    fun handleStartProgressBar(state: TimerState.StartProgressBar)
+    fun handleUpdateDescriptionState(state: TimerState.UpdateDescriptionState)
+    fun handleUpdateProgressBar(state: TimerState.UpdateProgressBar)
     fun handleExitState()
     fun handleFinishState()
     fun handlePlaySoundState()

@@ -1,7 +1,8 @@
 package aeropresscipe.divinelink.aeropress.util
 
 import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.base.di.Preferences
+import aeropresscipe.divinelink.aeropress.base.Store
+import aeropresscipe.divinelink.aeropress.base.keyvalue.SettingsValues.Theme
 import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
@@ -20,13 +21,16 @@ open class DynamicTheme {
         globalNightModeConfiguration = onCreateNightModeConfiguration
         activity.setTheme(theme)
         if (previousGlobalConfiguration != globalNightModeConfiguration) {
-            Timber.d("Previous night mode has changed previous: " + previousGlobalConfiguration + " now: " + globalNightModeConfiguration)
+            Timber.d("Previous night mode has changed previous: $previousGlobalConfiguration now: $globalNightModeConfiguration")
         }
     }
 
     fun onResume(activity: Activity) {
         if (onCreateNightModeConfiguration != ConfigurationUtil.getNightModeConfiguration(activity)) {
-            Timber.d("Create configuration different from current previous: " + onCreateNightModeConfiguration + " now: " + ConfigurationUtil.getNightModeConfiguration(activity))
+            Timber.d(
+                "Create configuration different from current previous: " + onCreateNightModeConfiguration +
+                    " now: " + ConfigurationUtil.getNightModeConfiguration(activity)
+            )
         }
     }
 
@@ -38,16 +42,15 @@ open class DynamicTheme {
         private var globalNightModeConfiguration = 0
 
         fun systemThemeAvailable(): Boolean {
-            return Build.VERSION.SDK_INT >= 29
+            return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
         }
 
-        fun setDefaultDayNightMode(context: Context, preferences: Preferences) {
-//        Theme theme = Theme.deserialize(Objects.requireNonNull(preferences.getTheme()));//SignalStore.settings().getTheme();
-            val theme = enumValueOf<Theme>(preferences.theme ?: Theme.SYSTEM.value)
+        fun setDefaultDayNightMode(context: Context) {
+            val theme = Store.settings().theme
             if (theme === Theme.SYSTEM) {
 //            Timber.d("Setting to follow system expecting: " + ConfigurationUtil.getNightModeConfiguration(context.getApplicationContext()));
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-            } else if (isDarkTheme(context, preferences)) {
+            } else if (isDarkTheme(context)) {
                 Timber.d("Setting to always night")
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             } else {
@@ -61,8 +64,8 @@ open class DynamicTheme {
         /**
          * Takes the system theme into account.
          */
-        fun isDarkTheme(context: Context, preferences: Preferences): Boolean {
-            val theme = enumValueOf<Theme>(preferences.theme ?: Theme.SYSTEM.value)
+        fun isDarkTheme(context: Context): Boolean {
+            val theme = Store.settings().theme
             return if (theme == Theme.SYSTEM && systemThemeAvailable()) {
                 isSystemInDarkTheme(context)
             } else {
@@ -74,12 +77,6 @@ open class DynamicTheme {
             return context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
         }
     }
-} // TODO Move this to SettingsValues
-
-internal enum class Theme(val value: String) {
-    SYSTEM("system"),
-    LIGHT("light"),
-    DARK("dark");
 }
 
 internal object ConfigurationUtil {

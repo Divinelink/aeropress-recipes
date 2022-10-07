@@ -1,7 +1,7 @@
 package aeropresscipe.divinelink.aeropress.components.timerprogressview
 
 import aeropresscipe.divinelink.aeropress.databinding.ViewTimerProgressBinding
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.DiceDomain
+import aeropresscipe.divinelink.aeropress.recipe.models.DiceDomain
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.util.AttributeSet
@@ -18,7 +18,8 @@ import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TimerProgressView : FrameLayout,
+class TimerProgressView :
+    FrameLayout,
     ITimerProgressViewModel,
     TimerProgressStateHandler {
     var binding: ViewTimerProgressBinding = ViewTimerProgressBinding.inflate(LayoutInflater.from(context), this, false)
@@ -67,13 +68,9 @@ class TimerProgressView : FrameLayout,
 
     override fun handleUpdateDescriptionState(state: TimerProgressState.UpdateDescriptionState) {
         callback?.onTimerAttached()
-//        if (state.brewState.animate) {
-//            binding.brewStateTitle updateTextWithFade resources.getString(state.brewState.title)
-//            binding.stateDescription updateTextWithFade resources.getString(state.brewState.description, state.brewState.brewWater)
-//        } else {
         binding.brewStateTitle.text = resources.getString(state.brewState.title)
-        binding.stateDescription.text = resources.getString(state.brewState.description, state.brewState.brewWater)
-//        }
+        binding.stateDescription.text = resources.getString(state.brewState.description, state.brewState.phaseWater, state.brewState.totalWater)
+        binding.stateDescription.isSelected = true
     }
 
     override fun onDetachedFromWindow() {

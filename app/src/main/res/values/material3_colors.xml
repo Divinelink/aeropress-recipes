@@ -107,4 +107,5 @@
     <color name="colorOnBackground_60">@color/light_colorOnBackground_60</color>
     <color name="colorOutline_38">@color/light_colorOutline_38</color>
     <color name="colorBackground_0">@color/light_colorBackground_0</color>
+
 </resources>
