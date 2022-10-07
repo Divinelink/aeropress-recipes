@@ -26,3 +26,5 @@ jobs:
 #      run: ./gradlew build
     - name: Run Unit Tests
       run: ./gradlew testDebugUnitTest
+    - name: Detekt Format
+      run: ./gradlew detektFormat
