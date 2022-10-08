@@ -5,7 +5,7 @@ import aeropresscipe.divinelink.aeropress.components.recipecard.RecipeCard
 import aeropresscipe.divinelink.aeropress.databinding.EmptyRecyclerLayoutBinding
 import aeropresscipe.divinelink.aeropress.databinding.ViewSwipeRecipeCardBinding
 import aeropresscipe.divinelink.aeropress.favorites.Favorites
-import aeropresscipe.divinelink.aeropress.history.HistoryItem
+import aeropresscipe.divinelink.aeropress.history.HistoryAdapter
 import aeropresscipe.divinelink.aeropress.util.mapping.LayoutFactory
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingViewHolder
@@ -16,25 +16,15 @@ import gr.divinelink.core.util.swipe.SwipeMenuListener
 
 typealias OnActionClicked = (recipe: Favorites, action: SwipeAction) -> Unit
 
-object FavoriteItem {
-    fun register(
-        mappingAdapter: MappingAdapter,
-        onActionClicked: OnActionClicked,
-        actionBindHelper: ActionBindHelper,
-    ) {
-        mappingAdapter.registerFactory(
-            LayoutFactory({ layoutInflater, root ->
-                RecipeViewHolder(
-                    binding = ViewSwipeRecipeCardBinding.inflate(layoutInflater, root, false),
-                    actionsBindHelper = actionBindHelper,
-                    onActionClicked = onActionClicked,
-                )
-            })
-        )
-        mappingAdapter.registerFactory<EmptyType.EmptyFavorites>(
-            LayoutFactory({ layoutInflater, root ->
-                HistoryItem.EmptyViewHolder(EmptyRecyclerLayoutBinding.inflate(layoutInflater, root, false))
-            })
+class RecipesAdapter(
+    val onActionClicked: OnActionClicked,
+    val actionBindHelper: ActionBindHelper,
+) : MappingAdapter() {
+
+    override fun register() {
+        registerFactory(LayoutFactory({ i, r -> RecipeViewHolder(ViewSwipeRecipeCardBinding.inflate(i, r, false), actionBindHelper, onActionClicked) }))
+        registerFactory<EmptyType.EmptyFavorites>(
+            LayoutFactory({ i, r -> HistoryAdapter.Companion.EmptyViewHolder(EmptyRecyclerLayoutBinding.inflate(i, r, false)) })
         )
     }
 

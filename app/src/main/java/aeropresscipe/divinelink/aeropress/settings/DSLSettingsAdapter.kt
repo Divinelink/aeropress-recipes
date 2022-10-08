@@ -38,7 +38,8 @@ import gr.divinelink.core.util.utils.DimensionUnit
 import timber.log.Timber
 
 class DSLSettingsAdapter : MappingAdapter() {
-    init {
+
+    override fun register() {
         registerFactory(LayoutFactory({ inflater: LayoutInflater, parent: ViewGroup -> ClickPreferenceViewHolder(DslPreferenceItemBinding.inflate(inflater, parent, false)) }))
         registerFactory(LayoutFactory({ inflater: LayoutInflater, parent: ViewGroup -> LongClickPreferenceViewHolder(DslPreferenceItemBinding.inflate(inflater, parent, false)) }))
         registerFactory(LayoutFactory({ inflater: LayoutInflater, parent: ViewGroup -> TextPreferenceViewHolder(DslPreferenceItemBinding.inflate(inflater, parent, false)) }))
@@ -229,6 +230,7 @@ class RadioPreferenceViewHolder(binding: DslRadioPreferenceItemBinding) : Prefer
     }
 }
 
+@Suppress("MagicNumber")
 class ExternalLinkPreferenceViewHolder(binding: DslPreferenceItemBinding) : PreferenceViewHolder<ExternalLinkPreference>(binding) {
     override fun bind(model: ExternalLinkPreference) {
         super.bind(model)
@@ -237,8 +239,8 @@ class ExternalLinkPreferenceViewHolder(binding: DslPreferenceItemBinding) : Pref
         externalLinkIcon.setBounds(
             0,
             0,
-            DimensionUnit.DP.toPixels(context.resources.getDimension(R.dimen.dimen_20)).toInt(),
-            DimensionUnit.DP.toPixels(context.resources.getDimension(R.dimen.dimen_20)).toInt(),
+            DimensionUnit.DP.toPixels(20F).toInt(),
+            DimensionUnit.DP.toPixels(20F).toInt(),
         )
 
         if (isLtr()) {

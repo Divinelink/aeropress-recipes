@@ -7,7 +7,6 @@ import aeropresscipe.divinelink.aeropress.databinding.FragmentHistoryBinding
 import aeropresscipe.divinelink.aeropress.favorites.adapter.EmptyType
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.TimerFlow
-import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -43,7 +42,8 @@ class HistoryFragment :
     lateinit var assistedFactory: HistoryViewModelAssistedFactory
     private lateinit var viewModel: HistoryViewModel
 
-    private val historyAdapter = MappingAdapter()
+    private lateinit var historyAdapter: HistoryAdapter
+
     private var clearMenuItem: MenuItem? = null
 
     @Px
@@ -84,12 +84,7 @@ class HistoryFragment :
     }
 
     private fun bindAdapter() {
-        binding?.recyclerView?.apply {
-            layoutManager = LinearLayoutManager(activity)
-            adapter = historyAdapter
-        }
-        HistoryItem.register(
-            historyAdapter,
+        historyAdapter = HistoryAdapter(
             onActionClicked = { recipe: History, swipeAction: SwipeAction ->
                 when (swipeAction.actionId) {
                     R.id.brew -> viewModel.startBrew(recipe.recipe)
@@ -100,6 +95,11 @@ class HistoryFragment :
             },
             actionBindHelper = ActionBindHelper()
         )
+
+        binding?.recyclerView?.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = historyAdapter
+        }
     }
 
     override fun onResume() {

@@ -18,15 +18,14 @@ import gr.divinelink.core.util.swipe.SwipeMenuListener
 typealias OnActionClicked = (recipe: History, action: SwipeAction) -> Unit
 typealias OnLike = (recipe: History, position: Int) -> Unit
 
-object HistoryItem {
+class HistoryAdapter(
+    val onActionClicked: OnActionClicked,
+    val actionBindHelper: ActionBindHelper,
+    val onLike: OnLike,
+) : MappingAdapter() {
 
-    fun register(
-        mappingAdapter: MappingAdapter,
-        onActionClicked: OnActionClicked,
-        actionBindHelper: ActionBindHelper,
-        onLike: OnLike
-    ) {
-        mappingAdapter.registerFactory(
+    override fun register() {
+        registerFactory(
             LayoutFactory({ layoutInflater, root ->
                 HistoryMappingViewHolder(
                     binding = ViewSwipeRecipeCardBinding.inflate(layoutInflater, root, false),
@@ -36,7 +35,7 @@ object HistoryItem {
                 )
             })
         )
-        mappingAdapter.registerFactory<EmptyType.EmptyHistory>(
+        registerFactory<EmptyType.EmptyHistory>(
             LayoutFactory({ layoutInflater, root ->
                 EmptyViewHolder(EmptyRecyclerLayoutBinding.inflate(layoutInflater, root, false))
             })
@@ -104,14 +103,16 @@ object HistoryItem {
         }
     }
 
-    class EmptyViewHolder<T : EmptyType<T>>(
-        private val binding: EmptyRecyclerLayoutBinding
-    ) :
-        MappingViewHolder<T>(binding.root) {
+    companion object {
+        class EmptyViewHolder<T : EmptyType<T>>(
+            private val binding: EmptyRecyclerLayoutBinding,
+        ) :
+            MappingViewHolder<T>(binding.root) {
 
-        override fun bind(model: T) {
-            binding.root.text = context.resources.getString(model.text)
-            binding.root.setCompoundDrawablesWithIntrinsicBounds(model.image, 0, 0, 0)
+            override fun bind(model: T) {
+                binding.root.text = context.resources.getString(model.text)
+                binding.root.setCompoundDrawablesWithIntrinsicBounds(model.image, 0, 0, 0)
+            }
         }
     }
 }

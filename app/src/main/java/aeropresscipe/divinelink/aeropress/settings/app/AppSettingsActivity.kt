@@ -48,22 +48,28 @@ class AppSettingsActivity :
 
     override fun updateState(state: SettingsState) {
         when (state) {
-            is SettingsState.ErrorState -> {}
-            is SettingsState.InitialState -> {}
-            is SettingsState.LoadingState -> {}
+            is SettingsState.ErrorState -> {
+                // Intentionally Blank.
+            }
+            is SettingsState.InitialState -> {
+                // Intentionally Blank.
+            }
+            is SettingsState.LoadingState -> {
+                // Intentionally Blank.
+            }
         }
     }
 
     override fun handleInitialState() {
-//        TODO("Not yet implemented")
+        // Intentionally Blank.
     }
 
     override fun handleLoadingState() {
-//        TODO("Not yet implemented")
+        // Intentionally Blank.
     }
 
     override fun handleErrorState() {
-//        TODO("Not yet implemented")
+        // Intentionally Blank.
     }
 
     override fun onDestroy() {

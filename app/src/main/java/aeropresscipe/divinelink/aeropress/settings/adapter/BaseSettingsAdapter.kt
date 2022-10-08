@@ -10,7 +10,7 @@ import android.view.ViewGroup
 
 class BaseSettingsAdapter : MappingAdapter() {
 
-    init {
+    override fun register() {
         registerFactory(LayoutFactory({ i, r -> SettingHeader.ViewHolder(BaseSettingsHeaderItemBinding.inflate(i, r, false)) }))
         registerFactory(LayoutFactory({ i, r -> SettingProgress.ViewHolder(BaseSettingsProgressItemBinding.inflate(i, r, false)) }))
     }

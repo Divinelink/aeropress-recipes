@@ -5,11 +5,10 @@ import aeropresscipe.divinelink.aeropress.base.HomeActivity.Companion.PAD_BOTTOM
 import aeropresscipe.divinelink.aeropress.base.TimerViewCallback
 import aeropresscipe.divinelink.aeropress.databinding.FragmentSavedRecipesBinding
 import aeropresscipe.divinelink.aeropress.favorites.adapter.EmptyType
-import aeropresscipe.divinelink.aeropress.favorites.adapter.FavoriteItem
+import aeropresscipe.divinelink.aeropress.favorites.adapter.RecipesAdapter
 import aeropresscipe.divinelink.aeropress.history.HistoryFragment
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.TimerFlow
-import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -45,7 +44,15 @@ class FavoritesFragment :
     lateinit var assistedFactory: FavoritesViewModelAssistedFactory
 
     private var mFadeAnimation: Animation? = null
-    private val recipesAdapter = MappingAdapter()
+    private val recipesAdapter = RecipesAdapter(
+        onActionClicked = { recipe: Favorites, swipeAction: SwipeAction ->
+            when (swipeAction.actionId) {
+                R.id.delete -> showDeleteRecipeDialog(recipe.recipe)
+                R.id.brew -> viewModel.startBrew(recipe.recipe)
+            }
+        },
+        actionBindHelper = ActionBindHelper()
+    )
 
     @Px
     private var recyclerViewPadding = DimensionUnit.PIXELS.toPixels(PAD_BOTTOM_OF_RECYCLER).toInt()
@@ -53,7 +60,7 @@ class FavoritesFragment :
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentSavedRecipesBinding.inflate(inflater, container, false)
         val view = binding?.root
@@ -134,17 +141,6 @@ class FavoritesFragment :
             layoutManager = LinearLayoutManager(activity)
             adapter = recipesAdapter
         }
-
-        FavoriteItem.register(
-            recipesAdapter,
-            onActionClicked = { recipe: Favorites, swipeAction: SwipeAction ->
-                when (swipeAction.actionId) {
-                    R.id.delete -> showDeleteRecipeDialog(recipe.recipe)
-                    R.id.brew -> viewModel.startBrew(recipe.recipe)
-                }
-            },
-            actionBindHelper = ActionBindHelper()
-        )
     }
 
     override fun updateBottomPadding(bottomPadding: Int) {
