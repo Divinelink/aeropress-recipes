@@ -6,7 +6,6 @@ import aeropresscipe.divinelink.aeropress.util.DynamicNoActionBarTheme
 import aeropresscipe.divinelink.aeropress.util.DynamicTheme
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN
 import gr.divinelink.core.util.extensions.addBackPressCallback
 
 open class DSLSettingsActivity : AppCompatActivity(), DSLSettingsFragment.Callback {
@@ -16,19 +15,14 @@ open class DSLSettingsActivity : AppCompatActivity(), DSLSettingsFragment.Callba
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dsl_settings_activity)
 
-        supportFragmentManager.beginTransaction()
-            .add(R.id.nav_host_fragment, AppSettingsFragment())
-            .setTransition(TRANSIT_FRAGMENT_OPEN)
-            .commit()
-
-        dynamicTheme.onCreate(this)
+        if (savedInstanceState == null) {
+            val fragment = AppSettingsFragment()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment, fragment)
+                .commitNow()
+        }
 
         onBackPressedDispatcher.addBackPressCallback(this) { onBackPressed() }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        dynamicTheme.onResume(this)
     }
 
     override fun onNavigateUp(): Boolean {
