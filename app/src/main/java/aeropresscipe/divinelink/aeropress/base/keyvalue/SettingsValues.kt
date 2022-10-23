@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.base.keyvalue
 
-
 @Deprecated("Use DataStore instead.")
 class SettingsValues : StoreValues {
 //    private val entryPoint = EntryPoints.get(BaseApplication.instance.applicationContext, PreferencesEntryPoint::class.java)

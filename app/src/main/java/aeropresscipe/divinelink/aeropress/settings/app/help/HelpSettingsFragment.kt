@@ -7,9 +7,10 @@ import aeropresscipe.divinelink.aeropress.settings.DSLSettingsAdapter
 import aeropresscipe.divinelink.aeropress.settings.DSLSettingsFragment
 import aeropresscipe.divinelink.aeropress.settings.DSLSettingsText
 import aeropresscipe.divinelink.aeropress.settings.configure
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HelpSettingsFragment : DSLSettingsFragment(R.string.HelpSettingsFragment__help) {
-
     override fun bindAdapter(adapter: DSLSettingsAdapter) {
         adapter.submitList(getConfiguration().toMappingModelList())
     }

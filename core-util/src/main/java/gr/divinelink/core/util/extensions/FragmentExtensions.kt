@@ -8,7 +8,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import java.lang.reflect.Field
 
-
 fun Fragment.addBackPressCallback(
     onBackPressed: OnBackPressedCallback.() -> Unit,
 ) {
@@ -32,7 +31,6 @@ private val fragmentLifecycleRegistryField: Field by lazy {
     field.isAccessible = true
     field
 }
-
 
 fun OnBackPressedDispatcher.addBackPressCallback(
     lifecycleOwner: LifecycleOwner,
