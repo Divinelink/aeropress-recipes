@@ -1,12 +1,10 @@
 package aeropresscipe.divinelink.aeropress.base.keyvalue
 
-import aeropresscipe.divinelink.aeropress.base.BaseApplication
-import aeropresscipe.divinelink.aeropress.base.di.PreferencesEntryPoint
-import dagger.hilt.EntryPoints
 
+@Deprecated("Use DataStore instead.")
 class SettingsValues : StoreValues {
-    private val entryPoint = EntryPoints.get(BaseApplication.instance.applicationContext, PreferencesEntryPoint::class.java)
-    private val preferences = entryPoint.getPreferences()
+//    private val entryPoint = EntryPoints.get(BaseApplication.instance.applicationContext, PreferencesEntryPoint::class.java)
+//    private val preferences = entryPoint.getPreferences()
 
     override fun onFirstEverAppLaunch() {
         // nothing yet
@@ -15,20 +13,17 @@ class SettingsValues : StoreValues {
     override fun getKeysToIncludeInBackup(): List<String> {
         return listOf()
     }
+}
 
-    companion object {
-        const val THEME = "settings.theme"
-    }
+enum class Theme(val storageKey: String) {
+    SYSTEM("system"),
+    LIGHT("light"),
+    DARK("dark");
+}
 
-    var theme: Theme // todo inject preference logic on StoreValues()
-        get() = Theme.valueOf(preferences.theme.uppercase())
-        set(theme) {
-            preferences.theme = theme.value
-        }
-
-    enum class Theme(val value: String) {
-        SYSTEM("system"),
-        LIGHT("light"),
-        DARK("dark");
-    }
+/**
+ * Returns the matching [Theme] for the given [storageKey] value.
+ */
+fun themeFromStorageKey(storageKey: String): Theme? {
+    return Theme.values().firstOrNull { it.storageKey == storageKey }
 }
