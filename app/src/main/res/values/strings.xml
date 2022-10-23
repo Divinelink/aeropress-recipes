@@ -101,6 +101,13 @@
     <string name="preferences__light_theme">Light</string>
     <string name="preferences__dark_theme">Dark</string>
     <string name="preferences__system_default">System default</string>
+    <string name="preferences__timer_sound">Timer sound</string>
+    <string name="preferences__timer_sound_summary">Sound notification on timer update</string>
+
+    <!-- NotificationsSettingsFragment -->
+    <string name="NotificationsSettingsFragment__notifications">Notifications</string>
+    <string name="NotificationsSettingsFragment__sound">Sound</string>
+
 
     <!-- HelpSettingsFragment -->
     <string name="HelpSettingsFragment__help">Help</string>

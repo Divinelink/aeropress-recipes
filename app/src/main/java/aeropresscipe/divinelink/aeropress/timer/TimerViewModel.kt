@@ -2,7 +2,7 @@ package aeropresscipe.divinelink.aeropress.timer
 
 import aeropresscipe.divinelink.aeropress.recipe.models.getBrewTimeLeft
 import aeropresscipe.divinelink.aeropress.recipe.models.getBrewingStates
-import aeropresscipe.divinelink.aeropress.timer.use_case.GetTimerSoundUseCase
+import aeropresscipe.divinelink.aeropress.settings.app.notifications.use_case.GetTimerSoundUseCase
 import aeropresscipe.divinelink.aeropress.timer.util.BrewPhase
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
 import aeropresscipe.divinelink.aeropress.timer.util.Phase
