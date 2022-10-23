@@ -3,7 +3,9 @@ package aeropresscipe.divinelink.aeropress.settings
 import aeropresscipe.divinelink.aeropress.R
 import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.annotation.MenuRes
@@ -12,18 +14,33 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
 
-abstract class DSLSettingsFragment(
-    @StringRes private val titleId: Int = -1,
-    @MenuRes private val menuId: Int = -1,
-    @LayoutRes layoutId: Int = R.layout.dsl_settings_fragment,
-    protected var layoutManagerProducer: (Context) -> RecyclerView.LayoutManager = { context -> LinearLayoutManager(context) }
-) : Fragment(layoutId) {
-
+@AndroidEntryPoint
+open class DSLSettingsFragment() : Fragment() {
     private lateinit var callback: Callback
+
+    @StringRes
+    var titleId: Int = -1
+
+    @MenuRes
+    var menuId: Int = -1
+
+    @LayoutRes
+    var layoutId: Int = R.layout.dsl_settings_fragment
+
+    var layoutManagerProducer: (Context) -> RecyclerView.LayoutManager = { context -> LinearLayoutManager(context) }
 
     protected var recyclerView: RecyclerView? = null
         private set
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
+        return inflater.inflate(layoutId, container, false)
+    }
 
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,9 +83,29 @@ abstract class DSLSettingsFragment(
         callback = context as Callback
     }
 
-    abstract fun bindAdapter(adapter: DSLSettingsAdapter)
+    open fun bindAdapter(adapter: DSLSettingsAdapter) {
+        // Intentionally Blank
+    }
 
     interface Callback {
         fun onBackPressed()
+    }
+
+    constructor(
+        @StringRes titleId: Int,
+        @MenuRes menuId: Int,
+        @LayoutRes layoutId: Int,
+//        layoutManagerProducer: (Context) -> RecyclerView.LayoutManager,
+    ) : this() {
+        this.titleId = titleId
+        this.menuId = menuId
+        this.layoutId = layoutId
+//        this.layoutManagerProducer = layoutManagerProducer
+    }
+
+    constructor(
+        @StringRes titleId: Int,
+    ) : this() {
+        this.titleId = titleId
     }
 }
