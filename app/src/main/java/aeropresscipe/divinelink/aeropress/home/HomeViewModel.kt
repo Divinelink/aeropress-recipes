@@ -1,23 +1,23 @@
 package aeropresscipe.divinelink.aeropress.home
 
-import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
-import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
 import aeropresscipe.divinelink.aeropress.recipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.TimerFlow
+import aeropresscipe.divinelink.aeropress.ui.theme.ThemedActivityDelegate
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
 import java.lang.ref.WeakReference
+import javax.inject.Inject
 
-class HomeViewModel @AssistedInject constructor(
+@HiltViewModel
+class HomeViewModel @Inject constructor(
     var repository: HomeRepository,
-    @Assisted public override var delegate: WeakReference<IHomeViewModel>? = null
-) : BaseViewModel<IHomeViewModel>(),
-    HomeIntents {
+    themedActivityDelegate: ThemedActivityDelegate,
+) : ViewModel(),
+    HomeIntents,
+    ThemedActivityDelegate by themedActivityDelegate {
+    var delegate: WeakReference<IHomeViewModel>? = null
     internal var statesList: MutableList<HomeState> = mutableListOf()
 
     private lateinit var dice: DiceDomain
@@ -73,7 +73,7 @@ interface IHomeViewModel {
     fun updateState(state: HomeState)
 }
 
-interface HomeIntents : MVIBaseView {
+interface HomeIntents {
     fun init()
     fun resume()
     fun resumeTimer()
@@ -93,22 +93,4 @@ interface HomeStateHandler {
     fun handleShowResumeButtonState(state: HomeState.ShowResumeButtonState)
     fun handleHideResumeButtonState()
     fun handleStartTimerState(state: HomeState.StartTimerState)
-}
-
-@Suppress("UNCHECKED_CAST")
-class HomeViewModelFactory(
-    private val assistedFactory: HomeViewModelAssistedFactory,
-    private val delegate: WeakReference<IHomeViewModel>?,
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
-            return assistedFactory.create(delegate) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
-
-@AssistedFactory
-interface HomeViewModelAssistedFactory {
-    fun create(delegate: WeakReference<IHomeViewModel>?): HomeViewModel
 }

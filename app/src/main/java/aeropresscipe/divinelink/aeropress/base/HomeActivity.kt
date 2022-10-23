@@ -9,24 +9,23 @@ import aeropresscipe.divinelink.aeropress.history.HistoryState
 import aeropresscipe.divinelink.aeropress.home.HomeState
 import aeropresscipe.divinelink.aeropress.home.HomeStateHandler
 import aeropresscipe.divinelink.aeropress.home.HomeViewModel
-import aeropresscipe.divinelink.aeropress.home.HomeViewModelAssistedFactory
-import aeropresscipe.divinelink.aeropress.home.HomeViewModelFactory
 import aeropresscipe.divinelink.aeropress.home.IHomeViewModel
 import aeropresscipe.divinelink.aeropress.recipe.RecipeFragment
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.TimerActivity
 import aeropresscipe.divinelink.aeropress.timer.TimerFlow
+import aeropresscipe.divinelink.aeropress.util.updateForTheme
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.viewModels
 import androidx.annotation.Dimension
 import androidx.annotation.Px
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnAttach
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationBarView
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.addBackPressCallback
@@ -35,7 +34,6 @@ import gr.divinelink.core.util.utils.setNavigationBarColor
 import gr.divinelink.core.util.viewBinding.activity.viewBinding
 import timber.log.Timber
 import java.lang.ref.WeakReference
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeActivity :
@@ -52,11 +50,7 @@ class HomeActivity :
     private lateinit var favoritesFragment: FavoritesFragment
     private lateinit var historyFragment: HistoryFragment
 
-    @Inject
-    lateinit var assistedFactory: HomeViewModelAssistedFactory
-    private lateinit var viewModel: HomeViewModel
-
-//    private val dynamicTheme: DynamicTheme = DynamicNoActionBarTheme()
+    private val viewModel: HomeViewModel by viewModels()
 
     @Px
     private val padding = DimensionUnit.DP.toPixels(PAD_BOTTOM_OF_TIMER_VIEW).toInt()
@@ -66,11 +60,13 @@ class HomeActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        dynamicTheme.onCreate(this)
+        // Update for Dark Mode straight away
+        updateForTheme(viewModel.currentTheme)
+
         setNavigationBarColor(ContextCompat.getColor(this, R.color.colorSurface2))
         onBackPressedDispatcher.addBackPressCallback(this) { onBackPressed() }
         binding.bottomNavigation.setOnItemSelectedListener(onItemSelectedListener)
-//        binding.bottomNavigation.setOnItemReselectedListener(onItemReselectedListener)
+        viewModel.delegate = WeakReference(this)
 
         if (savedInstanceState == null) {
             recipeFragment = RecipeFragment.newInstance()
@@ -93,16 +89,11 @@ class HomeActivity :
 
         selectFragment(selectedFragment)
 
-        val viewModelFactory = HomeViewModelFactory(assistedFactory, WeakReference<IHomeViewModel>(this))
-        viewModel = ViewModelProvider(this, viewModelFactory)[HomeViewModel::class.java]
-        viewModel.delegate = WeakReference(this)
-
         viewModel.init()
     }
 
     override fun onResume() {
         super.onResume()
-//        dynamicTheme.onResume(this)
         Timber.d("Activity resume.")
         viewModel.resume()
     }
