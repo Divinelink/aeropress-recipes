@@ -22,6 +22,10 @@ object DispatcherModule {
     @MainDispatcher
     @Provides
     fun providesMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
+
+    @MainImmediateDispatcher
+    @Provides
+    fun providesMainImmediateDispatcher(): CoroutineDispatcher = Dispatchers.Main.immediate
 }
 
 @Retention(AnnotationRetention.BINARY)
@@ -35,3 +39,11 @@ annotation class IoDispatcher
 @Retention(AnnotationRetention.BINARY)
 @Qualifier
 annotation class MainDispatcher
+
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class MainImmediateDispatcher
+
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class ApplicationScope
