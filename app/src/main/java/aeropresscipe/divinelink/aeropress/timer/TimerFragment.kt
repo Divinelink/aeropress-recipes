@@ -5,8 +5,6 @@ import aeropresscipe.divinelink.aeropress.databinding.FragmentTimerBinding
 import aeropresscipe.divinelink.aeropress.finish.FinishActivity
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
-import aeropresscipe.divinelink.aeropress.timer.util.TimerViewModelAssistedFactory
-import aeropresscipe.divinelink.aeropress.timer.util.TimerViewModelFactory
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.media.MediaPlayer
@@ -15,7 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.constants.Numbers.ONE
 import gr.divinelink.core.util.constants.Numbers.ONE_THOUSAND
@@ -27,7 +25,6 @@ import gr.divinelink.core.util.extensions.updateTextWithFade
 import gr.divinelink.core.util.timer.PreciseCountdown
 import java.lang.ref.WeakReference
 import java.util.Locale
-import javax.inject.Inject
 
 enum class TimerFlow {
     START,
@@ -41,9 +38,7 @@ class TimerFragment :
     TimerStateHandler {
     private var binding: FragmentTimerBinding? = null
 
-    @Inject
-    lateinit var assistedFactory: TimerViewModelAssistedFactory
-    private lateinit var viewModel: TimerViewModel
+    private val viewModel: TimerViewModel by viewModels()
     private lateinit var callback: Callback
 
     private var transferableModel = TimerTransferableModel()
@@ -61,8 +56,6 @@ class TimerFragment :
         binding = FragmentTimerBinding.inflate(inflater, container, false)
         val view = binding?.root
 
-        val viewModelFactory = TimerViewModelFactory(assistedFactory, WeakReference<ITimerViewModel>(this))
-        viewModel = ViewModelProvider(this, viewModelFactory)[TimerViewModel::class.java]
         viewModel.delegate = WeakReference(this)
 
         return view

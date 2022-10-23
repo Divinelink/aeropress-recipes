@@ -1,29 +1,31 @@
 package aeropresscipe.divinelink.aeropress.timer
 
-// import aeropresscipe.divinelink.aeropress.base.di.Preferences
-import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
-import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
 import aeropresscipe.divinelink.aeropress.recipe.models.getBrewTimeLeft
 import aeropresscipe.divinelink.aeropress.recipe.models.getBrewingStates
+import aeropresscipe.divinelink.aeropress.timer.use_case.GetTimerSoundUseCase
 import aeropresscipe.divinelink.aeropress.timer.util.BrewPhase
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
 import aeropresscipe.divinelink.aeropress.timer.util.Phase
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import gr.divinelink.core.util.domain.data
 import gr.divinelink.core.util.extensions.inMilliseconds
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.ref.WeakReference
+import javax.inject.Inject
 
-class TimerViewModel @AssistedInject constructor(
+@HiltViewModel
+class TimerViewModel @Inject constructor(
     private var repository: TimerRepository,
-    @Assisted public override var delegate: WeakReference<ITimerViewModel>? = null
-) : BaseViewModel<ITimerViewModel>(),
+    val getTimerSoundUseCase: GetTimerSoundUseCase
+) : ViewModel(),
     TimerIntents {
     internal var statesList: MutableList<TimerState> = mutableListOf()
 
-//    @Inject
-//    lateinit var preferences: Preferences
+    var delegate: WeakReference<ITimerViewModel>? = null
 
     internal var transferableModel: TimerTransferableModel? = null
 
@@ -117,9 +119,11 @@ class TimerViewModel @AssistedInject constructor(
         } else {
             startTimerStates(brew?.getCurrentState(), brew?.getCurrentState()?.brewTime.inMilliseconds(), true)
         }
-//        if (!preferences.muteSound) {
-//            state = TimerState.PlaySoundState
-//        }
+        viewModelScope.launch {
+            if (getTimerSoundUseCase(Unit).data == true) {
+                state = TimerState.PlaySoundState
+            }
+        }
     }
 
     override fun exitTimer() {
@@ -145,7 +149,7 @@ interface ITimerViewModel {
     fun updateState(state: TimerState)
 }
 
-interface TimerIntents : MVIBaseView {
+interface TimerIntents {
     fun init(transferableModel: TimerTransferableModel)
     fun startBrew()
     fun resume()
