@@ -15,6 +15,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import gr.divinelink.core.util.utils.CommunicationActions
 
 class LearnMoreTextView : AppCompatTextView {
     private var linkListener: OnClickListener? = null
@@ -100,7 +101,7 @@ class LearnMoreTextView : AppCompatTextView {
 
     private class OpenUrlOnClickListener(private val url: String) : OnClickListener {
         override fun onClick(v: View) {
-//            CommunicationActions.openBrowserLink(v.context, url)
+            CommunicationActions.openBrowserLink(v.context, url)
         }
     }
 }
