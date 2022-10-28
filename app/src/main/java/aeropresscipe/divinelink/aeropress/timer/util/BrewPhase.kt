@@ -28,7 +28,8 @@ class BrewPhase private constructor(
 sealed class BrewState(
     @StringRes open val title: Int,
     @StringRes open val description: Int,
-    open val brewWater: Int,
+    open val phaseWater: Int,
+    open val totalWater: Int,
     open val brewTime: Long,
     open val phase: Phase,
     open val update: Boolean,
@@ -37,25 +38,30 @@ sealed class BrewState(
     data class Bloom(val water: Int, val time: Long) : BrewState(
         title = R.string.bloomPhase,
         description = R.string.bloomPhaseWaterText,
-        water,
+        phaseWater = water,
+        totalWater = 0,
         time,
         Phase.Bloom,
         true,
-        false)
+        false
+    )
 
     data class Brew(val water: Int, val time: Long) : BrewState(
         title = R.string.brewPhase,
         description = R.string.brewPhaseNoBloom,
-        water, time,
+        phaseWater = water,
+        totalWater = water,
+        time,
         Phase.Brew,
         true,
         true
     )
 
-    data class BrewWithBloom(val water: Int, val time: Long) : BrewState(
+    data class BrewWithBloom(val water: Int, override val totalWater: Int, val time: Long) : BrewState(
         title = R.string.brewPhase,
         description = R.string.brewPhaseWithBloom,
-        water,
+        phaseWater = water,
+        totalWater = totalWater,
         time,
         Phase.Brew,
         true,
@@ -65,7 +71,8 @@ sealed class BrewState(
     object Finished : BrewState(
         title = R.string.finishPhaseTitle,
         description = R.string.finishPhaseDescription,
-        brewWater = 0,
+        phaseWater = 0,
+        totalWater = 0,
         brewTime = 0,
         Phase.Finish,
         false,

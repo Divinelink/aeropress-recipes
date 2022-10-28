@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">AeroPress Recipes</string>
+    <string name="terms_and_privacy_policy_url" translatable="false">https://andreo-harry.medium.com/aeropress-recipes-78539908d37b</string>
 
     <string name="close">Close</string>
 
@@ -34,7 +35,7 @@
     <string name="finishPhaseTitle">Your timer is finished!</string>
     <string name="finishPhaseDescription">Click for more details.</string>
 
-    <string name="brewPhaseWithBloom">Pour in the remaining %dg of water</string>
+    <string name="brewPhaseWithBloom">Pour in the remaining %dg for a total of %dg water</string>
     <string name="brewPhaseNoBloom">Pour in %dg of water</string>
 
     <string name="enjoyCoffee">Your coffee is ready.\nPress &amp; enjoy!</string>
@@ -92,5 +93,25 @@
     <string name="good_evening">Good evening</string>
 
     <string name="settings">Settings</string>
+
+    <!-- preferences.xml -->
+    <string name="preferences__none">None</string>
+    <string name="preferences__appearance">Appearance</string>
+    <string name="preferences__theme">Theme</string>
+    <string name="preferences__light_theme">Light</string>
+    <string name="preferences__dark_theme">Dark</string>
+    <string name="preferences__system_default">System default</string>
+    <string name="preferences__timer_sound">Timer sound</string>
+    <string name="preferences__timer_sound_summary">Sound notification on timer update</string>
+
+    <!-- NotificationsSettingsFragment -->
+    <string name="NotificationsSettingsFragment__notifications">Notifications</string>
+    <string name="NotificationsSettingsFragment__sound">Sound</string>
+
+
+    <!-- HelpSettingsFragment -->
+    <string name="HelpSettingsFragment__help">Help</string>
+    <string name="HelpSettingsFragment__terms_amp_privacy_policy">Terms &amp; Privacy Policy</string>
+    <string name="HelpSettingsFragment__version">Version</string>
 
 </resources>

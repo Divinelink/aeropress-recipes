@@ -28,7 +28,7 @@ abstract class MappingViewHolder<Model>(itemView: View) : RecyclerView.ViewHolde
         this.payload.addAll(payload)
     }
 
-    class SimpleViewHolder<Model>(itemView: View) : MappingViewHolder<Model>(itemView) {
+    open class SimpleViewHolder<Model>(itemView: View) : MappingViewHolder<Model>(itemView) {
         override fun bind(model: Model) {
             // Intentionally Blank.
         }
@@ -39,4 +39,3 @@ abstract class MappingViewHolder<Model>(itemView: View) : RecyclerView.ViewHolde
         payload = LinkedList()
     }
 }
-

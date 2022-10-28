@@ -12,12 +12,12 @@ object DrawableExtensions {
 
 fun MenuItem.setDisabled() {
     this.isEnabled = false
-    this.icon.setDisabled()
+    this.icon?.setDisabled()
 }
 
 fun MenuItem.setEnabled() {
     this.isEnabled = true
-    this.icon.setEnabled()
+    this.icon?.setEnabled()
 }
 
 fun Drawable.setDisabled() {

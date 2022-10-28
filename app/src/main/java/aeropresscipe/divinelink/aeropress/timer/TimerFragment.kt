@@ -3,10 +3,8 @@ package aeropresscipe.divinelink.aeropress.timer
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.databinding.FragmentTimerBinding
 import aeropresscipe.divinelink.aeropress.finish.FinishActivity
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
-import aeropresscipe.divinelink.aeropress.timer.util.TimerViewModelAssistedFactory
-import aeropresscipe.divinelink.aeropress.timer.util.TimerViewModelFactory
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.media.MediaPlayer
@@ -15,18 +13,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.constants.Numbers.ONE
 import gr.divinelink.core.util.constants.Numbers.ONE_THOUSAND
 import gr.divinelink.core.util.constants.Numbers.SIXTY
 import gr.divinelink.core.util.constants.Numbers.THREE_HUNDRED
+import gr.divinelink.core.util.extensions.getBundleSerializable
 import gr.divinelink.core.util.extensions.getPairOfMinutesSeconds
 import gr.divinelink.core.util.extensions.updateTextWithFade
 import gr.divinelink.core.util.timer.PreciseCountdown
 import java.lang.ref.WeakReference
 import java.util.Locale
-import javax.inject.Inject
 
 enum class TimerFlow {
     START,
@@ -34,14 +32,13 @@ enum class TimerFlow {
 }
 
 @AndroidEntryPoint
-class TimerFragment : Fragment(),
+class TimerFragment :
+    Fragment(),
     ITimerViewModel,
     TimerStateHandler {
     private var binding: FragmentTimerBinding? = null
 
-    @Inject
-    lateinit var assistedFactory: TimerViewModelAssistedFactory
-    private lateinit var viewModel: TimerViewModel
+    private val viewModel: TimerViewModel by viewModels()
     private lateinit var callback: Callback
 
     private var transferableModel = TimerTransferableModel()
@@ -54,13 +51,11 @@ class TimerFragment : Fragment(),
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentTimerBinding.inflate(inflater, container, false)
         val view = binding?.root
 
-        val viewModelFactory = TimerViewModelFactory(assistedFactory, WeakReference<ITimerViewModel>(this))
-        viewModel = ViewModelProvider(this, viewModelFactory)[TimerViewModel::class.java]
         viewModel.delegate = WeakReference(this)
 
         return view
@@ -68,14 +63,15 @@ class TimerFragment : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        transferableModel.recipe = arguments?.getSerializable(TIMER) as Recipe?
+        transferableModel.recipe = arguments?.getBundleSerializable(TIMER)
 
-        val flow = arguments?.getSerializable(FLOW) as TimerFlow
+        val flow = arguments?.getBundleSerializable<TimerFlow>(FLOW)
         viewModel.init(transferableModel)
 
         when (flow) {
             TimerFlow.START -> viewModel.startBrew()
             TimerFlow.RESUME -> viewModel.resume()
+            else -> throw AssertionError("Flow could not be determined.")
         }
     }
 
@@ -106,8 +102,8 @@ class TimerFragment : Fragment(),
         when (state) {
             is TimerState.InitialState -> handleInitialState()
             is TimerState.ErrorState -> handleErrorState(state)
-            is TimerState.StartProgressBar -> handleStartProgressBar(state)
-            is TimerState.StartTimer -> handleStartTimer(state)
+            is TimerState.UpdateProgressBar -> handleUpdateProgressBar(state)
+            is TimerState.UpdateDescriptionState -> handleUpdateDescriptionState(state)
             is TimerState.FinishState -> handleFinishState()
             is TimerState.ExitState -> handleExitState()
             is TimerState.PlaySoundState -> handlePlaySoundState()
@@ -127,17 +123,21 @@ class TimerFragment : Fragment(),
         // Do nothing yet.
     }
 
-    override fun handleStartTimer(state: TimerState.StartTimer) {
-        if (state.animate) {
+    override fun handleUpdateDescriptionState(state: TimerState.UpdateDescriptionState) {
+        if (state.animateDescription) {
             binding?.timerHeader updateTextWithFade resources.getString(state.brewState.title)
-            binding?.waterDescription updateTextWithFade resources.getString(state.brewState.description, state.brewState.brewWater)
+            binding?.waterDescription updateTextWithFade resources.getString(
+                state.brewState.description,
+                state.brewState.phaseWater,
+                state.brewState.totalWater
+            )
         } else {
             binding?.timerHeader?.text = resources.getString(state.brewState.title)
-            binding?.waterDescription?.text = resources.getString(state.brewState.description, state.brewState.brewWater)
+            binding?.waterDescription?.text = resources.getString(state.brewState.description, state.brewState.phaseWater, state.brewState.totalWater)
         }
     }
 
-    override fun handleStartProgressBar(state: TimerState.StartProgressBar) {
+    override fun handleUpdateProgressBar(state: TimerState.UpdateProgressBar) {
         binding?.progressBar?.max = state.maxValue
         milliSecondsLeft = state.timeInMilliseconds
 

@@ -23,12 +23,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:marqueeRepeatLimit="marquee_forever"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            android:text="Brewing phase"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
             android:textColor="?android:textColor"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Brewing phase" />
 
 
         <TextView
@@ -36,13 +41,18 @@
             style="@style/Text.BodySmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:marqueeRepeatLimit="marquee_forever"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            android:text="Pour in 200g of water."
+            android:scrollHorizontally="true"
+            android:singleLine="true"
             android:textColor="?android:textColorSecondary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/brew_state_title" />
+            app:layout_constraintTop_toBottomOf="@+id/brew_state_title"
+            tools:text="Pour in 200g of water." />
 
         <ProgressBar
             android:id="@+id/progress_bar"
