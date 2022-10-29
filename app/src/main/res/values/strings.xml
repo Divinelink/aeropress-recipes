@@ -114,4 +114,13 @@
     <string name="HelpSettingsFragment__terms_amp_privacy_policy">Terms &amp; Privacy Policy</string>
     <string name="HelpSettingsFragment__version">Version</string>
 
+    <!-- Beans -->
+    <!-- Process Method -->
+    <string name="ProcessMethod__washed">Washed</string>
+    <string name="ProcessMethod__natural">Natural</string>
+    <string name="ProcessMethod__honey">Honey</string>
+    <string name="ProcessMethod__anaerobic">Anaerobic</string>
+    <string name="ProcessMethod__carbonicMaceration">Carbonic Maceration</string>
+    <string name="ProcessMethod__gilingBasah">Giling Basah</string>
+
 </resources>
