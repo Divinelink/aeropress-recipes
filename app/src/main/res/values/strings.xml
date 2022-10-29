@@ -115,6 +115,8 @@
     <string name="HelpSettingsFragment__version">Version</string>
 
     <!-- Beans -->
+    <string name="Beans__roast_level">Roast level</string>
+    <string name="Beans__process">Process</string>
     <!-- Process Method -->
     <string name="ProcessMethod__washed">Washed</string>
     <string name="ProcessMethod__natural">Natural</string>
