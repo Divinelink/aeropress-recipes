@@ -1,10 +1,12 @@
 package aeropresscipe.divinelink.aeropress.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 
 private val LightColors = lightColorScheme(
     primary = light_primary,
@@ -82,4 +84,9 @@ fun AeropressTheme(
         typography = AppTypography,
         content = content
     )
+}
+
+@Composable
+fun ColorScheme.textColorDisabled(): Color {
+    return MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
 }
