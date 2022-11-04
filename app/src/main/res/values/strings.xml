@@ -119,9 +119,14 @@
     <string name="Beans__roast_level">Roast level</string>
     <string name="Beans__process">Process</string>
     <string name="Beans__bean_name">Bean name</string>
+    <string name="Beans__bean_name_placeholder">Bean name</string>
     <string name="Beans__roaster_name">Roaster name</string>
+    <string name="Beans__roaster_name_placeholder">Enter roaster name</string>
     <string name="Beans__origin">Origin</string>
+    <string name="Beans__origin_placeholder">Country or region</string>
     <string name="Beans__roast_date">Roast date</string>
+    <string name="Beans__roast_date_placeholder">Enter roast date</string>
+
     <!-- Process Method -->
     <string name="ProcessMethod__washed">Washed</string>
     <string name="ProcessMethod__natural">Natural</string>
