@@ -47,7 +47,7 @@ fun CustomTextField(
     var text by rememberSaveable { mutableStateOf("") }
     val leadingIconPadding = if (leadingIconRes == null) 0.dp else 12.dp
     val trailingIconPadding = if (trailingIconRes == null) 0.dp else 12.dp
-    
+
     Column {
         // Only show Title Text if titleRes != null
         if (titleRes != null) {
