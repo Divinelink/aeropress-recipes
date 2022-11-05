@@ -7,16 +7,17 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -60,54 +61,60 @@ fun CustomTextField(
                 color = MaterialTheme.colorScheme.onBackground
             )
         }
-        BasicTextField(
+        Surface(
             modifier = modifier
-                .defaultMinSize(minHeight = 40.dp)
-                .background(
-                    MaterialTheme.colorScheme.surface,
-                    MaterialTheme.shapes.small,
-                )
-                .fillMaxWidth(),
-            value = text,
-            onValueChange = {
-                text = it
-            },
-            singleLine = true,
-            cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
-            textStyle = LocalTextStyle.current.copy(
-                color = MaterialTheme.colorScheme.onSurface,
-                fontSize = fontSize
-            ),
-            decorationBox = { innerTextField ->
-                Row(
-                    modifier = Modifier
-                        .padding(start = leadingIconPadding, end = trailingIconPadding),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    if (leadingIconRes != null) Image(painterResource(leadingIconRes), null)
-//                if (leadingIcon != null) leadingIcon()
-                    Box(
-                        Modifier
-                            .weight(1f)
-                            .padding(start = 16.dp, end = 16.dp)
+                .defaultMinSize(minHeight = 40.dp),
+            shape = RoundedCornerShape(8.dp),
+            border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.outline),
+        ) {
+            BasicTextField(
+                modifier = Modifier
+                    .background(
+                        MaterialTheme.colorScheme.surface,
+                        MaterialTheme.shapes.small,
+                    )
+                    .fillMaxWidth(),
+                value = text,
+                onValueChange = {
+                    text = it
+                },
+                singleLine = true,
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                textStyle = LocalTextStyle.current.copy(
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontSize = fontSize
+                ),
+                decorationBox = { innerTextField ->
+                    Row(
+                        modifier = Modifier
+                            .padding(start = leadingIconPadding, end = trailingIconPadding),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // Only show placeholder is it's not null by default
-                        if (placeHolderRes != null && text.isEmpty()) {
-                            Text(
-                                stringResource(placeHolderRes),
-                                style = LocalTextStyle.current.copy(
-                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
-                                    fontSize = fontSize
+                        if (leadingIconRes != null) Image(painterResource(leadingIconRes), null)
+//                if (leadingIcon != null) leadingIcon()
+                        Box(
+                            Modifier
+                                .weight(1f)
+                                .padding(start = 16.dp, end = 16.dp)
+                        ) {
+                            // Only show placeholder is it's not null by default
+                            if (placeHolderRes != null && text.isEmpty()) {
+                                Text(
+                                    stringResource(placeHolderRes),
+                                    style = LocalTextStyle.current.copy(
+                                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
+                                        fontSize = fontSize
+                                    )
                                 )
-                            )
+                            }
+                            innerTextField()
                         }
-                        innerTextField()
-                    }
-                    if (trailingIconRes != null) Image(painterResource(trailingIconRes), null)
+                        if (trailingIconRes != null) Image(painterResource(trailingIconRes), null)
 //                if (trailingIcon != null) trailingIcon()
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 }
 
