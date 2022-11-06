@@ -2,6 +2,7 @@ package aeropresscipe.divinelink.aeropress.beans
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.components.CustomTextField
+import aeropresscipe.divinelink.aeropress.components.DatePicker
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
@@ -14,9 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import java.time.LocalDate
 
 @Composable
 fun AddBeansScreen(
+    onDateChanged: (LocalDate) -> Unit,
     onRoastLevelClick: () -> Unit,
     onProcessClick: () -> Unit,
 ) {
@@ -40,10 +43,10 @@ fun AddBeansScreen(
             placeHolderRes = R.string.Beans__origin
         )
 
-        CustomTextField(
+        DatePicker(
             modifier = Modifier.padding(top = 8.dp),
-            placeHolderRes = R.string.Beans__roast_date,
-            trailingIconRes = R.drawable.ic_calendar
+            onValueChanged = onDateChanged,
+            hint = R.string.Beans__roast_date
         )
 
         Text(
@@ -76,6 +79,7 @@ fun BeansScreenPreview() {
     AeropressTheme {
 
         AddBeansScreen(
+            onDateChanged = {},
             onRoastLevelClick = {},
             onProcessClick = {}
         )
