@@ -2,17 +2,17 @@ package aeropresscipe.divinelink.aeropress.beans
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
+import aeropresscipe.divinelink.aeropress.ui.theme.ButtonShape
 import aeropresscipe.divinelink.aeropress.ui.theme.textColorDisabled
 import android.content.res.Configuration
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -31,18 +31,19 @@ fun SelectOptionView(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     @StringRes hint: Int,
+    @DrawableRes trailingIcon: Int = R.drawable.ic_arrow_down_24
 ) {
     Column {
         Surface(
             modifier = modifier
                 .fillMaxWidth()
-                .clip(shape = RoundedCornerShape(8.dp))
+                .clip(shape = ButtonShape)
                 .clickable {
                     onClick()
                 },
             border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.outline),
             contentColor = MaterialTheme.colorScheme.onBackground,
-            shape = RoundedCornerShape(8.dp)
+            shape = ButtonShape
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -54,10 +55,10 @@ fun SelectOptionView(
                     text = stringResource(hint),
                     modifier = Modifier
                         .weight(1f)
-                        .padding(start = 16.dp, top = 8.dp, bottom = 8.dp, end = 8.dp),
+                        .padding(start = 16.dp, top = 8.dp, bottom = 8.dp, end = 12.dp),
                 )
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_arrow_down_24),
+                    painter = painterResource(id = trailingIcon),
                     contentDescription = null,
                     Modifier.padding(8.dp)
                 )

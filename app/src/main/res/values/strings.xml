@@ -2,6 +2,8 @@
     <string name="app_name">AeroPress Recipes</string>
     <string name="terms_and_privacy_policy_url" translatable="false">https://andreo-harry.medium.com/aeropress-recipes-78539908d37b</string>
 
+    <string name="ok">OK</string>
+
     <string name="close">Close</string>
 
     <string name="heatWaterText">Heat &lt;b&gt;%dg&lt;/b&gt; of water to &lt;b&gt;%d°C / %d°F&lt;/b&gt;.</string>
