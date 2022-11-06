@@ -19,6 +19,7 @@ fun AeropressTheme(
 
     // Used to converse Material 2 to Material 3 when needed.
     androidx.compose.material.MaterialTheme(
+        typography = MD2Typography,
         colors = if (useDarkTheme) {
             DarkMD2Colors
         } else {
