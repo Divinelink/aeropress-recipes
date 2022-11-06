@@ -29,10 +29,22 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SelectOptionView(
     modifier: Modifier = Modifier,
+    value: String? = null,
     onClick: () -> Unit,
     @StringRes hint: Int,
     @DrawableRes trailingIcon: Int = R.drawable.ic_arrow_down_24
 ) {
+    val color = if (value.isNullOrEmpty()) {
+        MaterialTheme.colorScheme.textColorDisabled()
+    } else {
+        MaterialTheme.colorScheme.onSurface
+    }
+    val text = if (value.isNullOrEmpty()) {
+        stringResource(hint)
+    } else {
+        value
+    }
+
     Column {
         Surface(
             modifier = modifier
@@ -50,9 +62,9 @@ fun SelectOptionView(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    color = MaterialTheme.colorScheme.textColorDisabled(),
+                    color = color,
                     style = MaterialTheme.typography.bodyMedium,
-                    text = stringResource(hint),
+                    text = text,
                     modifier = Modifier
                         .weight(1f)
                         .padding(start = 16.dp, top = 8.dp, bottom = 8.dp, end = 12.dp),
