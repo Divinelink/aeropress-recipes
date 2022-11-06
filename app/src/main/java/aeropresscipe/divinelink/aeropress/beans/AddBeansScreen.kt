@@ -1,14 +1,17 @@
 package aeropresscipe.divinelink.aeropress.beans
 
 import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.components.CustomTextField
+import aeropresscipe.divinelink.aeropress.components.CustomOutlinedTextField
 import aeropresscipe.divinelink.aeropress.components.DatePicker
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -28,47 +31,53 @@ fun AddBeansScreen(
         modifier = Modifier.padding(start = 8.dp, end = 8.dp)
     ) {
 
-        CustomTextField(
-            modifier = Modifier.padding(top = 8.dp),
-            placeHolderRes = R.string.Beans__bean_name
+        Spacer(modifier = Modifier.height(12.dp))
+        CustomOutlinedTextField(
+            text = "",
+            onTextChanged = {},
+            labelText = stringResource(id = R.string.Beans__bean_name),
         )
 
-        CustomTextField(
-            modifier = Modifier.padding(top = 8.dp),
-            placeHolderRes = R.string.Beans__roaster_name
+        Spacer(modifier = Modifier.height(12.dp))
+        CustomOutlinedTextField(
+            text = "",
+            onTextChanged = {},
+            labelText = stringResource(id = R.string.Beans__roaster_name)
         )
 
-        CustomTextField(
-            modifier = Modifier.padding(top = 8.dp),
-            placeHolderRes = R.string.Beans__origin
+        Spacer(modifier = Modifier.height(12.dp))
+        CustomOutlinedTextField(
+            text = "",
+            onTextChanged = {},
+            labelText = stringResource(id = R.string.Beans__origin)
         )
-
+        Spacer(modifier = Modifier.height(12.dp))
         DatePicker(
-            modifier = Modifier.padding(top = 8.dp),
             onValueChanged = onDateChanged,
             hint = R.string.Beans__roast_date
         )
 
+        Spacer(modifier = Modifier.height(16.dp))
         Text(
             modifier = Modifier
-                .wrapContentSize()
-                .padding(top = 12.dp, bottom = 8.dp),
+                .wrapContentSize(),
             style = MaterialTheme.typography.titleMedium,
             text = stringResource(R.string.Beans__details),
             color = MaterialTheme.colorScheme.onSurface,
         )
 
+        Spacer(modifier = Modifier.height(12.dp))
         SelectOptionView(
-            modifier = Modifier.padding(bottom = 8.dp),
             onClick = onRoastLevelClick,
             hint = R.string.Beans__roast_level
         )
 
+        Spacer(modifier = Modifier.height(12.dp))
         SelectOptionView(
-            modifier = Modifier.padding(bottom = 8.dp),
             onClick = onProcessClick,
             hint = R.string.Beans__process
         )
+        Spacer(modifier = Modifier.height(12.dp))
     }
 }
 
@@ -77,11 +86,12 @@ fun AddBeansScreen(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun BeansScreenPreview() {
     AeropressTheme {
-
-        AddBeansScreen(
-            onDateChanged = {},
-            onRoastLevelClick = {},
-            onProcessClick = {}
-        )
+        Surface {
+            AddBeansScreen(
+                onDateChanged = {},
+                onRoastLevelClick = {},
+                onProcessClick = {}
+            )
+        }
     }
 }
