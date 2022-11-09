@@ -54,7 +54,7 @@ fun AddBeansScreen(
         Spacer(modifier = Modifier.height(12.dp))
         DatePicker(
             onValueChanged = onDateChanged,
-            hint = R.string.Beans__roast_date
+            label = R.string.Beans__roast_date
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -69,13 +69,13 @@ fun AddBeansScreen(
         Spacer(modifier = Modifier.height(12.dp))
         SelectOptionField(
             onClick = onRoastLevelClick,
-            hint = R.string.Beans__roast_level
+            label = R.string.Beans__roast_level
         )
 
         Spacer(modifier = Modifier.height(12.dp))
         SelectOptionField(
             onClick = onProcessClick,
-            hint = R.string.Beans__process
+            label = R.string.Beans__process
         )
         Spacer(modifier = Modifier.height(12.dp))
     }

@@ -32,22 +32,17 @@ fun SelectOptionField(
     modifier: Modifier = Modifier,
     value: String? = null,
     onClick: () -> Unit,
-    @StringRes hint: Int,
+    @StringRes label: Int,
     @DrawableRes trailingIcon: Int = R.drawable.ic_arrow_down_24,
     @DrawableRes leadingIcon: Int? = null,
 ) {
-    val text = if (value.isNullOrEmpty()) {
-        stringResource(hint)
-    } else {
-        value
-    }
     Box {
         CustomOutlinedTextField(
             modifier = modifier
                 .fillMaxWidth(),
-            text = "",
+            text = value ?: "",
             onTextChanged = { },
-            labelText = text,
+            labelText = stringResource(id = label),
             enabled = false,
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 textColor = MaterialTheme.colorScheme.onSurface,
@@ -97,7 +92,7 @@ fun RoastLevelPreview() {
         Surface {
             SelectOptionField(
                 onClick = { },
-                hint = R.string.Beans__roast_level,
+                label = R.string.Beans__roast_level,
                 leadingIcon = R.drawable.ic_calendar
             )
         }

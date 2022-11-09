@@ -6,26 +6,27 @@ import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import android.content.res.Configuration
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun DatePicker(
     modifier: Modifier = Modifier,
     value: LocalDate? = null,
     onValueChanged: (LocalDate) -> Unit,
-    @StringRes hint: Int,
+    @StringRes label: Int,
     @DrawableRes trailingIcon: Int = R.drawable.ic_calendar,
 ) {
     val dialogState = rememberMaterialDialogState()
+    val selectFieldValue = value?.toUIString() ?: ""
 
     MaterialDialog(
         dialogState = dialogState,
@@ -34,29 +35,37 @@ fun DatePicker(
             negativeButton(stringResource(id = R.string.cancel))
         }
     ) {
-        this.datepicker(onDateChange = onValueChanged)
+        this.datepicker(
+            initialDate = value ?: LocalDate.now(),
+            onDateChange = onValueChanged
+        )
     }
 
     SelectOptionField(
         modifier = modifier,
-        value = value?.toString(),
+        value = selectFieldValue,
         onClick = { dialogState.show() },
-        hint = hint,
+        label = label,
         trailingIcon = trailingIcon
     )
 }
 
-@Preview(name = "Light Mode", uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
+private fun LocalDate.toUIString(): String {
+    val formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy")
+    return formatter.format(this)
+}
+
+@Preview(name = "Light Mode - Filled", uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(name = "Dark Mode - Filled", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun SelectDateFieldPreview() {
     AeropressTheme {
-        DatePicker(
-            value = LocalDate.now(),
-            onValueChanged = {},
-            hint = R.string.Beans__roast_date,
-            modifier = Modifier.padding(16.dp)
-        )
+        Surface {
+            DatePicker(
+                onValueChanged = {},
+                label = R.string.Beans__roast_date,
+            )
+        }
     }
 }
 
@@ -65,10 +74,12 @@ fun SelectDateFieldPreview() {
 @Composable
 fun SelectDateFieldNoValuePreview() {
     AeropressTheme {
-        DatePicker(
-            onValueChanged = {},
-            hint = R.string.Beans__roast_date,
-            modifier = Modifier.padding(16.dp)
-        )
+        Surface {
+            DatePicker(
+                onValueChanged = {},
+                value = LocalDate.now(),
+                label = R.string.Beans__roast_date,
+            )
+        }
     }
 }
