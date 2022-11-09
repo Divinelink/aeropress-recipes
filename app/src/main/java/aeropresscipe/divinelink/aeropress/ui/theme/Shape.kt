@@ -5,3 +5,5 @@ import androidx.compose.ui.unit.dp
 
 val ButtonShape = RoundedCornerShape(8.dp)
 val TextFieldShape = RoundedCornerShape(8.dp)
+
+val HorizontalIconPadding = 12.dp

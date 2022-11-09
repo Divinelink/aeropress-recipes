@@ -3,20 +3,23 @@ package aeropresscipe.divinelink.aeropress.beans
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.components.CustomOutlinedTextField
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
+import aeropresscipe.divinelink.aeropress.ui.theme.HorizontalIconPadding
 import aeropresscipe.divinelink.aeropress.ui.theme.TextFieldShape
 import android.content.res.Configuration
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Surface
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
@@ -25,19 +28,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun SelectOptionView(
+fun SelectOptionField(
     modifier: Modifier = Modifier,
     value: String? = null,
     onClick: () -> Unit,
     @StringRes hint: Int,
     @DrawableRes trailingIcon: Int = R.drawable.ic_arrow_down_24,
+    @DrawableRes leadingIcon: Int? = null,
 ) {
     val text = if (value.isNullOrEmpty()) {
         stringResource(hint)
     } else {
         value
     }
-
     Box {
         CustomOutlinedTextField(
             modifier = modifier
@@ -50,8 +53,11 @@ fun SelectOptionView(
                 textColor = MaterialTheme.colorScheme.onSurface,
                 disabledTextColor = MaterialTheme.colorScheme.onSurface,
                 disabledLabelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = ContentAlpha.medium)
-            )
+            ),
+            withTrailingIcon = true,
+            withLeadingIcon = leadingIcon != null,
         )
+
         Box(
             modifier = Modifier
                 .clip(TextFieldShape)
@@ -60,7 +66,26 @@ fun SelectOptionView(
                     onClick.invoke()
                 }
                 .fillMaxWidth()
-        )
+        ) {
+            // Leading Icon
+            if (leadingIcon != null) {
+                Icon(
+                    modifier = Modifier
+                        .padding(start = HorizontalIconPadding)
+                        .align(Alignment.CenterStart),
+                    painter = painterResource(leadingIcon),
+                    contentDescription = null
+                )
+            }
+            // Trailing Icon
+            Icon(
+                modifier = Modifier
+                    .padding(end = HorizontalIconPadding)
+                    .align(Alignment.CenterEnd),
+                painter = painterResource(trailingIcon),
+                contentDescription = null
+            )
+        }
     }
 }
 
@@ -70,9 +95,10 @@ fun SelectOptionView(
 fun RoastLevelPreview() {
     AeropressTheme {
         Surface {
-            SelectOptionView(
+            SelectOptionField(
                 onClick = { },
-                hint = R.string.Beans__roast_level
+                hint = R.string.Beans__roast_level,
+                leadingIcon = R.drawable.ic_calendar
             )
         }
     }

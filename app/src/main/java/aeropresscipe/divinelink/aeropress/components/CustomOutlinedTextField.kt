@@ -21,11 +21,12 @@ fun CustomOutlinedTextField(
     text: String,
     onTextChanged: (String) -> Unit,
     labelText: String,
-    trailingIcon: @Composable (() -> Unit)? = null,
     enabled: Boolean = true,
     colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(
         textColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurface
     ),
+    withTrailingIcon: Boolean = false,
+    withLeadingIcon: Boolean = false,
 ) {
     SmallOutlinedTextField(
         value = text,
@@ -39,9 +40,10 @@ fun CustomOutlinedTextField(
         modifier = modifier
             .heightIn(dimensionResource(id = R.dimen.text_field_height))
             .fillMaxWidth(),
-        trailingIcon = trailingIcon,
         enabled = enabled,
-        colors = colors
+        colors = colors,
+        withLeadingIcon = withLeadingIcon,
+        withTrailingIcon = withTrailingIcon,
     )
 }
 

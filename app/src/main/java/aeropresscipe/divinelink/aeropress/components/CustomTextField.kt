@@ -91,7 +91,6 @@ fun CustomTextField(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         if (leadingIconRes != null) Image(painterResource(leadingIconRes), null)
-//                if (leadingIcon != null) leadingIcon()
                         Box(
                             Modifier
                                 .weight(1f)
@@ -110,7 +109,6 @@ fun CustomTextField(
                             innerTextField()
                         }
                         if (trailingIconRes != null) Image(painterResource(trailingIconRes), null)
-//                if (trailingIcon != null) trailingIcon()
                     }
                 }
             )
@@ -124,7 +122,8 @@ fun CustomTextFieldPreview() {
     AeropressTheme {
         CustomTextField(
             titleRes = R.string.Beans__origin,
-            placeHolderRes = R.string.Beans__origin_placeholder
+            placeHolderRes = R.string.Beans__origin_placeholder,
+            trailingIconRes = R.drawable.ic_calendar
         )
     }
 }

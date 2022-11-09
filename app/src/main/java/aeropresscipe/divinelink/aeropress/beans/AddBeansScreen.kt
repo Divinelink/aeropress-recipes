@@ -67,13 +67,13 @@ fun AddBeansScreen(
         )
 
         Spacer(modifier = Modifier.height(12.dp))
-        SelectOptionView(
+        SelectOptionField(
             onClick = onRoastLevelClick,
             hint = R.string.Beans__roast_level
         )
 
         Spacer(modifier = Modifier.height(12.dp))
-        SelectOptionView(
+        SelectOptionField(
             onClick = onProcessClick,
             hint = R.string.Beans__process
         )

@@ -1,5 +1,6 @@
 package aeropresscipe.divinelink.aeropress.components
 
+import aeropresscipe.divinelink.aeropress.ui.theme.HorizontalIconPadding
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.defaultMinSize
@@ -49,6 +50,8 @@ fun SmallOutlinedTextField(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = MaterialTheme.shapes.small,
     colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(textColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurface),
+    withTrailingIcon: Boolean = false,
+    withLeadingIcon: Boolean = false
 ) {
     // If color is not provided via the text style, use content color as a default
     val textColor = textStyle.color.takeOrElse {
@@ -85,6 +88,8 @@ fun SmallOutlinedTextField(
         singleLine = singleLine,
         maxLines = maxLines,
         decorationBox = @Composable { innerTextField ->
+            val contentPaddingStart = if (withLeadingIcon) { 52.dp } else { 16.dp }
+            val contentPaddingEnd = if (withTrailingIcon) { 52.dp } else { 16.dp }
             TextFieldDefaults.OutlinedTextFieldDecorationBox(
                 value = value,
                 visualTransformation = visualTransformation,
@@ -107,7 +112,7 @@ fun SmallOutlinedTextField(
                         shape
                     )
                 },
-                contentPadding = TextFieldDefaults.outlinedTextFieldPadding(top = 10.dp, bottom = 8.dp)
+                contentPadding = TextFieldDefaults.outlinedTextFieldPadding(start = contentPaddingStart, top = 10.dp, bottom = 8.dp, end = contentPaddingEnd)
             )
         }
     )

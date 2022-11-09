@@ -1,7 +1,7 @@
 package aeropresscipe.divinelink.aeropress.components
 
 import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.beans.SelectOptionView
+import aeropresscipe.divinelink.aeropress.beans.SelectOptionField
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import android.content.res.Configuration
 import androidx.annotation.DrawableRes
@@ -37,7 +37,7 @@ fun DatePicker(
         this.datepicker(onDateChange = onValueChanged)
     }
 
-    SelectOptionView(
+    SelectOptionField(
         modifier = modifier,
         value = value?.toString(),
         onClick = { dialogState.show() },

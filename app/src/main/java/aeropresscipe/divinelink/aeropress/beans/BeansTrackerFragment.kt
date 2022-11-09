@@ -26,7 +26,7 @@ class BeansTrackerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         composeView.setContent {
 
-            SelectOptionView(onClick = { /*TODO*/ },
+            SelectOptionField(onClick = { /*TODO*/ },
                 hint = R.string.Beans__process
             )
 //            BeansScreen(
