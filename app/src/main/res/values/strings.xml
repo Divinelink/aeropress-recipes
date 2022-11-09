@@ -117,6 +117,7 @@
     <string name="HelpSettingsFragment__version">Version</string>
 
     <!-- Beans -->
+    <string name="Beans__bean_tracker">Beans</string>
     <string name="Beans__details">Details</string>
     <string name="Beans__roast_level">Roast level</string>
     <string name="Beans__process">Process</string>

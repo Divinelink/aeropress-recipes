@@ -1,7 +1,5 @@
-package aeropresscipe.divinelink.aeropress.beans
+package aeropresscipe.divinelink.aeropress.beans.models
 
-import aeropresscipe.divinelink.aeropress.beans.models.ProcessMethod
-import aeropresscipe.divinelink.aeropress.beans.models.RoastLevel
 import androidx.room.Entity
 
 @Entity(tableName = "Beans")

@@ -60,6 +60,7 @@
     </style>
 
     <style name="BottomNavigationStyle" parent="Widget.Material3.BottomNavigationView">
+        <item name="labelVisibilityMode">labeled</item>
         <item name="itemPaddingBottom">8dp</item>
         <item name="itemPaddingTop">4dp</item>
         <item name="android:layout_height">?android:attr/actionBarSize</item>

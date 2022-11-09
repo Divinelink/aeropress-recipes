@@ -1,6 +1,6 @@
 package aeropresscipe.divinelink.aeropress.beans
 
-import aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +16,7 @@ class BeansTrackerFragment : Fragment() {
     private lateinit var composeView: ComposeView
     private val viewModel: BeansTrackerViewModel by viewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return ComposeView(requireContext()).also {
             composeView = it
         }
@@ -25,13 +25,13 @@ class BeansTrackerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         composeView.setContent {
-
-            SelectOptionField(onClick = { /*TODO*/ },
-                label = R.string.Beans__process
-            )
-//            BeansScreen(
-//
-//            )
+            AeropressTheme {
+                AddBeansScreen(
+                    onDateChanged = { },
+                    onRoastLevelClick = { },
+                    onProcessClick = { },
+                )
+            }
         }
     }
 }
