@@ -1,6 +1,7 @@
 package aeropresscipe.divinelink.aeropress.base
 
 import aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.beans.BeansTrackerFragment
 import aeropresscipe.divinelink.aeropress.components.snackbar.Notification
 import aeropresscipe.divinelink.aeropress.databinding.ActivityHomeBinding
 import aeropresscipe.divinelink.aeropress.favorites.FavoritesFragment
@@ -43,12 +44,13 @@ class HomeActivity :
     HistoryFragment.Callback {
     private val binding: ActivityHomeBinding by viewBinding()
 
-    private val fragments: Array<out Fragment> get() = arrayOf(recipeFragment, favoritesFragment, historyFragment)
+    private val fragments: Array<out Fragment> get() = arrayOf(recipeFragment, favoritesFragment, historyFragment, beanTrackerFragment)
     private var selectedIndex = 0
 
     private lateinit var recipeFragment: RecipeFragment
     private lateinit var favoritesFragment: FavoritesFragment
     private lateinit var historyFragment: HistoryFragment
+    private lateinit var beanTrackerFragment: BeansTrackerFragment
 
     private val viewModel: HomeViewModel by viewModels()
 
@@ -72,10 +74,12 @@ class HomeActivity :
             recipeFragment = RecipeFragment.newInstance()
             favoritesFragment = FavoritesFragment.newInstance()
             historyFragment = HistoryFragment.newInstance()
+            beanTrackerFragment = BeansTrackerFragment()
             supportFragmentManager.beginTransaction()
                 .add(R.id.fragment, recipeFragment, RECIPE_TAG)
                 .add(R.id.fragment, favoritesFragment, FAVORITES_TAG)
                 .add(R.id.fragment, historyFragment, HISTORY_TAG)
+                .add(R.id.fragment, beanTrackerFragment, BEAN_TRACKER_TAG)
                 .commitNow()
         } else {
             selectedIndex = savedInstanceState.getInt(SELECTED_INDEX, 0)
@@ -83,6 +87,7 @@ class HomeActivity :
             recipeFragment = supportFragmentManager.findFragmentByTag(RECIPE_TAG) as RecipeFragment
             favoritesFragment = supportFragmentManager.findFragmentByTag(FAVORITES_TAG) as FavoritesFragment
             historyFragment = supportFragmentManager.findFragmentByTag(HISTORY_TAG) as HistoryFragment
+            beanTrackerFragment = supportFragmentManager.findFragmentByTag(BEAN_TRACKER_TAG) as BeansTrackerFragment
         }
 
         val selectedFragment = fragments[selectedIndex]
@@ -110,6 +115,10 @@ class HomeActivity :
             }
             R.id.history -> {
                 selectFragment(historyFragment)
+                return@OnItemSelectedListener true
+            }
+            R.id.beans -> {
+                selectFragment(beanTrackerFragment)
                 return@OnItemSelectedListener true
             }
         }
@@ -148,6 +157,7 @@ class HomeActivity :
         private const val RECIPE_TAG = "RECIPE"
         private const val FAVORITES_TAG = "FAVORITES"
         private const val HISTORY_TAG = "HISTORY"
+        private const val BEAN_TRACKER_TAG = "BEANS_TRACKER"
         private const val SELECTED_INDEX = "SELECTED_INDEX"
 
         @Dimension(unit = Dimension.DP)

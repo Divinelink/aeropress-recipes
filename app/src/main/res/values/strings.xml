@@ -2,6 +2,8 @@
     <string name="app_name">AeroPress Recipes</string>
     <string name="terms_and_privacy_policy_url" translatable="false">https://andreo-harry.medium.com/aeropress-recipes-78539908d37b</string>
 
+    <string name="ok">OK</string>
+
     <string name="close">Close</string>
 
     <string name="heatWaterText">Heat &lt;b&gt;%dg&lt;/b&gt; of water to &lt;b&gt;%d°C / %d°F&lt;/b&gt;.</string>
@@ -113,5 +115,27 @@
     <string name="HelpSettingsFragment__help">Help</string>
     <string name="HelpSettingsFragment__terms_amp_privacy_policy">Terms &amp; Privacy Policy</string>
     <string name="HelpSettingsFragment__version">Version</string>
+
+    <!-- Beans -->
+    <string name="Beans__bean_tracker">Beans</string>
+    <string name="Beans__details">Details</string>
+    <string name="Beans__roast_level">Roast level</string>
+    <string name="Beans__process">Process</string>
+    <string name="Beans__bean_name">Bean name</string>
+    <string name="Beans__bean_name_placeholder">Bean name</string>
+    <string name="Beans__roaster_name">Roaster name</string>
+    <string name="Beans__roaster_name_placeholder">Enter roaster name</string>
+    <string name="Beans__origin">Origin</string>
+    <string name="Beans__origin_placeholder">Country or region</string>
+    <string name="Beans__roast_date">Roast date</string>
+    <string name="Beans__roast_date_placeholder">Enter roast date</string>
+
+    <!-- Process Method -->
+    <string name="ProcessMethod__washed">Washed</string>
+    <string name="ProcessMethod__natural">Natural</string>
+    <string name="ProcessMethod__honey">Honey</string>
+    <string name="ProcessMethod__anaerobic">Anaerobic</string>
+    <string name="ProcessMethod__carbonicMaceration">Carbonic Maceration</string>
+    <string name="ProcessMethod__gilingBasah">Giling Basah</string>
 
 </resources>

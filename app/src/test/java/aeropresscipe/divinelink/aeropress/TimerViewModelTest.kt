@@ -1,11 +1,12 @@
 package aeropresscipe.divinelink.aeropress
 
-import aeropresscipe.divinelink.aeropress.base.di.Preferences
 import aeropresscipe.divinelink.aeropress.recipe.models.BrewMethod
 import aeropresscipe.divinelink.aeropress.recipe.models.CoffeeGrindSize
 import aeropresscipe.divinelink.aeropress.recipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.recipe.models.remainingWater
+import aeropresscipe.divinelink.aeropress.settings.app.notifications.use_case.GetTimerSoundUseCase
+import aeropresscipe.divinelink.aeropress.test.util.fakes.FakePreferenceStorage
 import aeropresscipe.divinelink.aeropress.timer.ITimerViewModel
 import aeropresscipe.divinelink.aeropress.timer.TimerIntents
 import aeropresscipe.divinelink.aeropress.timer.TimerRepository
@@ -14,7 +15,6 @@ import aeropresscipe.divinelink.aeropress.timer.TimerState
 import aeropresscipe.divinelink.aeropress.timer.TimerViewModel
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
-import android.content.SharedPreferences
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -37,32 +37,28 @@ class TimerViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
+    private val testDispatcher = mainDispatcherRule.testDispatcher
+
     @Mock
     private var remote: TimerServices = mock()
-
-    @Mock
-    private var mockPrefs: SharedPreferences = mock()
-
-    @Mock
-    private var sharedPreferences: Preferences = Preferences(mockPrefs)
 
     private var transferableModel = TimerTransferableModel()
 
     private var repository: TimerRepository = TimerRepository(remote)
 
-    private fun initViewModel() {
-        viewModel = TimerViewModel(
-            delegate = WeakReference(object :
-                ITimerViewModel {
-                override fun updateState(state: TimerState) {
-                    // do nothing
-                }
-            }),
-            repository = repository
-        )
+    private fun initViewModel(
+        getTimerSoundUseCase: GetTimerSoundUseCase = GetTimerSoundUseCase(FakePreferenceStorage(), testDispatcher)
+    ) {
+        viewModel = TimerViewModel(repository = repository, getTimerSoundUseCase = getTimerSoundUseCase)
+
+        viewModel.delegate = WeakReference(object :
+            ITimerViewModel {
+            override fun updateState(state: TimerState) {
+                // do nothing
+            }
+        })
 
         viewModelIntent = viewModel
-        viewModel.preferences = this.sharedPreferences
     }
 
     @Before
@@ -212,8 +208,8 @@ class TimerViewModelTest {
 
     @Test
     fun `given brew state, when I update timer, then I expect finish state`() = runTest {
+        initViewModel(GetTimerSoundUseCase(FakePreferenceStorage(timerSound = true), testDispatcher))
         val response = DiceDomain(recipeModel(brewTime = 1, bloomTime = 0), isBrewing = true)
-        whenever(sharedPreferences.muteSound).thenReturn(false)
 
         transferableModel.recipe = response.recipe
 
@@ -238,7 +234,7 @@ class TimerViewModelTest {
     @Test
     fun `given mute sound preference true, when updateTimer, then I don't expect PlaySoundState`() = runTest {
         val response = DiceDomain(recipeModel(brewTime = 1, bloomTime = 1), isBrewing = true)
-        whenever(sharedPreferences.muteSound).thenReturn(true)
+//        whenever(sharedPreferences.muteSound).thenReturn(true)
         transferableModel.recipe = response.recipe
         viewModel.init(transferableModel)
         viewModel.updateTimer()
@@ -248,8 +244,8 @@ class TimerViewModelTest {
 
     @Test
     fun `given mute sound preference false, when updateTimer, then I expect PlaySoundState`() = runTest {
+        initViewModel(getTimerSoundUseCase = GetTimerSoundUseCase(FakePreferenceStorage(timerSound = true), testDispatcher))
         val response = DiceDomain(recipeModel(brewTime = 1, bloomTime = 1), isBrewing = true)
-        whenever(sharedPreferences.muteSound).thenReturn(false)
         transferableModel.recipe = response.recipe
         viewModel.init(transferableModel)
         viewModel.updateTimer()
