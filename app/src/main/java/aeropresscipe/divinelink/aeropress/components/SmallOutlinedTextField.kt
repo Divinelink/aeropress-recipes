@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.components
 
-import aeropresscipe.divinelink.aeropress.ui.theme.HorizontalIconPadding
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.defaultMinSize
@@ -28,7 +27,7 @@ import androidx.compose.ui.unit.dp
  * A Custom implementation of an [OutlinedTextField] that removes top and bottom padding.
  * This ensures that it has the styling that we expect.
  */
-
+@Suppress("LongMethod")
 @Composable
 fun SmallOutlinedTextField(
     value: String,

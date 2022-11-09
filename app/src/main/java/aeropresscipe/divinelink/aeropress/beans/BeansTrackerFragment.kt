@@ -14,6 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class BeansTrackerFragment : Fragment() {
 
     private lateinit var composeView: ComposeView
+    @Suppress("UnusedPrivateMember")
     private val viewModel: BeansTrackerViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

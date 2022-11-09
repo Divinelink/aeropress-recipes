@@ -1,3 +1,4 @@
+@file:Suppress("LongMethod")
 package aeropresscipe.divinelink.aeropress.components
 
 import aeropresscipe.divinelink.aeropress.R
