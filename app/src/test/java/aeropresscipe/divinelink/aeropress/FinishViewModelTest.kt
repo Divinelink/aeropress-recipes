@@ -4,9 +4,9 @@ import aeropresscipe.divinelink.aeropress.finish.FinishIntents
 import aeropresscipe.divinelink.aeropress.finish.FinishState
 import aeropresscipe.divinelink.aeropress.finish.FinishViewModel
 import aeropresscipe.divinelink.aeropress.finish.IFinishViewModel
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.BrewMethod
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.CoffeeGrindSize
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
+import aeropresscipe.divinelink.aeropress.recipe.models.BrewMethod
+import aeropresscipe.divinelink.aeropress.recipe.models.CoffeeGrindSize
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.TimerRepository
 import aeropresscipe.divinelink.aeropress.timer.TimerServices
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -34,11 +34,13 @@ class FinishViewModelTest {
     private fun initViewModel() {
         viewModel = FinishViewModel(
             delegate = WeakReference(object :
-                IFinishViewModel {
-                override fun updateState(state: FinishState) {
-                    // do nothing
-                }
-            }), repository = repository)
+                    IFinishViewModel {
+                    override fun updateState(state: FinishState) {
+                        // do nothing
+                    }
+                }),
+            repository = repository
+        )
 
         viewModelIntent = viewModel
     }
@@ -85,6 +87,7 @@ class FinishViewModelTest {
             coffeeAmount = coffeeAmount,
             brewWaterAmount = brewWaterAmount,
             grindSize = groundSize,
-            brewMethod = brewingMethod)
+            brewMethod = brewingMethod
+        )
     }
 }

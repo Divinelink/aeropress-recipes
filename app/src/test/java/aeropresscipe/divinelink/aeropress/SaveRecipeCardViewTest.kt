@@ -6,10 +6,10 @@ import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCa
 import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
 import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.LIKE_MAX_FRAME
 import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardViewModel
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.BrewMethod
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.CoffeeGrindSize
-import aeropresscipe.divinelink.aeropress.generaterecipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.history.LikeSnackBar
+import aeropresscipe.divinelink.aeropress.recipe.models.BrewMethod
+import aeropresscipe.divinelink.aeropress.recipe.models.CoffeeGrindSize
+import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.TimerRepository
 import aeropresscipe.divinelink.aeropress.timer.TimerServices
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -40,12 +40,13 @@ class SaveRecipeCardViewTest {
     private fun initViewModel() {
         viewModel = SaveRecipeCardViewModel(
             delegate = WeakReference(object :
-                ISaveRecipeCardViewModel {
-                override fun updateState(state: SaveRecipeCardState) {
-                    // do nothing
-                }
-            }),
-            repository = repository)
+                    ISaveRecipeCardViewModel {
+                    override fun updateState(state: SaveRecipeCardState) {
+                        // do nothing
+                    }
+                }),
+            repository = repository
+        )
 
         viewModelIntent = viewModel
     }
@@ -126,6 +127,7 @@ class SaveRecipeCardViewTest {
             coffeeAmount = coffeeAmount,
             brewWaterAmount = brewWaterAmount,
             grindSize = groundSize,
-            brewMethod = brewingMethod)
+            brewMethod = brewingMethod
+        )
     }
 }

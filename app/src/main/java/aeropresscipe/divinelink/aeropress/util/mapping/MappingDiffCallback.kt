@@ -22,5 +22,4 @@ internal class MappingDiffCallback<T : MappingModel> : DiffUtil.ItemCallback<T>(
             oldItem.getChangePayload(newItem)
         } else null
     }
-
 }

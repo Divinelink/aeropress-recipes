@@ -8,7 +8,6 @@ import timber.log.Timber
 @HiltAndroidApp
 class BaseApplication : Application() {
 
-
     companion object {
         lateinit var instance: BaseApplication
             private set
@@ -23,5 +22,4 @@ class BaseApplication : Application() {
 
         instance = this
     }
-
 }

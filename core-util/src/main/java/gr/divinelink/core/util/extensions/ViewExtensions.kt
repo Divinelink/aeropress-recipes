@@ -60,6 +60,14 @@ fun View?.updatePaddingAnimator(
         ?.run { start() }
 }
 
+var View.visible: Boolean
+    get() {
+        return this.visibility == View.VISIBLE
+    }
+    set(value) {
+        this.visibility = if (value) View.VISIBLE else View.GONE
+    }
+
 
 infix fun TextView?.updateTextWithFade(text: CharSequence) {
     this?.animate()
