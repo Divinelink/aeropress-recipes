@@ -21,8 +21,13 @@ import androidx.compose.ui.unit.dp
 import java.time.LocalDate
 
 @Composable
-fun AddBeansScreen(
+fun AddBeanContent(
+    onBeanNameChanged: (String) -> Unit,
+    onRoasterNameChanged: (String) -> Unit,
+    onOriginChanged: (String) -> Unit,
     onDateChanged: (LocalDate) -> Unit,
+    onRoastLevelChanged: (String) -> Unit,
+    onProcessChanged: (String) -> Unit,
     onRoastLevelClick: () -> Unit,
     onProcessClick: () -> Unit,
 ) {
@@ -34,26 +39,26 @@ fun AddBeansScreen(
         Spacer(modifier = Modifier.height(12.dp))
         CustomOutlinedTextField(
             text = "",
-            onTextChanged = {},
+            onValueChange = onBeanNameChanged,
             labelText = stringResource(id = R.string.Beans__bean_name),
         )
 
         Spacer(modifier = Modifier.height(12.dp))
         CustomOutlinedTextField(
             text = "",
-            onTextChanged = {},
+            onValueChange = onRoasterNameChanged,
             labelText = stringResource(id = R.string.Beans__roaster_name)
         )
 
         Spacer(modifier = Modifier.height(12.dp))
         CustomOutlinedTextField(
             text = "",
-            onTextChanged = {},
+            onValueChange = onOriginChanged,
             labelText = stringResource(id = R.string.Beans__origin)
         )
         Spacer(modifier = Modifier.height(12.dp))
         DatePicker(
-            onValueChanged = onDateChanged,
+            onValueChange = onDateChanged,
             label = R.string.Beans__roast_date
         )
 
@@ -69,12 +74,14 @@ fun AddBeansScreen(
         Spacer(modifier = Modifier.height(12.dp))
         SelectOptionField(
             onClick = onRoastLevelClick,
+            onValueChange = onRoastLevelChanged,
             label = R.string.Beans__roast_level
         )
 
         Spacer(modifier = Modifier.height(12.dp))
         SelectOptionField(
             onClick = onProcessClick,
+            onValueChange = onProcessChanged,
             label = R.string.Beans__process
         )
         Spacer(modifier = Modifier.height(12.dp))
@@ -87,10 +94,15 @@ fun AddBeansScreen(
 fun BeansScreenPreview() {
     AeropressTheme {
         Surface {
-            AddBeansScreen(
+            AddBeanContent(
                 onDateChanged = {},
                 onRoastLevelClick = {},
-                onProcessClick = {}
+                onProcessClick = {},
+                onBeanNameChanged = {},
+                onRoasterNameChanged = {},
+                onOriginChanged = {},
+                onRoastLevelChanged = {},
+                onProcessChanged = {},
             )
         }
     }

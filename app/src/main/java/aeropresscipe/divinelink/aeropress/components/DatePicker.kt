@@ -21,7 +21,7 @@ import java.time.format.DateTimeFormatter
 fun DatePicker(
     modifier: Modifier = Modifier,
     value: LocalDate? = null,
-    onValueChanged: (LocalDate) -> Unit,
+    onValueChange: (LocalDate) -> Unit,
     @StringRes label: Int,
     @DrawableRes trailingIcon: Int = R.drawable.ic_calendar,
 ) {
@@ -37,7 +37,7 @@ fun DatePicker(
     ) {
         this.datepicker(
             initialDate = value ?: LocalDate.now(),
-            onDateChange = onValueChanged
+            onDateChange = onValueChange
         )
     }
 
@@ -46,7 +46,8 @@ fun DatePicker(
         value = selectFieldValue,
         onClick = { dialogState.show() },
         label = label,
-        trailingIcon = trailingIcon
+        trailingIcon = trailingIcon,
+        onValueChange = { },
     )
 }
 
@@ -62,7 +63,7 @@ fun SelectDateFieldPreview() {
     AeropressTheme {
         Surface {
             DatePicker(
-                onValueChanged = {},
+                onValueChange = {},
                 label = R.string.Beans__roast_date,
             )
         }
@@ -76,7 +77,7 @@ fun SelectDateFieldNoValuePreview() {
     AeropressTheme {
         Surface {
             DatePicker(
-                onValueChanged = {},
+                onValueChange = {},
                 value = LocalDate.now(),
                 label = R.string.Beans__roast_date,
             )
