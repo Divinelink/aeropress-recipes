@@ -21,4 +21,8 @@ class RoomBeanRepository @Inject constructor(
     override suspend fun fetchBean(bean: Bean): Result<Bean> {
         TODO("Not yet implemented")
     }
+
+    override suspend fun updateBean(bean: Bean): Result<Unit> {
+        TODO("Not yet implemented")
+    }
 }
