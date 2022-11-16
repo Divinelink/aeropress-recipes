@@ -29,16 +29,7 @@ class BeansTrackerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         composeView.setContent {
             AeropressTheme {
-                AddBeanContent(
-                    onDateChanged = { },
-                    onRoastLevelClick = { },
-                    onProcessClick = { },
-                    onBeanNameChanged = {},
-                    onRoasterNameChanged = {},
-                    onOriginChanged = {},
-                    onRoastLevelChanged = {},
-                    onProcessChanged = {},
-                )
+
             }
         }
     }

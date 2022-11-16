@@ -44,10 +44,12 @@ class DemoBeanRepository @Inject constructor() : BeanRepository {
     }
 
     override suspend fun fetchBean(bean: Bean): Result<Bean> {
-        TODO("Not yet implemented")
+//        TODO("Not yet implemented")
+        return Result.Success(bean)
     }
 
     override suspend fun updateBean(bean: Bean): Result<Unit> {
-        TODO("Not yet implemented")
+//        TODO("Not yet implemented")
+        return Result.Success(Unit)
     }
 }
