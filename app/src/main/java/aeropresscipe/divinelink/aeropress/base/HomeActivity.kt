@@ -1,7 +1,7 @@
 package aeropresscipe.divinelink.aeropress.base
 
 import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.beans.BeansTrackerFragment
+import aeropresscipe.divinelink.aeropress.beans.ui.BeansTrackerFragment
 import aeropresscipe.divinelink.aeropress.components.snackbar.Notification
 import aeropresscipe.divinelink.aeropress.databinding.ActivityHomeBinding
 import aeropresscipe.divinelink.aeropress.favorites.FavoritesFragment

@@ -1,6 +1,7 @@
 package aeropresscipe.divinelink.aeropress.beans.domain.usecase
 
 import aeropresscipe.divinelink.aeropress.MainDispatcherRule
+import aeropresscipe.divinelink.aeropress.addbeans.domain.usecase.AddBeanUseCase
 import aeropresscipe.divinelink.aeropress.beans.domain.model.AddBeanResult
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod

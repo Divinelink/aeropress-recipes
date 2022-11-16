@@ -1,4 +1,4 @@
-package aeropresscipe.divinelink.aeropress.beans.domain.usecase
+package aeropresscipe.divinelink.aeropress.addbeans.domain.usecase
 
 import aeropresscipe.divinelink.aeropress.base.di.IoDispatcher
 import aeropresscipe.divinelink.aeropress.beans.domain.model.AddBeanResult

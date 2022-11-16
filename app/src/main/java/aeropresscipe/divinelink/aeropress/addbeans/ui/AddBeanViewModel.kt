@@ -1,7 +1,7 @@
-package aeropresscipe.divinelink.aeropress.beans.ui
+package aeropresscipe.divinelink.aeropress.addbeans.ui
 //
 //import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
-//import aeropresscipe.divinelink.aeropress.beans.domain.usecase.AddBeanUseCase
+//import aeropresscipe.divinelink.aeropress.addbeans.domain.usecase.AddBeanUseCase
 //import aeropresscipe.divinelink.aeropress.beans.domain.usecase.FetchBeanUseCase
 //import androidx.lifecycle.ViewModel
 //import androidx.lifecycle.viewModelScope
