@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 fun CustomOutlinedTextField(
     modifier: Modifier = Modifier,
     text: String,
-    onTextChanged: (String) -> Unit,
+    onValueChange: (String) -> Unit,
     labelText: String,
     enabled: Boolean = true,
     colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(
@@ -30,7 +30,7 @@ fun CustomOutlinedTextField(
 ) {
     SmallOutlinedTextField(
         value = text,
-        onValueChange = onTextChanged,
+        onValueChange = onValueChange,
         label = {
             Text(
                 text = labelText,
@@ -55,7 +55,7 @@ fun CustomOutlinedTextFieldPreview() {
         Surface {
             CustomOutlinedTextField(
                 text = "Ethiopia",
-                onTextChanged = {},
+                onValueChange = {},
                 labelText = "Origin",
             )
         }
@@ -70,7 +70,7 @@ fun CustomOutlinedTextFieldEmptyPreview() {
         Surface {
             CustomOutlinedTextField(
                 text = "",
-                onTextChanged = {},
+                onValueChange = {},
                 labelText = "Origin",
             )
         }

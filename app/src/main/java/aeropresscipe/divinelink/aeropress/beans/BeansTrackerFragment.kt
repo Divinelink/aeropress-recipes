@@ -14,6 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class BeansTrackerFragment : Fragment() {
 
     private lateinit var composeView: ComposeView
+
     @Suppress("UnusedPrivateMember")
     private val viewModel: BeansTrackerViewModel by viewModels()
 
@@ -27,10 +28,15 @@ class BeansTrackerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         composeView.setContent {
             AeropressTheme {
-                AddBeansScreen(
+                AddBeanContent(
                     onDateChanged = { },
                     onRoastLevelClick = { },
                     onProcessClick = { },
+                    onBeanNameChanged = {},
+                    onRoasterNameChanged = {},
+                    onOriginChanged = {},
+                    onRoastLevelChanged = {},
+                    onProcessChanged = {},
                 )
             }
         }

@@ -32,6 +32,7 @@ fun SelectOptionField(
     modifier: Modifier = Modifier,
     value: String? = null,
     onClick: () -> Unit,
+    onValueChange: (String) -> Unit,
     @StringRes label: Int,
     @DrawableRes trailingIcon: Int = R.drawable.ic_arrow_down_24,
     @DrawableRes leadingIcon: Int? = null,
@@ -41,7 +42,7 @@ fun SelectOptionField(
             modifier = modifier
                 .fillMaxWidth(),
             text = value ?: "",
-            onTextChanged = { },
+            onValueChange = onValueChange,
             labelText = stringResource(id = label),
             enabled = false,
             colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -92,6 +93,7 @@ fun RoastLevelPreview() {
         Surface {
             SelectOptionField(
                 onClick = { },
+                onValueChange = { },
                 label = R.string.Beans__roast_level,
                 leadingIcon = R.drawable.ic_calendar
             )
