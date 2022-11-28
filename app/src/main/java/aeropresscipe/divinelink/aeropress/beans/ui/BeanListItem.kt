@@ -10,6 +10,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -50,6 +51,43 @@ fun BeanListItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             CircularText(bean.name)
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(MAX_COLUMN_WIDTH)
+                    .padding(start = 8.dp)
+            ) {
+
+                Text(
+                    style = MaterialTheme.typography.titleSmall,
+                    text = bean.name,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+
+                Text(
+                    style = MaterialTheme.typography.bodySmall,
+                    text = bean.roasterName,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.End
+            ) {
+                Text(
+                    style = MaterialTheme.typography.titleSmall,
+                    text = bean.rating.toString(),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+
+                Text(
+                    style = MaterialTheme.typography.bodySmall,
+                    text = bean.origin,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
         }
     }
 }
@@ -111,13 +149,21 @@ private class BeanPreviewParameterProvider : PreviewParameterProvider<Bean> {
                 roastLevel = RoastLevel.Medium
             )
 
+            val largeBeanName = doubleLetterBean.copy(
+                name = "Roaster with a very large name that normally would not fit on this space.",
+                roastLevel = RoastLevel.Medium
+            )
+
             return sequenceOf(
                 doubleLetterBean,
                 singleLetterBean,
-                multipleLetterBean
+                multipleLetterBean,
+                largeBeanName
             )
         }
 }
+
+private const val MAX_COLUMN_WIDTH = 0.7F
 
 @Composable
 @Preview(
