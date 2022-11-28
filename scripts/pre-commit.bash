@@ -7,6 +7,9 @@ else
     echo “- Run KMM unit tests -”
     ./gradlew kmmsharedmodule:testDebugUnitTest
 
+     echo “- Running Detekt Format -”
+    ./gradlew detektFormat
+
     # echo “- Build KMM Swift Package -”
     # ./gradlew kmmsharedmodule:createSwiftPackage
 

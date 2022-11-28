@@ -13,13 +13,13 @@ import javax.inject.Inject
  * The [AddBeanUseCase] is used to store a [Bean] model into the Local DB using the [BeanRepository].
  * Returns true if [Result.Success], false otherwise.
  */
+@Suppress("ThrowingExceptionsWithoutMessageOrCause")
 class AddBeanUseCase @Inject constructor(
     private val beanRepository: BeanRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher,
 ) : UseCase<Bean, AddBeanResult>(dispatcher) {
     override suspend fun execute(parameters: Bean): AddBeanResult {
         val result = beanRepository.addBean(parameters)
-
         return when (result) {
             is Result.Success -> AddBeanResult.Success
             is Result.Error -> AddBeanResult.Failure

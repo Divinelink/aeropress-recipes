@@ -41,10 +41,8 @@ fun BeansContent(
         if (viewState is BeanTrackerViewState.Completed) {
             if (viewState.isEmpty) {
                 // Show Empty State
-
             } else {
                 // Show Beans
-
             }
         }
     }

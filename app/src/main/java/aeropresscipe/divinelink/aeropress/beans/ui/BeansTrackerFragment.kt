@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.beans.ui
 
-import aeropresscipe.divinelink.aeropress.beans.AddBeanContent
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -29,7 +28,7 @@ class BeansTrackerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         composeView.setContent {
             AeropressTheme {
-
+                // Intentionally Blank.
             }
         }
     }

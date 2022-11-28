@@ -1,20 +1,20 @@
 package aeropresscipe.divinelink.aeropress.addbeans.ui
 //
-//import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
-//import aeropresscipe.divinelink.aeropress.addbeans.domain.usecase.AddBeanUseCase
-//import aeropresscipe.divinelink.aeropress.beans.domain.usecase.FetchBeanUseCase
-//import androidx.lifecycle.ViewModel
-//import androidx.lifecycle.viewModelScope
-//import dagger.hilt.android.lifecycle.HiltViewModel
-//import gr.divinelink.core.util.domain.Result
-//import kotlinx.coroutines.launch
-//import javax.inject.Inject
+// import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
+// import aeropresscipe.divinelink.aeropress.addbeans.domain.usecase.AddBeanUseCase
+// import aeropresscipe.divinelink.aeropress.beans.domain.usecase.FetchBeanUseCase
+// import androidx.lifecycle.ViewModel
+// import androidx.lifecycle.viewModelScope
+// import dagger.hilt.android.lifecycle.HiltViewModel
+// import gr.divinelink.core.util.domain.Result
+// import kotlinx.coroutines.launch
+// import javax.inject.Inject
 //
-//@HiltViewModel
-//class AddBeanViewModel @Inject constructor(
+// @HiltViewModel
+// class AddBeanViewModel @Inject constructor(
 //    private val fetchBeanUseCase: FetchBeanUseCase,
 //    private val addBeanUseCase: AddBeanUseCase,
-//) : ViewModel() {
+// ) : ViewModel() {
 //
 //    fun getBean(bean: Bean) {
 //        viewModelScope.launch {
@@ -39,4 +39,4 @@ package aeropresscipe.divinelink.aeropress.addbeans.ui
 //            }
 //        }
 //    }
-//}
+// }
