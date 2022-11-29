@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BeansTrackerViewModel @Inject constructor(
-    private val fetchAllBeansUseCase: FetchAllBeansUseCase
+    private val fetchAllBeansUseCase: FetchAllBeansUseCase,
 ) : ViewModel() {
 
     private val _viewState: MutableStateFlow<BeanTrackerViewState> =
@@ -19,5 +19,9 @@ class BeansTrackerViewModel @Inject constructor(
 
     init {
         fetchAllBeansUseCase
+    }
+
+    fun onAddButtonClicked() {
+        // TODO()
     }
 }

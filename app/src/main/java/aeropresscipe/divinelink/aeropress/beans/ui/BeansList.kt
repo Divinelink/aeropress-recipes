@@ -2,6 +2,8 @@ package aeropresscipe.divinelink.aeropress.beans.ui
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
+import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
+import aeropresscipe.divinelink.aeropress.beans.domain.model.RoastLevel
 import aeropresscipe.divinelink.aeropress.components.Material3Card
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import android.content.res.Configuration
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +26,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun BeansList(
     beans: List<Bean>,
+    onBeanClicked: (Bean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -37,7 +41,17 @@ fun BeansList(
                 )
             }
         } else {
-            // to do
+            items(
+                items = beans,
+                key = {
+                    it.id
+                }
+            ) { bean ->
+                BeanListItem(
+                    bean = bean,
+                    onBeanClicked = { onBeanClicked(bean) }
+                )
+            }
         }
     }
 }
@@ -66,11 +80,42 @@ private fun EmptySectionCard(
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-fun BeansScreenPreview() {
+fun EmptyBeansScreenPreview() {
     AeropressTheme {
         Surface {
             BeansList(
                 beans = listOf(),
+                onBeanClicked = {}
+            )
+        }
+    }
+}
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+fun ListBeansScreenPreview() {
+    @Suppress("MagicNumber")
+    val beans = (1..3).map { index ->
+        Bean(
+            id = index.toString(),
+            name = "Bean name $index",
+            roasterName = "Roaster name $index",
+            origin = "Origin $index",
+            roastLevel = RoastLevel.Dark,
+            process = ProcessMethod.Honey,
+            rating = 0,
+            tastingNotes = "",
+            additionalNotes = "",
+            roastDate = ""
+        )
+    }.toMutableList()
+
+    AeropressTheme {
+        Surface {
+            BeansList(
+                beans = beans,
+                onBeanClicked = {}
             )
         }
     }

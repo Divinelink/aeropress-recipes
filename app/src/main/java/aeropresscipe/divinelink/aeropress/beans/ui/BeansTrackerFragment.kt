@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,7 +16,6 @@ class BeansTrackerFragment : Fragment() {
 
     private lateinit var composeView: ComposeView
 
-    @Suppress("UnusedPrivateMember")
     private val viewModel: BeansTrackerViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -28,7 +28,12 @@ class BeansTrackerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         composeView.setContent {
             AeropressTheme {
-                // Intentionally Blank.
+                val viewState = viewModel.viewState.collectAsState()
+
+                BeansContent(
+                    viewState = viewState.value,
+                    onAddButtonClicked = viewModel::onAddButtonClicked
+                )
             }
         }
     }

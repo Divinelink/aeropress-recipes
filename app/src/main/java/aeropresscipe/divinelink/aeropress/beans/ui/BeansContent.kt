@@ -30,12 +30,12 @@ fun BeansContent(
             )
         },
         topBar = {
-//            ToolbarAndDialog(
-//                viewState,
-//                onDateSelected,
-//                onPreviousDateButtonClicked,
-//                onNextDateButtonClicked,
-//            )
+            //            ToolbarAndDialog(
+            //                viewState,
+            //                onDateSelected,
+            //                onPreviousDateButtonClicked,
+            //                onNextDateButtonClicked,
+            //            )
         },
     ) { _ ->
         if (viewState is BeanTrackerViewState.Completed) {
@@ -43,6 +43,12 @@ fun BeansContent(
                 // Show Empty State
             } else {
                 // Show Beans
+                BeansList(
+                    viewState.beans,
+                    onBeanClicked = {
+                        // Navigate to AddBeanScreen
+                    },
+                )
             }
         }
     }
