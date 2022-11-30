@@ -10,13 +10,19 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,7 +40,6 @@ fun BeansContent(
     viewState: BeanTrackerViewState,
     onAddButtonClicked: () -> Unit,
 ) {
-
     Scaffold(
         floatingActionButton = {
             AddBeanButton(
@@ -42,17 +47,29 @@ fun BeansContent(
             )
         },
         topBar = {
-            //            ToolbarAndDialog(
-            //                viewState,
-            //                onDateSelected,
-            //                onPreviousDateButtonClicked,
-            //                onNextDateButtonClicked,
-            //            )
+            TopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.Beans__bean_tracker),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        /* Do Something*/
+                    }) {
+                        Icon(Icons.Filled.ArrowBack, null)
+                    }
+                },
+                // scrollBehavior = TopAppBarScrollBehavior()
+            )
         },
-    ) { _ ->
+    ) { paddingValues ->
         if (viewState is BeanTrackerViewState.Completed) {
             BeansList(
                 viewState.beans,
+                modifier = Modifier
+                    .padding(paddingValues),
                 onBeanClicked = {
                     // Navigate to AddBeanScreen
                 },
@@ -101,7 +118,7 @@ class BeansContentViewStateProvider : PreviewParameterProvider<BeanTrackerViewSt
 
     override val values: Sequence<BeanTrackerViewState>
         get() {
-            val beans = (1..3).map { index ->
+            val beans = (1..12).map { index ->
                 Bean(
                     id = index.toString(),
                     name = "Bean name $index",
