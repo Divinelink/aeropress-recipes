@@ -104,7 +104,7 @@ fun ListBeansScreenPreview() {
             origin = "Origin $index",
             roastLevel = RoastLevel.Dark,
             process = ProcessMethod.Honey,
-            rating = 0,
+            rating = index,
             tastingNotes = "",
             additionalNotes = "",
             roastDate = ""

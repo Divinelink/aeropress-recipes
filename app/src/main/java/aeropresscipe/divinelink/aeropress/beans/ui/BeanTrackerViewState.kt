@@ -24,7 +24,6 @@ sealed class BeanTrackerViewState(
      * @property [beans] A list that holds all the beans related to the user.
      */
     data class Completed(
-        val isEmpty: Boolean,
         val beans: List<Bean>
     ) : BeanTrackerViewState(
         showLoading = false
