@@ -4,9 +4,10 @@ import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
 import aeropresscipe.divinelink.aeropress.beans.domain.model.RoastLevel
-import aeropresscipe.divinelink.aeropress.components.AnimatingFabContent
+import aeropresscipe.divinelink.aeropress.components.ExtendableFloatingActionButton
 import aeropresscipe.divinelink.aeropress.components.Material3CircularProgressIndicator
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
+import aeropresscipe.divinelink.aeropress.ui.theme.FabSize
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,13 +16,11 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -42,7 +41,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import androidx.compose.ui.unit.dp
 
 const val ADD_BREW_BUTTON_TAG = "ADD_BREW_BUTTON"
 
@@ -52,12 +50,12 @@ fun BeansContent(
     viewState: BeanTrackerViewState,
     onAddButtonClicked: () -> Unit,
 ) {
-    val scrollState = rememberScrollState()
+    val scrollState = rememberLazyListState()
     var fabExtended by remember { mutableStateOf(true) }
 
     LaunchedEffect(scrollState) {
         var prev = 0
-        snapshotFlow { scrollState.value }
+        snapshotFlow { scrollState.firstVisibleItemIndex }
             .collect {
                 fabExtended = it <= prev
                 prev = it
@@ -94,13 +92,12 @@ fun BeansContent(
             BeansList(
                 viewState.beans,
                 modifier = Modifier
-                    .verticalScroll(scrollState)
-                    .height(1200.dp) // Todo fix hardcoded height
                     .navigationBarsPadding()
                     .padding(paddingValues),
                 onBeanClicked = {
                     // Navigate to AddBeanScreen
                 },
+                state = scrollState
             )
         }
     }
@@ -116,32 +113,29 @@ private fun AddBeanButton(
     extended: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    FloatingActionButton(
-        onClick = onClick,
+    ExtendableFloatingActionButton(
         modifier = modifier
-            .height(56.dp)
-            .widthIn(min = 56.dp)
+            .height(FabSize)
+            .widthIn(min = FabSize)
             .navigationBarsPadding()
             .testTag(ADD_BREW_BUTTON_TAG),
-    ) {
-        AnimatingFabContent(
-            icon = {
-                Icon(
-                    Icons.Default.Add,
-                    contentDescription = stringResource(R.string.Beans__add_bean),
-                )
-            },
-            text = {
-                Text(
-                    style = MaterialTheme.typography.bodyMedium,
-                    text = stringResource(
-                        R.string.Beans__add_bean
-                    ),
-                )
-            },
-            extended = extended
-        )
-    }
+        extended = extended,
+        text = {
+            Text(
+                style = MaterialTheme.typography.bodyMedium,
+                text = stringResource(
+                    R.string.Beans__add_bean
+                ),
+            )
+        },
+        icon = {
+            Icon(
+                Icons.Default.Add,
+                contentDescription = stringResource(R.string.Beans__add_bean),
+            )
+        },
+        onClick = onClick
+    )
 }
 
 @Composable
@@ -160,7 +154,6 @@ private fun BeansLoadingContent() {
 
 @Suppress("MagicNumber")
 class BeansContentViewStateProvider : PreviewParameterProvider<BeanTrackerViewState> {
-
     override val values: Sequence<BeanTrackerViewState>
         get() {
             val beans = (1..12).map { index ->

@@ -6,6 +6,7 @@ import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
 import aeropresscipe.divinelink.aeropress.beans.domain.model.RoastLevel
 import aeropresscipe.divinelink.aeropress.components.Material3Card
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
+import aeropresscipe.divinelink.aeropress.ui.theme.FabSize
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -30,8 +32,10 @@ fun BeansList(
     beans: List<Bean>,
     onBeanClicked: (Bean) -> Unit,
     modifier: Modifier = Modifier,
+    state: LazyListState = LazyListState(),
 ) {
     LazyColumn(
+        state = state,
         contentPadding = PaddingValues(dimensionResource(id = R.dimen.list_padding)),
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.list_padding)),
         modifier = modifier
@@ -46,6 +50,7 @@ fun BeansList(
             items(
                 items = beans,
                 key = {
+                    // key is used and acts a similar way as a DiffUtil for compose.
                     it.id
                 }
             ) { bean ->
@@ -56,7 +61,7 @@ fun BeansList(
             }
 
             item {
-                Spacer(Modifier.height(56.dp)) // TODO fix this hardcoded height
+                Spacer(Modifier.height(FabSize))
             }
         }
     }
