@@ -74,7 +74,7 @@ fun BeansContent(
                 title = {
                     Text(
                         text = stringResource(id = R.string.Beans__bean_tracker),
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.titleMedium
                     )
                 },
                 navigationIcon = {

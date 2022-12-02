@@ -120,7 +120,7 @@ val AppTypography = Typography(
         fontWeight = FontWeight.Medium,
         letterSpacing = 0.sp,
         lineHeight = 24.sp,
-        fontSize = 16.sp
+        fontSize = 18.sp
     ),
     titleSmall = TextStyle(
         fontFamily = appFontFamily,
