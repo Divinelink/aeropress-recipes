@@ -8,21 +8,44 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class RecipeRepository @Inject constructor(
-    private val dbRemote: GenerateRecipeRemote,
-) : BaseRepository() {
-
-    fun checkIfBrewing(
-        completionBlock: (Boolean) -> Unit
-    ) = performTransaction(completionBlock) { dbRemote.alreadyBrewing() }
+interface RecipeRepository {
+    suspend fun checkIfBrewing(
+        completionBlock: (Boolean) -> Unit,
+    )
 
     fun getRecipe(
-        completionBlock: (DiceDomain) -> Unit
-    ) = performTransaction(completionBlock) { dbRemote.getRecipe() }
+        completionBlock: (DiceDomain) -> Unit,
+    )
 
     fun createNewRecipe(
-        completionBlock: (DiceDomain) -> Unit
-    ) = performTransaction(completionBlock) { dbRemote.createNewRecipe() }
+        completionBlock: (DiceDomain) -> Unit,
+    )
+}
+
+class RoomRecipeRepository @Inject constructor(
+    private val remote: GenerateRecipeRemote,
+) : RecipeRepository, BaseRepository() {
+
+    override suspend fun checkIfBrewing(completionBlock: (Boolean) -> Unit) {
+        performTransaction(
+            completionBlock = completionBlock,
+            transaction = remote::alreadyBrewing
+        )
+    }
+
+    override fun getRecipe(completionBlock: (DiceDomain) -> Unit) {
+        performTransaction(
+            completionBlock = completionBlock,
+            transaction = remote::getRecipe
+        )
+    }
+
+    override fun createNewRecipe(completionBlock: (DiceDomain) -> Unit) {
+        performTransaction(
+            completionBlock = completionBlock,
+            transaction = remote::createNewRecipe
+        )
+    }
 }
 
 interface IGenerateRecipeRemote {
@@ -36,7 +59,7 @@ interface IGenerateRecipeRemote {
  */
 open class GenerateRecipeRemote @Inject constructor(
     private val recipeDao: RecipeDao,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : IGenerateRecipeRemote {
 
     override suspend fun alreadyBrewing(): Boolean {

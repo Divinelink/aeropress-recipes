@@ -15,16 +15,18 @@ import aeropresscipe.divinelink.aeropress.timer.TimerRepository
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.ref.WeakReference
 
 class RecipeViewModel @AssistedInject constructor(
     private var repository: RecipeRepository,
     private var timerRepository: TimerRepository,
-    @Assisted public override var delegate: WeakReference<IRecipeViewModel>? = null
+    @Assisted public override var delegate: WeakReference<IRecipeViewModel>? = null,
 ) : BaseViewModel<IRecipeViewModel>(),
     RecipeIntents {
     internal var statesList: MutableList<RecipeState> = mutableListOf()
@@ -68,10 +70,12 @@ class RecipeViewModel @AssistedInject constructor(
     }
 
     override fun generateRecipe() {
-        repository.checkIfBrewing { isBrewing ->
-            when (isBrewing) {
-                true -> state = RecipeState.ShowAlreadyBrewingState
-                false -> generateRandomRecipe()
+        viewModelScope.launch {
+            repository.checkIfBrewing { isBrewing ->
+                when (isBrewing) {
+                    true -> state = RecipeState.ShowAlreadyBrewingState
+                    false -> generateRandomRecipe()
+                }
             }
         }
     }
