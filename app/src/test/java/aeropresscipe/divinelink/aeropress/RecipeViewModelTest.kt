@@ -49,11 +49,11 @@ class RecipeViewModelTest {
     private fun initViewModel() {
         viewModel = RecipeViewModel(
             delegate = WeakReference(object :
-                IRecipeViewModel {
-                override fun updateState(state: RecipeState) {
-                    // do nothing
-                }
-            }),
+                    IRecipeViewModel {
+                    override fun updateState(state: RecipeState) {
+                        // do nothing
+                    }
+                }),
             repository = repository.mock,
             timerRepository = timerRepository
         )

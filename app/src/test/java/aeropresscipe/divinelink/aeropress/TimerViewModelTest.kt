@@ -52,11 +52,11 @@ class TimerViewModelTest {
         viewModel = TimerViewModel(repository = repository, getTimerSoundUseCase = getTimerSoundUseCase)
 
         viewModel.delegate = WeakReference(object :
-            ITimerViewModel {
-            override fun updateState(state: TimerState) {
-                // do nothing
-            }
-        })
+                ITimerViewModel {
+                override fun updateState(state: TimerState) {
+                    // do nothing
+                }
+            })
 
         viewModelIntent = viewModel
     }
