@@ -290,6 +290,28 @@ class TimerViewModelTest {
         assertTrue(viewModel.state is TimerState.ExitState)
     }
 
+    @Test
+    fun `given a recipe with no time left, when I exit timer, then I expect brewing set to false`() = runTest {
+        val isBrewing = true
+        val response = DiceDomain(recipeModel(brewTime = 0, bloomTime = 0), isBrewing = isBrewing)
+        transferableModel.recipe = response.recipe
+
+        viewModel.init(transferableModel)
+
+        repository.mockUpdateBrewingState(!isBrewing, 0L, Unit)
+        viewModel.exitTimer()
+    }
+
+    @Test
+    fun `given init is not called, when I start brew, then I expect error state`() = runTest {
+        val response = DiceDomain(recipeModel(brewTime = 50, bloomTime = 20), isBrewing = false)
+        transferableModel.recipe = response.recipe
+
+        viewModel.startBrew()
+
+        assertTrue(viewModel.statesList[0] is TimerState.ErrorState)
+    }
+
     private fun recipeModel(
         diceTemperature: Int = 0,
         brewTime: Long = 0,
