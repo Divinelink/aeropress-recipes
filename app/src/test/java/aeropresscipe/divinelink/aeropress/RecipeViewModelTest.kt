@@ -2,6 +2,7 @@ package aeropresscipe.divinelink.aeropress
 
 import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
 import aeropresscipe.divinelink.aeropress.fakes.FakeRecipeRepository
+import aeropresscipe.divinelink.aeropress.fakes.FakeTimerRepository
 import aeropresscipe.divinelink.aeropress.recipe.IRecipeViewModel
 import aeropresscipe.divinelink.aeropress.recipe.RecipeIntents
 import aeropresscipe.divinelink.aeropress.recipe.RecipeState
@@ -12,8 +13,6 @@ import aeropresscipe.divinelink.aeropress.recipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.recipe.models.buildSteps
 import aeropresscipe.divinelink.aeropress.timer.TimerFlow
-import aeropresscipe.divinelink.aeropress.timer.TimerRepository
-import aeropresscipe.divinelink.aeropress.timer.TimerServices
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDateTime
@@ -24,8 +23,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mock
-import org.mockito.kotlin.mock
 import java.lang.ref.WeakReference
 
 @ExperimentalCoroutinesApi
@@ -36,11 +33,8 @@ class RecipeViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    @Mock
-    private var timerRemote: TimerServices = mock()
-
     private var repository = FakeRecipeRepository()
-    private var timerRepository: TimerRepository = TimerRepository(timerRemote)
+    private var timerRepository = FakeTimerRepository()
 
     private val sunday9am: LocalDateTime = LocalDateTime(2021, 7, 4, 9, 0, 0)
     private val sunday130pm: LocalDateTime = LocalDateTime(2021, 7, 4, 13, 30, 0)
@@ -49,13 +43,13 @@ class RecipeViewModelTest {
     private fun initViewModel() {
         viewModel = RecipeViewModel(
             delegate = WeakReference(object :
-                    IRecipeViewModel {
-                    override fun updateState(state: RecipeState) {
-                        // do nothing
-                    }
-                }),
+                IRecipeViewModel {
+                override fun updateState(state: RecipeState) {
+                    // do nothing
+                }
+            }),
             repository = repository.mock,
-            timerRepository = timerRepository
+            timerRepository = timerRepository.mock
         )
 
         viewModelIntent = viewModel

@@ -1,5 +1,6 @@
 package aeropresscipe.divinelink.aeropress
 
+import aeropresscipe.divinelink.aeropress.fakes.FakeTimerRepository
 import aeropresscipe.divinelink.aeropress.recipe.models.BrewMethod
 import aeropresscipe.divinelink.aeropress.recipe.models.CoffeeGrindSize
 import aeropresscipe.divinelink.aeropress.recipe.models.DiceDomain
@@ -9,8 +10,6 @@ import aeropresscipe.divinelink.aeropress.settings.app.notifications.use_case.Ge
 import aeropresscipe.divinelink.aeropress.test.util.fakes.FakePreferenceStorage
 import aeropresscipe.divinelink.aeropress.timer.ITimerViewModel
 import aeropresscipe.divinelink.aeropress.timer.TimerIntents
-import aeropresscipe.divinelink.aeropress.timer.TimerRepository
-import aeropresscipe.divinelink.aeropress.timer.TimerServices
 import aeropresscipe.divinelink.aeropress.timer.TimerState
 import aeropresscipe.divinelink.aeropress.timer.TimerViewModel
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
@@ -24,9 +23,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mock
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
 import java.lang.ref.WeakReference
 
 @ExperimentalCoroutinesApi
@@ -39,24 +35,24 @@ class TimerViewModelTest {
 
     private val testDispatcher = mainDispatcherRule.testDispatcher
 
-    @Mock
-    private var remote: TimerServices = mock()
-
     private var transferableModel = TimerTransferableModel()
 
-    private var repository: TimerRepository = TimerRepository(remote)
+    private var repository: FakeTimerRepository = FakeTimerRepository()
 
     private fun initViewModel(
-        getTimerSoundUseCase: GetTimerSoundUseCase = GetTimerSoundUseCase(FakePreferenceStorage(), testDispatcher)
+        getTimerSoundUseCase: GetTimerSoundUseCase = GetTimerSoundUseCase(FakePreferenceStorage(), testDispatcher),
     ) {
-        viewModel = TimerViewModel(repository = repository, getTimerSoundUseCase = getTimerSoundUseCase)
+        viewModel = TimerViewModel(
+            repository = repository.mock,
+            getTimerSoundUseCase = getTimerSoundUseCase
+        )
 
         viewModel.delegate = WeakReference(object :
-                ITimerViewModel {
-                override fun updateState(state: TimerState) {
-                    // do nothing
-                }
-            })
+            ITimerViewModel {
+            override fun updateState(state: TimerState) {
+                // do nothing
+            }
+        })
 
         viewModelIntent = viewModel
     }
@@ -77,7 +73,7 @@ class TimerViewModelTest {
         val response = DiceDomain(
             recipeModel(bloomTime = 5, brewTime = 10), isBrewing = true, timeStartedMillis = System.currentTimeMillis()
         )
-        whenever(remote.getResumeTimes()).thenReturn(response)
+        repository.mockResume(response)
         transferableModel.recipe = response.recipe
         viewModel.init(transferableModel)
         // When
@@ -105,7 +101,7 @@ class TimerViewModelTest {
             recipeModel(bloomTime = 5, brewTime = 10), isBrewing = true,
             timeStartedMillis = System.currentTimeMillis()
         )
-        whenever(remote.getResumeTimes()).thenReturn(response)
+        repository.mockResume(response)
         transferableModel.recipe = response.recipe
         viewModel.init(transferableModel)
         // When
@@ -133,7 +129,7 @@ class TimerViewModelTest {
             isBrewing = true,
             timeStartedMillis = System.currentTimeMillis() - 50000
         )
-        whenever(remote.getResumeTimes()).thenReturn(response)
+        repository.mockResume(response)
         transferableModel.recipe = response.recipe
         viewModel.init(transferableModel)
         // When
@@ -148,9 +144,11 @@ class TimerViewModelTest {
     fun `given brew state, when I resume then I expect Brew State`() = runTest {
         // Given
         val response = DiceDomain(
-            recipeModel(bloomTime = 0, brewTime = 100), isBrewing = true, timeStartedMillis = System.currentTimeMillis()
+            recipe = recipeModel(bloomTime = 0, brewTime = 100),
+            isBrewing = true,
+            timeStartedMillis = System.currentTimeMillis()
         )
-        whenever(remote.getResumeTimes()).thenReturn(response)
+        repository.mockResume(response)
         transferableModel.recipe = response.recipe
         viewModel.init(transferableModel)
         // When
@@ -234,7 +232,7 @@ class TimerViewModelTest {
     @Test
     fun `given mute sound preference true, when updateTimer, then I don't expect PlaySoundState`() = runTest {
         val response = DiceDomain(recipeModel(brewTime = 1, bloomTime = 1), isBrewing = true)
-//        whenever(sharedPreferences.muteSound).thenReturn(true)
+        //        whenever(sharedPreferences.muteSound).thenReturn(true)
         transferableModel.recipe = response.recipe
         viewModel.init(transferableModel)
         viewModel.updateTimer()
@@ -244,7 +242,12 @@ class TimerViewModelTest {
 
     @Test
     fun `given mute sound preference false, when updateTimer, then I expect PlaySoundState`() = runTest {
-        initViewModel(getTimerSoundUseCase = GetTimerSoundUseCase(FakePreferenceStorage(timerSound = true), testDispatcher))
+        initViewModel(
+            getTimerSoundUseCase = GetTimerSoundUseCase(
+                FakePreferenceStorage(timerSound = true),
+                testDispatcher
+            )
+        )
         val response = DiceDomain(recipeModel(brewTime = 1, bloomTime = 1), isBrewing = true)
         transferableModel.recipe = response.recipe
         viewModel.init(transferableModel)
