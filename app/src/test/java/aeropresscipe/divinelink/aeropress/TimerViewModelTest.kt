@@ -256,6 +256,40 @@ class TimerViewModelTest {
         assertTrue(viewModel.state is TimerState.PlaySoundState)
     }
 
+    @Test
+    fun `given recipe is Brewing, when I startBrew, then I expect resume`() = runTest {
+        val response = DiceDomain(recipeModel(brewTime = 50, bloomTime = 20), isBrewing = true)
+        repository.mockResume(response)
+        transferableModel.recipe = response.recipe
+        viewModel.init(transferableModel)
+        viewModel.startBrew()
+        viewModel.startBrew()
+
+        assertTrue(viewModel.statesList[1] is TimerState.UpdateDescriptionState)
+        assertTrue(viewModel.statesList[2] is TimerState.UpdateProgressBar)
+    }
+
+    @Test
+    fun `given times are finished, when I resume, then I expect finish recipe brewing`() = runTest {
+        val response = DiceDomain(recipeModel(brewTime = -5, bloomTime = -5), isBrewing = true)
+        repository.mockResume(response)
+        repository.mockUpdateBrewingState(false, 0L, Unit)
+
+        viewModel.resume()
+
+        assertTrue(viewModel.state is TimerState.FinishState)
+    }
+
+    @Test
+    fun `given a recipe, when I exit timer, then I expect ExitState`() = runTest {
+        val response = DiceDomain(recipeModel(brewTime = 50, bloomTime = 20), isBrewing = true)
+        transferableModel.recipe = response.recipe
+        viewModel.init(transferableModel)
+
+        viewModel.exitTimer()
+        assertTrue(viewModel.state is TimerState.ExitState)
+    }
+
     private fun recipeModel(
         diceTemperature: Int = 0,
         brewTime: Long = 0,
