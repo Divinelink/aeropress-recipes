@@ -112,7 +112,7 @@ class RecipeViewModel @AssistedInject constructor(
 
     override fun likeRecipe() {
         dice?.recipe?.let {
-            timerRepository.likeCurrentRecipe(it) { recipeLiked ->
+            timerRepository.likeRecipe(it) { recipeLiked ->
                 if (recipeLiked) {
                     state = RecipeState.RecipeSavedState
                     state = RecipeState.ShowSnackBar(LikeSnackBar.Like)

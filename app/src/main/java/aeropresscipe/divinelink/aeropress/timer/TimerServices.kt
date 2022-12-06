@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 interface ITimerServices {
-    suspend fun likeCurrentRecipe(recipe: Recipe): Boolean
+    suspend fun likeRecipe(recipe: Recipe): Boolean
     suspend fun addToHistory(recipe: Recipe)
     suspend fun isRecipeSaved(recipe: Recipe?): Boolean
     suspend fun updateBrewingState(brewing: Boolean, timeStartedMillis: Long)
@@ -25,10 +25,10 @@ open class TimerServices @Inject constructor(
     private val recipeDao: RecipeDao,
     private val historyDao: HistoryDao,
     private val savedRecipeDao: FavoritesDao,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ITimerServices {
 
-    override suspend fun likeCurrentRecipe(recipe: Recipe): Boolean {
+    override suspend fun likeRecipe(recipe: Recipe): Boolean {
         return withContext(dispatcher) {
             if (savedRecipeDao.recipeExists(recipe)) {
                 savedRecipeDao.delete(recipe)
@@ -43,7 +43,7 @@ open class TimerServices @Inject constructor(
     }
 
     override suspend fun addToHistory(
-        recipe: Recipe
+        recipe: Recipe,
     ) {
         withContext(dispatcher) {
             val isLiked = savedRecipeDao.recipeExists(recipe)
@@ -57,7 +57,7 @@ open class TimerServices @Inject constructor(
     }
 
     override suspend fun isRecipeSaved(
-        recipe: Recipe?
+        recipe: Recipe?,
     ): Boolean {
         return withContext(dispatcher) {
             savedRecipeDao.recipeExists(recipe)
@@ -66,7 +66,7 @@ open class TimerServices @Inject constructor(
 
     override suspend fun updateBrewingState(
         brewing: Boolean,
-        timeStartedMillis: Long
+        timeStartedMillis: Long,
     ) {
         withContext(dispatcher) {
             recipeDao.updateBrewingState(brewing, timeStartedMillis, recipeDao.getRecipe().id)

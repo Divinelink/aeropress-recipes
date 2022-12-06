@@ -24,7 +24,7 @@ jobs:
       run: chmod +x gradlew
 #    - name: Build with Gradle
 #      run: ./gradlew build
-    - name: Run Unit Tests
-      run: ./gradlew testDebugUnitTest
+#    - name: Run Unit Tests
+#      run: ./gradlew testDebugUnitTest
     - name: Detekt Format
       run: ./gradlew detektFormat

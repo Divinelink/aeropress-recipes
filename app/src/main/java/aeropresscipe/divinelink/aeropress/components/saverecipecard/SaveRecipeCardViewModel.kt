@@ -43,7 +43,7 @@ class SaveRecipeCardViewModel @AssistedInject constructor(
 
     override fun likeRecipe(recipe: Recipe?) {
         if (recipe != null) {
-            repository.likeCurrentRecipe(recipe) { recipeLiked ->
+            repository.likeRecipe(recipe) { recipeLiked ->
                 if (recipeLiked) {
                     state = SaveRecipeCardState.RecipeSavedState
                     state = SaveRecipeCardState.ShowSnackBar(LikeSnackBar.Like)

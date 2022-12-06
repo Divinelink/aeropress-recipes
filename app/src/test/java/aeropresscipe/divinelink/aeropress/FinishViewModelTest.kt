@@ -1,5 +1,6 @@
 package aeropresscipe.divinelink.aeropress
 
+import aeropresscipe.divinelink.aeropress.fakes.FakeTimerRepository
 import aeropresscipe.divinelink.aeropress.finish.FinishIntents
 import aeropresscipe.divinelink.aeropress.finish.FinishState
 import aeropresscipe.divinelink.aeropress.finish.FinishViewModel
@@ -7,15 +8,11 @@ import aeropresscipe.divinelink.aeropress.finish.IFinishViewModel
 import aeropresscipe.divinelink.aeropress.recipe.models.BrewMethod
 import aeropresscipe.divinelink.aeropress.recipe.models.CoffeeGrindSize
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
-import aeropresscipe.divinelink.aeropress.timer.TimerRepository
-import aeropresscipe.divinelink.aeropress.timer.TimerServices
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mock
-import org.mockito.kotlin.mock
 import java.lang.ref.WeakReference
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -25,9 +22,7 @@ class FinishViewModelTest {
     private lateinit var viewModel: FinishViewModel
     private lateinit var viewModelIntent: FinishIntents
 
-    @Mock
-    private var remote: TimerServices = mock()
-    private var repository: TimerRepository = TimerRepository(remote)
+    private var repository = FakeTimerRepository()
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
@@ -35,12 +30,12 @@ class FinishViewModelTest {
     private fun initViewModel() {
         viewModel = FinishViewModel(
             delegate = WeakReference(object :
-                    IFinishViewModel {
-                    override fun updateState(state: FinishState) {
-                        // do nothing
-                    }
-                }),
-            repository = repository
+                IFinishViewModel {
+                override fun updateState(state: FinishState) {
+                    // do nothing
+                }
+            }),
+            repository = repository.mock
         )
 
         viewModelIntent = viewModel
@@ -78,7 +73,7 @@ class FinishViewModelTest {
         coffeeAmount: Int = 0,
         brewWaterAmount: Int = 15,
         groundSize: CoffeeGrindSize = CoffeeGrindSize.MEDIUM,
-        brewingMethod: BrewMethod = BrewMethod.STANDARD
+        brewingMethod: BrewMethod = BrewMethod.STANDARD,
     ): Recipe {
         return Recipe(
             diceTemperature = diceTemperature,

@@ -4,6 +4,8 @@ import aeropresscipe.divinelink.aeropress.beans.domain.repository.BeanRepository
 import aeropresscipe.divinelink.aeropress.beans.domain.repository.DemoBeanRepository
 import aeropresscipe.divinelink.aeropress.recipe.RecipeRepository
 import aeropresscipe.divinelink.aeropress.recipe.RoomRecipeRepository
+import aeropresscipe.divinelink.aeropress.timer.RoomTimerRepository
+import aeropresscipe.divinelink.aeropress.timer.TimerRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -19,8 +21,13 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindRecipeRepository(
-        beanRepository: RoomRecipeRepository,
+        roomRepository: RoomRecipeRepository,
     ): RecipeRepository
+
+    @Binds
+    abstract fun bindTimerRepository(
+        timerRepository: RoomTimerRepository,
+    ): TimerRepository
 
     @Binds
     abstract fun bindBeanRepository(
