@@ -14,6 +14,7 @@ apply {
     from '../buildscripts/git-hooks.gradle'
     from '../buildscripts/jacoco.gradle'
     from '../buildscripts/kover.gradle'
+    from '../buildscripts/coveralls.gradle'
 }
 
 
@@ -38,6 +39,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            testCoverageEnabled true
         }
     }
 

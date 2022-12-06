@@ -1,5 +1,3 @@
-//Simply run in terminal or my the gradle task column the kmmsharedmodule:testDebugUnitTest.
-//The report will be shown at $buildDir/kover-coverage-report/html
 apply plugin: "kover"
 
 
@@ -11,5 +9,14 @@ apply plugin: "kover"
 //        xmlReportFile.set(file("$buildDir/kover-coverage-report/report.xml"))
 //        htmlReportDir.set(file("$buildDir/kover-coverage-report/html"))
 //        binaryReportFile.set(file("$buildDir/kover-coverage-report/result.bin"))
+//    }
+//}
+
+//tasks.koverVerify {
+//    rule {
+//        name = "Minimal line coverage rate in percents"
+//        bound {
+//            minValue = 98
+//        }
 //    }
 //}
