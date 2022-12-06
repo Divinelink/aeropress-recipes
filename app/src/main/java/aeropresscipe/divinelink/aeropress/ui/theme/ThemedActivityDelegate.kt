@@ -18,8 +18,8 @@ package aeropresscipe.divinelink.aeropress.ui.theme
 
 import aeropresscipe.divinelink.aeropress.base.di.ApplicationScope
 import aeropresscipe.divinelink.aeropress.base.keyvalue.Theme
-import aeropresscipe.divinelink.aeropress.settings.app.appearance.use_case.GetThemeUseCase
-import aeropresscipe.divinelink.aeropress.settings.app.appearance.use_case.ObserveThemeModeUseCase
+import aeropresscipe.divinelink.aeropress.settings.app.appearance.usecase.GetThemeUseCase
+import aeropresscipe.divinelink.aeropress.settings.app.appearance.usecase.ObserveThemeModeUseCase
 import gr.divinelink.core.util.domain.Result
 import gr.divinelink.core.util.domain.successOr
 import kotlinx.coroutines.CoroutineScope

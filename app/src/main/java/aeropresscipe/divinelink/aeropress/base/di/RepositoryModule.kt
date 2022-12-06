@@ -1,6 +1,9 @@
 package aeropresscipe.divinelink.aeropress.base.di
 
 import aeropresscipe.divinelink.aeropress.beans.domain.repository.BeanRepository
+import aeropresscipe.divinelink.aeropress.beans.domain.repository.DemoBeanRepository
+import aeropresscipe.divinelink.aeropress.recipe.RecipeRepository
+import aeropresscipe.divinelink.aeropress.recipe.RoomRecipeRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,7 +18,12 @@ import dagger.hilt.components.SingletonComponent
 abstract class RepositoryModule {
 
     @Binds
+    abstract fun bindRecipeRepository(
+        beanRepository: RoomRecipeRepository,
+    ): RecipeRepository
+
+    @Binds
     abstract fun bindBeanRepository(
-        beanRepository: BeanRepository,
+        beanRepository: DemoBeanRepository,
     ): BeanRepository
 }

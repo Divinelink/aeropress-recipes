@@ -12,7 +12,7 @@ import javax.inject.Inject
  */
 
 class FetchBeanUseCase @Inject constructor(
-    private val beanRepository: BeanRepository,
+    // private val beanRepository: BeanRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher,
 ) : UseCase<Bean, Bean>(dispatcher) {
     override suspend fun execute(parameters: Bean): Bean {

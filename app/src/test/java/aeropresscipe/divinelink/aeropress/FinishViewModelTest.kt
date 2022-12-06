@@ -17,6 +17,7 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.kotlin.mock
 import java.lang.ref.WeakReference
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
@@ -60,12 +61,12 @@ class FinishViewModelTest {
         viewModel.init(recipe())
         assertTrue(viewModel.statesList[0] is FinishState.InitialState)
         assertTrue(viewModel.statesList[1] is FinishState.SetupRecipeState)
+        assertEquals(viewModel.statesList[1], FinishState.SetupRecipeState(recipe()))
     }
 
     @Test
     fun `When close button clicked then I expect Close State`() {
         viewModel.closeButtonClicked()
-//        assertTrue(viewModel.statesList[0] is FinishState.InitialState)
         assertTrue(viewModel.statesList[0] is FinishState.CloseState)
     }
 

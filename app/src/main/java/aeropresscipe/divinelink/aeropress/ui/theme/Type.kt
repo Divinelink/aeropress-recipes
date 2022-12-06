@@ -5,27 +5,21 @@ import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 private val appFontFamily = FontFamily(
-    fonts = listOf(
-        Font(
-            resId = R.font.font_light,
-//            weight = FontWeight.W300, FontWeight.Light
-            style = FontStyle.Normal
-        ),
-        Font(
-            resId = R.font.font_regular,
-//            weight = FontWeight.W400, FontWeight.Normal
-            style = FontStyle.Normal
-        ),
-        Font(
-            resId = R.font.font_medium,
-//            weight = FontWeight.W500, FontWeight.Medium
-            style = FontStyle.Normal
-        )
+    Font(
+        resId = R.font.font_light,
+        weight = FontWeight.W300, // FontWeight.Light
+    ),
+    Font(
+        resId = R.font.font_regular,
+        weight = FontWeight.W400, // FontWeight.Normal
+    ),
+    Font(
+        resId = R.font.font_medium,
+        weight = FontWeight.W500, // FontWeight.Medium
     )
 )
 
@@ -126,7 +120,7 @@ val AppTypography = Typography(
         fontWeight = FontWeight.Medium,
         letterSpacing = 0.sp,
         lineHeight = 24.sp,
-        fontSize = 16.sp
+        fontSize = 18.sp
     ),
     titleSmall = TextStyle(
         fontFamily = appFontFamily,

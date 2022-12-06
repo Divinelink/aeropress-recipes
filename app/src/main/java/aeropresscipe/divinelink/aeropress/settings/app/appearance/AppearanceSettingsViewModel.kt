@@ -1,9 +1,9 @@
 package aeropresscipe.divinelink.aeropress.settings.app.appearance
 
 import aeropresscipe.divinelink.aeropress.base.keyvalue.Theme
-import aeropresscipe.divinelink.aeropress.settings.app.appearance.use_case.GetAvailableThemesUseCase
-import aeropresscipe.divinelink.aeropress.settings.app.appearance.use_case.GetThemeUseCase
-import aeropresscipe.divinelink.aeropress.settings.app.appearance.use_case.SetThemeUseCase
+import aeropresscipe.divinelink.aeropress.settings.app.appearance.usecase.GetAvailableThemesUseCase
+import aeropresscipe.divinelink.aeropress.settings.app.appearance.usecase.GetThemeUseCase
+import aeropresscipe.divinelink.aeropress.settings.app.appearance.usecase.SetThemeUseCase
 import aeropresscipe.divinelink.aeropress.util.WhileViewSubscribed
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
