@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NotificationsSettingsViewModel @Inject constructor(
     getTimerSoundUseCase: GetTimerSoundUseCase,
-    val setTimerSoundUseCase: SetTimerSoundUseCase
+    val setTimerSoundUseCase: SetTimerSoundUseCase,
 ) : ViewModel() {
 
     private val refreshSignal = MutableSharedFlow<Unit>()
@@ -51,5 +51,5 @@ class NotificationsSettingsViewModel @Inject constructor(
 }
 
 data class NotificationSettingsState(
-    val soundEnabled: Boolean
+    val soundEnabled: Boolean,
 )

@@ -7,6 +7,7 @@ import aeropresscipe.divinelink.aeropress.settings.app.notifications.use_case.Ge
 import aeropresscipe.divinelink.aeropress.settings.app.notifications.use_case.SetTimerSoundUseCase
 import aeropresscipe.divinelink.aeropress.test.util.fakes.FakePreferenceStorage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
@@ -32,13 +33,10 @@ class NotificationsSettingsViewModelTest {
 
     @Test
     fun `given sound enabled is false, when I update sound, then I expect sound enabled to be true`() = runTest {
-        //        buildViewModel().viewModel.setTimerSoundEnabled()
-        //        GetTimerSoundUseCase(fakePreferenceStorage, testDispatcher)
         val fakes = FakePreferenceStorage(
             selectedTheme = "",
             timerSound = false
         )
-
         // Given
         viewModel = NotificationsSettingsViewModel(
             getTimerSoundUseCase = GetTimerSoundUseCase(fakes, testDispatcher),
@@ -47,6 +45,25 @@ class NotificationsSettingsViewModelTest {
         // When
         viewModel.setTimerSoundEnabled(true)
         // Then
-        assertEquals(NotificationSettingsState(soundEnabled = false), viewModel.uiState.value)
+        assertEquals(NotificationSettingsState(soundEnabled = true), viewModel.uiState.first())
+    }
+
+    @Test
+    fun `given sound enabled is true, when I update sound, then I expect sound enabled to be false`() = runTest {
+        val fakes = FakePreferenceStorage(
+            selectedTheme = "",
+            timerSound = true
+        )
+        // Given
+        viewModel = NotificationsSettingsViewModel(
+            getTimerSoundUseCase = GetTimerSoundUseCase(fakes, testDispatcher),
+            setTimerSoundUseCase = SetTimerSoundUseCase(fakes, testDispatcher),
+        )
+        // When
+        viewModel.setTimerSoundEnabled(!fakes.timerSound.value)
+        // Then
+        assertEquals(NotificationSettingsState(soundEnabled = false), viewModel.uiState.first())
+        viewModel.setTimerSoundEnabled(!fakes.timerSound.value)
+        assertEquals(NotificationSettingsState(soundEnabled = true), viewModel.uiState.first())
     }
 }
