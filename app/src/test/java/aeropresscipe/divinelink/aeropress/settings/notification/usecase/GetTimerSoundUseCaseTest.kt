@@ -1,7 +1,7 @@
 package aeropresscipe.divinelink.aeropress.settings.notification.usecase
 
 import aeropresscipe.divinelink.aeropress.MainDispatcherRule
-import aeropresscipe.divinelink.aeropress.settings.app.notifications.use_case.GetTimerSoundUseCase
+import aeropresscipe.divinelink.aeropress.settings.app.notifications.usecase.GetTimerSoundUseCase
 import aeropresscipe.divinelink.aeropress.test.util.fakes.FakePreferenceStorage
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi

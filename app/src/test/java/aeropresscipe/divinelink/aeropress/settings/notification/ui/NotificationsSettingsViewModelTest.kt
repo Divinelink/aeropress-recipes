@@ -3,8 +3,8 @@ package aeropresscipe.divinelink.aeropress.settings.notification.ui
 import aeropresscipe.divinelink.aeropress.MainDispatcherRule
 import aeropresscipe.divinelink.aeropress.settings.app.notifications.NotificationSettingsState
 import aeropresscipe.divinelink.aeropress.settings.app.notifications.NotificationsSettingsViewModel
-import aeropresscipe.divinelink.aeropress.settings.app.notifications.use_case.GetTimerSoundUseCase
-import aeropresscipe.divinelink.aeropress.settings.app.notifications.use_case.SetTimerSoundUseCase
+import aeropresscipe.divinelink.aeropress.settings.app.notifications.usecase.GetTimerSoundUseCase
+import aeropresscipe.divinelink.aeropress.settings.app.notifications.usecase.SetTimerSoundUseCase
 import aeropresscipe.divinelink.aeropress.test.util.fakes.FakePreferenceStorage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -21,15 +21,6 @@ class NotificationsSettingsViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
     private val testDispatcher = mainDispatcherRule.testDispatcher
-
-    private val fakePreferenceStorage = FakePreferenceStorage()
-
-    private fun buildViewModel() = apply {
-        viewModel = NotificationsSettingsViewModel(
-            getTimerSoundUseCase = GetTimerSoundUseCase(fakePreferenceStorage, testDispatcher),
-            setTimerSoundUseCase = SetTimerSoundUseCase(fakePreferenceStorage, testDispatcher),
-        )
-    }
 
     @Test
     fun `given sound enabled is false, when I update sound, then I expect sound enabled to be true`() = runTest {

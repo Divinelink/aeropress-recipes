@@ -6,7 +6,7 @@ import aeropresscipe.divinelink.aeropress.recipe.models.CoffeeGrindSize
 import aeropresscipe.divinelink.aeropress.recipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.recipe.models.remainingWater
-import aeropresscipe.divinelink.aeropress.settings.app.notifications.use_case.GetTimerSoundUseCase
+import aeropresscipe.divinelink.aeropress.settings.app.notifications.usecase.GetTimerSoundUseCase
 import aeropresscipe.divinelink.aeropress.test.util.fakes.FakePreferenceStorage
 import aeropresscipe.divinelink.aeropress.timer.ITimerViewModel
 import aeropresscipe.divinelink.aeropress.timer.TimerIntents

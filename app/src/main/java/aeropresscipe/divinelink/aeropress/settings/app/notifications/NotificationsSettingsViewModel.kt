@@ -1,7 +1,7 @@
 package aeropresscipe.divinelink.aeropress.settings.app.notifications
 
-import aeropresscipe.divinelink.aeropress.settings.app.notifications.use_case.GetTimerSoundUseCase
-import aeropresscipe.divinelink.aeropress.settings.app.notifications.use_case.SetTimerSoundUseCase
+import aeropresscipe.divinelink.aeropress.settings.app.notifications.usecase.GetTimerSoundUseCase
+import aeropresscipe.divinelink.aeropress.settings.app.notifications.usecase.SetTimerSoundUseCase
 import aeropresscipe.divinelink.aeropress.util.WhileViewSubscribed
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

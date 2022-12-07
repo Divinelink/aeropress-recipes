@@ -1,4 +1,4 @@
-package aeropresscipe.divinelink.aeropress.settings.app.notifications.use_case
+package aeropresscipe.divinelink.aeropress.settings.app.notifications.usecase
 
 import aeropresscipe.divinelink.aeropress.base.di.IoDispatcher
 import aeropresscipe.divinelink.aeropress.base.di.PreferenceStorage
