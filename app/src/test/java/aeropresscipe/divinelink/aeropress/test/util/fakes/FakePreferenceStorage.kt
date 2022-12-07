@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 open class FakePreferenceStorage(
     selectedTheme: String = "",
-    timerSound: Boolean = false
+    timerSound: Boolean = false,
 ) : PreferenceStorage {
 
     private val _timerSound = MutableStateFlow(timerSound)

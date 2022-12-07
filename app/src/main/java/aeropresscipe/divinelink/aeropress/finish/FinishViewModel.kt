@@ -11,7 +11,7 @@ import java.lang.ref.WeakReference
 
 class FinishViewModel @AssistedInject constructor(
     @Suppress("UnusedPrivateMember") private var repository: TimerRepository,
-    @Assisted public override var delegate: WeakReference<IFinishViewModel>? = null
+    @Assisted public override var delegate: WeakReference<IFinishViewModel>? = null,
 ) : BaseViewModel<IFinishViewModel>(),
     FinishIntents {
 
@@ -51,16 +51,12 @@ interface FinishIntents : MVIBaseView {
 
 sealed class FinishState {
     object InitialState : FinishState()
-    object LoadingState : FinishState()
     object CloseState : FinishState()
-    data class ErrorState(val data: String) : FinishState()
     data class SetupRecipeState(val recipe: Recipe) : FinishState()
 }
 
 interface FinishStateHandler {
     fun handleInitialState()
-    fun handleLoadingState()
-    fun handleErrorState(state: FinishState.ErrorState)
     fun handleCloseState()
     fun handleSetupRecipeState(state: FinishState.SetupRecipeState)
 }
