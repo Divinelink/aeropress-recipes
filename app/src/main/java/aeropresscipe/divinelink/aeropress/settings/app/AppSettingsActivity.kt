@@ -51,14 +51,5 @@ class AppSettingsActivity :
     private enum class StartLocation(val code: Int) {
         HOME(0),
         HELP(1),
-//        PROXY(3),
-//        NOTIFICATIONS(4),
-//        CHANGE_NUMBER(5),
-//        SUBSCRIPTIONS(6),
-//        BOOST(7),
-//        MANAGE_SUBSCRIPTIONS(8),
-//        NOTIFICATION_PROFILES(9),
-//        CREATE_NOTIFICATION_PROFILE(10),
-//        NOTIFICATION_PROFILE_DETAILS(11);
     }
 }
