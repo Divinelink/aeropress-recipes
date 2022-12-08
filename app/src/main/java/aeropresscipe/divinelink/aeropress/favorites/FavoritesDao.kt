@@ -5,14 +5,15 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavoritesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLikedRecipe(savedRecipeDomain: Favorites)
 
-    @get:Query("SELECT * FROM SavedRecipes")
-    val favorites: List<Favorites>
+    @Query("SELECT * FROM SavedRecipes")
+    fun fetchAllFavorites(): Flow<List<Favorites>>
 
     @Query("SELECT EXISTS (SELECT 1 FROM SavedRecipes WHERE  recipe= :recipe)")
     fun recipeExists(recipe: Recipe?): Boolean
