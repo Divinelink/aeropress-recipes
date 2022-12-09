@@ -1,117 +1,98 @@
 package aeropresscipe.divinelink.aeropress.favorites
 
-import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
-import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
+import aeropresscipe.divinelink.aeropress.favorites.domain.usecase.DeleteFavoriteUseCase
+import aeropresscipe.divinelink.aeropress.favorites.domain.usecase.FetchAllFavoritesUseCase
+import aeropresscipe.divinelink.aeropress.favorites.ui.FavoritesViewState
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import gr.divinelink.core.util.domain.Result
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.lang.ref.WeakReference
+import javax.inject.Inject
 
-class FavoritesViewModel @AssistedInject constructor(
-    @Assisted public override var delegate: WeakReference<IFavoritesViewModel>?,
-    private var dbRepository: FavoritesRepository
-) : BaseViewModel<IFavoritesViewModel>(), FavoritesIntents {
-    internal var statesList: MutableList<FavoritesState> = mutableListOf()
-
-    var state: FavoritesState = FavoritesState.InitialState
-        set(value) {
-            field = value
-            statesList.add(value)
-            delegate?.get()?.updateState(value)
-        }
+@HiltViewModel
+class FavoritesViewModel @Inject constructor(
+    private val deleteFavoriteUseCase: DeleteFavoriteUseCase,
+    private val fetchAllFavoritesUseCase: FetchAllFavoritesUseCase,
+) : ViewModel() {
+    private val _viewState = MutableStateFlow(FavoritesViewState())
+    val viewState = _viewState.asStateFlow()
 
     init {
-        state = FavoritesState.InitialState
         fetchFavorites()
     }
 
-    override fun startBrew(recipe: Recipe) {
-        state = FavoritesState.StartNewBrewState(recipe)
+    fun startBrewClicked(recipe: Recipe) {
+        _viewState.update {
+            FavoritesViewState(
+                isLoading = false,
+                brewRecipe = recipe
+            )
+        }
+
+        _viewState.update {
+            it.copy(
+                brewRecipe = null
+            )
+        }
     }
 
-    override fun deleteRecipe(recipe: Recipe) {
-        dbRepository.deleteRecipe(
-            recipe = recipe,
-            completionBlock = { recipes ->
-                state = if (recipes == null) {
-                    FavoritesState.ErrorState("Something went wrong!") // todo fix error state
-                } else if (recipes.isEmpty()) {
-                    FavoritesState.EmptyRecipesState
-                } else {
-                    FavoritesState.RecipeDeletedState(recipes)
-                }
+    fun deleteRecipe(recipe: Recipe) {
+        viewModelScope.launch {
+            deleteFavoriteUseCase(recipe).collect { result ->
+                getFavoritesViewState(result)
             }
-        )
+        }
     }
 
-    override fun refresh() {
+    fun refresh() {
         Timber.d("Refreshing favorites.")
         fetchFavorites()
     }
 
-    private fun fetchFavorites() {
-        dbRepository.getFavorites(
-            completionBlock = { recipes ->
-                state = if (recipes.isNullOrEmpty()) {
-                    FavoritesState.EmptyRecipesState
-                } else {
-                    FavoritesState.RecipesState(recipes)
+    private fun getFavoritesViewState(result: Result<List<Favorites>>) {
+        when (result) {
+            is Result.Error -> {
+                _viewState.update {
+                    FavoritesViewState(
+                        isLoading = false,
+                        errorMessage = result.exception.toString()
+                    )
                 }
             }
-        )
-    }
-}
-
-interface IFavoritesViewModel {
-    fun updateState(state: FavoritesState)
-}
-
-interface FavoritesIntents : MVIBaseView {
-    fun startBrew(recipe: Recipe)
-    fun deleteRecipe(recipe: Recipe)
-    fun refresh()
-}
-
-sealed class FavoritesState {
-    object InitialState : FavoritesState()
-    object LoadingState : FavoritesState()
-    data class ErrorState(val data: String) : FavoritesState()
-
-    object EmptyRecipesState : FavoritesState()
-    data class RecipesState(val recipes: List<Favorites>) : FavoritesState()
-    data class RecipeDeletedState(val recipes: List<Favorites>) : FavoritesState()
-    data class StartNewBrewState(val recipe: Recipe) : FavoritesState()
-}
-
-interface FavoritesStateHandler {
-    fun handleInitialState()
-    fun handleLoadingState()
-    fun handleErrorState()
-
-    fun handleEmptyRecipesState()
-    fun handleRecipesState(state: FavoritesState.RecipesState)
-    fun handleRecipeDeletedState(state: FavoritesState.RecipeDeletedState)
-    fun handleStartNewBrew(state: FavoritesState.StartNewBrewState)
-}
-
-@Suppress("UNCHECKED_CAST")
-class FavoritesViewModelFactory(
-    private val assistedFactory: FavoritesViewModelAssistedFactory,
-    private val delegate: WeakReference<IFavoritesViewModel>?,
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(FavoritesViewModel::class.java)) {
-            return assistedFactory.create(delegate) as T
+            is Result.Loading -> _viewState.update { FavoritesViewState() }
+            is Result.Success -> {
+                if (result.data.isEmpty()) {
+                    _viewState.update {
+                        FavoritesViewState(
+                            isLoading = false,
+                            emptyRecipes = true,
+                        )
+                    }
+                } else {
+                    _viewState.update {
+                        FavoritesViewState(
+                            isLoading = false,
+                            emptyRecipes = false,
+                            recipes = result.data,
+                            errorMessage = null
+                        )
+                    }
+                }
+            }
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
-}
 
-@AssistedFactory
-interface FavoritesViewModelAssistedFactory {
-    fun create(delegate: WeakReference<IFavoritesViewModel>?): FavoritesViewModel
+    private fun fetchFavorites() {
+        viewModelScope.launch {
+            fetchAllFavoritesUseCase.invoke(Unit).collect { result ->
+                getFavoritesViewState(result)
+            }
+        }
+    }
 }
