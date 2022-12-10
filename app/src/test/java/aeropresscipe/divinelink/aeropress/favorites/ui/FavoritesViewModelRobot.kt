@@ -3,7 +3,6 @@ package aeropresscipe.divinelink.aeropress.favorites.ui
 import aeropresscipe.divinelink.aeropress.MainDispatcherRule
 import aeropresscipe.divinelink.aeropress.fakes.FakeFavoritesRepository
 import aeropresscipe.divinelink.aeropress.favorites.Favorites
-import aeropresscipe.divinelink.aeropress.favorites.FavoritesViewModel
 import aeropresscipe.divinelink.aeropress.favorites.domain.usecase.DeleteFavoriteUseCase
 import aeropresscipe.divinelink.aeropress.favorites.domain.usecase.FetchAllFavoritesUseCase
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe

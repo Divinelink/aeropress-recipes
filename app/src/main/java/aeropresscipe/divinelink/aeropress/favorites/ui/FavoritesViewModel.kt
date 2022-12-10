@@ -1,8 +1,8 @@
-package aeropresscipe.divinelink.aeropress.favorites
+package aeropresscipe.divinelink.aeropress.favorites.ui
 
+import aeropresscipe.divinelink.aeropress.favorites.Favorites
 import aeropresscipe.divinelink.aeropress.favorites.domain.usecase.DeleteFavoriteUseCase
 import aeropresscipe.divinelink.aeropress.favorites.domain.usecase.FetchAllFavoritesUseCase
-import aeropresscipe.divinelink.aeropress.favorites.ui.FavoritesViewState
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

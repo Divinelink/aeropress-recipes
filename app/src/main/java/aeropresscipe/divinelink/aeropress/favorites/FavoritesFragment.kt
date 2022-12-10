@@ -6,6 +6,7 @@ import aeropresscipe.divinelink.aeropress.base.TimerViewCallback
 import aeropresscipe.divinelink.aeropress.databinding.FragmentSavedRecipesBinding
 import aeropresscipe.divinelink.aeropress.favorites.adapter.EmptyType
 import aeropresscipe.divinelink.aeropress.favorites.adapter.RecipesAdapter
+import aeropresscipe.divinelink.aeropress.favorites.ui.FavoritesViewModel
 import aeropresscipe.divinelink.aeropress.favorites.ui.FavoritesViewState
 import aeropresscipe.divinelink.aeropress.history.HistoryFragment
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
