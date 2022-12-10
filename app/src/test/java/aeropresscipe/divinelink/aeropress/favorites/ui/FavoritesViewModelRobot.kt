@@ -46,16 +46,6 @@ class FavoritesViewModelRobot {
         fakeFavoritesRepository.mockFetchAllFavoritesResult(response)
     }
 
-    fun mockDeleteFavoriteRecipe(
-        recipe: Recipe,
-        response: Result<List<Favorites>>,
-    ) = apply {
-        fakeFavoritesRepository.mockDeleteFavorite(
-            recipe,
-            response
-        )
-    }
-
     fun onRefreshClick() = apply {
         viewModel.refresh()
     }
