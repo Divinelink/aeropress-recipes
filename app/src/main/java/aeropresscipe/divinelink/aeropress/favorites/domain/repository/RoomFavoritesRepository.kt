@@ -21,14 +21,10 @@ class RoomFavoritesRepository @Inject constructor(
             }
     }
 
-    override fun deleteFavorite(recipe: Recipe): Flow<FavoritesListResult> {
+    override suspend fun deleteFavorite(recipe: Recipe): Result<Unit> {
         favoritesDao.delete(recipe)
-        historyDao.updateLike(recipe = recipe, false)
+        historyDao.updateLike(recipe, false)
 
-        return favoritesDao
-            .fetchAllFavorites()
-            .map { favorites ->
-                Result.Success(favorites)
-            }
+        return Result.Success(Unit)
     }
 }

@@ -15,8 +15,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import androidx.annotation.Px
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -43,7 +41,6 @@ class FavoritesFragment :
     private lateinit var callback: HistoryFragment.Callback
     private val viewModel: FavoritesViewModel by viewModels()
 
-    private var mFadeAnimation: Animation? = null
     private val recipesAdapter = RecipesAdapter(
         onActionClicked = { recipe: Favorites, swipeAction: SwipeAction ->
             when (swipeAction.actionId) {
@@ -96,8 +93,6 @@ class FavoritesFragment :
     }
 
     private fun handleRecipesState(state: FavoritesViewState) {
-        mFadeAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in_favourites)
-        binding?.recyclerView?.animation = mFadeAnimation
         recipesAdapter.submitList(state.recipes)
     }
 

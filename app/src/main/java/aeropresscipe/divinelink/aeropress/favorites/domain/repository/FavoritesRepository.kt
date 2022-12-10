@@ -11,5 +11,5 @@ interface FavoritesRepository {
 
     fun fetchAllFavorites(): Flow<FavoritesListResult>
 
-    fun deleteFavorite(recipe: Recipe): Flow<FavoritesListResult>
+    suspend fun deleteFavorite(recipe: Recipe): Result<Unit>
 }
