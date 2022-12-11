@@ -145,6 +145,13 @@ class FavoritesViewModelTest {
                     brewRecipe = favorite.recipe
                 )
             )
+            .onBrewStarted()
+            .assertViewState(
+                FavoritesViewState(
+                    isLoading = false,
+                    brewRecipe = null
+                )
+            )
     }
 
     //    @Test

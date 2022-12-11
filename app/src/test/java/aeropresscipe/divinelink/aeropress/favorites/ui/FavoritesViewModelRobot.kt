@@ -56,4 +56,8 @@ class FavoritesViewModelRobot {
     fun deleteRecipe(recipe: Recipe) = apply {
         viewModel.deleteRecipe(recipe)
     }
+
+    fun onBrewStarted() = apply {
+        viewModel.brewStarted()
+    }
 }
