@@ -75,6 +75,7 @@ class FavoritesFragment :
         ) { state ->
             if (state.brewRecipe != null) {
                 callback.onUpdateRecipe(state.brewRecipe, TimerFlow.START, true)
+                viewModel.brewStarted()
             }
 
             if (state.emptyRecipes == true) {

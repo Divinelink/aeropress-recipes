@@ -27,14 +27,25 @@ class FavoritesViewModel @Inject constructor(
         fetchFavorites()
     }
 
-    // Fixme brewRecipe needs to be null once user resumes to this screen
-    // This can also be fixed by sending a one time event - using Shared Flow, but tbh I want to this viewModel to be single state.
     fun startBrewClicked(recipe: Recipe) {
         _viewState.update {
             it.copy(
                 isLoading = false,
                 brewRecipe = recipe,
                 errorMessage = null
+            )
+        }
+    }
+
+    /**
+     * This is called once [startBrewClicked] has been clicked to ensure that state is updated.
+     */
+    fun brewStarted() {
+        _viewState.update {
+            it.copy(
+                isLoading = false,
+                brewRecipe = null,
+                errorMessage = null,
             )
         }
     }
