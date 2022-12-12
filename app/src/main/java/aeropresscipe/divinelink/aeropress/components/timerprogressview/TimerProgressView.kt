@@ -1,5 +1,6 @@
 package aeropresscipe.divinelink.aeropress.components.timerprogressview
 
+import aeropresscipe.divinelink.aeropress.components.timerprogressview.TimerProgressView.Callback
 import aeropresscipe.divinelink.aeropress.databinding.ViewTimerProgressBinding
 import aeropresscipe.divinelink.aeropress.recipe.models.DiceDomain
 import android.animation.ObjectAnimator
@@ -15,7 +16,6 @@ import gr.divinelink.core.util.extensions.fadeOut
 import gr.divinelink.core.util.timer.PreciseCountdown
 import timber.log.Timber
 import java.lang.ref.WeakReference
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class TimerProgressView :
@@ -24,8 +24,6 @@ class TimerProgressView :
     TimerProgressStateHandler {
     var binding: ViewTimerProgressBinding = ViewTimerProgressBinding.inflate(LayoutInflater.from(context), this, false)
 
-    @Inject
-    lateinit var assistedFactory: TimerProgressViewModelAssistedFactory
     private lateinit var viewModel: TimerProgressViewModel
 
     private var milliSecondsLeft = 0L
@@ -37,8 +35,7 @@ class TimerProgressView :
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        val viewModelFactory = TimerProgressViewModelFactory(assistedFactory, WeakReference<ITimerProgressViewModel>(this))
-        viewModel = ViewModelProvider(ViewTreeViewModelStoreOwner.get(this)!!, viewModelFactory)[TimerProgressViewModel::class.java]
+        viewModel = ViewModelProvider(ViewTreeViewModelStoreOwner.get(this)!!)[TimerProgressViewModel::class.java]
         viewModel.delegate = WeakReference(this)
     }
 
@@ -52,7 +49,6 @@ class TimerProgressView :
         when (state) {
             is TimerProgressState.InitialState -> handleInitialState()
             is TimerProgressState.RetryState -> handleRetryState()
-            is TimerProgressState.FinishState -> handleFinishState()
             is TimerProgressState.UpdateProgressBar -> handleUpdateProgressBar(state)
             is TimerProgressState.UpdateDescriptionState -> handleUpdateDescriptionState(state)
         }
@@ -69,7 +65,11 @@ class TimerProgressView :
     override fun handleUpdateDescriptionState(state: TimerProgressState.UpdateDescriptionState) {
         callback?.onTimerAttached()
         binding.brewStateTitle.text = resources.getString(state.brewState.title)
-        binding.stateDescription.text = resources.getString(state.brewState.description, state.brewState.phaseWater, state.brewState.totalWater)
+        binding.stateDescription.text = resources.getString(
+            state.brewState.description,
+            state.brewState.phaseWater,
+            state.brewState.totalWater
+        )
         binding.stateDescription.isSelected = true
     }
 
@@ -107,10 +107,6 @@ class TimerProgressView :
     ) {
         milliSecondsLeft -= INTERVAL
         binding.progressBar.progress = timeInMilliseconds.toInt()
-    }
-
-    override fun handleFinishState() {
-        // Nothing yet
     }
 
     /**
