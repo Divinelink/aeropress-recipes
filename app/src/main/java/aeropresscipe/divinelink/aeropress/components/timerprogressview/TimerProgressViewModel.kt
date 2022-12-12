@@ -121,21 +121,3 @@ interface TimerProgressStateHandler {
     fun handleUpdateProgressBar(state: TimerProgressState.UpdateProgressBar)
     fun handleRetryState()
 }
-
-// @Suppress("UNCHECKED_CAST")
-// class TimerProgressViewModelFactory(
-//    private val assistedFactory: TimerProgressViewModelAssistedFactory,
-//    private val delegate: WeakReference<ITimerProgressViewModel>?,
-// ) : ViewModelProvider.Factory {
-//    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-//        if (modelClass.isAssignableFrom(TimerProgressViewModel::class.java)) {
-//            return assistedFactory.create(delegate) as T
-//        }
-//        throw IllegalArgumentException("Unknown ViewModel class")
-//    }
-// }
-
-// @AssistedFactory
-// interface TimerProgressViewModelAssistedFactory {
-//    fun create(delegate: WeakReference<ITimerProgressViewModel>?): TimerProgressViewModel
-// }
