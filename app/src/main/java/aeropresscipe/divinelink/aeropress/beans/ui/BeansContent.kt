@@ -49,6 +49,7 @@ const val ADD_BREW_BUTTON_TAG = "ADD_BREW_BUTTON"
 fun BeansContent(
     viewState: BeanTrackerViewState,
     onAddButtonClicked: () -> Unit,
+    onBeanClicked: (Bean) -> Unit,
 ) {
     val scrollState = rememberLazyListState()
     var fabExtended by remember { mutableStateOf(true) }
@@ -94,9 +95,8 @@ fun BeansContent(
                 modifier = Modifier
                     .navigationBarsPadding()
                     .padding(paddingValues),
-                onBeanClicked = {
-                    // Navigate to AddBeanScreen
-                },
+                // Navigate to AddBeanScreen,
+                onBeanClicked = onBeanClicked,
                 state = scrollState
             )
         }
@@ -211,6 +211,7 @@ private fun BeansContentPreview(
         BeansContent(
             viewState = viewState,
             onAddButtonClicked = {},
+            onBeanClicked = {},
         )
     }
 }
