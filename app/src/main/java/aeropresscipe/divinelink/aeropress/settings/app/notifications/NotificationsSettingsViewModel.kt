@@ -1,7 +1,7 @@
 package aeropresscipe.divinelink.aeropress.settings.app.notifications
 
-import aeropresscipe.divinelink.aeropress.settings.app.notifications.use_case.GetTimerSoundUseCase
-import aeropresscipe.divinelink.aeropress.settings.app.notifications.use_case.SetTimerSoundUseCase
+import aeropresscipe.divinelink.aeropress.settings.app.notifications.usecase.GetTimerSoundUseCase
+import aeropresscipe.divinelink.aeropress.settings.app.notifications.usecase.SetTimerSoundUseCase
 import aeropresscipe.divinelink.aeropress.util.WhileViewSubscribed
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NotificationsSettingsViewModel @Inject constructor(
     getTimerSoundUseCase: GetTimerSoundUseCase,
-    val setTimerSoundUseCase: SetTimerSoundUseCase
+    val setTimerSoundUseCase: SetTimerSoundUseCase,
 ) : ViewModel() {
 
     private val refreshSignal = MutableSharedFlow<Unit>()
@@ -51,5 +51,5 @@ class NotificationsSettingsViewModel @Inject constructor(
 }
 
 data class NotificationSettingsState(
-    val soundEnabled: Boolean
+    val soundEnabled: Boolean,
 )

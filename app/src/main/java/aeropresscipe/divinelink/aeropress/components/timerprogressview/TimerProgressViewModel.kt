@@ -1,29 +1,24 @@
 package aeropresscipe.divinelink.aeropress.components.timerprogressview
 
-import aeropresscipe.divinelink.aeropress.base.mvi.BaseViewModel
-import aeropresscipe.divinelink.aeropress.base.mvi.MVIBaseView
 import aeropresscipe.divinelink.aeropress.recipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.recipe.models.getBrewTimeLeft
 import aeropresscipe.divinelink.aeropress.recipe.models.getBrewingStates
-import aeropresscipe.divinelink.aeropress.timer.TimerRepository
 import aeropresscipe.divinelink.aeropress.timer.util.BrewPhase
 import aeropresscipe.divinelink.aeropress.timer.util.BrewState
 import aeropresscipe.divinelink.aeropress.timer.util.Phase
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.extensions.inMilliseconds
 import timber.log.Timber
 import java.lang.ref.WeakReference
+import javax.inject.Inject
 
-class TimerProgressViewModel @AssistedInject constructor(
-    @Suppress("UnusedPrivateMember") private var repository: TimerRepository,
-    @Assisted public override var delegate: WeakReference<ITimerProgressViewModel>? = null
-) : BaseViewModel<ITimerProgressViewModel>(),
+@HiltViewModel
+class TimerProgressViewModel @Inject constructor() :
+    ViewModel(),
     TimerProgressIntents {
     internal var statesList: MutableList<TimerProgressState> = mutableListOf()
+    var delegate: WeakReference<ITimerProgressViewModel>? = null
 
     private var dice: DiceDomain? = null
     private var brew: BrewPhase? = null
@@ -32,6 +27,7 @@ class TimerProgressViewModel @AssistedInject constructor(
         set(value) {
             Timber.d(value.toString())
             field = value
+            statesList.add(value)
             delegate?.get()?.updateState(value)
         }
 
@@ -75,9 +71,9 @@ class TimerProgressViewModel @AssistedInject constructor(
             brew?.removeCurrentPhase()
             val state = brew?.getCurrentState()
             startTimerStates(state, state?.brewTime.inMilliseconds())
-//            if (!preferences.muteSound) {
-//                state = TimerState.PlaySoundState
-//            }
+            //            if (!preferences.muteSound) {
+            //                state = TimerState.PlaySoundState
+            //            }
         }
     }
 
@@ -100,7 +96,7 @@ interface ITimerProgressViewModel {
     fun updateState(state: TimerProgressState)
 }
 
-interface TimerProgressIntents : MVIBaseView {
+interface TimerProgressIntents {
     fun init(dice: DiceDomain?)
     fun getView()
     fun updateTimer(update: Boolean)
@@ -109,9 +105,14 @@ interface TimerProgressIntents : MVIBaseView {
 sealed class TimerProgressState {
     object InitialState : TimerProgressState()
     data class UpdateDescriptionState(val brewState: BrewState) : TimerProgressState()
-    data class UpdateProgressBar(val maxValue: Int, val timeInMilliseconds: Long, val animate: Boolean, val update: Boolean) : TimerProgressState()
+    data class UpdateProgressBar(
+        val maxValue: Int,
+        val timeInMilliseconds: Long,
+        val animate: Boolean,
+        val update: Boolean,
+    ) : TimerProgressState()
+
     object RetryState : TimerProgressState()
-    object FinishState : TimerProgressState()
 }
 
 interface TimerProgressStateHandler {
@@ -119,23 +120,4 @@ interface TimerProgressStateHandler {
     fun handleUpdateDescriptionState(state: TimerProgressState.UpdateDescriptionState)
     fun handleUpdateProgressBar(state: TimerProgressState.UpdateProgressBar)
     fun handleRetryState()
-    fun handleFinishState()
-}
-
-@Suppress("UNCHECKED_CAST")
-class TimerProgressViewModelFactory(
-    private val assistedFactory: TimerProgressViewModelAssistedFactory,
-    private val delegate: WeakReference<ITimerProgressViewModel>?,
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(TimerProgressViewModel::class.java)) {
-            return assistedFactory.create(delegate) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
-
-@AssistedFactory
-interface TimerProgressViewModelAssistedFactory {
-    fun create(delegate: WeakReference<ITimerProgressViewModel>?): TimerProgressViewModel
 }

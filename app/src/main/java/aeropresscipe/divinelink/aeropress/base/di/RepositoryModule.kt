@@ -2,6 +2,8 @@ package aeropresscipe.divinelink.aeropress.base.di
 
 import aeropresscipe.divinelink.aeropress.beans.domain.repository.BeanRepository
 import aeropresscipe.divinelink.aeropress.beans.domain.repository.DemoBeanRepository
+import aeropresscipe.divinelink.aeropress.favorites.domain.repository.FavoritesRepository
+import aeropresscipe.divinelink.aeropress.favorites.domain.repository.RoomFavoritesRepository
 import aeropresscipe.divinelink.aeropress.recipe.RecipeRepository
 import aeropresscipe.divinelink.aeropress.recipe.RoomRecipeRepository
 import aeropresscipe.divinelink.aeropress.timer.RoomTimerRepository
@@ -23,6 +25,11 @@ abstract class RepositoryModule {
     abstract fun bindRecipeRepository(
         roomRepository: RoomRecipeRepository,
     ): RecipeRepository
+
+    @Binds
+    abstract fun bindFavoritesRepository(
+        roomRepository: RoomFavoritesRepository,
+    ): FavoritesRepository
 
     @Binds
     abstract fun bindTimerRepository(

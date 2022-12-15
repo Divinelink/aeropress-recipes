@@ -107,8 +107,6 @@ class RecipeFragment :
     override fun updateState(state: RecipeState) {
         when (state) {
             is RecipeState.InitialState -> handleInitialState()
-            is RecipeState.ErrorState -> handleErrorState(state)
-            is RecipeState.LoadingState -> handleLoadingState()
             is RecipeState.ShowAlreadyBrewingState -> handleShowAlreadyBrewingState()
             is RecipeState.ShowRecipeState -> handleShowRecipeState(state)
             is RecipeState.RefreshRecipeState -> handleRefreshRecipeState(state)
@@ -128,14 +126,6 @@ class RecipeFragment :
 
     override fun handleInitialState() {
         // Intentionally Blank.
-    }
-
-    override fun handleLoadingState() {
-        // Nothing yet
-    }
-
-    override fun handleErrorState(state: RecipeState.ErrorState) {
-        // Nothing yet
     }
 
     override fun handleShowAlreadyBrewingState() {
@@ -177,7 +167,8 @@ class RecipeFragment :
     }
 
     override fun handleShowSnackBar(state: RecipeState.ShowSnackBar) {
-        Notification.make(binding?.generateRecipeButton, resources.getString(state.value.string, getString(state.value.favorites)))
+        Notification.make(binding?.generateRecipeButton,
+            resources.getString(state.value.string, getString(state.value.favorites)))
             .show()
     }
 

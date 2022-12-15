@@ -49,9 +49,7 @@ class FinishActivity :
 
     override fun updateState(state: FinishState) {
         when (state) {
-            is FinishState.ErrorState -> handleErrorState(state)
             is FinishState.InitialState -> handleInitialState()
-            is FinishState.LoadingState -> handleLoadingState()
             is FinishState.CloseState -> handleCloseState()
             is FinishState.SetupRecipeState -> handleSetupRecipeState(state)
         }
@@ -77,14 +75,6 @@ class FinishActivity :
     override fun handleSetupRecipeState(state: FinishState.SetupRecipeState) {
         binding.card.setRecipe(RecipeCard.FinishCard(recipe = state.recipe))
         binding.likeButtonCardLayout.recipe = state.recipe
-    }
-
-    override fun handleLoadingState() {
-        // Intentionally Blank.
-    }
-
-    override fun handleErrorState(state: FinishState.ErrorState) {
-        // Intentionally Blank.
     }
 
     override fun handleCloseState() {

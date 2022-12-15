@@ -148,8 +148,6 @@ interface RecipeIntents : MVIBaseView {
 
 sealed class RecipeState {
     object InitialState : RecipeState()
-    object LoadingState : RecipeState()
-    data class ErrorState(val data: String) : RecipeState()
 
     object ShowAlreadyBrewingState : RecipeState()
     object HideResumeButtonState : RecipeState()
@@ -170,8 +168,6 @@ sealed class RecipeState {
 
 interface GenerateRecipeStateHandler {
     fun handleInitialState()
-    fun handleLoadingState()
-    fun handleErrorState(state: RecipeState.ErrorState)
 
     fun handleHideResumeButtonState()
 
