@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 echo "Running detekt check..."
 OUTPUT="/tmp/detekt-$(date +%s)"
-./gradlew detektCi > $OUTPUT
+./gradlew detektFormat > $OUTPUT
 EXIT_CODE=$?
 if [ $EXIT_CODE -ne 0 ]; then
   cat $OUTPUT

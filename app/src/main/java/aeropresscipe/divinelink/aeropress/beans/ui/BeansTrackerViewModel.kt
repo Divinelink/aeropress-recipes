@@ -36,6 +36,7 @@ class BeansTrackerViewModel @Inject constructor(
         // TODO()
     }
 
+    @Suppress("UnusedPrivateMember")
     fun onBeanClicked(bean: Bean) {
         // Todo()
     }
