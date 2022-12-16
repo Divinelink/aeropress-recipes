@@ -1,9 +1,10 @@
 name: Code Coverage
 
+# Run CI task on Push only for main branch, also on PR. 
 on:
   push:
     branches:
-      - [ "main" ]
+      - main
   pull_request:
 
 jobs:
