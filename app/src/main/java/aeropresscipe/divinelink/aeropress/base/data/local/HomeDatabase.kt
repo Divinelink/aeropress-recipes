@@ -35,6 +35,6 @@ abstract class HomeDatabase : RoomDatabase() {
 
     companion object {
         const val DB_NAME = "Home_Database"
-        const val LATEST_VERSION = 22
+        const val LATEST_VERSION = 23
     }
 }
