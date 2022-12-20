@@ -32,7 +32,8 @@ class BeansTrackerFragment : Fragment() {
 
                 BeansContent(
                     viewState = viewState.value,
-                    onAddButtonClicked = viewModel::onAddButtonClicked
+                    onAddButtonClicked = viewModel::onAddButtonClicked,
+                    onBeanClicked = viewModel::onBeanClicked
                 )
             }
         }

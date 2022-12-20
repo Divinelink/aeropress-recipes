@@ -7,6 +7,7 @@ import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
 import aeropresscipe.divinelink.aeropress.beans.domain.model.RoastLevel
 import aeropresscipe.divinelink.aeropress.fakes.FakeBeanRepository
+import com.google.common.truth.Truth.assertThat
 import gr.divinelink.core.util.domain.Result
 import gr.divinelink.core.util.domain.data
 import junit.framework.Assert.assertTrue
@@ -72,5 +73,20 @@ class AddBeanUseCaseTest {
         val useCase = AddBeanUseCase(beanRepository.mock, testDispatcher)
         val result = useCase(bean)
         assertTrue(result.data == AddBeanResult.Failure)
+    }
+
+    @Test
+    fun testAddBeanLoading() = runTest {
+        val addBeanResponse = Result.Loading
+
+        beanRepository.givenAddBeanResult(
+            bean = bean,
+            beanResult = addBeanResponse
+        )
+
+        val useCase = AddBeanUseCase(beanRepository.mock, testDispatcher)
+        val result = useCase(bean)
+
+        assertThat(result).isInstanceOf(Result.Error::class.java)
     }
 }
