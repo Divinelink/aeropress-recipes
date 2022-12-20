@@ -41,6 +41,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 
 const val ADD_BREW_BUTTON_TAG = "ADD_BREW_BUTTON"
 
@@ -50,6 +52,7 @@ fun BeansContent(
     viewState: BeanTrackerViewState,
     onAddButtonClicked: () -> Unit,
     onBeanClicked: (Bean) -> Unit,
+    bottomPadding: Dp,
 ) {
     val scrollState = rememberLazyListState()
     var fabExtended by remember { mutableStateOf(true) }
@@ -66,6 +69,7 @@ fun BeansContent(
     Scaffold(
         floatingActionButton = {
             AddBeanButton(
+                modifier = Modifier.padding(vertical = bottomPadding),
                 onClick = onAddButtonClicked,
                 extended = fabExtended
             )
@@ -97,7 +101,8 @@ fun BeansContent(
                     .padding(paddingValues),
                 // Navigate to AddBeanScreen,
                 onBeanClicked = onBeanClicked,
-                state = scrollState
+                state = scrollState,
+                bottomPadding = bottomPadding,
             )
         }
     }
@@ -212,6 +217,7 @@ private fun BeansContentPreview(
             viewState = viewState,
             onAddButtonClicked = {},
             onBeanClicked = {},
+            bottomPadding = 0.dp,
         )
     }
 }

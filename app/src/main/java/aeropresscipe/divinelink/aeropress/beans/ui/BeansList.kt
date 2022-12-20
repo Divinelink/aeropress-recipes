@@ -25,6 +25,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -33,6 +34,7 @@ fun BeansList(
     onBeanClicked: (Bean) -> Unit,
     modifier: Modifier = Modifier,
     state: LazyListState = LazyListState(),
+    bottomPadding: Dp = 0.dp,
 ) {
     LazyColumn(
         state = state,
@@ -61,7 +63,7 @@ fun BeansList(
             }
 
             item {
-                Spacer(Modifier.height(FabSize))
+                Spacer(Modifier.height(FabSize + bottomPadding))
             }
         }
     }
