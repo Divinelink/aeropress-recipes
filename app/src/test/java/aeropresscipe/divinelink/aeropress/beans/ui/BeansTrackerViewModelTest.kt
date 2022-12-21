@@ -49,6 +49,34 @@ class BeansTrackerViewModelTest {
             )
     }
 
+    @Test
+    fun `when onAddButtonClicked then I expect goToAddBean false`() {
+        testRobot
+            .mockFetchAllBeans(Result.Success(emptyList()))
+            .buildViewModel()
+            .onAddButtonClicked()
+            .assertViewState(BeanTrackerViewState.Completed(emptyList(), true))
+            .assertFalseViewState(BeanTrackerViewState.Completed(emptyList(), false))
+            .onAddBeanOpened()
+            .assertViewState(BeanTrackerViewState.Completed(emptyList(), false))
+            .assertFalseViewState(BeanTrackerViewState.Completed(emptyList(), true))
+    }
+
+    @Test
+    fun `given a list of beans, when onBeanClicked, then I expect goToAddBean`() {
+        testRobot
+            .mockFetchAllBeans(Result.Success(beans))
+            .buildViewModel()
+            .onBeanClicked(beans[2])
+            .assertViewState(
+                BeanTrackerViewState.Completed(beans, true, beans[2])
+            )
+            .onAddBeanOpened()
+            .assertViewState(
+                BeanTrackerViewState.Completed(beans, false)
+            )
+    }
+
     private val beans = (1..10).map { index ->
         Bean(
             id = index.toString(),

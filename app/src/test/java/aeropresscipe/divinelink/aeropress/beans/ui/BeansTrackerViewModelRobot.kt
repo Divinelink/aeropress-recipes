@@ -1,20 +1,18 @@
 package aeropresscipe.divinelink.aeropress.beans.ui
 
 import aeropresscipe.divinelink.aeropress.MainDispatcherRule
-import aeropresscipe.divinelink.aeropress.ViewModelTestRobot
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.beans.domain.usecase.FetchAllBeansUseCase
 import aeropresscipe.divinelink.aeropress.fakes.FakeBeanRepository
+import com.google.common.truth.Truth.assertThat
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class BeansTrackerViewModelRobot : ViewModelTestRobot<BeanTrackerViewState>() {
+class BeansTrackerViewModelRobot {
 
     private lateinit var viewModel: BeansTrackerViewModel
-
-    override lateinit var actualViewState: BeanTrackerViewState
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
@@ -22,14 +20,25 @@ class BeansTrackerViewModelRobot : ViewModelTestRobot<BeanTrackerViewState>() {
 
     private val fakeBeanRepository = FakeBeanRepository()
 
-    override fun buildViewModel() = apply {
+    fun buildViewModel() = apply {
         viewModel = BeansTrackerViewModel(
             fetchAllBeansUseCase = FetchAllBeansUseCase(
                 beanRepository = fakeBeanRepository.mock,
                 dispatcher = testDispatcher
             )
         )
-        actualViewState = viewModel.viewState.value
+    }
+
+    fun assertViewState(
+        expectedViewState: BeanTrackerViewState,
+    ) = apply {
+        assertThat(viewModel.viewState.value).isEqualTo(expectedViewState)
+    }
+
+    fun assertFalseViewState(
+        expectedViewState: BeanTrackerViewState,
+    ) = apply {
+        assertThat(viewModel.viewState.value).isNotEqualTo(expectedViewState)
     }
 
     fun mockFetchAllBeans(
@@ -42,6 +51,10 @@ class BeansTrackerViewModelRobot : ViewModelTestRobot<BeanTrackerViewState>() {
 
     fun onAddButtonClicked() = apply {
         viewModel.onAddButtonClicked()
+    }
+
+    fun onAddBeanOpened() = apply {
+        viewModel.onAddBeanOpened()
     }
 
     fun onBeanClicked(bean: Bean) = apply {
