@@ -40,8 +40,8 @@ class AddBeanActivity : ComponentActivity() {
                     onDateChanged = viewModel::onDateChanged,
                     onRoastLevelChanged = viewModel::onRoastLevelChanged,
                     onProcessChanged = viewModel::onProcessChanged,
-                    onRoastLevelClick = viewModel::onRoastLevelClick,
-                    onProcessClick = viewModel::onProcessClick,
+                    onRoastLevelClick = viewModel::onRoastLevelClicked,
+                    onProcessClick = viewModel::onProcessClicked,
                 )
             }
         }

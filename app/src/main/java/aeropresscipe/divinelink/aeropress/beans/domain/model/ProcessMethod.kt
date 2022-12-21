@@ -3,15 +3,15 @@ package aeropresscipe.divinelink.aeropress.beans.domain.model
 import aeropresscipe.divinelink.aeropress.R
 import androidx.annotation.StringRes
 
-sealed class ProcessMethod(
-    @StringRes open var stringRes: Int,
+enum class ProcessMethod(
+    @StringRes var stringRes: Int,
 ) {
-    object Washed : ProcessMethod(stringRes = R.string.ProcessMethod__washed)
-    object Natural : ProcessMethod(stringRes = R.string.ProcessMethod__natural)
-    object Honey : ProcessMethod(stringRes = R.string.ProcessMethod__honey)
-    object Anaerobic : ProcessMethod(stringRes = R.string.ProcessMethod__anaerobic)
-    object CarbonicMaceration : ProcessMethod(stringRes = R.string.ProcessMethod__carbonicMaceration)
-    object GilingBasah : ProcessMethod(stringRes = R.string.ProcessMethod__gilingBasah)
+    Washed(stringRes = R.string.ProcessMethod__washed),
+    Natural(stringRes = R.string.ProcessMethod__natural),
+    Honey(stringRes = R.string.ProcessMethod__honey),
+    Anaerobic(stringRes = R.string.ProcessMethod__anaerobic),
+    CarbonicMaceration(stringRes = R.string.ProcessMethod__carbonicMaceration),
+    GilingBasah(stringRes = R.string.ProcessMethod__gilingBasah),
 }
 
 fun String.toProcessMethod(): ProcessMethod {

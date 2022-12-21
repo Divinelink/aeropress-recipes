@@ -40,7 +40,10 @@ class BeansTrackerViewModel @Inject constructor(
 
     fun onAddBeanOpened() {
         _viewState.update { state ->
-            (state as BeanTrackerViewState.Completed).copy(goToAddBean = false)
+            (state as BeanTrackerViewState.Completed).copy(
+                selectedBean = null,
+                goToAddBean = false
+            )
         }
     }
 
@@ -55,7 +58,7 @@ class BeansTrackerViewModel @Inject constructor(
         _viewState.update { state ->
             (state as BeanTrackerViewState.Completed).copy(
                 selectedBean = bean,
-                goToAddBean = false,
+                goToAddBean = true,
             )
         }
     }

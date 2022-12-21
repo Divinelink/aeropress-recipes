@@ -58,12 +58,5 @@ class ProcessMethodTest {
     fun unknownProcessMethod() {
         assertFailsWith<IllegalArgumentException> { "Unknown".toProcessMethod() }
         Assert.assertThrows(IllegalArgumentException::class.java) { "Unknown".toProcessMethod() }
-
-        val exception = assertFailsWith<IllegalArgumentException> { "Washed".toProcessMethod() }
-        assertThat(
-            exception
-        ).isNotEqualTo(
-            IllegalArgumentException::class
-        )
     }
 }

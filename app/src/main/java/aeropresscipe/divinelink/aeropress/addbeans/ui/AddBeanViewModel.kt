@@ -4,7 +4,6 @@ import aeropresscipe.divinelink.aeropress.addbeans.domain.usecase.AddBeanUseCase
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.beans.domain.model.RoastLevel
 import aeropresscipe.divinelink.aeropress.beans.domain.model.toProcessMethod
-import aeropresscipe.divinelink.aeropress.beans.domain.usecase.FetchBeanUseCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddBeanViewModel @Inject constructor(
-    private val fetchBeanUseCase: FetchBeanUseCase,
+    //    private val fetchBeanUseCase: FetchBeanUseCase,
     private val addBeanUseCase: AddBeanUseCase,
 ) : ViewModel() {
 
@@ -26,11 +25,13 @@ class AddBeanViewModel @Inject constructor(
         MutableStateFlow(AddBeanViewState())
     val viewState: StateFlow<AddBeanViewState> = _viewState
 
+    /**
     fun getBean(bean: Bean) {
-        viewModelScope.launch {
-            fetchBeanUseCase(bean)
-        }
+    viewModelScope.launch {
+    fetchBeanUseCase(bean)
     }
+    }
+     */
 
     fun setBean(bean: Bean?) {
         if (bean != null) {
@@ -97,11 +98,11 @@ class AddBeanViewModel @Inject constructor(
         }
     }
 
-    fun onRoastLevelClick() {
+    fun onRoastLevelClicked() {
         // τοδο
     }
 
-    fun onProcessClick() {
+    fun onProcessClicked() {
         // τοδο
     }
 
