@@ -23,6 +23,7 @@ import java.time.LocalDate
 
 @Composable
 fun AddBeanContent(
+    viewState: AddBeanViewState,
     onBeanNameChanged: (String) -> Unit,
     onRoasterNameChanged: (String) -> Unit,
     onOriginChanged: (String) -> Unit,
@@ -39,21 +40,21 @@ fun AddBeanContent(
 
         Spacer(modifier = Modifier.height(12.dp))
         CustomOutlinedTextField(
-            text = "",
+            text = viewState.bean.name,
             onValueChange = onBeanNameChanged,
             labelText = stringResource(id = R.string.Beans__bean_name),
         )
 
         Spacer(modifier = Modifier.height(12.dp))
         CustomOutlinedTextField(
-            text = "",
+            text = viewState.bean.roasterName,
             onValueChange = onRoasterNameChanged,
             labelText = stringResource(id = R.string.Beans__roaster_name)
         )
 
         Spacer(modifier = Modifier.height(12.dp))
         CustomOutlinedTextField(
-            text = "",
+            text = viewState.bean.origin,
             onValueChange = onOriginChanged,
             labelText = stringResource(id = R.string.Beans__origin)
         )
@@ -96,6 +97,7 @@ fun BeansScreenPreview() {
     AeropressTheme {
         Surface {
             AddBeanContent(
+                viewState = AddBeanViewState(),
                 onDateChanged = {},
                 onRoastLevelClick = {},
                 onProcessClick = {},

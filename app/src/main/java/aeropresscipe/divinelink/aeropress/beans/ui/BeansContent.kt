@@ -9,7 +9,6 @@ import aeropresscipe.divinelink.aeropress.components.ExtendableFloatingActionBut
 import aeropresscipe.divinelink.aeropress.components.Material3CircularProgressIndicator
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import aeropresscipe.divinelink.aeropress.ui.theme.FabSize
-import android.content.Intent
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -50,6 +49,7 @@ import androidx.compose.ui.unit.dp
 const val ADD_BREW_BUTTON_TAG = "ADD_BREW_BUTTON"
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Suppress("LongMethod")
 @Composable
 fun BeansContent(
     viewState: BeanTrackerViewState,
@@ -73,7 +73,12 @@ fun BeansContent(
     val context = LocalContext.current
     LaunchedEffect(viewState as? BeanTrackerViewState.Completed) {
         if ((viewState as? BeanTrackerViewState.Completed)?.goToAddBean == true) {
-            context.startActivity(Intent(context, AddBeanActivity::class.java))
+            context.startActivity(
+                AddBeanActivity.newIntent(
+                    context = context,
+                    bean = viewState.selectedBean
+                )
+            )
             onAddBeanOpened()
         }
     }

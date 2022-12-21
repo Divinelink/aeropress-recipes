@@ -30,6 +30,7 @@ sealed class BeanTrackerViewState(
     data class Completed(
         val beans: List<Bean>,
         val goToAddBean: Boolean = false,
+        val selectedBean: Bean? = null,
     ) : BeanTrackerViewState(
         showLoading = false
     )

@@ -48,8 +48,15 @@ class BeansTrackerViewModel @Inject constructor(
         _viewState.value
     }
 
-    @Suppress("UnusedPrivateMember")
+    /**
+     * Navigates the user to the Add Bean screen but with all the [bean] properties prefilled.
+     */
     fun onBeanClicked(bean: Bean) {
-        // Todo()
+        _viewState.update { state ->
+            (state as BeanTrackerViewState.Completed).copy(
+                selectedBean = bean,
+                goToAddBean = false,
+            )
+        }
     }
 }
