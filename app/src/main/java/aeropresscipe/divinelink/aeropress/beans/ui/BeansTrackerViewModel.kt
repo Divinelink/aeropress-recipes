@@ -9,6 +9,7 @@ import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,8 +33,19 @@ class BeansTrackerViewModel @Inject constructor(
     }
 
     fun onAddButtonClicked() {
-        // Should navigate to AddBean screen.
-        // TODO()
+        _viewState.update { state ->
+            (state as BeanTrackerViewState.Completed).copy(goToAddBean = true)
+        }
+    }
+
+    fun onAddBeanOpened() {
+        _viewState.update { state ->
+            (state as BeanTrackerViewState.Completed).copy(goToAddBean = false)
+        }
+    }
+
+    fun onBackButtonClicked() {
+        _viewState.value
     }
 
     @Suppress("UnusedPrivateMember")

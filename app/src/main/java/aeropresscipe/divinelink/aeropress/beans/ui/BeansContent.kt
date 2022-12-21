@@ -1,6 +1,7 @@
 package aeropresscipe.divinelink.aeropress.beans.ui
 
 import aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.addbeans.ui.AddBeanActivity
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
 import aeropresscipe.divinelink.aeropress.beans.domain.model.RoastLevel
@@ -8,6 +9,7 @@ import aeropresscipe.divinelink.aeropress.components.ExtendableFloatingActionBut
 import aeropresscipe.divinelink.aeropress.components.Material3CircularProgressIndicator
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import aeropresscipe.divinelink.aeropress.ui.theme.FabSize
+import android.content.Intent
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -52,6 +55,7 @@ fun BeansContent(
     viewState: BeanTrackerViewState,
     onAddButtonClicked: () -> Unit,
     onBeanClicked: (Bean) -> Unit,
+    onAddBeanOpened: () -> Unit,
     bottomPadding: Dp,
 ) {
     val scrollState = rememberLazyListState()
@@ -64,6 +68,14 @@ fun BeansContent(
                 fabExtended = it <= prev
                 prev = it
             }
+    }
+
+    val context = LocalContext.current
+    LaunchedEffect(viewState as? BeanTrackerViewState.Completed) {
+        if ((viewState as? BeanTrackerViewState.Completed)?.goToAddBean == true) {
+            context.startActivity(Intent(context, AddBeanActivity::class.java))
+            onAddBeanOpened()
+        }
     }
 
     Scaffold(
@@ -178,7 +190,7 @@ class BeansContentViewStateProvider : PreviewParameterProvider<BeanTrackerViewSt
 
             val initialState = BeanTrackerViewState.Initial
 
-            val activeState = BeanTrackerViewState.Active
+            val activeState = BeanTrackerViewState.Active()
 
             val emptyState = BeanTrackerViewState.Completed(
                 beans = emptyList()
@@ -217,6 +229,7 @@ private fun BeansContentPreview(
             viewState = viewState,
             onAddButtonClicked = {},
             onBeanClicked = {},
+            onAddBeanOpened = {},
             bottomPadding = 0.dp,
         )
     }

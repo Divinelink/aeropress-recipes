@@ -11,9 +11,12 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.Aeropress">
         <activity
+            android:name=".addbeans.ui.AddBeanActivity"
+            android:exported="false" />
+        <activity
             android:name=".settings.app.AppSettingsActivity"
-            android:theme="@style/Base.Theme.Aeropress"
-            android:exported="true" />
+            android:exported="false"
+            android:theme="@style/Base.Theme.Aeropress" />
         <activity
             android:name=".finish.FinishActivity"
             android:exported="false"

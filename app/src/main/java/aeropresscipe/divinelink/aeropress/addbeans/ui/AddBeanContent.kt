@@ -1,6 +1,7 @@
-package aeropresscipe.divinelink.aeropress.beans
+package aeropresscipe.divinelink.aeropress.addbeans.ui
 
 import aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.beans.SelectOptionField
 import aeropresscipe.divinelink.aeropress.components.CustomOutlinedTextField
 import aeropresscipe.divinelink.aeropress.components.DatePicker
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme

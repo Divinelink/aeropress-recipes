@@ -42,7 +42,8 @@ class BeansTrackerFragment :
                     viewState = viewState.value,
                     onAddButtonClicked = viewModel::onAddButtonClicked,
                     onBeanClicked = viewModel::onBeanClicked,
-                    bottomPadding = bottomPadding
+                    onAddBeanOpened = viewModel::onAddBeanOpened,
+                    bottomPadding = bottomPadding,
                 )
             }
         }

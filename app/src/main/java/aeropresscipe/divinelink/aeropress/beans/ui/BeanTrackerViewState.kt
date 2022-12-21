@@ -16,15 +16,20 @@ sealed class BeanTrackerViewState(
     /**
      * The state of the screen as the application is fetching bean data from any repo.
      */
-    object Active : BeanTrackerViewState()
+    data class Active(
+        val addBean: Boolean = false,
+    ) : BeanTrackerViewState(
+        showLoading = false
+    )
 
     /**
      * The state of the screen as data are fetched and ready to be showed on the screen.
-     * @property [isEmpty] A boolean that tells us whether the beans list is empty.
      * @property [beans] A list that holds all the beans related to the user.
+     * @property [goToAddBean] A boolean that tells us whether to navigate to AddBean screen or not..
      */
     data class Completed(
         val beans: List<Bean>,
+        val goToAddBean: Boolean = false,
     ) : BeanTrackerViewState(
         showLoading = false
     )
