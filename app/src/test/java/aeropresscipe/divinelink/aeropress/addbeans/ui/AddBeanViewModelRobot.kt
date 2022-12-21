@@ -3,7 +3,6 @@ package aeropresscipe.divinelink.aeropress.addbeans.ui
 import aeropresscipe.divinelink.aeropress.MainDispatcherRule
 import aeropresscipe.divinelink.aeropress.addbeans.domain.usecase.AddBeanUseCase
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
-import aeropresscipe.divinelink.aeropress.beans.domain.usecase.FetchBeanUseCase
 import aeropresscipe.divinelink.aeropress.fakes.FakeBeanRepository
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,9 +22,6 @@ class AddBeanViewModelRobot {
 
     fun buildViewModel() = apply {
         viewModel = AddBeanViewModel(
-            fetchBeanUseCase = FetchBeanUseCase(
-                dispatcher = testDispatcher
-            ),
             addBeanUseCase = AddBeanUseCase(
                 beanRepository = fakeBeanRepository.mock,
                 dispatcher = testDispatcher
