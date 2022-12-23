@@ -25,7 +25,11 @@ class AddBeanViewModelRobot {
             addBeanUseCase = AddBeanUseCase(
                 beanRepository = fakeBeanRepository.mock,
                 dispatcher = testDispatcher
-            )
+            ),
+//            updateBeanUseCase = UpdateBeanUseCase(
+//                beanRepository = fakeBeanRepository.mock,
+//                dispatcher = testDispatcher
+//            )
         )
     }
 
@@ -41,7 +45,7 @@ class AddBeanViewModelRobot {
         assertThat(viewModel.viewState.value).isNotEqualTo(expectedViewState)
     }
 
-    fun onSetBean(bean: Bean) = apply {
+    fun onSetBean(bean: Bean?) = apply {
         viewModel.setBean(bean)
     }
 

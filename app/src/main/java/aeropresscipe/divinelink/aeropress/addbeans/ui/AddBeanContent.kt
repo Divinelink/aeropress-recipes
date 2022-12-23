@@ -1,3 +1,4 @@
+@file:Suppress("MagicNumber", "LongMethod")
 package aeropresscipe.divinelink.aeropress.addbeans.ui
 
 import aeropresscipe.divinelink.aeropress.R
@@ -8,14 +9,18 @@ import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,6 +37,7 @@ fun AddBeanContent(
     onProcessChanged: (String) -> Unit,
     onRoastLevelClick: () -> Unit,
     onProcessClick: () -> Unit,
+    onSubmitClicked: () -> Unit,
 ) {
 
     Column(
@@ -86,7 +92,21 @@ fun AddBeanContent(
             onValueChange = onProcessChanged,
             label = R.string.Beans__process
         )
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(120.dp))
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 32.dp),
+            horizontalAlignment = CenterHorizontally
+        ) {
+            Button(
+                modifier = Modifier.fillMaxWidth(0.5F),
+                onClick = { onSubmitClicked() }
+            ) {
+                Text(LocalContext.current.getString(viewState.submitButtonText)) // fixme make this better
+            }
+        }
     }
 }
 
@@ -97,7 +117,7 @@ fun BeansScreenPreview() {
     AeropressTheme {
         Surface {
             AddBeanContent(
-                viewState = AddBeanViewState(),
+                viewState = AddBeanViewState.Initial,
                 onDateChanged = {},
                 onRoastLevelClick = {},
                 onProcessClick = {},
@@ -106,6 +126,7 @@ fun BeansScreenPreview() {
                 onOriginChanged = {},
                 onRoastLevelChanged = {},
                 onProcessChanged = {},
+                onSubmitClicked = {},
             )
         }
     }

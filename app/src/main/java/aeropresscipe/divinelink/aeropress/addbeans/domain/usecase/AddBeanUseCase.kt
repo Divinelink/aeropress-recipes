@@ -19,7 +19,11 @@ class AddBeanUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher,
 ) : UseCase<Bean, AddBeanResult>(dispatcher) {
     override suspend fun execute(parameters: Bean): AddBeanResult {
-        val result = beanRepository.addBean(parameters)
+        val result = beanRepository.addBean(
+            parameters.copy(
+//                id = UUID.randomUUID().toString()
+            )
+        )
         return when (result) {
             is Result.Success -> AddBeanResult.Success
             is Result.Error -> AddBeanResult.Failure

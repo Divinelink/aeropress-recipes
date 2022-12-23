@@ -47,18 +47,17 @@ class AddBeanViewModelTest {
     fun initialiseViewModelTest() = runTest {
         testRobot
             .buildViewModel()
-            .assertViewState(AddBeanViewState())
+            .assertViewState(AddBeanViewState.Initial)
     }
 
     @Test
-    fun `onSetBean successfully sets bean on ViewState`() = runTest {
+    fun `onSetBean successfully sets UpdateBean state`() = runTest {
         testRobot
             .buildViewModel()
             .onSetBean(testBean)
             .assertViewState(
-                AddBeanViewState(
+                AddBeanViewState.UpdateBean(
                     bean = testBean,
-                    showLoading = false
                 )
             )
     }
@@ -67,11 +66,23 @@ class AddBeanViewModelTest {
     fun `onBeanNameChanged successfully updates name`() = runTest {
         testRobot
             .buildViewModel()
+            .onSetBean(null)
             .onBeanNameChanged("name changed")
             .assertViewState(
-                AddBeanViewState(
+                AddBeanViewState.InsertBean(
                     bean = emptyBean().copy(name = "name changed"),
-                    showLoading = false
+                )
+            )
+    }
+
+    @Test
+    fun `given Initial state when updating any bean parameter then I expect InsertBean state`() = runTest {
+        testRobot
+            .buildViewModel()
+            .onBeanNameChanged("name changed")
+            .assertViewState(
+                AddBeanViewState.InsertBean(
+                    bean = emptyBean().copy(name = "name changed"),
                 )
             )
     }
@@ -82,9 +93,8 @@ class AddBeanViewModelTest {
             .buildViewModel()
             .onRoasterNameChanged("roaster name changed")
             .assertViewState(
-                AddBeanViewState(
+                AddBeanViewState.InsertBean(
                     bean = emptyBean().copy(roasterName = "roaster name changed"),
-                    showLoading = false
                 )
             )
     }
@@ -95,9 +105,8 @@ class AddBeanViewModelTest {
             .buildViewModel()
             .onOriginChanged("origin name changed")
             .assertViewState(
-                AddBeanViewState(
+                AddBeanViewState.InsertBean(
                     bean = emptyBean().copy(origin = "origin name changed"),
-                    showLoading = false
                 )
             )
     }
@@ -108,9 +117,8 @@ class AddBeanViewModelTest {
             .buildViewModel()
             .onDateChanged(LocalDate.now())
             .assertViewState(
-                AddBeanViewState(
+                AddBeanViewState.InsertBean(
                     bean = emptyBean().copy(roastDate = LocalDate.now().toString()),
-                    showLoading = false
                 )
             )
     }
@@ -121,9 +129,8 @@ class AddBeanViewModelTest {
             .buildViewModel()
             .onRoastLevelChanged(RoastLevel.Medium.name)
             .assertViewState(
-                AddBeanViewState(
+                AddBeanViewState.InsertBean(
                     bean = emptyBean().copy(roastLevel = RoastLevel.Medium),
-                    showLoading = false
                 )
             )
     }
@@ -134,13 +141,39 @@ class AddBeanViewModelTest {
             .buildViewModel()
             .onProcessChanged(ProcessMethod.Natural.name)
             .assertViewState(
-                AddBeanViewState(
+                AddBeanViewState.InsertBean(
                     bean = emptyBean().copy(process = ProcessMethod.Natural),
-                    showLoading = false
                 )
             )
     }
 
+    @Test
+    fun `successfully update many bean fields`() = runTest {
+        testRobot
+            .buildViewModel()
+            .assertViewState(AddBeanViewState.Initial)
+            .onProcessChanged(ProcessMethod.Natural.name)
+            .onRoastLevelChanged(RoastLevel.Medium.name)
+            .onBeanNameChanged("Guji")
+            .onOriginChanged("Ethiopia")
+            .onRoasterNameChanged("Omsom Roastery")
+            .assertViewState(
+                AddBeanViewState.InsertBean(
+                    bean = Bean(
+                        id = "",
+                        name = "Guji",
+                        roasterName = "Omsom Roastery",
+                        origin = "Ethiopia",
+                        roastDate = "",
+                        roastLevel = RoastLevel.Medium,
+                        process = ProcessMethod.Natural,
+                        rating = 0,
+                        tastingNotes = "",
+                        additionalNotes = ""
+                    ),
+                )
+            )
+    }
     //    fun onRoastLevelClicked() = apply {
     //        viewModel.onRoastLevelClicked()
     //    }

@@ -113,12 +113,12 @@ private fun CircularText(
 }
 
 /**
- * Extension method that extracts the first two letters of a [String], no matter how long the string.
+ * Extension method that extracts the first[] two letters of a [String], no matter how long the string.
  */
 private fun CharSequence.extraFirstTwoLetters(): String {
     return this.split(" ")
         .take(2)
-        .map { it.first() }
+        .map { it.firstOrNull() ?: "" }
         .joinToString("") { it.toString() }
         .uppercase()
 }

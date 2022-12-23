@@ -9,6 +9,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,27 +23,28 @@ class AddBeanActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setNavigationBarColor(ContextCompat.getColor(this, R.color.colorBackground))
 
         val bean = intent.getSerializable<Bean?>(BEAN)
 
-        setNavigationBarColor(ContextCompat.getColor(this, R.color.colorBackground))
         setContent {
             AeropressTheme {
                 val viewState = viewModel.viewState.collectAsState()
-
                 viewModel.setBean(bean)
-
-                AddBeanContent(
-                    viewState = viewState.value,
-                    onBeanNameChanged = viewModel::onBeanNameChanged,
-                    onRoasterNameChanged = viewModel::onRoasterNameChanged,
-                    onOriginChanged = viewModel::onOriginChanged,
-                    onDateChanged = viewModel::onDateChanged,
-                    onRoastLevelChanged = viewModel::onRoastLevelChanged,
-                    onProcessChanged = viewModel::onProcessChanged,
-                    onRoastLevelClick = viewModel::onRoastLevelClicked,
-                    onProcessClick = viewModel::onProcessClicked,
-                )
+                Surface {
+                    AddBeanContent(
+                        viewState = viewState.value,
+                        onBeanNameChanged = viewModel::onBeanNameChanged,
+                        onRoasterNameChanged = viewModel::onRoasterNameChanged,
+                        onOriginChanged = viewModel::onOriginChanged,
+                        onDateChanged = viewModel::onDateChanged,
+                        onRoastLevelChanged = viewModel::onRoastLevelChanged,
+                        onProcessChanged = viewModel::onProcessChanged,
+                        onRoastLevelClick = viewModel::onRoastLevelClicked,
+                        onProcessClick = viewModel::onProcessClicked,
+                        onSubmitClicked = viewModel::onSubmitClicked,
+                    )
+                }
             }
         }
     }

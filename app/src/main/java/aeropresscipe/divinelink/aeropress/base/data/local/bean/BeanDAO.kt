@@ -21,8 +21,8 @@ interface BeanDAO {
     @Insert(
         onConflict = OnConflictStrategy.REPLACE,
     )
-    suspend fun insertBean(task: PersistableBean)
+    suspend fun insertBean(bean: PersistableBean)
 
     @Update
-    suspend fun updateTask(task: PersistableBean)
+    suspend fun updateTask(bean: PersistableBean)
 }
