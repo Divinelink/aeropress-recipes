@@ -4,7 +4,6 @@ import aeropresscipe.divinelink.aeropress.addbeans.domain.usecase.AddBeanUseCase
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
 import aeropresscipe.divinelink.aeropress.beans.domain.model.RoastLevel
-import aeropresscipe.divinelink.aeropress.ui.theme.ThemedActivityDelegate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,9 +18,7 @@ import javax.inject.Inject
 class AddBeanViewModel @Inject constructor(
     //    private val fetchBeanUseCase: FetchBeanUseCase,
     private val addBeanUseCase: AddBeanUseCase,
-    themedActivityDelegate: ThemedActivityDelegate,
-) : ViewModel(),
-    ThemedActivityDelegate by themedActivityDelegate {
+) : ViewModel() {
 
     private val _viewState: MutableStateFlow<AddBeanViewState> =
         MutableStateFlow(AddBeanViewState.Initial)
