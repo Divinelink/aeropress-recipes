@@ -8,6 +8,8 @@ import aeropresscipe.divinelink.aeropress.beans.domain.model.RoastLevel
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class RoomBeanRepository @Inject constructor(
@@ -50,13 +52,22 @@ private fun List<PersistableBean>.toDomainBeansList(): List<Bean> {
     return this.map(PersistableBean::toBean)
 }
 
+private const val PERSISTED_DATE_FORMAT = "yyyy-MM-dd"
+private val persistedDateFormatter = DateTimeFormatter.ofPattern(PERSISTED_DATE_FORMAT)
+
+private fun LocalDate.toPersistableDateString(): String {
+    return persistedDateFormatter.format(this)
+}
+
 private fun PersistableBean.toBean(): Bean {
+    val roastDate = LocalDate.parse(this.roastDate, persistedDateFormatter)
+
     return Bean(
         id = this.id,
         name = this.name,
         roasterName = this.roasterName,
         origin = this.origin,
-        roastDate = this.roastDate,
+        roastDate = roastDate,
         roastLevel = enumValues<RoastLevel>().find { it.name == this.roasterName },
         process = enumValues<ProcessMethod>().find { it.name == this.process },
         rating = this.rating,
@@ -71,7 +82,7 @@ private fun Bean.toPersistableBean(): PersistableBean {
         name = this.name,
         roasterName = this.roasterName,
         origin = this.origin,
-        roastDate = this.roastDate,
+        roastDate = this.roastDate?.toPersistableDateString() ?: "",
         roastLevel = this.roastLevel.toString(),
         process = this.process.toString(),
         rating = this.rating,

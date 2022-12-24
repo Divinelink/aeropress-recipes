@@ -20,7 +20,7 @@ class AddBeanViewModelTest {
         name = "testBean",
         roasterName = "testRoaster",
         origin = "",
-        roastDate = "",
+        roastDate = null,
         roastLevel = null,
         process = null,
         rating = 0,
@@ -34,7 +34,7 @@ class AddBeanViewModelTest {
             name = "",
             roasterName = "",
             origin = "",
-            roastDate = "",
+            roastDate = null,
             roastLevel = null,
             process = null,
             rating = 0,
@@ -118,7 +118,7 @@ class AddBeanViewModelTest {
             .onDateChanged(LocalDate.now())
             .assertViewState(
                 AddBeanViewState.InsertBean(
-                    bean = emptyBean().copy(roastDate = LocalDate.now().toString()),
+                    bean = emptyBean().copy(roastDate = LocalDate.now()),
                 )
             )
     }
@@ -164,7 +164,7 @@ class AddBeanViewModelTest {
                         name = "Guji",
                         roasterName = "Omsom Roastery",
                         origin = "Ethiopia",
-                        roastDate = "",
+                        roastDate = null,
                         roastLevel = RoastLevel.Medium,
                         process = ProcessMethod.Natural,
                         rating = 0,

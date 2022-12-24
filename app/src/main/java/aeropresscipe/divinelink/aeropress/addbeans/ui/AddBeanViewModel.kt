@@ -54,7 +54,7 @@ class AddBeanViewModel @Inject constructor(
 
     fun onDateChanged(date: LocalDate) {
         _viewState.updateBean { currentBean ->
-            currentBean.copy(roastDate = date.toString())
+            currentBean.copy(roastDate = date)
         }
     }
 

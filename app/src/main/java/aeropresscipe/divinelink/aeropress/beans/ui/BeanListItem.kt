@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import java.time.LocalDate
 
 @Composable
 fun BeanListItem(
@@ -131,7 +132,7 @@ private class BeanPreviewParameterProvider : PreviewParameterProvider<Bean> {
                 name = "Bean name",
                 roasterName = "Roaster name",
                 origin = "Origin name",
-                roastDate = "12/12/22",
+                roastDate = LocalDate.now(),
                 roastLevel = RoastLevel.Light,
                 process = ProcessMethod.CarbonicMaceration,
                 rating = 5,

@@ -16,6 +16,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.time.LocalDate
 
 @ExperimentalCoroutinesApi
 class AddBeanUseCaseTest {
@@ -31,7 +32,7 @@ class AddBeanUseCaseTest {
         name = "beanName",
         roasterName = "roasterName",
         origin = "originName",
-        roastDate = "12/12/22",
+        roastDate = LocalDate.now(),
         roastLevel = RoastLevel.Dark,
         process = ProcessMethod.Honey,
         rating = 0,

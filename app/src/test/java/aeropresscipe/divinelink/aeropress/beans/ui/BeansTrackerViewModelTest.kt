@@ -88,7 +88,7 @@ class BeansTrackerViewModelTest {
             rating = 0,
             tastingNotes = "",
             additionalNotes = "",
-            roastDate = ""
+            roastDate = null,
         )
     }.toMutableList()
 }

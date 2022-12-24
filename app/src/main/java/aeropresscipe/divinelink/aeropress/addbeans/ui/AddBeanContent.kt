@@ -99,7 +99,7 @@ fun AddBeanContent(
             Spacer(modifier = Modifier.height(12.dp))
             DatePicker(
                 onValueChange = onDateChanged,
-                value = viewState.roastDate,
+                value = viewState.bean.roastDate,
                 label = R.string.Beans__roast_date
             )
 

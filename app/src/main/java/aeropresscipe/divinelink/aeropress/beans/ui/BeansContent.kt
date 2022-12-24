@@ -45,6 +45,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import java.time.LocalDate
 
 const val ADD_BREW_BUTTON_TAG = "ADD_BREW_BUTTON"
 
@@ -189,7 +190,7 @@ class BeansContentViewStateProvider : PreviewParameterProvider<BeanTrackerViewSt
                     rating = index,
                     tastingNotes = "",
                     additionalNotes = "",
-                    roastDate = ""
+                    roastDate = LocalDate.now(),
                 )
             }.toMutableList()
 
