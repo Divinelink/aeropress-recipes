@@ -47,7 +47,7 @@ fun DatePicker(
         onClick = { dialogState.show() },
         label = label,
         trailingIcon = trailingIcon,
-        onValueChange = { },
+        onValueChange = { onValueChange(value ?: LocalDate.now()) },
     )
 }
 

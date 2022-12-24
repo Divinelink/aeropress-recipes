@@ -6,9 +6,9 @@ import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.core.content.ContextCompat
@@ -17,7 +17,7 @@ import gr.divinelink.core.util.extensions.getSerializable
 import gr.divinelink.core.util.utils.setNavigationBarColor
 
 @AndroidEntryPoint
-class AddBeanActivity : ComponentActivity() {
+class AddBeanActivity : AppCompatActivity() {
 
     private val viewModel: AddBeanViewModel by viewModels()
 

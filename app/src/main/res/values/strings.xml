@@ -119,7 +119,7 @@
 
     <!-- Beans -->
     <string name="Beans__bean_tracker">Beans</string>
-    <string name="Beans__add_bean">Add bean</string>
+    <string name="Beans__add_bean">Add Beans</string>
     <string name="Beans__details">Details</string>
     <string name="Beans__roast_level">Roast level</string>
     <string name="Beans__process">Process</string>
@@ -132,6 +132,9 @@
     <string name="Beans__roast_date">Roast date</string>
     <string name="Beans__roast_date_placeholder">Enter roast date</string>
     <string name="Beans__empty_bean_list_label">Keep track of the beans you’ve tried.\nAdd ratings, tasting notes and more.</string>
+
+    <string name="AddBeans__add_title">Add Beans</string>
+    <string name="AddBeans__update_title">Update Beans</string>
 
     <!-- Process Method -->
     <string name="ProcessMethod__washed">Washed</string>
