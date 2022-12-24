@@ -4,6 +4,7 @@ import aeropresscipe.divinelink.aeropress.addbeans.domain.usecase.AddBeanUseCase
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
 import aeropresscipe.divinelink.aeropress.beans.domain.model.RoastLevel
+import aeropresscipe.divinelink.aeropress.beans.domain.usecase.UpdateBeanUseCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,12 +13,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class AddBeanViewModel @Inject constructor(
-    //    private val fetchBeanUseCase: FetchBeanUseCase,
     private val addBeanUseCase: AddBeanUseCase,
+    private val updateBeanUseCase: UpdateBeanUseCase,
 ) : ViewModel() {
 
     private val _viewState: MutableStateFlow<AddBeanViewState> =
@@ -80,29 +82,16 @@ class AddBeanViewModel @Inject constructor(
 
     fun onSubmitClicked() {
         viewModelScope.launch {
-            val result = addBeanUseCase(viewState.value.bean)
-
-            when (result) {
-                is Result.Success -> {
-                    // Update the view state to success state.
-                }
-                is Result.Error -> {
-                    // Update the view state to error state.
-                }
-                is Result.Loading -> {
-                    // Update the view state to loading.
-                }
+            val result = if (viewState.value.bean.id.isEmpty()) {
+                addBeanUseCase(viewState.value.bean.copy(id = UUID.randomUUID().toString()))
+            } else {
+                updateBeanUseCase(viewState.value.bean)
             }
-        }
-    }
-
-    fun addBean(bean: Bean) {
-        viewModelScope.launch {
-            val result = addBeanUseCase(bean)
 
             when (result) {
                 is Result.Success -> {
                     // Update the view state to success state.
+                    _viewState.value = AddBeanViewState.Completed
                 }
                 is Result.Error -> {
                     // Update the view state to error state.
@@ -138,6 +127,9 @@ private fun MutableStateFlow<AddBeanViewState>.updateBean(
             this.value = AddBeanViewState.UpdateBean(
                 newBean.invoke(this.value.bean)
             )
+        }
+        AddBeanViewState.Completed -> {
+            // Intentionally Blank.
         }
     }
 }

@@ -30,6 +30,8 @@ sealed class AddBeanViewState(
         showLoading = false,
         title = R.string.AddBeans__update_title,
     )
+
+    object Completed : AddBeanViewState()
 }
 
 private fun emptyBean(): Bean {

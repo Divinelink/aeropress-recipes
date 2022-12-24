@@ -10,7 +10,7 @@ data class PersistableBean(
     val name: String,
     val roasterName: String,
     val origin: String,
-    val roastDate: String,
+    val roastDate: String?,
     val roastLevel: String,
     val process: String,
     val rating: Int,

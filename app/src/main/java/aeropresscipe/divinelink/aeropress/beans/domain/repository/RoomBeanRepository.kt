@@ -25,9 +25,11 @@ class RoomBeanRepository @Inject constructor(
     }
 
     override suspend fun addBean(bean: Bean): Result<Unit> {
-        beanDAO.insertBean(bean.toPersistableBean())
-
-        return Result.Success(Unit)
+        beanDAO
+            .insertBean(bean.toPersistableBean())
+            .also {
+                return Result.Success(Unit)
+            }
     }
 
     override suspend fun fetchBean(bean: Bean): Result<Bean> {
@@ -41,7 +43,7 @@ class RoomBeanRepository @Inject constructor(
 
     override suspend fun updateBean(bean: Bean): Result<Unit> {
         beanDAO
-            .updateTask(bean.toPersistableBean())
+            .updateBean(bean.toPersistableBean())
             .also {
                 return Result.Success(it)
             }
@@ -60,14 +62,17 @@ private fun LocalDate.toPersistableDateString(): String {
 }
 
 private fun PersistableBean.toBean(): Bean {
-    val roastDate = LocalDate.parse(this.roastDate, persistedDateFormatter)
-
+    val date: LocalDate? = this.roastDate?.let { date ->
+        LocalDate.parse(date, persistedDateFormatter).takeIf {
+            it is LocalDate
+        }
+    }
     return Bean(
         id = this.id,
         name = this.name,
         roasterName = this.roasterName,
         origin = this.origin,
-        roastDate = roastDate,
+        roastDate = date,
         roastLevel = enumValues<RoastLevel>().find { it.name == this.roasterName },
         process = enumValues<ProcessMethod>().find { it.name == this.process },
         rating = this.rating,
@@ -82,7 +87,7 @@ private fun Bean.toPersistableBean(): PersistableBean {
         name = this.name,
         roasterName = this.roasterName,
         origin = this.origin,
-        roastDate = this.roastDate?.toPersistableDateString() ?: "",
+        roastDate = this.roastDate?.toPersistableDateString(),
         roastLevel = this.roastLevel.toString(),
         process = this.process.toString(),
         rating = this.rating,

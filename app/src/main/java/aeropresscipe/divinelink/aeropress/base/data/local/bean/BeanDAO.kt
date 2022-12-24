@@ -24,5 +24,5 @@ interface BeanDAO {
     suspend fun insertBean(bean: PersistableBean)
 
     @Update
-    suspend fun updateTask(bean: PersistableBean)
+    suspend fun updateBean(bean: PersistableBean)
 }
