@@ -2,38 +2,48 @@ package aeropresscipe.divinelink.aeropress.addbeans.ui
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
-import androidx.annotation.StringRes
+import aeropresscipe.divinelink.aeropress.ui.UIText
 
 sealed class AddBeanViewState(
     open val showLoading: Boolean = true,
     open val bean: Bean = emptyBean(),
-    @StringRes open val submitButtonText: Int = R.string.save,
-    @StringRes open val title: Int = R.string.AddBeans__add_title,
+    open val submitButtonText: UIText = UIText.ResourceText(R.string.save),
+    open val title: UIText = UIText.ResourceText(R.string.AddBeans__add_title),
+    open val openRoastLevelDrawer: Boolean = false,
+    open val openProcessMethodDrawer: Boolean = false,
 ) {
 
     object Initial : AddBeanViewState()
 
     data class InsertBean(
         override val bean: Bean = emptyBean(),
+        override val openProcessMethodDrawer: Boolean = false,
+        override val openRoastLevelDrawer: Boolean = false,
     ) : AddBeanViewState(
-        submitButtonText = R.string.save,
+        submitButtonText = UIText.ResourceText(R.string.save),
         bean = bean,
         showLoading = false,
-        title = R.string.AddBeans__add_title,
+        title = UIText.ResourceText(R.string.AddBeans__add_title),
+        openProcessMethodDrawer = openProcessMethodDrawer,
+        openRoastLevelDrawer = openRoastLevelDrawer,
     )
 
     data class UpdateBean(
         override val bean: Bean,
+        override val openProcessMethodDrawer: Boolean = false,
+        override val openRoastLevelDrawer: Boolean = false,
     ) : AddBeanViewState(
         bean = bean,
-        submitButtonText = R.string.update,
+        submitButtonText = UIText.ResourceText(R.string.update),
         showLoading = false,
-        title = R.string.AddBeans__update_title,
+        title = UIText.ResourceText(R.string.AddBeans__update_title),
+        openProcessMethodDrawer = openProcessMethodDrawer,
+        openRoastLevelDrawer = openRoastLevelDrawer,
     )
 
     data class Completed(
-        override val submitButtonText: Int = R.string.save,
-        override val title: Int = R.string.AddBeans__add_title,
+        override val submitButtonText: UIText = UIText.ResourceText(R.string.save),
+        override val title: UIText = UIText.ResourceText(R.string.AddBeans__add_title),
     ) : AddBeanViewState(
         showLoading = false,
         submitButtonText = submitButtonText,
@@ -42,8 +52,8 @@ sealed class AddBeanViewState(
 
     data class Error(
         override val bean: Bean,
-        override val submitButtonText: Int = R.string.save,
-        override val title: Int = R.string.AddBeans__add_title,
+        override val submitButtonText: UIText = UIText.ResourceText(R.string.save),
+        override val title: UIText = UIText.ResourceText(R.string.AddBeans__add_title),
     ) : AddBeanViewState(
         bean = bean,
         showLoading = false,
