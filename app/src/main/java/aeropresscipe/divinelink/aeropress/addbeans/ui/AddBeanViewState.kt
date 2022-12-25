@@ -32,6 +32,13 @@ sealed class AddBeanViewState(
     )
 
     object Completed : AddBeanViewState()
+
+    data class Error(
+        override val bean: Bean,
+    ) : AddBeanViewState(
+        bean = bean,
+        showLoading = false,
+    )
 }
 
 private fun emptyBean(): Bean {

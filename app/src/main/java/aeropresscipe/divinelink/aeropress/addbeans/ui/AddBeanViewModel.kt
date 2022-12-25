@@ -88,24 +88,21 @@ class AddBeanViewModel @Inject constructor(
                 updateBeanUseCase(viewState.value.bean)
             }
 
-            when (result) {
-                is Result.Success -> {
-                    // Update the view state to success state.
-                    _viewState.value = AddBeanViewState.Completed
-                }
-                is Result.Error -> {
-                    // Update the view state to error state.
-                }
-                is Result.Loading -> {
-                    // Update the view state to loading.
-                }
+            if (result is Result.Success) {
+                // Update the view state to success state.
+                _viewState.value = AddBeanViewState.Completed
+            } else if (result is Result.Error) {
+                // Update the view state to error state.
+                _viewState.value = AddBeanViewState.Error(
+                    bean = viewState.value.bean,
+                )
             }
         }
     }
 }
 
 /**
- * Helper method to update Flow's  [bean] parameter.
+ * Helper method to update Flow's [bean] parameter.
  * This is called on every update method that can modify the [bean]'s property.
  * This method always return [AddBeanViewState.InsertBean] State if the user tries to update and current state is [AddBeanViewState.Initial].
  *
@@ -128,7 +125,9 @@ private fun MutableStateFlow<AddBeanViewState>.updateBean(
                 newBean.invoke(this.value.bean)
             )
         }
-        AddBeanViewState.Completed -> {
+        is AddBeanViewState.Completed,
+        is AddBeanViewState.Error,
+        -> {
             // Intentionally Blank.
         }
     }

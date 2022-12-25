@@ -1,10 +1,14 @@
 package aeropresscipe.divinelink.aeropress.addbeans.ui
 
+import aeropresscipe.divinelink.aeropress.MainDispatcherRule
+import aeropresscipe.divinelink.aeropress.beans.domain.model.AddBeanResult
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
 import aeropresscipe.divinelink.aeropress.beans.domain.model.RoastLevel
+import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.junit.Rule
 import java.time.LocalDate
 import java.util.UUID
 import kotlin.test.Test
@@ -14,6 +18,9 @@ import kotlin.test.Test
 class AddBeanViewModelTest {
 
     private val testRobot = AddBeanViewModelRobot()
+
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
 
     private val testBean = Bean(
         id = UUID.randomUUID().toString(),
@@ -174,6 +181,45 @@ class AddBeanViewModelTest {
                 )
             )
     }
+
+    @Test
+    fun `given empty bean when submit clicked then I expect random UUID`() = runTest {
+        val response: Result<AddBeanResult> = Result.Success(data = AddBeanResult.Success)
+        testRobot
+            .mockAddBeanResult(
+                response = response
+            )
+            .buildViewModel()
+            .onBeanNameChanged("update name")
+            .onSubmitClicked()
+            .assertViewState(AddBeanViewState.Completed)
+    }
+
+    @Test
+    fun `given a random bean when submit clicked then I expect update use case with Completed State`() = runTest {
+        val successResult: Result<Unit> = Result.Success(data = Unit)
+        testRobot
+            .mockUpdateBeanResult(successResult)
+            .buildViewModel()
+            .onSetBean(testBean)
+            .onSubmitClicked()
+            .onBeanNameChanged("update name")
+            .onSubmitClicked()
+            .assertViewState(AddBeanViewState.Completed)
+            .assertFalseViewState(AddBeanViewState.Error(testBean.copy(name = "update name")))
+    }
+
+    @Test
+    fun `given fail result when submit then I expect error state`() = runTest {
+        testRobot
+            .mockUpdateBeanResult(Result.Error(Exception()))
+            .buildViewModel()
+            .onSetBean(testBean)
+            .onSubmitClicked()
+            .assertViewState(AddBeanViewState.Error(testBean))
+            .assertFalseViewState(AddBeanViewState.Completed)
+    }
+
     //    fun onRoastLevelClicked() = apply {
     //        viewModel.onRoastLevelClicked()
     //    }

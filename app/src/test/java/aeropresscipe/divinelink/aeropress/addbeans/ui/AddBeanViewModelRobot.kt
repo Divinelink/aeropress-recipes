@@ -1,10 +1,12 @@
 package aeropresscipe.divinelink.aeropress.addbeans.ui
 
 import aeropresscipe.divinelink.aeropress.MainDispatcherRule
-import aeropresscipe.divinelink.aeropress.addbeans.domain.usecase.AddBeanUseCase
+import aeropresscipe.divinelink.aeropress.beans.domain.model.AddBeanResult
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
-import aeropresscipe.divinelink.aeropress.fakes.FakeBeanRepository
+import aeropresscipe.divinelink.aeropress.fakes.usecase.FakeAddBeanUseCase
+import aeropresscipe.divinelink.aeropress.fakes.usecase.FakeUpdateBeanUseCase
 import com.google.common.truth.Truth.assertThat
+import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
 import java.time.LocalDate
@@ -14,23 +16,29 @@ class AddBeanViewModelRobot {
 
     private lateinit var viewModel: AddBeanViewModel
 
+    private val fakeAddBeanUseCase = FakeAddBeanUseCase()
+    private val fakeUpdateBeanUseCase = FakeUpdateBeanUseCase()
+
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
-    private val testDispatcher = mainDispatcherRule.testDispatcher
-
-    private val fakeBeanRepository = FakeBeanRepository()
 
     fun buildViewModel() = apply {
         viewModel = AddBeanViewModel(
-            addBeanUseCase = AddBeanUseCase(
-                beanRepository = fakeBeanRepository.mock,
-                dispatcher = testDispatcher
-            ),
-//            updateBeanUseCase = UpdateBeanUseCase(
-//                beanRepository = fakeBeanRepository.mock,
-//                dispatcher = testDispatcher
-//            )
+            addBeanUseCase = fakeAddBeanUseCase.mock,
+            updateBeanUseCase = fakeUpdateBeanUseCase.mock,
         )
+    }
+
+    suspend fun mockAddBeanResult(
+        response: Result<AddBeanResult>,
+    ) = apply {
+        fakeAddBeanUseCase.mockAddBeanResult(response)
+    }
+
+    suspend fun mockUpdateBeanResult(
+        response: Result<Unit>,
+    ) = apply {
+        fakeUpdateBeanUseCase.mockResultUpdateBean(response)
     }
 
     fun assertViewState(
@@ -81,7 +89,7 @@ class AddBeanViewModelRobot {
         viewModel.onProcessClicked()
     }
 
-    fun onAddBean(bean: Bean) = apply {
-        viewModel.addBean(bean)
+    fun onSubmitClicked() = apply {
+        viewModel.onSubmitClicked()
     }
 }
