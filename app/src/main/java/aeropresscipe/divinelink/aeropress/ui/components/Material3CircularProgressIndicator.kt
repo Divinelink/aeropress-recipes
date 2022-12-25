@@ -1,4 +1,4 @@
-package aeropresscipe.divinelink.aeropress.components
+package aeropresscipe.divinelink.aeropress.ui.components
 
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ProgressIndicatorDefaults

@@ -5,8 +5,8 @@ import aeropresscipe.divinelink.aeropress.addbeans.ui.AddBeanActivity
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
 import aeropresscipe.divinelink.aeropress.beans.domain.model.RoastLevel
-import aeropresscipe.divinelink.aeropress.components.ExtendableFloatingActionButton
-import aeropresscipe.divinelink.aeropress.components.Material3CircularProgressIndicator
+import aeropresscipe.divinelink.aeropress.ui.components.ExtendableFloatingActionButton
+import aeropresscipe.divinelink.aeropress.ui.components.Material3CircularProgressIndicator
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import aeropresscipe.divinelink.aeropress.ui.theme.FabSize
 import android.content.res.Configuration
