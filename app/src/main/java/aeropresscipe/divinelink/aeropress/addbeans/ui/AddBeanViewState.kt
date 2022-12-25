@@ -31,13 +31,24 @@ sealed class AddBeanViewState(
         title = R.string.AddBeans__update_title,
     )
 
-    object Completed : AddBeanViewState()
+    data class Completed(
+        override val submitButtonText: Int = R.string.save,
+        override val title: Int = R.string.AddBeans__add_title,
+    ) : AddBeanViewState(
+        showLoading = false,
+        submitButtonText = submitButtonText,
+        title = title,
+    )
 
     data class Error(
         override val bean: Bean,
+        override val submitButtonText: Int = R.string.save,
+        override val title: Int = R.string.AddBeans__add_title,
     ) : AddBeanViewState(
         bean = bean,
         showLoading = false,
+        submitButtonText = submitButtonText,
+        title = title,
     )
 }
 

@@ -47,10 +47,14 @@ fun AddBeanContent(
     onRoastLevelClick: () -> Unit,
     onProcessClick: () -> Unit,
     onSubmitClicked: () -> Unit,
+    navigateUp: () -> Unit,
 ) {
 
     LaunchedEffect(viewState as? AddBeanViewState.Completed) {
         // Go Back
+        if (viewState is AddBeanViewState.Completed) {
+            navigateUp()
+        }
     }
 
     Scaffold(
@@ -64,7 +68,7 @@ fun AddBeanContent(
                 },
                 navigationIcon = {
                     IconButton(onClick = {
-                        /* Do Something*/
+                        navigateUp()
                     }) {
                         Icon(Icons.Filled.Close, null)
                     }
@@ -166,6 +170,7 @@ fun BeansScreenPreview() {
                 onRoastLevelChanged = {},
                 onProcessChanged = {},
                 onSubmitClicked = {},
+                navigateUp = {},
             )
         }
     }

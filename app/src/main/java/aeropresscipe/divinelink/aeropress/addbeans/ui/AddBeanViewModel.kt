@@ -89,12 +89,15 @@ class AddBeanViewModel @Inject constructor(
             }
 
             if (result is Result.Success) {
-                // Update the view state to success state.
-                _viewState.value = AddBeanViewState.Completed
+                _viewState.value = AddBeanViewState.Completed(
+                    submitButtonText = viewState.value.submitButtonText,
+                    title = viewState.value.title,
+                )
             } else if (result is Result.Error) {
-                // Update the view state to error state.
                 _viewState.value = AddBeanViewState.Error(
                     bean = viewState.value.bean,
+                    submitButtonText = viewState.value.submitButtonText,
+                    title = viewState.value.title,
                 )
             }
         }

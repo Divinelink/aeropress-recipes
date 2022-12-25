@@ -1,6 +1,7 @@
 package aeropresscipe.divinelink.aeropress.addbeans.ui
 
 import aeropresscipe.divinelink.aeropress.MainDispatcherRule
+import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.beans.domain.model.AddBeanResult
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
@@ -192,7 +193,12 @@ class AddBeanViewModelTest {
             .buildViewModel()
             .onBeanNameChanged("update name")
             .onSubmitClicked()
-            .assertViewState(AddBeanViewState.Completed)
+            .assertViewState(
+                AddBeanViewState.Completed(
+                    submitButtonText = R.string.save,
+                    title = R.string.AddBeans__add_title,
+                )
+            )
     }
 
     @Test
@@ -205,7 +211,12 @@ class AddBeanViewModelTest {
             .onSubmitClicked()
             .onBeanNameChanged("update name")
             .onSubmitClicked()
-            .assertViewState(AddBeanViewState.Completed)
+            .assertViewState(
+                AddBeanViewState.Completed(
+                    submitButtonText = R.string.update,
+                    title = R.string.AddBeans__update_title,
+                )
+            )
             .assertFalseViewState(AddBeanViewState.Error(testBean.copy(name = "update name")))
     }
 
@@ -216,8 +227,19 @@ class AddBeanViewModelTest {
             .buildViewModel()
             .onSetBean(testBean)
             .onSubmitClicked()
-            .assertViewState(AddBeanViewState.Error(testBean))
-            .assertFalseViewState(AddBeanViewState.Completed)
+            .assertViewState(
+                AddBeanViewState.Error(
+                    testBean,
+                    submitButtonText = R.string.update,
+                    title = R.string.AddBeans__update_title,
+                )
+            )
+            .assertFalseViewState(
+                AddBeanViewState.Completed(
+                    submitButtonText = R.string.update,
+                    title = R.string.AddBeans__update_title,
+                )
+            )
     }
 
     //    fun onRoastLevelClicked() = apply {

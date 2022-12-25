@@ -43,6 +43,7 @@ class AddBeanActivity : AppCompatActivity() {
                         onRoastLevelClick = viewModel::onRoastLevelClicked,
                         onProcessClick = viewModel::onProcessClicked,
                         onSubmitClicked = viewModel::onSubmitClicked,
+                        navigateUp = { finish() },
                     )
                 }
             }
