@@ -21,6 +21,13 @@ class FakeBeanRepository {
         whenever(mock.addBean(bean)).thenReturn(beanResult)
     }
 
+    suspend fun mockUpdateBeanResult(
+        bean: Bean,
+        beanResult: Result<Unit>,
+    ) {
+        whenever(mock.updateBean(bean)).thenReturn(beanResult)
+    }
+
     fun mockFetchAllBeansResult(
         response: Result<List<Bean>>,
     ) {

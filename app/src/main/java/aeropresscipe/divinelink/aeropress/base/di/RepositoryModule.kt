@@ -1,7 +1,7 @@
 package aeropresscipe.divinelink.aeropress.base.di
 
 import aeropresscipe.divinelink.aeropress.beans.domain.repository.BeanRepository
-import aeropresscipe.divinelink.aeropress.beans.domain.repository.DemoBeanRepository
+import aeropresscipe.divinelink.aeropress.beans.domain.repository.RoomBeanRepository
 import aeropresscipe.divinelink.aeropress.favorites.domain.repository.FavoritesRepository
 import aeropresscipe.divinelink.aeropress.favorites.domain.repository.RoomFavoritesRepository
 import aeropresscipe.divinelink.aeropress.recipe.RecipeRepository
@@ -38,6 +38,6 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindBeanRepository(
-        beanRepository: DemoBeanRepository,
+        beanRepository: RoomBeanRepository,
     ): BeanRepository
 }

@@ -190,6 +190,7 @@ class HomeActivity :
                     dice = state.dice,
                     onViewAttached = {
                         recipeFragment.updateBottomPadding(padding)
+                        beanTrackerFragment.updateBottomPadding(padding)
                         favoritesFragment.updateBottomPadding(recyclerViewPadding)
                         historyFragment.updateBottomPadding(recyclerViewPadding)
                     }
@@ -201,6 +202,7 @@ class HomeActivity :
     override fun handleHideResumeButtonState() {
         binding.timerProgressView.dispose()
         recipeFragment.updateBottomPadding(DimensionUnit.DP.toPixels(0F).toInt())
+        beanTrackerFragment.updateBottomPadding(DimensionUnit.DP.toPixels(0F).toInt())
         favoritesFragment.updateBottomPadding(DimensionUnit.DP.toPixels(PAD_BOTTOM_OF_RECYCLER).toInt())
         historyFragment.updateBottomPadding(DimensionUnit.DP.toPixels(PAD_BOTTOM_OF_RECYCLER).toInt())
     }

@@ -23,7 +23,7 @@ class DemoBeanRepository @Inject constructor() : BeanRepository {
             rating = 0,
             tastingNotes = "",
             additionalNotes = "",
-            roastDate = ""
+            roastDate = null,
         )
     }.toMutableList()
 

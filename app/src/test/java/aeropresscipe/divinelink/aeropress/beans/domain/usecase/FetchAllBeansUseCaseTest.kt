@@ -12,6 +12,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.time.LocalDate
 import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
@@ -39,7 +40,7 @@ class FetchAllBeansUseCaseTest {
             rating = 0,
             tastingNotes = "",
             additionalNotes = "",
-            roastDate = ""
+            roastDate = LocalDate.now(),
         )
     }.toMutableList()
 

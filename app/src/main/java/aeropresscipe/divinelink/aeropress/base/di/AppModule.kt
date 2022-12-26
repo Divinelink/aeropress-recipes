@@ -1,7 +1,7 @@
 package aeropresscipe.divinelink.aeropress.base.di
 
-import aeropresscipe.divinelink.aeropress.base.HomeDatabase
-import aeropresscipe.divinelink.aeropress.base.HomeDatabase.Companion.DB_NAME
+import aeropresscipe.divinelink.aeropress.base.data.local.HomeDatabase
+import aeropresscipe.divinelink.aeropress.base.data.local.HomeDatabase.Companion.DB_NAME
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
@@ -23,7 +23,7 @@ object AppModule {
     @Singleton // Tell Dagger-Hilt to create a singleton accessible everywhere in ApplicationComponent (i.e. everywhere in the application)
     @Provides
     fun provideYourDatabase(
-        @ApplicationContext app: Context
+        @ApplicationContext app: Context,
     ) = Room.databaseBuilder(
         app,
         HomeDatabase::class.java,
@@ -42,6 +42,10 @@ object AppModule {
     @Provides
     fun provideSavedRecipeDao(db: HomeDatabase) = db.favoritesDao()
 
+    @Singleton
+    @Provides
+    fun provideBeanDAO(db: HomeDatabase) = db.beanDAO()
+
     @ApplicationContext
     @Provides
     fun providesApplicationContext() = Application()
@@ -50,7 +54,7 @@ object AppModule {
     @Singleton
     @Provides
     fun providesApplicationScope(
-        @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
+        @DefaultDispatcher defaultDispatcher: CoroutineDispatcher,
     ): CoroutineScope = CoroutineScope(SupervisorJob() + defaultDispatcher)
 
     @Provides
