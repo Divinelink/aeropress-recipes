@@ -6,6 +6,7 @@ import aeropresscipe.divinelink.aeropress.beans.domain.model.AddBeanResult
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
 import aeropresscipe.divinelink.aeropress.beans.domain.model.RoastLevel
+import aeropresscipe.divinelink.aeropress.ui.UIText
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -195,8 +196,8 @@ class AddBeanViewModelTest {
             .onSubmitClicked()
             .assertViewState(
                 AddBeanViewState.Completed(
-                    submitButtonText = R.string.save,
-                    title = R.string.AddBeans__add_title,
+                    submitButtonText = UIText.ResourceText(R.string.save),
+                    title = UIText.ResourceText(R.string.AddBeans__add_title),
                 )
             )
     }
@@ -213,8 +214,8 @@ class AddBeanViewModelTest {
             .onSubmitClicked()
             .assertViewState(
                 AddBeanViewState.Completed(
-                    submitButtonText = R.string.update,
-                    title = R.string.AddBeans__update_title,
+                    submitButtonText = UIText.ResourceText(R.string.update),
+                    title = UIText.ResourceText(R.string.AddBeans__update_title),
                 )
             )
             .assertFalseViewState(AddBeanViewState.Error(testBean.copy(name = "update name")))
@@ -230,14 +231,14 @@ class AddBeanViewModelTest {
             .assertViewState(
                 AddBeanViewState.Error(
                     testBean,
-                    submitButtonText = R.string.update,
-                    title = R.string.AddBeans__update_title,
+                    submitButtonText = UIText.ResourceText(R.string.update),
+                    title = UIText.ResourceText(R.string.AddBeans__update_title),
                 )
             )
             .assertFalseViewState(
                 AddBeanViewState.Completed(
-                    submitButtonText = R.string.update,
-                    title = R.string.AddBeans__update_title,
+                    submitButtonText = UIText.ResourceText(R.string.update),
+                    title = UIText.ResourceText(R.string.AddBeans__update_title),
                 )
             )
     }
