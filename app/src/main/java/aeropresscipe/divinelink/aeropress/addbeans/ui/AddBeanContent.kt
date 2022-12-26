@@ -6,6 +6,7 @@ import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.ui.components.CustomOutlinedTextField
 import aeropresscipe.divinelink.aeropress.ui.components.DatePicker
 import aeropresscipe.divinelink.aeropress.ui.components.SelectOptionField
+import aeropresscipe.divinelink.aeropress.ui.getString
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
@@ -62,7 +63,7 @@ fun AddBeanContent(
             TopAppBar(
                 title = {
                     Text(
-                        text = stringResource(id = viewState.title),
+                        text = viewState.title.getString(),
                         style = MaterialTheme.typography.titleMedium
                     )
                 },
@@ -146,7 +147,7 @@ fun AddBeanContent(
                     modifier = Modifier.fillMaxWidth(0.5F),
                     onClick = { onSubmitClicked() }
                 ) {
-                    Text(stringResource(viewState.submitButtonText))
+                    Text(viewState.submitButtonText.getString())
                 }
             }
         }
