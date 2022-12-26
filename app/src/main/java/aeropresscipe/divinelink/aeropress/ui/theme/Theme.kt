@@ -40,4 +40,9 @@ fun ColorScheme.textColorDisabled(): Color {
     return MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
 }
 
+@Composable
+fun topBarColor(): Color {
+    return MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.30f)
+}
+
 val FabSize = 56.dp
