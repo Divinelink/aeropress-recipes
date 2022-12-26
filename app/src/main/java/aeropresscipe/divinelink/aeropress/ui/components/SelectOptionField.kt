@@ -1,7 +1,6 @@
-package aeropresscipe.divinelink.aeropress.beans
+package aeropresscipe.divinelink.aeropress.ui.components
 
 import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.components.CustomOutlinedTextField
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import aeropresscipe.divinelink.aeropress.ui.theme.HorizontalIconPadding
 import aeropresscipe.divinelink.aeropress.ui.theme.TextFieldShape

@@ -1,4 +1,4 @@
-package aeropresscipe.divinelink.aeropress.components
+package aeropresscipe.divinelink.aeropress.ui.components
 
 import aeropresscipe.divinelink.aeropress.ui.theme.MaterialCardShape
 import androidx.compose.foundation.BorderStroke

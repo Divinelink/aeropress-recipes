@@ -1,7 +1,6 @@
-package aeropresscipe.divinelink.aeropress.components
+package aeropresscipe.divinelink.aeropress.ui.components
 
 import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.beans.SelectOptionField
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import android.content.res.Configuration
 import androidx.annotation.DrawableRes

@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.UUID
@@ -73,11 +74,19 @@ class AddBeanViewModel @Inject constructor(
     }
 
     fun onRoastLevelClicked() {
-        // τοδο
+        _viewState.update { viewState ->
+            viewState.copy(
+                openRoastLevelDrawer = true
+            )
+        }
     }
 
     fun onProcessClicked() {
-        // τοδο
+        _viewState.update { viewState ->
+            viewState.copy(
+                openProcessMethodDrawer = true
+            )
+        }
     }
 
     fun onSubmitClicked() {
@@ -133,5 +142,38 @@ private fun MutableStateFlow<AddBeanViewState>.updateBean(
         -> {
             // Intentionally Blank.
         }
+    }
+}
+
+/**
+ * A helper method that enabled us to update the desired properties on the current ViewState.
+ * This is needed since Sealed Classes doesn't have a copy method.
+ */
+private fun AddBeanViewState.copy(
+    bean: Bean? = null,
+    openProcessMethodDrawer: Boolean? = null,
+    openRoastLevelDrawer: Boolean? = null,
+): AddBeanViewState {
+    return when (this) {
+        is AddBeanViewState.Initial -> AddBeanViewState.Initial
+        is AddBeanViewState.Error -> AddBeanViewState.Error(
+            bean = this.bean,
+            submitButtonText = this.submitButtonText,
+            title = this.title,
+        )
+        is AddBeanViewState.Completed -> AddBeanViewState.Completed(
+            submitButtonText = this.submitButtonText,
+            title = this.title
+        )
+        is AddBeanViewState.InsertBean -> AddBeanViewState.InsertBean(
+            bean = bean ?: this.bean,
+            openProcessMethodDrawer = openProcessMethodDrawer ?: this.openProcessMethodDrawer,
+            openRoastLevelDrawer = openRoastLevelDrawer ?: this.openRoastLevelDrawer
+        )
+        is AddBeanViewState.UpdateBean -> AddBeanViewState.UpdateBean(
+            bean = bean ?: this.bean,
+            openProcessMethodDrawer = openProcessMethodDrawer ?: this.openProcessMethodDrawer,
+            openRoastLevelDrawer = openRoastLevelDrawer ?: this.openRoastLevelDrawer
+        )
     }
 }
