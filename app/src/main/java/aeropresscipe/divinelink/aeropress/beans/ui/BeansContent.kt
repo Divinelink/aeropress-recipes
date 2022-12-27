@@ -12,9 +12,9 @@ import aeropresscipe.divinelink.aeropress.ui.theme.FabSize
 import aeropresscipe.divinelink.aeropress.ui.theme.topBarColor
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentSize
@@ -27,7 +27,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -95,7 +94,7 @@ fun BeansContent(
     }
 
     Scaffold(
-        contentWindowInsets = ScaffoldDefaults.contentWindowInsets,
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
         modifier = Modifier
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         floatingActionButton = {
@@ -122,7 +121,6 @@ fun BeansContent(
                 },
                 scrollBehavior = scrollBehavior,
                 colors = scrollColors,
-                windowInsets = TopAppBarDefaults.windowInsets,
             )
         },
     ) { paddingValues ->
@@ -154,7 +152,6 @@ private fun AddBeanButton(
         modifier = modifier
             .height(FabSize)
             .widthIn(min = FabSize)
-            .navigationBarsPadding()
             .testTag(ADD_BREW_BUTTON_TAG),
         extended = extended,
         text = {
