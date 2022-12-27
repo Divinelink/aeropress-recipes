@@ -1,12 +1,14 @@
 package aeropresscipe.divinelink.aeropress.beans.domain.usecase
 
 import aeropresscipe.divinelink.aeropress.MainDispatcherRule
+import aeropresscipe.divinelink.aeropress.beans.domain.model.AddBeanResult
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
 import aeropresscipe.divinelink.aeropress.beans.domain.model.RoastLevel
 import aeropresscipe.divinelink.aeropress.fakes.FakeBeanRepository
 import com.google.common.truth.Truth.assertThat
 import gr.divinelink.core.util.domain.Result
+import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -53,7 +55,7 @@ class UpdateBeanUseCaseTest {
         val useCase = UpdateBeanUseCase(beanRepository.mock, testDispatcher)
         val result = useCase(bean)
 
-        assertThat(result).isEqualTo(Result.Success(Unit))
+        assertThat(result.data).isEqualTo(AddBeanResult.Success)
     }
 
     @Test
@@ -69,7 +71,7 @@ class UpdateBeanUseCaseTest {
 
         val useCase = UpdateBeanUseCase(beanRepository.mock, testDispatcher)
         val result = useCase(bean)
-        assertThat(result).isInstanceOf(Result.Error::class.java)
+        assertThat(result.data).isEqualTo(AddBeanResult.Failure.Unknown)
     }
 
     @Test
@@ -85,5 +87,22 @@ class UpdateBeanUseCaseTest {
         val result = useCase(bean)
 
         assertThat(result).isInstanceOf(Result.Error::class.java)
+    }
+
+    @Test
+    fun `on empty bean name I expect EmptyName Error`() = runTest {
+        val addBeanResponse = Result.Error(
+            Exception("Empty Name")
+        )
+
+        beanRepository.givenAddBeanResult(
+            bean = bean.copy(name = ""),
+            beanResult = addBeanResponse,
+        )
+
+        val useCase = UpdateBeanUseCase(beanRepository.mock, testDispatcher)
+        val result = useCase(bean.copy(name = ""))
+
+        assertThat(result.data).isEqualTo(AddBeanResult.Failure.EmptyName)
     }
 }

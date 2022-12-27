@@ -65,8 +65,10 @@ class AddBeanViewModelTest {
             .buildViewModel()
             .onSetBean(testBean)
             .assertViewState(
-                AddBeanViewState.UpdateBean(
+                AddBeanViewState.ModifyBean(
                     bean = testBean,
+                    title = UIText.ResourceText(R.string.AddBeans__update_title),
+                    submitButtonText = UIText.ResourceText(R.string.update),
                 )
             )
     }
@@ -78,8 +80,10 @@ class AddBeanViewModelTest {
             .onSetBean(null)
             .onBeanNameChanged("name changed")
             .assertViewState(
-                AddBeanViewState.InsertBean(
+                AddBeanViewState.ModifyBean(
                     bean = emptyBean().copy(name = "name changed"),
+                    title = UIText.ResourceText(R.string.AddBeans__add_title),
+                    submitButtonText = UIText.ResourceText(R.string.save),
                 )
             )
     }
@@ -90,8 +94,10 @@ class AddBeanViewModelTest {
             .buildViewModel()
             .onBeanNameChanged("name changed")
             .assertViewState(
-                AddBeanViewState.InsertBean(
+                AddBeanViewState.ModifyBean(
                     bean = emptyBean().copy(name = "name changed"),
+                    title = UIText.ResourceText(R.string.AddBeans__add_title),
+                    submitButtonText = UIText.ResourceText(R.string.save),
                 )
             )
     }
@@ -102,8 +108,10 @@ class AddBeanViewModelTest {
             .buildViewModel()
             .onRoasterNameChanged("roaster name changed")
             .assertViewState(
-                AddBeanViewState.InsertBean(
+                AddBeanViewState.ModifyBean(
                     bean = emptyBean().copy(roasterName = "roaster name changed"),
+                    title = UIText.ResourceText(R.string.AddBeans__add_title),
+                    submitButtonText = UIText.ResourceText(R.string.save),
                 )
             )
     }
@@ -114,8 +122,10 @@ class AddBeanViewModelTest {
             .buildViewModel()
             .onOriginChanged("origin name changed")
             .assertViewState(
-                AddBeanViewState.InsertBean(
+                AddBeanViewState.ModifyBean(
                     bean = emptyBean().copy(origin = "origin name changed"),
+                    title = UIText.ResourceText(R.string.AddBeans__add_title),
+                    submitButtonText = UIText.ResourceText(R.string.save),
                 )
             )
     }
@@ -126,8 +136,10 @@ class AddBeanViewModelTest {
             .buildViewModel()
             .onDateChanged(LocalDate.now())
             .assertViewState(
-                AddBeanViewState.InsertBean(
+                AddBeanViewState.ModifyBean(
                     bean = emptyBean().copy(roastDate = LocalDate.now()),
+                    title = UIText.ResourceText(R.string.AddBeans__add_title),
+                    submitButtonText = UIText.ResourceText(R.string.save),
                 )
             )
     }
@@ -138,8 +150,10 @@ class AddBeanViewModelTest {
             .buildViewModel()
             .onRoastLevelChanged(RoastLevel.Medium.name)
             .assertViewState(
-                AddBeanViewState.InsertBean(
+                AddBeanViewState.ModifyBean(
                     bean = emptyBean().copy(roastLevel = RoastLevel.Medium),
+                    title = UIText.ResourceText(R.string.AddBeans__add_title),
+                    submitButtonText = UIText.ResourceText(R.string.save),
                 )
             )
     }
@@ -150,8 +164,10 @@ class AddBeanViewModelTest {
             .buildViewModel()
             .onProcessChanged(ProcessMethod.Natural.name)
             .assertViewState(
-                AddBeanViewState.InsertBean(
+                AddBeanViewState.ModifyBean(
                     bean = emptyBean().copy(process = ProcessMethod.Natural),
+                    title = UIText.ResourceText(R.string.AddBeans__add_title),
+                    submitButtonText = UIText.ResourceText(R.string.save),
                 )
             )
     }
@@ -167,7 +183,7 @@ class AddBeanViewModelTest {
             .onOriginChanged("Ethiopia")
             .onRoasterNameChanged("Omsom Roastery")
             .assertViewState(
-                AddBeanViewState.InsertBean(
+                AddBeanViewState.ModifyBean(
                     bean = Bean(
                         id = "",
                         name = "Guji",
@@ -180,6 +196,8 @@ class AddBeanViewModelTest {
                         tastingNotes = "",
                         additionalNotes = ""
                     ),
+                    title = UIText.ResourceText(R.string.AddBeans__add_title),
+                    submitButtonText = UIText.ResourceText(R.string.save),
                 )
             )
     }
@@ -204,7 +222,7 @@ class AddBeanViewModelTest {
 
     @Test
     fun `given a random bean when submit clicked then I expect update use case with Completed State`() = runTest {
-        val successResult: Result<Unit> = Result.Success(data = Unit)
+        val successResult: Result<AddBeanResult> = Result.Success(AddBeanResult.Success)
         testRobot
             .mockUpdateBeanResult(successResult)
             .buildViewModel()
@@ -218,7 +236,14 @@ class AddBeanViewModelTest {
                     title = UIText.ResourceText(R.string.AddBeans__update_title),
                 )
             )
-            .assertFalseViewState(AddBeanViewState.Error(testBean.copy(name = "update name")))
+            .assertFalseViewState(
+                AddBeanViewState.Error(
+                    bean = testBean.copy(name = "update name"),
+                    title = UIText.ResourceText(R.string.AddBeans__update_title),
+                    submitButtonText = UIText.ResourceText(R.string.update),
+                    error = AddBeanResult.Failure.Unknown
+                )
+            )
     }
 
     @Test
@@ -230,9 +255,33 @@ class AddBeanViewModelTest {
             .onSubmitClicked()
             .assertViewState(
                 AddBeanViewState.Error(
-                    testBean,
+                    bean = testBean,
+                    title = UIText.ResourceText(R.string.AddBeans__update_title),
+                    submitButtonText = UIText.ResourceText(R.string.update),
+                    error = AddBeanResult.Failure.Unknown,
+                )
+            )
+            .assertFalseViewState(
+                AddBeanViewState.Completed(
                     submitButtonText = UIText.ResourceText(R.string.update),
                     title = UIText.ResourceText(R.string.AddBeans__update_title),
+                )
+            )
+    }
+
+    @Test
+    fun `given empty name result data when submit then I expect error state`() = runTest {
+        testRobot
+            .mockUpdateBeanResult(Result.Success(AddBeanResult.Failure.EmptyName))
+            .buildViewModel()
+            .onSetBean(testBean.copy(name = ""))
+            .onSubmitClicked()
+            .assertViewState(
+                AddBeanViewState.Error(
+                    bean = testBean.copy(name = ""),
+                    title = UIText.ResourceText(R.string.AddBeans__update_title),
+                    submitButtonText = UIText.ResourceText(R.string.update),
+                    error = AddBeanResult.Failure.EmptyName,
                 )
             )
             .assertFalseViewState(
