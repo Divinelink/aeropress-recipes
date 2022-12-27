@@ -1,14 +1,17 @@
 package aeropresscipe.divinelink.aeropress.addbeans.ui
 
+import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.addbeans.domain.usecase.AddBeanUseCase
+import aeropresscipe.divinelink.aeropress.beans.domain.model.AddBeanResult
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
 import aeropresscipe.divinelink.aeropress.beans.domain.model.RoastLevel
 import aeropresscipe.divinelink.aeropress.beans.domain.usecase.UpdateBeanUseCase
+import aeropresscipe.divinelink.aeropress.ui.UIText
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import gr.divinelink.core.util.domain.Result
+import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -28,12 +31,17 @@ class AddBeanViewModel @Inject constructor(
     val viewState: StateFlow<AddBeanViewState> = _viewState
 
     fun setBean(bean: Bean?) {
-        if (bean != null) {
-            _viewState.value = AddBeanViewState.UpdateBean(
-                bean = bean,
+        if (bean == null) {
+            _viewState.value = AddBeanViewState.ModifyBean(
+                title = UIText.ResourceText(R.string.AddBeans__add_title),
+                submitButtonText = UIText.ResourceText(R.string.save),
             )
         } else {
-            _viewState.value = AddBeanViewState.InsertBean()
+            _viewState.value = AddBeanViewState.ModifyBean(
+                bean = bean,
+                title = UIText.ResourceText(R.string.AddBeans__update_title),
+                submitButtonText = UIText.ResourceText(R.string.update),
+            )
         }
     }
 
@@ -97,17 +105,29 @@ class AddBeanViewModel @Inject constructor(
                 updateBeanUseCase(viewState.value.bean)
             }
 
-            if (result is Result.Success) {
-                _viewState.value = AddBeanViewState.Completed(
-                    submitButtonText = viewState.value.submitButtonText,
-                    title = viewState.value.title,
-                )
-            } else if (result is Result.Error) {
-                _viewState.value = AddBeanViewState.Error(
-                    bean = viewState.value.bean,
-                    submitButtonText = viewState.value.submitButtonText,
-                    title = viewState.value.title,
-                )
+            _viewState.value = when (result.data) {
+                AddBeanResult.Success -> {
+                    AddBeanViewState.Completed(
+                        submitButtonText = viewState.value.submitButtonText,
+                        title = viewState.value.title,
+                    )
+                }
+                AddBeanResult.Failure.EmptyName -> {
+                    AddBeanViewState.Error(
+                        AddBeanResult.Failure.EmptyName,
+                        bean = viewState.value.bean,
+                        submitButtonText = viewState.value.submitButtonText,
+                        title = viewState.value.title,
+                    )
+                }
+                else -> {
+                    AddBeanViewState.Error(
+                        AddBeanResult.Failure.Unknown,
+                        bean = viewState.value.bean,
+                        submitButtonText = viewState.value.submitButtonText,
+                        title = viewState.value.title,
+                    )
+                }
             }
         }
     }
@@ -126,20 +146,18 @@ private fun MutableStateFlow<AddBeanViewState>.updateBean(
 ) {
     when (this.value) {
         is AddBeanViewState.Initial,
-        is AddBeanViewState.InsertBean,
-        -> {
-            this.value = AddBeanViewState.InsertBean(
-                newBean.invoke(this.value.bean)
-            )
-        }
-        is AddBeanViewState.UpdateBean -> {
-            this.value = AddBeanViewState.UpdateBean(
-                newBean.invoke(this.value.bean)
-            )
-        }
-        is AddBeanViewState.Completed,
+        is AddBeanViewState.ModifyBean,
         is AddBeanViewState.Error,
         -> {
+            this.value = AddBeanViewState.ModifyBean(
+                newBean.invoke(this.value.bean),
+                title = this.value.title,
+                submitButtonText = this.value.submitButtonText,
+                openProcessMethodDrawer = this.value.openProcessMethodDrawer,
+                openRoastLevelDrawer = this.value.openRoastLevelDrawer,
+            )
+        }
+        is AddBeanViewState.Completed -> {
             // Intentionally Blank.
         }
     }
@@ -160,20 +178,18 @@ private fun AddBeanViewState.copy(
             bean = this.bean,
             submitButtonText = this.submitButtonText,
             title = this.title,
+            error = error,
         )
         is AddBeanViewState.Completed -> AddBeanViewState.Completed(
             submitButtonText = this.submitButtonText,
             title = this.title
         )
-        is AddBeanViewState.InsertBean -> AddBeanViewState.InsertBean(
+        is AddBeanViewState.ModifyBean -> AddBeanViewState.ModifyBean(
             bean = bean ?: this.bean,
             openProcessMethodDrawer = openProcessMethodDrawer ?: this.openProcessMethodDrawer,
-            openRoastLevelDrawer = openRoastLevelDrawer ?: this.openRoastLevelDrawer
-        )
-        is AddBeanViewState.UpdateBean -> AddBeanViewState.UpdateBean(
-            bean = bean ?: this.bean,
-            openProcessMethodDrawer = openProcessMethodDrawer ?: this.openProcessMethodDrawer,
-            openRoastLevelDrawer = openRoastLevelDrawer ?: this.openRoastLevelDrawer
+            openRoastLevelDrawer = openRoastLevelDrawer ?: this.openRoastLevelDrawer,
+            title = this.title,
+            submitButtonText = this.submitButtonText,
         )
     }
 }

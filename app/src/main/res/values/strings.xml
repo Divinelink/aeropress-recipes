@@ -135,6 +135,7 @@
 
     <string name="AddBeans__add_title">Add Beans</string>
     <string name="AddBeans__update_title">Update Beans</string>
+    <string name="AddBeans__error_empty_bean_name">Please enter a beans name.</string>
 
     <!-- Process Method -->
     <string name="ProcessMethod__washed">Washed</string>
@@ -143,7 +144,6 @@
     <string name="ProcessMethod__anaerobic">Anaerobic</string>
     <string name="ProcessMethod__carbonicMaceration">Carbonic Maceration</string>
     <string name="ProcessMethod__gilingBasah">Giling Basah</string>
-
 
 
 </resources>
