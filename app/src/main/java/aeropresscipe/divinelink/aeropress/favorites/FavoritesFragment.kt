@@ -25,6 +25,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import gr.divinelink.core.util.extensions.addSystemWindowInsetToMargin
 import gr.divinelink.core.util.extensions.padding
 import gr.divinelink.core.util.swipe.ActionBindHelper
 import gr.divinelink.core.util.swipe.SwipeAction
@@ -66,7 +67,10 @@ class FavoritesFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.toolbar?.setNavigationOnClickListener { callback.onBackPressed() }
+        binding?.toolbar?.apply {
+            setNavigationOnClickListener { callback.onBackPressed() }
+            addSystemWindowInsetToMargin(top = true)
+        }
         binding?.recyclerView?.padding(bottom = recyclerViewPadding)
         bindAdapter()
 

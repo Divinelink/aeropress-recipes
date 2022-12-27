@@ -16,5 +16,4 @@ object ThemeUtil {
             typedValue.data
         } else Color.RED
     }
-
 }

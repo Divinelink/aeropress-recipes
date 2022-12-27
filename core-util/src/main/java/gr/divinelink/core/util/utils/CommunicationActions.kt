@@ -17,5 +17,4 @@ object CommunicationActions {
             Toast.makeText(context, R.string.CommunicationActions_no_browser_found, Toast.LENGTH_SHORT).show()
         }
     }
-
 }

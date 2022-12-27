@@ -26,6 +26,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.airbnb.lottie.LottieAnimationView
 import dagger.hilt.android.AndroidEntryPoint
+import gr.divinelink.core.util.extensions.addSystemWindowInsetToMargin
 import gr.divinelink.core.util.extensions.padding
 import gr.divinelink.core.util.extensions.updatePaddingAnimator
 import kotlinx.coroutines.MainScope
@@ -86,6 +87,8 @@ class RecipeFragment :
         lottieFavorite = favoriteMenuItem?.actionView as LottieAnimationView?
 
         LottieHelper.updateLikeButton(lottieFavorite)
+
+        binding?.toolbar?.addSystemWindowInsetToMargin(top = true)
 
         fadeInAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.initiliaze_animation)
         adapterAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.adapter_anim)
