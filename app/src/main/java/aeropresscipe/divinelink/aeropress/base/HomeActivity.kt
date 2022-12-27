@@ -25,6 +25,7 @@ import androidx.annotation.Dimension
 import androidx.annotation.Px
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.doOnAttach
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationBarView
@@ -44,7 +45,13 @@ class HomeActivity :
     HistoryFragment.Callback {
     private val binding: ActivityHomeBinding by viewBinding()
 
-    private val fragments: Array<out Fragment> get() = arrayOf(recipeFragment, favoritesFragment, historyFragment, beanTrackerFragment)
+    private val fragments: Array<out Fragment>
+        get() = arrayOf(
+            recipeFragment,
+            favoritesFragment,
+            historyFragment,
+            beanTrackerFragment,
+        )
     private var selectedIndex = 0
 
     private lateinit var recipeFragment: RecipeFragment
@@ -62,6 +69,7 @@ class HomeActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         // Update for Dark Mode straight away
         updateForTheme(viewModel.currentTheme)
 
@@ -212,7 +220,11 @@ class HomeActivity :
     }
 
     override fun onSnackbarShow(state: HistoryState.ShowSnackBar) {
-        val anchorView = if (binding.timerProgressView.visibility == View.GONE) binding.bottomNavigation else binding.timerProgressView
+        val anchorView = if (binding.timerProgressView.visibility == View.GONE) {
+            binding.bottomNavigation
+        } else {
+            binding.timerProgressView
+        }
         Notification
             .make(binding.bottomNavigation, resources.getString(state.value.string, getString(state.value.favorites)))
             .setAnchorView(anchorView)

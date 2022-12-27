@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import gr.divinelink.core.util.extensions.addSystemWindowInsetToMargin
 
 @AndroidEntryPoint
 open class DSLSettingsFragment() : Fragment() {
@@ -49,6 +50,7 @@ open class DSLSettingsFragment() : Fragment() {
         if (titleId != -1) {
             toolbar?.setTitle(titleId)
         }
+        toolbar?.addSystemWindowInsetToMargin(top = true)
 
         toolbar?.setNavigationOnClickListener {
             onToolbarNavigationClicked()
@@ -95,12 +97,12 @@ open class DSLSettingsFragment() : Fragment() {
         @StringRes titleId: Int,
         @MenuRes menuId: Int,
         @LayoutRes layoutId: Int,
-//        layoutManagerProducer: (Context) -> RecyclerView.LayoutManager,
+        //        layoutManagerProducer: (Context) -> RecyclerView.LayoutManager,
     ) : this() {
         this.titleId = titleId
         this.menuId = menuId
         this.layoutId = layoutId
-//        this.layoutManagerProducer = layoutManagerProducer
+        //        this.layoutManagerProducer = layoutManagerProducer
     }
 
     constructor(

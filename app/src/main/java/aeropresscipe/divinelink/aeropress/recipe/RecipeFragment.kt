@@ -1,6 +1,7 @@
 package aeropresscipe.divinelink.aeropress.recipe
 
 import aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.base.HomeActivity
 import aeropresscipe.divinelink.aeropress.base.TimerViewCallback
 import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
 import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.DISLIKE_MIN_FRAME
@@ -24,11 +25,12 @@ import androidx.annotation.Px
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.airbnb.lottie.LottieAnimationView
 import dagger.hilt.android.AndroidEntryPoint
+import gr.divinelink.core.util.extensions.addSystemWindowInsetToMargin
 import gr.divinelink.core.util.extensions.padding
 import gr.divinelink.core.util.extensions.updatePaddingAnimator
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -87,6 +89,8 @@ class RecipeFragment :
 
         LottieHelper.updateLikeButton(lottieFavorite)
 
+        binding?.toolbar?.addSystemWindowInsetToMargin(top = true)
+
         fadeInAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.initiliaze_animation)
         adapterAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.adapter_anim)
         binding?.coordinator?.padding(bottom = coordinatorPadding)
@@ -130,6 +134,7 @@ class RecipeFragment :
 
     override fun handleShowAlreadyBrewingState() {
         Notification.make(binding?.generateRecipeButton, R.string.alreadyBrewingDialog)
+            .setAnchorView((activity as HomeActivity).findViewById(R.id.bottom_navigation))
             .show()
     }
 
@@ -144,7 +149,7 @@ class RecipeFragment :
 
     override fun handleRefreshRecipeState(state: RecipeState.RefreshRecipeState) {
         binding?.recipeList?.startAnimation(adapterAnimation)
-        MainScope().launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             delay(adapterAnimation.duration)
             binding?.recipeList?.adapter = RecipeListView(
                 steps = state.steps,
@@ -167,8 +172,12 @@ class RecipeFragment :
     }
 
     override fun handleShowSnackBar(state: RecipeState.ShowSnackBar) {
-        Notification.make(binding?.generateRecipeButton,
-            resources.getString(state.value.string, getString(state.value.favorites)))
+        Notification
+            .make(
+                view = binding?.generateRecipeButton,
+                text = resources.getString(state.value.string, getString(state.value.favorites))
+            )
+            .setAnchorView((activity as HomeActivity).findViewById(R.id.bottom_navigation))
             .show()
     }
 

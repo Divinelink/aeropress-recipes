@@ -36,7 +36,7 @@ class AddBeanViewModelRobot {
     }
 
     suspend fun mockUpdateBeanResult(
-        response: Result<Unit>,
+        response: Result<AddBeanResult>,
     ) = apply {
         fakeUpdateBeanUseCase.mockResultUpdateBean(response)
     }

@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.airbnb.lottie.model.KeyPath
 import dagger.hilt.android.AndroidEntryPoint
+import gr.divinelink.core.util.extensions.addSystemWindowInsetToMargin
 import gr.divinelink.core.util.extensions.changeLayersColor
 import gr.divinelink.core.util.extensions.getSerializable
 import gr.divinelink.core.util.utils.WindowUtil.setNavigationBarColor
@@ -69,6 +70,7 @@ class FinishActivity :
 
             close.setOnClickListener { viewModel.closeButtonClicked() }
             toolbar.setNavigationOnClickListener { viewModel.closeButtonClicked() }
+            toolbar.addSystemWindowInsetToMargin(top = true)
         }
     }
 

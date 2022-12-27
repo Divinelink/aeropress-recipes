@@ -1,6 +1,7 @@
 package aeropresscipe.divinelink.aeropress.addbeans.ui
 
 import aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.beans.domain.model.AddBeanResult
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.ui.UIText
 
@@ -15,28 +16,17 @@ sealed class AddBeanViewState(
 
     object Initial : AddBeanViewState()
 
-    data class InsertBean(
+    data class ModifyBean(
         override val bean: Bean = emptyBean(),
+        override val title: UIText,
+        override val submitButtonText: UIText,
         override val openProcessMethodDrawer: Boolean = false,
         override val openRoastLevelDrawer: Boolean = false,
     ) : AddBeanViewState(
-        submitButtonText = UIText.ResourceText(R.string.save),
+        submitButtonText = submitButtonText,
         bean = bean,
         showLoading = false,
-        title = UIText.ResourceText(R.string.AddBeans__add_title),
-        openProcessMethodDrawer = openProcessMethodDrawer,
-        openRoastLevelDrawer = openRoastLevelDrawer,
-    )
-
-    data class UpdateBean(
-        override val bean: Bean,
-        override val openProcessMethodDrawer: Boolean = false,
-        override val openRoastLevelDrawer: Boolean = false,
-    ) : AddBeanViewState(
-        bean = bean,
-        submitButtonText = UIText.ResourceText(R.string.update),
-        showLoading = false,
-        title = UIText.ResourceText(R.string.AddBeans__update_title),
+        title = title,
         openProcessMethodDrawer = openProcessMethodDrawer,
         openRoastLevelDrawer = openRoastLevelDrawer,
     )
@@ -51,6 +41,7 @@ sealed class AddBeanViewState(
     )
 
     data class Error(
+        val error: AddBeanResult.Failure,
         override val bean: Bean,
         override val submitButtonText: UIText = UIText.ResourceText(R.string.save),
         override val title: UIText = UIText.ResourceText(R.string.AddBeans__add_title),

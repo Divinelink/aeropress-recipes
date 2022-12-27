@@ -73,7 +73,7 @@ class AddBeanUseCaseTest {
 
         val useCase = AddBeanUseCase(beanRepository.mock, testDispatcher)
         val result = useCase(bean)
-        assertTrue(result.data == AddBeanResult.Failure)
+        assertTrue(result.data == AddBeanResult.Failure.Unknown)
     }
 
     @Test
@@ -89,5 +89,22 @@ class AddBeanUseCaseTest {
         val result = useCase(bean)
 
         assertThat(result).isInstanceOf(Result.Error::class.java)
+    }
+
+    @Test
+    fun `on empty bean name I expect EmptyName Error`() = runTest {
+        val addBeanResponse = Result.Error(
+            Exception("Empty Name")
+        )
+
+        beanRepository.givenAddBeanResult(
+            bean = bean.copy(name = ""),
+            beanResult = addBeanResponse,
+        )
+
+        val useCase = AddBeanUseCase(beanRepository.mock, testDispatcher)
+        val result = useCase(bean.copy(name = ""))
+
+        assertThat(result.data).isEqualTo(AddBeanResult.Failure.EmptyName)
     }
 }

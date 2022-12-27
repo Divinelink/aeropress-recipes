@@ -1,5 +1,6 @@
 package aeropresscipe.divinelink.aeropress.fakes.usecase
 
+import aeropresscipe.divinelink.aeropress.beans.domain.model.AddBeanResult
 import aeropresscipe.divinelink.aeropress.beans.domain.usecase.UpdateBeanUseCase
 import gr.divinelink.core.util.domain.Result
 import org.mockito.kotlin.any
@@ -11,7 +12,7 @@ class FakeUpdateBeanUseCase {
     val mock: UpdateBeanUseCase = mock()
 
     suspend fun mockResultUpdateBean(
-        result: Result<Unit>,
+        result: Result<AddBeanResult>,
     ) {
         whenever(mock(any())).thenReturn(result)
     }

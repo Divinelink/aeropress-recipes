@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import gr.divinelink.core.util.extensions.addSystemWindowInsetToMargin
 import gr.divinelink.core.util.extensions.padding
 import gr.divinelink.core.util.extensions.setDisabled
 import gr.divinelink.core.util.extensions.setEnabled
@@ -68,6 +69,7 @@ class HistoryFragment :
 
     private fun setToolbar() {
         binding?.toolbar?.apply {
+            addSystemWindowInsetToMargin(top = true)
             setNavigationOnClickListener { callback.onBackPressed() }
             inflateMenu(R.menu.history)
             setOnMenuItemClickListener { item ->

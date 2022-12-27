@@ -1,3 +1,4 @@
+@file:Suppress("MagicNumber")
 package gr.divinelink.core.util.extensions
 
 import android.animation.Animator
@@ -30,7 +31,6 @@ fun View?.fadeIn() {
             }
         })
 }
-
 
 fun View?.updatePaddingAnimator(
     start: Int? = null,
@@ -67,7 +67,6 @@ var View.visible: Boolean
     set(value) {
         this.visibility = if (value) View.VISIBLE else View.GONE
     }
-
 
 infix fun TextView?.updateTextWithFade(text: CharSequence) {
     this?.animate()

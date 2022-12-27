@@ -19,11 +19,14 @@ open class AddBeanUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher,
 ) : UseCase<Bean, AddBeanResult>(dispatcher) {
     override suspend fun execute(parameters: Bean): AddBeanResult {
+        if (parameters.name.isEmpty()) {
+            return AddBeanResult.Failure.EmptyName
+        }
         val result = beanRepository.addBean(parameters)
 
         return when (result) {
             is Result.Success -> AddBeanResult.Success
-            is Result.Error -> AddBeanResult.Failure
+            is Result.Error -> AddBeanResult.Failure.Unknown
             Result.Loading -> throw IllegalStateException()
         }
     }

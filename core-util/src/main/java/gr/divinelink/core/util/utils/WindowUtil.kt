@@ -25,5 +25,4 @@ object WindowUtil {
             window.navigationBarColor = color
         }
     }
-
 }

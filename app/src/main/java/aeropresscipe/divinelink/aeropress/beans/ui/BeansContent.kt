@@ -9,11 +9,12 @@ import aeropresscipe.divinelink.aeropress.ui.components.ExtendableFloatingAction
 import aeropresscipe.divinelink.aeropress.ui.components.Material3CircularProgressIndicator
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import aeropresscipe.divinelink.aeropress.ui.theme.FabSize
+import aeropresscipe.divinelink.aeropress.ui.theme.topBarColor
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentSize
@@ -28,6 +29,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,6 +40,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -58,9 +62,14 @@ fun BeansContent(
     onBeanClicked: (Bean) -> Unit,
     onAddBeanOpened: () -> Unit,
     bottomPadding: Dp,
+    modifier: Modifier = Modifier,
 ) {
     val scrollState = rememberLazyListState()
     var fabExtended by remember { mutableStateOf(true) }
+    val scrollColors = TopAppBarDefaults.smallTopAppBarColors(
+        scrolledContainerColor = topBarColor(),
+    )
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     LaunchedEffect(scrollState) {
         var prev = 0
@@ -85,6 +94,9 @@ fun BeansContent(
     }
 
     Scaffold(
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        modifier = Modifier
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
         floatingActionButton = {
             AddBeanButton(
                 modifier = Modifier.padding(vertical = bottomPadding),
@@ -107,16 +119,16 @@ fun BeansContent(
                         Icon(Icons.Filled.ArrowBack, null)
                     }
                 },
-                // scrollBehavior = TopAppBarScrollBehavior()
+                scrollBehavior = scrollBehavior,
+                colors = scrollColors,
             )
         },
     ) { paddingValues ->
         if (viewState is BeanTrackerViewState.Completed) {
             BeansList(
                 viewState.beans,
-                modifier = Modifier
-                    .navigationBarsPadding()
-                    .padding(paddingValues),
+                modifier = modifier
+                    .padding(top = paddingValues.calculateTopPadding()),
                 // Navigate to AddBeanScreen,
                 onBeanClicked = onBeanClicked,
                 state = scrollState,
@@ -140,7 +152,6 @@ private fun AddBeanButton(
         modifier = modifier
             .height(FabSize)
             .widthIn(min = FabSize)
-            .navigationBarsPadding()
             .testTag(ADD_BREW_BUTTON_TAG),
         extended = extended,
         text = {
