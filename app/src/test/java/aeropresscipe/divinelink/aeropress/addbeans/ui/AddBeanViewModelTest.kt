@@ -241,7 +241,7 @@ class AddBeanViewModelTest {
                     bean = testBean.copy(name = "update name"),
                     title = UIText.ResourceText(R.string.AddBeans__update_title),
                     submitButtonText = UIText.ResourceText(R.string.update),
-                    error = AddBeanResult.Failure.Unknown
+                    error = AddBeanResult.Failure.Unknown,
                 )
             )
     }
