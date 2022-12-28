@@ -13,9 +13,11 @@ import aeropresscipe.divinelink.aeropress.ui.theme.topBarColor
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -94,7 +96,12 @@ fun BeansContent(
     }
 
     Scaffold(
-        contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        contentWindowInsets = WindowInsets(
+            left = 0.dp,
+            top = WindowInsets.systemBars.asPaddingValues().calculateTopPadding().value.dp,
+            right = 0.dp,
+            bottom = 0.dp,
+            ),
         modifier = Modifier
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         floatingActionButton = {
