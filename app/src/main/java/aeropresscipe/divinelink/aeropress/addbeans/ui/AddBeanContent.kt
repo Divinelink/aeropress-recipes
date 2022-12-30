@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
@@ -31,6 +32,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import java.time.LocalDate
@@ -91,26 +93,39 @@ fun AddBeanContent(
                 text = viewState.bean.name,
                 onValueChange = onBeanNameChanged,
                 labelText = stringResource(id = R.string.Beans__bean_name),
+                maxLines = 1,
+                isError = (viewState is AddBeanViewState.Error),
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                ),
             )
 
             Spacer(modifier = Modifier.height(12.dp))
             CustomOutlinedTextField(
                 text = viewState.bean.roasterName,
                 onValueChange = onRoasterNameChanged,
-                labelText = stringResource(id = R.string.Beans__roaster_name)
+                labelText = stringResource(id = R.string.Beans__roaster_name),
+                maxLines = 1,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                ),
             )
 
             Spacer(modifier = Modifier.height(12.dp))
             CustomOutlinedTextField(
                 text = viewState.bean.origin,
                 onValueChange = onOriginChanged,
-                labelText = stringResource(id = R.string.Beans__origin)
+                labelText = stringResource(id = R.string.Beans__origin),
+                maxLines = 1,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                ),
             )
             Spacer(modifier = Modifier.height(12.dp))
             DatePicker(
                 onValueChange = onDateChanged,
                 value = viewState.bean.roastDate,
-                label = R.string.Beans__roast_date
+                label = R.string.Beans__roast_date,
             )
 
             Spacer(modifier = Modifier.height(16.dp))
