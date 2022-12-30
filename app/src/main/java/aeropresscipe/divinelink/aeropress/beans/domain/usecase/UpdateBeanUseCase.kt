@@ -1,5 +1,6 @@
 package aeropresscipe.divinelink.aeropress.beans.domain.usecase
 
+import aeropresscipe.divinelink.aeropress.addbeans.domain.usecase.trimFields
 import aeropresscipe.divinelink.aeropress.base.di.IoDispatcher
 import aeropresscipe.divinelink.aeropress.beans.domain.model.AddBeanResult
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
@@ -15,10 +16,11 @@ open class UpdateBeanUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher,
 ) : UseCase<Bean, AddBeanResult>(dispatcher) {
     override suspend fun execute(parameters: Bean): AddBeanResult {
-        if (parameters.name.isEmpty()) {
+        val bean = parameters.trimFields()
+        if (bean.name.isEmpty()) {
             return AddBeanResult.Failure.EmptyName
         }
-        val result = repository.updateBean(parameters)
+        val result = repository.updateBean(bean)
 
         return when (result) {
             is Result.Success -> AddBeanResult.Success
