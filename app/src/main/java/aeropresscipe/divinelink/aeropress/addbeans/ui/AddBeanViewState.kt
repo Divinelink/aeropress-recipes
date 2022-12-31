@@ -12,6 +12,7 @@ sealed class AddBeanViewState(
     open val title: UIText = UIText.ResourceText(R.string.AddBeans__add_title),
     open val openRoastLevelDrawer: Boolean = false,
     open val openProcessMethodDrawer: Boolean = false,
+    open val withDeleteAction: Boolean = false,
 ) {
 
     object Initial : AddBeanViewState()
@@ -22,6 +23,7 @@ sealed class AddBeanViewState(
         override val submitButtonText: UIText,
         override val openProcessMethodDrawer: Boolean = false,
         override val openRoastLevelDrawer: Boolean = false,
+        override val withDeleteAction: Boolean = false,
     ) : AddBeanViewState(
         submitButtonText = submitButtonText,
         bean = bean,
@@ -29,15 +31,18 @@ sealed class AddBeanViewState(
         title = title,
         openProcessMethodDrawer = openProcessMethodDrawer,
         openRoastLevelDrawer = openRoastLevelDrawer,
+        withDeleteAction = withDeleteAction,
     )
 
     data class Completed(
         override val submitButtonText: UIText = UIText.ResourceText(R.string.save),
         override val title: UIText = UIText.ResourceText(R.string.AddBeans__add_title),
+        override val withDeleteAction: Boolean,
     ) : AddBeanViewState(
         showLoading = false,
         submitButtonText = submitButtonText,
         title = title,
+        withDeleteAction = withDeleteAction,
     )
 
     data class Error(
@@ -45,11 +50,13 @@ sealed class AddBeanViewState(
         override val bean: Bean,
         override val submitButtonText: UIText = UIText.ResourceText(R.string.save),
         override val title: UIText = UIText.ResourceText(R.string.AddBeans__add_title),
+        override val withDeleteAction: Boolean,
     ) : AddBeanViewState(
         bean = bean,
         showLoading = false,
         submitButtonText = submitButtonText,
         title = title,
+        withDeleteAction = withDeleteAction,
     )
 }
 

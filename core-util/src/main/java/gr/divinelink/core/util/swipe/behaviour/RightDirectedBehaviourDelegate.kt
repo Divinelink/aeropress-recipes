@@ -10,12 +10,12 @@ import gr.divinelink.core.util.swipe.utils.clamp
 internal open class RightDirectedBehaviourDelegate(
     private val actionCount: Int,
     private val context: Context
-): BehaviourDelegate {
+) : BehaviourDelegate {
 
     protected val velocityHelper = VelocityHelper(context)
 
     override fun layoutAction(view: View, l: Int, r: Int, actionSize: Size) {
-        //reset view translation on relayout
+        // reset view translation on relayout
         view.translationX = 0F
         view.layout(r, 0, r + actionSize.width, actionSize.height)
     }
@@ -59,11 +59,10 @@ internal open class RightDirectedBehaviourDelegate(
     }
 
     override fun getPositionForState(view: View, actionSize: Size, states: QuickActionsStates): Int {
-        return when(states) {
+        return when (states) {
             QuickActionsStates.FULL_OPENED -> throw IllegalArgumentException("Unsupported state")
             QuickActionsStates.OPENED -> -(actionSize.width * actionCount)
             QuickActionsStates.CLOSED -> 0
         }
     }
-
 }

@@ -3,9 +3,11 @@
 package aeropresscipe.divinelink.aeropress.addbeans.ui
 
 import aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.ui.UIText
 import aeropresscipe.divinelink.aeropress.ui.components.CustomOutlinedTextField
 import aeropresscipe.divinelink.aeropress.ui.components.DatePicker
 import aeropresscipe.divinelink.aeropress.ui.components.SelectOptionField
+import aeropresscipe.divinelink.aeropress.ui.components.SimpleAlertDialog
 import aeropresscipe.divinelink.aeropress.ui.getString
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import android.content.res.Configuration
@@ -18,6 +20,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -29,6 +32,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -50,9 +55,10 @@ fun AddBeanContent(
     onRoastLevelClick: () -> Unit,
     onProcessClick: () -> Unit,
     onSubmitClicked: () -> Unit,
+    onDeleteClicked: () -> Unit,
     navigateUp: () -> Unit,
 ) {
-
+    val deleteBeanDialog = remember { mutableStateOf(false) }
     LaunchedEffect(viewState as? AddBeanViewState.Completed) {
         // Go Back
         if (viewState is AddBeanViewState.Completed) {
@@ -70,13 +76,23 @@ fun AddBeanContent(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = {
-                        navigateUp()
-                    }) {
+                    IconButton(
+                        onClick = navigateUp,
+                    ) {
                         Icon(Icons.Filled.Close, null)
                     }
                 },
-                // scrollBehavior = TopAppBarScrollBehavior()
+                actions = {
+                    if (viewState.withDeleteAction) {
+                        IconButton(
+                            onClick = {
+                                deleteBeanDialog.value = true
+                            },
+                        ) {
+                            Icon(Icons.Default.Delete, null)
+                        }
+                    }
+                }
             )
         },
     ) { paddingValues ->
@@ -166,6 +182,26 @@ fun AddBeanContent(
                 }
             }
         }
+
+        /*        if (viewState is AddBeanViewState.Error &&
+                    viewState.error is AddBeanResult.Failure.Unknown
+                ) {
+
+                }
+                */
+
+        if (deleteBeanDialog.value) {
+            SimpleAlertDialog(
+                confirmClick = onDeleteClicked,
+                dismissClick = {
+                    deleteBeanDialog.value = false
+                },
+                title = UIText.ResourceText(R.string.Beans__delete_bean),
+                text = UIText.ResourceText(R.string.Beans__delete_bean_message),
+                confirmText = UIText.ResourceText(R.string.delete),
+                dismissText = UIText.ResourceText(R.string.cancel),
+            )
+        }
     }
 }
 
@@ -186,6 +222,7 @@ fun BeansScreenPreview() {
                 onRoastLevelChanged = {},
                 onProcessChanged = {},
                 onSubmitClicked = {},
+                onDeleteClicked = {},
                 navigateUp = {},
             )
         }

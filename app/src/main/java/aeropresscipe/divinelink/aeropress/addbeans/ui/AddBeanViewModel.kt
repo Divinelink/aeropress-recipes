@@ -2,6 +2,7 @@ package aeropresscipe.divinelink.aeropress.addbeans.ui
 
 import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.addbeans.domain.usecase.AddBeanUseCase
+import aeropresscipe.divinelink.aeropress.addbeans.domain.usecase.DeleteBeanUseCase
 import aeropresscipe.divinelink.aeropress.beans.domain.model.AddBeanResult
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
@@ -24,6 +25,7 @@ import javax.inject.Inject
 class AddBeanViewModel @Inject constructor(
     private val addBeanUseCase: AddBeanUseCase,
     private val updateBeanUseCase: UpdateBeanUseCase,
+    private val deleteBeanUseCase: DeleteBeanUseCase,
 ) : ViewModel() {
 
     private val _viewState: MutableStateFlow<AddBeanViewState> =
@@ -41,6 +43,7 @@ class AddBeanViewModel @Inject constructor(
                 bean = bean,
                 title = UIText.ResourceText(R.string.AddBeans__update_title),
                 submitButtonText = UIText.ResourceText(R.string.update),
+                withDeleteAction = true,
             )
         }
     }
@@ -97,6 +100,30 @@ class AddBeanViewModel @Inject constructor(
         }
     }
 
+    fun onDeleteBeanClicked() {
+        viewModelScope.launch {
+            val result = deleteBeanUseCase(viewState.value.bean)
+            _viewState.value = when (result.data) {
+                AddBeanResult.Success -> {
+                    AddBeanViewState.Completed(
+                        submitButtonText = viewState.value.submitButtonText,
+                        title = viewState.value.title,
+                        withDeleteAction = viewState.value.withDeleteAction,
+                    )
+                }
+                else -> {
+                    AddBeanViewState.Error(
+                        AddBeanResult.Failure.Unknown,
+                        bean = viewState.value.bean,
+                        submitButtonText = viewState.value.submitButtonText,
+                        title = viewState.value.title,
+                        withDeleteAction = viewState.value.withDeleteAction,
+                    )
+                }
+            }
+        }
+    }
+
     fun onSubmitClicked() {
         viewModelScope.launch {
             val result = if (viewState.value.bean.id.isEmpty()) {
@@ -110,6 +137,7 @@ class AddBeanViewModel @Inject constructor(
                     AddBeanViewState.Completed(
                         submitButtonText = viewState.value.submitButtonText,
                         title = viewState.value.title,
+                        withDeleteAction = viewState.value.withDeleteAction,
                     )
                 }
                 AddBeanResult.Failure.EmptyName -> {
@@ -118,6 +146,7 @@ class AddBeanViewModel @Inject constructor(
                         bean = viewState.value.bean,
                         submitButtonText = viewState.value.submitButtonText,
                         title = viewState.value.title,
+                        withDeleteAction = viewState.value.withDeleteAction,
                     )
                 }
                 else -> {
@@ -126,6 +155,7 @@ class AddBeanViewModel @Inject constructor(
                         bean = viewState.value.bean,
                         submitButtonText = viewState.value.submitButtonText,
                         title = viewState.value.title,
+                        withDeleteAction = viewState.value.withDeleteAction,
                     )
                 }
             }
@@ -155,6 +185,7 @@ private fun MutableStateFlow<AddBeanViewState>.updateBean(
                 submitButtonText = this.value.submitButtonText,
                 openProcessMethodDrawer = this.value.openProcessMethodDrawer,
                 openRoastLevelDrawer = this.value.openRoastLevelDrawer,
+                withDeleteAction = this.value.withDeleteAction,
             )
         }
         is AddBeanViewState.Completed -> {
@@ -179,10 +210,12 @@ private fun AddBeanViewState.copy(
             submitButtonText = this.submitButtonText,
             title = this.title,
             error = error,
+            withDeleteAction = withDeleteAction,
         )
         is AddBeanViewState.Completed -> AddBeanViewState.Completed(
             submitButtonText = this.submitButtonText,
-            title = this.title
+            title = this.title,
+            withDeleteAction = this.withDeleteAction,
         )
         is AddBeanViewState.ModifyBean -> AddBeanViewState.ModifyBean(
             bean = bean ?: this.bean,
@@ -190,6 +223,7 @@ private fun AddBeanViewState.copy(
             openRoastLevelDrawer = openRoastLevelDrawer ?: this.openRoastLevelDrawer,
             title = this.title,
             submitButtonText = this.submitButtonText,
+            withDeleteAction = this.withDeleteAction,
         )
     }
 }
