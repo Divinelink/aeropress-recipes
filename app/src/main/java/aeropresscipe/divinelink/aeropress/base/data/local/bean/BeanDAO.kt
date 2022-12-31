@@ -25,4 +25,7 @@ interface BeanDAO {
 
     @Update
     suspend fun updateBean(bean: PersistableBean)
+
+    @Query("DELETE FROM bean WHERE id=:id")
+    fun removeBean(id: String)
 }

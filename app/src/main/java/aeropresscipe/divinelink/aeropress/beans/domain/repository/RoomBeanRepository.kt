@@ -48,6 +48,14 @@ class RoomBeanRepository @Inject constructor(
                 return Result.Success(it)
             }
     }
+
+    override suspend fun removeBean(bean: Bean): Result<Unit> {
+        beanDAO
+            .removeBean(bean.id)
+            .also {
+                return Result.Success(it)
+            }
+    }
 }
 
 private fun List<PersistableBean>.toDomainBeansList(): List<Bean> {
@@ -73,7 +81,7 @@ private fun PersistableBean.toBean(): Bean {
         roasterName = this.roasterName,
         origin = this.origin,
         roastDate = date,
-        roastLevel = enumValues<RoastLevel>().find { it.name == this.roasterName },
+        roastLevel = enumValues<RoastLevel>().find { it.name == this.roastLevel },
         process = enumValues<ProcessMethod>().find { it.name == this.process },
         rating = this.rating,
         tastingNotes = this.tastingNotes,

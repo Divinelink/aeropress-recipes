@@ -34,4 +34,8 @@ interface BeanRepository {
     suspend fun updateBean(
         bean: Bean,
     ): Result<Unit>
+
+    suspend fun removeBean(
+        bean: Bean,
+    ): Result<Unit>
 }

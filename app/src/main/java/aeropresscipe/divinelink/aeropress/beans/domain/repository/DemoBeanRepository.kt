@@ -44,12 +44,20 @@ class DemoBeanRepository @Inject constructor() : BeanRepository {
     }
 
     override suspend fun fetchBean(bean: Bean): Result<Bean> {
-//        TODO("Not yet implemented")
+        //        TODO("Not yet implemented")
         return Result.Success(bean)
     }
 
     override suspend fun updateBean(bean: Bean): Result<Unit> {
-//        TODO("Not yet implemented")
+        // TODO("Not yet implemented")
+        return Result.Success(Unit)
+    }
+
+    override suspend fun removeBean(bean: Bean): Result<Unit> {
+        beans.remove(bean)
+
+        beansFlow.value = beans
+
         return Result.Success(Unit)
     }
 }
