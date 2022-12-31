@@ -69,6 +69,7 @@ class AddBeanViewModelTest {
                     bean = testBean,
                     title = UIText.ResourceText(R.string.AddBeans__update_title),
                     submitButtonText = UIText.ResourceText(R.string.update),
+                    withDeleteAction = true,
                 )
             )
     }
@@ -216,6 +217,7 @@ class AddBeanViewModelTest {
                 AddBeanViewState.Completed(
                     submitButtonText = UIText.ResourceText(R.string.save),
                     title = UIText.ResourceText(R.string.AddBeans__add_title),
+                    withDeleteAction = false,
                 )
             )
     }
@@ -234,6 +236,7 @@ class AddBeanViewModelTest {
                 AddBeanViewState.Completed(
                     submitButtonText = UIText.ResourceText(R.string.update),
                     title = UIText.ResourceText(R.string.AddBeans__update_title),
+                    withDeleteAction = true,
                 )
             )
             .assertFalseViewState(
@@ -242,6 +245,7 @@ class AddBeanViewModelTest {
                     title = UIText.ResourceText(R.string.AddBeans__update_title),
                     submitButtonText = UIText.ResourceText(R.string.update),
                     error = AddBeanResult.Failure.Unknown,
+                    withDeleteAction = true,
                 )
             )
     }
@@ -259,12 +263,14 @@ class AddBeanViewModelTest {
                     title = UIText.ResourceText(R.string.AddBeans__update_title),
                     submitButtonText = UIText.ResourceText(R.string.update),
                     error = AddBeanResult.Failure.Unknown,
+                    withDeleteAction = true,
                 )
             )
             .assertFalseViewState(
                 AddBeanViewState.Completed(
                     submitButtonText = UIText.ResourceText(R.string.update),
                     title = UIText.ResourceText(R.string.AddBeans__update_title),
+                    withDeleteAction = true,
                 )
             )
     }
@@ -282,12 +288,48 @@ class AddBeanViewModelTest {
                     title = UIText.ResourceText(R.string.AddBeans__update_title),
                     submitButtonText = UIText.ResourceText(R.string.update),
                     error = AddBeanResult.Failure.EmptyName,
+                    withDeleteAction = true,
                 )
             )
             .assertFalseViewState(
                 AddBeanViewState.Completed(
                     submitButtonText = UIText.ResourceText(R.string.update),
                     title = UIText.ResourceText(R.string.AddBeans__update_title),
+                    withDeleteAction = true,
+                )
+            )
+    }
+
+    @Test
+    fun `given success state when I delete bean clicked then I expect Completed State`() = runTest {
+        testRobot
+            .mockDeleteBeanResult(Result.Success(AddBeanResult.Success))
+            .buildViewModel()
+            .onSetBean(testBean)
+            .onDeleteClicked()
+            .assertViewState(
+                AddBeanViewState.Completed(
+                    submitButtonText = UIText.ResourceText(R.string.update),
+                    title = UIText.ResourceText(R.string.AddBeans__update_title),
+                    withDeleteAction = true,
+                )
+            )
+    }
+
+    @Test
+    fun `given error when delete bean clicked then I expect Unknown Error State`() = runTest {
+        testRobot
+            .mockDeleteBeanResult(Result.Error(Exception()))
+            .buildViewModel()
+            .onSetBean(testBean)
+            .onDeleteClicked()
+            .assertViewState(
+                AddBeanViewState.Error(
+                    bean = testBean,
+                    title = UIText.ResourceText(R.string.AddBeans__update_title),
+                    submitButtonText = UIText.ResourceText(R.string.update),
+                    error = AddBeanResult.Failure.Unknown,
+                    withDeleteAction = true,
                 )
             )
     }

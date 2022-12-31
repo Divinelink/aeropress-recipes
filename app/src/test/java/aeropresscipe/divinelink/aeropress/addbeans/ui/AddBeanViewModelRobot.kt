@@ -4,6 +4,7 @@ import aeropresscipe.divinelink.aeropress.MainDispatcherRule
 import aeropresscipe.divinelink.aeropress.beans.domain.model.AddBeanResult
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.fakes.usecase.FakeAddBeanUseCase
+import aeropresscipe.divinelink.aeropress.fakes.usecase.FakeDeleteBeanUseCase
 import aeropresscipe.divinelink.aeropress.fakes.usecase.FakeUpdateBeanUseCase
 import com.google.common.truth.Truth.assertThat
 import gr.divinelink.core.util.domain.Result
@@ -18,6 +19,7 @@ class AddBeanViewModelRobot {
 
     private val fakeAddBeanUseCase = FakeAddBeanUseCase()
     private val fakeUpdateBeanUseCase = FakeUpdateBeanUseCase()
+    private val fakeDeleteBeanUseCase = FakeDeleteBeanUseCase()
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
@@ -26,6 +28,7 @@ class AddBeanViewModelRobot {
         viewModel = AddBeanViewModel(
             addBeanUseCase = fakeAddBeanUseCase.mock,
             updateBeanUseCase = fakeUpdateBeanUseCase.mock,
+            deleteBeanUseCase = fakeDeleteBeanUseCase.mock,
         )
     }
 
@@ -39,6 +42,12 @@ class AddBeanViewModelRobot {
         response: Result<AddBeanResult>,
     ) = apply {
         fakeUpdateBeanUseCase.mockResultUpdateBean(response)
+    }
+
+    suspend fun mockDeleteBeanResult(
+        response: Result<AddBeanResult>,
+    ) = apply {
+        fakeDeleteBeanUseCase.mockResultDeleteBean(response)
     }
 
     fun assertViewState(
@@ -91,5 +100,9 @@ class AddBeanViewModelRobot {
 
     fun onSubmitClicked() = apply {
         viewModel.onSubmitClicked()
+    }
+
+    fun onDeleteClicked() = apply {
+        viewModel.onDeleteBeanClicked()
     }
 }
