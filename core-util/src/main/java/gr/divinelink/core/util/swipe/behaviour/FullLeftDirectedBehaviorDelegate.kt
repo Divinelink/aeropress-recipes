@@ -13,8 +13,7 @@ import gr.divinelink.core.util.swipe.utils.min
 internal class FullLeftDirectedBehaviorDelegate(
     private val actionCount: Int,
     private val context: Context
-): LeftDirectedBehaviourDelegate(actionCount, context) {
-
+) : LeftDirectedBehaviourDelegate(actionCount, context) {
 
     private inner class LastActionDelegate : LastActionStateController.Delegate {
 
@@ -171,11 +170,10 @@ internal class FullLeftDirectedBehaviorDelegate(
     }
 
     override fun getPositionForState(view: View, actionSize: Size, states: QuickActionsStates): Int {
-        return when(states) {
+        return when (states) {
             QuickActionsStates.FULL_OPENED -> view.measuredWidth
             QuickActionsStates.OPENED -> actionSize.width * actionCount
             QuickActionsStates.CLOSED -> 0
         }
     }
-
 }

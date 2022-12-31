@@ -7,37 +7,29 @@
     <string name="save">Save</string>
     <string name="update">Update</string>
 
+    <!-- Error -->
+    <string name="empty_field_error_message">%s is required.</string>
+    <string name="general_error_message">Something when wrong.</string>
+
+    <!-- Recipe Steps. -->
     <string name="heatWaterText">Heat &lt;b&gt;%dg&lt;/b&gt; of water to &lt;b&gt;%d°C / %d°F&lt;/b&gt;.</string>
-
     <string name="grindCoffeeText">Grind &lt;b&gt;%dg&lt;/b&gt; of coffee to a &lt;b&gt;%s&lt;/b&gt; grind.</string>
-
     <string name="normal_orientation_text">Place the aeropress on the mug in the &lt;b&gt;normal orientation&lt;/b&gt; with wet filter and cap on.</string>
     <string name="inverted_orientation_text">Place the aeropress in the &lt;b&gt;upside-down&lt;/b&gt; orientation.</string>
-
     <string name="addWaterText">Add &lt;b&gt;%dg&lt;/b&gt; of water and wait &lt;b&gt;%d&lt;/b&gt; seconds for the coffee to bloom.</string>
-
     <string name="addRemainingWater">Add the remaining &lt;b&gt;%dg&lt;/b&gt; of water.</string>
-
     <string name="addWaterSlowly">Add &lt;b&gt;%dg&lt;/b&gt; of water slowly.</string>
-
     <string name="pourInCoffee">Pour in the ground coffee.</string>
-
     <string name="pressText">Press &amp; Enjoy!</string>
-
     <string name="waitToBrewText">Wait &lt;b&gt;%d:%02d&lt;/b&gt; %s to brew.</string>
-
     <string name="upsideDownMethodText">Wet the filter paper, and put the cap on. Place the mug upside-down on the aeropress and flip to be the normal orientation.</string>
-
     <string name="standard">Standard</string>
     <string name="get_another_recipe">New Recipe</string>
-
     <string name="bloomPhase">Blooming Phase</string>
     <string name="bloomPhaseWaterText">Pour in %dg of water</string>
-
     <string name="brewPhase">Brewing Phase</string>
     <string name="finishPhaseTitle">Your timer is finished!</string>
     <string name="finishPhaseDescription">Click for more details.</string>
-
     <string name="brewPhaseWithBloom">Pour in the remaining %dg for a total of %dg water</string>
     <string name="brewPhaseNoBloom">Pour in %dg of water</string>
 
@@ -144,6 +136,9 @@
     <string name="ProcessMethod__anaerobic">Anaerobic</string>
     <string name="ProcessMethod__carbonicMaceration">Carbonic Maceration</string>
     <string name="ProcessMethod__gilingBasah">Giling Basah</string>
+
+    <string name="Beans__delete_bean">Delete Bean</string>
+    <string name="Beans__delete_bean_message">Are you sure you want to delete this bean? This action cannot be undone.</string>
 
 
 </resources>

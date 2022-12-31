@@ -14,7 +14,7 @@ sealed class AddBeanResult {
     ) : AddBeanResult() {
 
         object Unknown : Failure(
-            error = UIText.StringText("Something went wrong")
+            error = UIText.ResourceText(R.string.general_error_message),
         )
 
         object EmptyName : Failure(

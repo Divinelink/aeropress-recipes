@@ -3,9 +3,11 @@
 package aeropresscipe.divinelink.aeropress.addbeans.ui
 
 import aeropresscipe.divinelink.aeropress.R
+import aeropresscipe.divinelink.aeropress.ui.UIText
 import aeropresscipe.divinelink.aeropress.ui.components.CustomOutlinedTextField
 import aeropresscipe.divinelink.aeropress.ui.components.DatePicker
 import aeropresscipe.divinelink.aeropress.ui.components.SelectOptionField
+import aeropresscipe.divinelink.aeropress.ui.components.SimpleAlertDialog
 import aeropresscipe.divinelink.aeropress.ui.getString
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import android.content.res.Configuration
@@ -15,8 +17,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -28,9 +32,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import java.time.LocalDate
@@ -48,9 +55,10 @@ fun AddBeanContent(
     onRoastLevelClick: () -> Unit,
     onProcessClick: () -> Unit,
     onSubmitClicked: () -> Unit,
+    onDeleteClicked: () -> Unit,
     navigateUp: () -> Unit,
 ) {
-
+    val deleteBeanDialog = remember { mutableStateOf(false) }
     LaunchedEffect(viewState as? AddBeanViewState.Completed) {
         // Go Back
         if (viewState is AddBeanViewState.Completed) {
@@ -68,13 +76,23 @@ fun AddBeanContent(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = {
-                        navigateUp()
-                    }) {
+                    IconButton(
+                        onClick = navigateUp,
+                    ) {
                         Icon(Icons.Filled.Close, null)
                     }
                 },
-                // scrollBehavior = TopAppBarScrollBehavior()
+                actions = {
+                    if (viewState.withDeleteAction) {
+                        IconButton(
+                            onClick = {
+                                deleteBeanDialog.value = true
+                            },
+                        ) {
+                            Icon(Icons.Default.Delete, null)
+                        }
+                    }
+                }
             )
         },
     ) { paddingValues ->
@@ -91,26 +109,39 @@ fun AddBeanContent(
                 text = viewState.bean.name,
                 onValueChange = onBeanNameChanged,
                 labelText = stringResource(id = R.string.Beans__bean_name),
+                maxLines = 1,
+                isError = (viewState is AddBeanViewState.Error),
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                ),
             )
 
             Spacer(modifier = Modifier.height(12.dp))
             CustomOutlinedTextField(
                 text = viewState.bean.roasterName,
                 onValueChange = onRoasterNameChanged,
-                labelText = stringResource(id = R.string.Beans__roaster_name)
+                labelText = stringResource(id = R.string.Beans__roaster_name),
+                maxLines = 1,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                ),
             )
 
             Spacer(modifier = Modifier.height(12.dp))
             CustomOutlinedTextField(
                 text = viewState.bean.origin,
                 onValueChange = onOriginChanged,
-                labelText = stringResource(id = R.string.Beans__origin)
+                labelText = stringResource(id = R.string.Beans__origin),
+                maxLines = 1,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                ),
             )
             Spacer(modifier = Modifier.height(12.dp))
             DatePicker(
                 onValueChange = onDateChanged,
                 value = viewState.bean.roastDate,
-                label = R.string.Beans__roast_date
+                label = R.string.Beans__roast_date,
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -151,6 +182,26 @@ fun AddBeanContent(
                 }
             }
         }
+
+        /*        if (viewState is AddBeanViewState.Error &&
+                    viewState.error is AddBeanResult.Failure.Unknown
+                ) {
+
+                }
+                */
+
+        if (deleteBeanDialog.value) {
+            SimpleAlertDialog(
+                confirmClick = onDeleteClicked,
+                dismissClick = {
+                    deleteBeanDialog.value = false
+                },
+                title = UIText.ResourceText(R.string.Beans__delete_bean),
+                text = UIText.ResourceText(R.string.Beans__delete_bean_message),
+                confirmText = UIText.ResourceText(R.string.delete),
+                dismissText = UIText.ResourceText(R.string.cancel),
+            )
+        }
     }
 }
 
@@ -171,6 +222,7 @@ fun BeansScreenPreview() {
                 onRoastLevelChanged = {},
                 onProcessChanged = {},
                 onSubmitClicked = {},
+                onDeleteClicked = {},
                 navigateUp = {},
             )
         }

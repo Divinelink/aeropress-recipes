@@ -37,4 +37,11 @@ class FakeBeanRepository {
             flowOf(response)
         )
     }
+
+    suspend fun mockRemoveBeanResult(
+        bean: Bean,
+        beanResult: Result<Unit>,
+    ) {
+        whenever(mock.removeBean(bean)).thenReturn(beanResult)
+    }
 }
