@@ -63,6 +63,7 @@ fun BeansContent(
     onAddButtonClicked: () -> Unit,
     onBeanClicked: (Bean) -> Unit,
     onAddBeanOpened: () -> Unit,
+    onNavigateUp: () -> Unit,
     bottomPadding: Dp,
     modifier: Modifier = Modifier,
 ) {
@@ -101,7 +102,7 @@ fun BeansContent(
             top = WindowInsets.systemBars.asPaddingValues().calculateTopPadding().value.dp,
             right = 0.dp,
             bottom = 0.dp,
-            ),
+        ),
         modifier = Modifier
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         floatingActionButton = {
@@ -120,9 +121,9 @@ fun BeansContent(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = {
-                        /* Do Something*/
-                    }) {
+                    IconButton(
+                        onClick = onNavigateUp,
+                    ) {
                         Icon(Icons.Filled.ArrowBack, null)
                     }
                 },
@@ -136,7 +137,6 @@ fun BeansContent(
                 viewState.beans,
                 modifier = modifier
                     .padding(top = paddingValues.calculateTopPadding()),
-                // Navigate to AddBeanScreen,
                 onBeanClicked = onBeanClicked,
                 state = scrollState,
                 bottomPadding = bottomPadding,
@@ -254,6 +254,7 @@ private fun BeansContentPreview(
             onAddButtonClicked = {},
             onBeanClicked = {},
             onAddBeanOpened = {},
+            onNavigateUp = {},
             bottomPadding = 0.dp,
         )
     }
