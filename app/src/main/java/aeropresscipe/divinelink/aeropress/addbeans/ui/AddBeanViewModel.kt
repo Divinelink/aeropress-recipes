@@ -72,30 +72,49 @@ class AddBeanViewModel @Inject constructor(
         }
     }
 
-    fun onRoastLevelChanged(roastLevel: String) {
-        _viewState.updateBean { currentBean ->
-            currentBean.copy(roastLevel = enumValues<RoastLevel>().find { it.name == roastLevel })
+    fun onRoastLevelChanged(value: String) {
+        enumValues<RoastLevel>().find { it.name == value }?.let {
+            _viewState.updateBean { currentBean ->
+                currentBean.copy(roastLevel = it)
+            }
+        }
+        enumValues<ProcessMethod>().find { it.name == value }?.let {
+            _viewState.updateBean { currentBean ->
+                currentBean.copy(process = it)
+            }
         }
     }
 
     fun onProcessChanged(process: String) {
-        _viewState.updateBean { currentBean ->
-            currentBean.copy(process = ProcessMethod.valueOf(process))
-        }
+        // Intentionally Blank.
     }
 
     fun onRoastLevelClicked() {
-        _viewState.update { viewState ->
-            viewState.copy(
-                openRoastLevelDrawer = true
-            )
-        }
+        val content = RoastLevel.values().map { roastLevel ->
+            UIText.StringText(roastLevel.name)
+        }.toMutableList()
+
+        _viewState.value = _viewState.value.copy(
+            bottomSheetTitle = UIText.StringText("Select Roast Level"),
+            content = content,
+            bottomSheetSelectedOption = viewState.value.bean.roastLevel?.name?.let {
+                UIText.StringText(it)
+            },
+        )
     }
 
     fun onProcessClicked() {
+        val content = ProcessMethod.values().map { processMethod ->
+            UIText.ResourceText(processMethod.stringRes)
+        }.toMutableList()
+
         _viewState.update { viewState ->
             viewState.copy(
-                openProcessMethodDrawer = true
+                bottomSheetTitle = UIText.StringText("Select Process Method"),
+                content = content,
+                bottomSheetSelectedOption = viewState.bean.process?.stringRes?.let {
+                    UIText.ResourceText(it)
+                }
             )
         }
     }
@@ -200,8 +219,9 @@ private fun MutableStateFlow<AddBeanViewState>.updateBean(
  */
 private fun AddBeanViewState.copy(
     bean: Bean? = null,
-    openProcessMethodDrawer: Boolean? = null,
-    openRoastLevelDrawer: Boolean? = null,
+    bottomSheetTitle: UIText? = null,
+    content: MutableList<out UIText>? = null,
+    bottomSheetSelectedOption: UIText? = null,
 ): AddBeanViewState {
     return when (this) {
         is AddBeanViewState.Initial -> AddBeanViewState.Initial
@@ -219,8 +239,9 @@ private fun AddBeanViewState.copy(
         )
         is AddBeanViewState.ModifyBean -> AddBeanViewState.ModifyBean(
             bean = bean ?: this.bean,
-            openProcessMethodDrawer = openProcessMethodDrawer ?: this.openProcessMethodDrawer,
-            openRoastLevelDrawer = openRoastLevelDrawer ?: this.openRoastLevelDrawer,
+            bottomSheetTitle = bottomSheetTitle,
+            bottomSheetContent = content,
+            bottomSheetSelectedOption = bottomSheetSelectedOption,
             title = this.title,
             submitButtonText = this.submitButtonText,
             withDeleteAction = this.withDeleteAction,

@@ -10,23 +10,32 @@ import aeropresscipe.divinelink.aeropress.ui.components.SelectOptionField
 import aeropresscipe.divinelink.aeropress.ui.components.SimpleAlertDialog
 import aeropresscipe.divinelink.aeropress.ui.getString
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
+import aeropresscipe.divinelink.aeropress.ui.theme.BottomSheetItemShape
 import android.content.res.Configuration
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.BottomSheetScaffold
+import androidx.compose.material.BottomSheetValue
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.RadioButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.rememberBottomSheetScaffoldState
+import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -34,15 +43,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun AddBeanContent(
     viewState: AddBeanViewState,
@@ -58,7 +72,14 @@ fun AddBeanContent(
     onDeleteClicked: () -> Unit,
     navigateUp: () -> Unit,
 ) {
+    val coroutineScope = rememberCoroutineScope()
     val deleteBeanDialog = remember { mutableStateOf(false) }
+    val scaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = rememberBottomSheetState(
+            initialValue = BottomSheetValue.Collapsed,
+        )
+    )
+
     LaunchedEffect(viewState as? AddBeanViewState.Completed) {
         // Go Back
         if (viewState is AddBeanViewState.Completed) {
@@ -66,7 +87,33 @@ fun AddBeanContent(
         }
     }
 
-    Scaffold(
+    if (viewState is AddBeanViewState.ModifyBean &&
+        viewState.bottomSheetContent?.isNotEmpty() == true
+    ) {
+        BackHandler {
+            coroutineScope.launch {
+                if (scaffoldState.bottomSheetState.isCollapsed) {
+                    scaffoldState.bottomSheetState.expand()
+                } else {
+                    scaffoldState.bottomSheetState.collapse()
+                }
+            }
+        }
+    }
+
+    BottomSheetScaffold(
+        sheetPeekHeight = 0.dp,
+        scaffoldState = scaffoldState,
+        sheetContent = {
+            if (viewState is AddBeanViewState.ModifyBean) {
+                BottomSheetContent(
+                    sheetContent = viewState.bottomSheetContent ?: mutableListOf(),
+                    selectedOption = viewState.bottomSheetSelectedOption,
+                    onOptionSelected = onRoastLevelChanged,
+                    title = viewState.bottomSheetTitle,
+                )
+            }
+        },
         topBar = {
             TopAppBar(
                 title = {
@@ -157,14 +204,18 @@ fun AddBeanContent(
             SelectOptionField(
                 onClick = onRoastLevelClick,
                 onValueChange = onRoastLevelChanged,
-                label = R.string.Beans__roast_level
+                label = R.string.Beans__roast_level,
+                value = viewState.bean.roastLevel?.name
             )
 
             Spacer(modifier = Modifier.height(12.dp))
             SelectOptionField(
                 onClick = onProcessClick,
                 onValueChange = onProcessChanged,
-                label = R.string.Beans__process
+                label = R.string.Beans__process,
+                value = viewState.bean.process?.let { processMethod ->
+                    stringResource(processMethod.stringRes)
+                }
             )
             Spacer(modifier = Modifier.height(120.dp))
 
@@ -182,13 +233,12 @@ fun AddBeanContent(
                 }
             }
         }
-
         /*        if (viewState is AddBeanViewState.Error &&
-                    viewState.error is AddBeanResult.Failure.Unknown
-                ) {
+                viewState.error is AddBeanResult.Failure.Unknown
+            ) {
 
-                }
-                */
+            }
+            */
 
         if (deleteBeanDialog.value) {
             SimpleAlertDialog(
@@ -201,6 +251,54 @@ fun AddBeanContent(
                 confirmText = UIText.ResourceText(R.string.delete),
                 dismissText = UIText.ResourceText(R.string.cancel),
             )
+        }
+    }
+}
+
+@Composable
+fun BottomSheetContent(
+    sheetContent: MutableList<out UIText>,
+    selectedOption: UIText?,
+    onOptionSelected: (String) -> Unit,
+    title: UIText?,
+) {
+    if (title != null) {
+        Text(
+            fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
+            modifier = Modifier
+                .fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            text = title.getString(),
+        )
+    }
+    Column {
+        sheetContent.forEach { uiText ->
+            val item = uiText.getString()
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .clip(BottomSheetItemShape)
+                    .height(48.dp)
+                    .fillMaxWidth()
+                    .clickable {
+                        onOptionSelected(item)
+                    }
+            ) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth(0.9F)
+                        .padding(start = 16.dp),
+                    text = uiText.getString()
+                )
+
+                RadioButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 16.dp),
+                    selected = selectedOption?.getString() == item,
+                    onClick = null
+                )
+            }
         }
     }
 }
