@@ -11,6 +11,8 @@ import aeropresscipe.divinelink.aeropress.ui.components.SimpleAlertDialog
 import aeropresscipe.divinelink.aeropress.ui.getString
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import aeropresscipe.divinelink.aeropress.ui.theme.BottomSheetItemShape
+import aeropresscipe.divinelink.aeropress.ui.theme.BottomSheetShape
+import aeropresscipe.divinelink.aeropress.ui.theme.fadedBackgroundColor
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
@@ -21,6 +23,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
@@ -101,7 +104,10 @@ fun AddBeanContent(
     }
 
     ModalBottomSheetLayout(
+        sheetShape = BottomSheetShape,
+        modifier = Modifier.navigationBarsPadding(),
         sheetState = modalBottomSheetState,
+        scrimColor = MaterialTheme.colorScheme.fadedBackgroundColor(),
         sheetContent = {
             // As of an issue of ModalBottomSheetLayout,
             // a min size of 1.dp is needed for application not to crash.
@@ -289,16 +295,17 @@ fun BottomSheetContent(
     onOptionSelected: (String) -> Unit,
     title: UIText?,
 ) {
-    if (title != null) {
-        Text(
-            fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
-            modifier = Modifier
-                .fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            text = title.getString(),
-        )
-    }
     Column {
+        if (title != null) {
+            Text(
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier
+                    .padding(top = 8.dp, bottom = 8.dp)
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                text = title.getString(),
+            )
+        }
         sheetContent.forEach { uiText ->
             val item = uiText.getString()
             Row(
