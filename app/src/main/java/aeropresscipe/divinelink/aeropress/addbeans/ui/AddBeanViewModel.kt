@@ -71,14 +71,14 @@ class AddBeanViewModel @Inject constructor(
         }
     }
 
-    fun onOptionSelectedFromBottomSheet(value: String) {
+    fun onSelectFromBottomSheet(value: String) {
         enumValues<RoastLevel>().find { it.name == value }?.let {
             _viewState.updateBean { currentBean ->
                 currentBean.copy(roastLevel = it)
             }
         }
 
-        enumValues<ProcessMethod>().find { it.name == value }?.let {
+        enumValues<ProcessMethod>().find { it.value == value }?.let {
             _viewState.updateBean { currentBean ->
                 currentBean.copy(process = it)
             }
@@ -91,7 +91,7 @@ class AddBeanViewModel @Inject constructor(
         }.toMutableList()
 
         _viewState.value = _viewState.value.copy(
-            bottomSheetTitle = UIText.StringText("Select Roast Level"),
+            bottomSheetTitle = UIText.ResourceText(R.string.AddBeans__select_roast_level),
             content = content,
             bottomSheetSelectedOption = viewState.value.bean.roastLevel?.name?.let {
                 UIText.StringText(it)
@@ -105,7 +105,7 @@ class AddBeanViewModel @Inject constructor(
         }.toMutableList()
 
         _viewState.value = _viewState.value.copy(
-            bottomSheetTitle = UIText.StringText("Select Process Method"),
+            bottomSheetTitle = UIText.ResourceText(R.string.AddBeans__select_process_method),
             content = content,
             bottomSheetSelectedOption = viewState.value.bean.process?.stringRes?.let {
                 UIText.ResourceText(it)
@@ -199,7 +199,6 @@ private fun MutableStateFlow<AddBeanViewState>.updateBean(
                 openProcessMethodDrawer = this.value.openProcessMethodDrawer,
                 openRoastLevelDrawer = this.value.openRoastLevelDrawer,
                 withDeleteAction = this.value.withDeleteAction,
-                //                bottomSheetContent = null,
             )
         }
         is AddBeanViewState.Completed -> {
