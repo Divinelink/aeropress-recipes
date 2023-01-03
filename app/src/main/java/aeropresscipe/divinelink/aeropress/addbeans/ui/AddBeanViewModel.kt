@@ -15,7 +15,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.UUID
@@ -72,21 +71,18 @@ class AddBeanViewModel @Inject constructor(
         }
     }
 
-    fun onRoastLevelChanged(value: String) {
+    fun onOptionSelectedFromBottomSheet(value: String) {
         enumValues<RoastLevel>().find { it.name == value }?.let {
             _viewState.updateBean { currentBean ->
                 currentBean.copy(roastLevel = it)
             }
         }
+
         enumValues<ProcessMethod>().find { it.name == value }?.let {
             _viewState.updateBean { currentBean ->
                 currentBean.copy(process = it)
             }
         }
-    }
-
-    fun onProcessChanged(process: String) {
-        // Intentionally Blank.
     }
 
     fun onRoastLevelClicked() {
@@ -108,15 +104,13 @@ class AddBeanViewModel @Inject constructor(
             UIText.ResourceText(processMethod.stringRes)
         }.toMutableList()
 
-        _viewState.update { viewState ->
-            viewState.copy(
-                bottomSheetTitle = UIText.StringText("Select Process Method"),
-                content = content,
-                bottomSheetSelectedOption = viewState.bean.process?.stringRes?.let {
-                    UIText.ResourceText(it)
-                }
-            )
-        }
+        _viewState.value = _viewState.value.copy(
+            bottomSheetTitle = UIText.StringText("Select Process Method"),
+            content = content,
+            bottomSheetSelectedOption = viewState.value.bean.process?.stringRes?.let {
+                UIText.ResourceText(it)
+            },
+        )
     }
 
     fun onDeleteBeanClicked() {
@@ -205,6 +199,7 @@ private fun MutableStateFlow<AddBeanViewState>.updateBean(
                 openProcessMethodDrawer = this.value.openProcessMethodDrawer,
                 openRoastLevelDrawer = this.value.openRoastLevelDrawer,
                 withDeleteAction = this.value.withDeleteAction,
+                //                bottomSheetContent = null,
             )
         }
         is AddBeanViewState.Completed -> {

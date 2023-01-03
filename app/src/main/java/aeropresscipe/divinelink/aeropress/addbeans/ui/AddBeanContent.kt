@@ -14,28 +14,30 @@ import aeropresscipe.divinelink.aeropress.ui.theme.BottomSheetItemShape
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.BottomSheetScaffold
-import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.RadioButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.rememberBottomSheetScaffoldState
-import androidx.compose.material.rememberBottomSheetState
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -64,21 +66,18 @@ fun AddBeanContent(
     onRoasterNameChanged: (String) -> Unit,
     onOriginChanged: (String) -> Unit,
     onDateChanged: (LocalDate) -> Unit,
-    onRoastLevelChanged: (String) -> Unit,
-    onProcessChanged: (String) -> Unit,
+    onOptionSelectedFromBottomSheet: (String) -> Unit,
     onRoastLevelClick: () -> Unit,
     onProcessClick: () -> Unit,
     onSubmitClicked: () -> Unit,
     onDeleteClicked: () -> Unit,
     navigateUp: () -> Unit,
 ) {
+    val modalBottomSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+    )
     val coroutineScope = rememberCoroutineScope()
     val deleteBeanDialog = remember { mutableStateOf(false) }
-    val scaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = rememberBottomSheetState(
-            initialValue = BottomSheetValue.Collapsed,
-        )
-    )
 
     LaunchedEffect(viewState as? AddBeanViewState.Completed) {
         // Go Back
@@ -88,169 +87,197 @@ fun AddBeanContent(
     }
 
     if (viewState is AddBeanViewState.ModifyBean &&
-        viewState.bottomSheetContent?.isNotEmpty() == true
+        viewState.bottomSheetContent.isNullOrEmpty()
     ) {
-        BackHandler {
-            coroutineScope.launch {
-                if (scaffoldState.bottomSheetState.isCollapsed) {
-                    scaffoldState.bottomSheetState.expand()
-                } else {
-                    scaffoldState.bottomSheetState.collapse()
-                }
+        LaunchedEffect(modalBottomSheetState) {
+            if (modalBottomSheetState.isVisible) {
+                modalBottomSheetState.hide()
             }
         }
     }
 
-    BottomSheetScaffold(
-        sheetPeekHeight = 0.dp,
-        scaffoldState = scaffoldState,
+    BackHandler(modalBottomSheetState.isVisible) {
+        coroutineScope.launch { modalBottomSheetState.hide() }
+    }
+
+    ModalBottomSheetLayout(
+        sheetState = modalBottomSheetState,
         sheetContent = {
-            if (viewState is AddBeanViewState.ModifyBean) {
-                BottomSheetContent(
-                    sheetContent = viewState.bottomSheetContent ?: mutableListOf(),
-                    selectedOption = viewState.bottomSheetSelectedOption,
-                    onOptionSelected = onRoastLevelChanged,
-                    title = viewState.bottomSheetTitle,
-                )
-            }
-        },
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = viewState.title.getString(),
-                        style = MaterialTheme.typography.titleMedium
+            // As of an issue of ModalBottomSheetLayout,
+            // a min size of 1.dp is needed for application not to crash.
+            Box(Modifier.defaultMinSize(minHeight = 1.dp)) {
+                if (viewState is AddBeanViewState.ModifyBean) {
+                    BottomSheetContent(
+                        sheetContent = viewState.bottomSheetContent ?: mutableListOf(),
+                        selectedOption = viewState.bottomSheetSelectedOption,
+                        onOptionSelected = onOptionSelectedFromBottomSheet,
+                        title = viewState.bottomSheetTitle,
                     )
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = navigateUp,
-                    ) {
-                        Icon(Icons.Filled.Close, null)
-                    }
-                },
-                actions = {
-                    if (viewState.withDeleteAction) {
-                        IconButton(
-                            onClick = {
-                                deleteBeanDialog.value = true
-                            },
-                        ) {
-                            Icon(Icons.Default.Delete, null)
-                        }
-                    }
-                }
-            )
-        },
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier.padding(
-                top = paddingValues.calculateTopPadding(),
-                start = 8.dp,
-                end = 8.dp
-            )
-        ) {
-
-            Spacer(modifier = Modifier.height(12.dp))
-            CustomOutlinedTextField(
-                text = viewState.bean.name,
-                onValueChange = onBeanNameChanged,
-                labelText = stringResource(id = R.string.Beans__bean_name),
-                maxLines = 1,
-                isError = (viewState is AddBeanViewState.Error),
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next
-                ),
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-            CustomOutlinedTextField(
-                text = viewState.bean.roasterName,
-                onValueChange = onRoasterNameChanged,
-                labelText = stringResource(id = R.string.Beans__roaster_name),
-                maxLines = 1,
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next
-                ),
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-            CustomOutlinedTextField(
-                text = viewState.bean.origin,
-                onValueChange = onOriginChanged,
-                labelText = stringResource(id = R.string.Beans__origin),
-                maxLines = 1,
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next
-                ),
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            DatePicker(
-                onValueChange = onDateChanged,
-                value = viewState.bean.roastDate,
-                label = R.string.Beans__roast_date,
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                modifier = Modifier
-                    .wrapContentSize(),
-                style = MaterialTheme.typography.titleMedium,
-                text = stringResource(R.string.Beans__details),
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-            SelectOptionField(
-                onClick = onRoastLevelClick,
-                onValueChange = onRoastLevelChanged,
-                label = R.string.Beans__roast_level,
-                value = viewState.bean.roastLevel?.name
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-            SelectOptionField(
-                onClick = onProcessClick,
-                onValueChange = onProcessChanged,
-                label = R.string.Beans__process,
-                value = viewState.bean.process?.let { processMethod ->
-                    stringResource(processMethod.stringRes)
-                }
-            )
-            Spacer(modifier = Modifier.height(120.dp))
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 32.dp),
-                horizontalAlignment = CenterHorizontally
-            ) {
-                Button(
-                    modifier = Modifier.fillMaxWidth(0.5F),
-                    onClick = { onSubmitClicked() }
-                ) {
-                    Text(viewState.submitButtonText.getString())
                 }
             }
         }
-        /*        if (viewState is AddBeanViewState.Error &&
-                viewState.error is AddBeanResult.Failure.Unknown
+    ) {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = viewState.title.getString(),
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    },
+                    navigationIcon = {
+                        IconButton(
+                            onClick = navigateUp,
+                        ) {
+                            Icon(Icons.Filled.Close, null)
+                        }
+                    },
+                    actions = {
+                        if (viewState.withDeleteAction) {
+                            IconButton(
+                                onClick = {
+                                    deleteBeanDialog.value = true
+                                },
+                            ) {
+                                Icon(Icons.Default.Delete, null)
+                            }
+                        }
+                    }
+                )
+            },
+        ) { paddingValues ->
+            Column(
+                modifier = Modifier.padding(
+                    top = paddingValues.calculateTopPadding(),
+                    start = 8.dp,
+                    end = 8.dp
+                )
             ) {
 
-            }
-            */
+                Spacer(modifier = Modifier.height(12.dp))
+                CustomOutlinedTextField(
+                    text = viewState.bean.name,
+                    onValueChange = onBeanNameChanged,
+                    labelText = stringResource(id = R.string.Beans__bean_name),
+                    maxLines = 1,
+                    isError = (viewState is AddBeanViewState.Error),
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Next
+                    ),
+                )
 
-        if (deleteBeanDialog.value) {
-            SimpleAlertDialog(
-                confirmClick = onDeleteClicked,
-                dismissClick = {
-                    deleteBeanDialog.value = false
-                },
-                title = UIText.ResourceText(R.string.Beans__delete_bean),
-                text = UIText.ResourceText(R.string.Beans__delete_bean_message),
-                confirmText = UIText.ResourceText(R.string.delete),
-                dismissText = UIText.ResourceText(R.string.cancel),
-            )
+                Spacer(modifier = Modifier.height(12.dp))
+                CustomOutlinedTextField(
+                    text = viewState.bean.roasterName,
+                    onValueChange = onRoasterNameChanged,
+                    labelText = stringResource(id = R.string.Beans__roaster_name),
+                    maxLines = 1,
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Next
+                    ),
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+                CustomOutlinedTextField(
+                    text = viewState.bean.origin,
+                    onValueChange = onOriginChanged,
+                    labelText = stringResource(id = R.string.Beans__origin),
+                    maxLines = 1,
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Next
+                    ),
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                DatePicker(
+                    onValueChange = onDateChanged,
+                    value = viewState.bean.roastDate,
+                    label = R.string.Beans__roast_date,
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    modifier = Modifier
+                        .wrapContentSize(),
+                    style = MaterialTheme.typography.titleMedium,
+                    text = stringResource(R.string.Beans__details),
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+                SelectOptionField(
+                    onClick = {
+                        onRoastLevelClick()
+                        coroutineScope.launch {
+                            if (modalBottomSheetState.isVisible) {
+                                modalBottomSheetState.hide()
+                            } else {
+                                modalBottomSheetState.show()
+                            }
+                        }
+                    },
+                    onValueChange = {
+                        // Intentionally Blank.
+                    },
+                    label = R.string.Beans__roast_level,
+                    value = viewState.bean.roastLevel?.name
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+                SelectOptionField(
+                    onClick = {
+                        onProcessClick()
+                        coroutineScope.launch {
+                            if (modalBottomSheetState.isVisible) {
+                                modalBottomSheetState.hide()
+                            } else {
+                                modalBottomSheetState.show()
+                            }
+                        }
+                    },
+                    onValueChange = {
+                        // Intentionally Blank.
+                    },
+                    label = R.string.Beans__process,
+                    value = viewState.bean.process?.let { processMethod ->
+                        stringResource(processMethod.stringRes)
+                    }
+                )
+                Spacer(modifier = Modifier.height(120.dp))
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 32.dp),
+                    horizontalAlignment = CenterHorizontally
+                ) {
+                    Button(
+                        modifier = Modifier.fillMaxWidth(0.5F),
+                        onClick = { onSubmitClicked() }
+                    ) {
+                        Text(viewState.submitButtonText.getString())
+                    }
+                }
+            }
+            /*        if (viewState is AddBeanViewState.Error &&
+                    viewState.error is AddBeanResult.Failure.Unknown
+                ) {
+
+                }
+                */
+
+            if (deleteBeanDialog.value) {
+                SimpleAlertDialog(
+                    confirmClick = onDeleteClicked,
+                    dismissClick = {
+                        deleteBeanDialog.value = false
+                    },
+                    title = UIText.ResourceText(R.string.Beans__delete_bean),
+                    text = UIText.ResourceText(R.string.Beans__delete_bean_message),
+                    confirmText = UIText.ResourceText(R.string.delete),
+                    dismissText = UIText.ResourceText(R.string.cancel),
+                )
+            }
         }
     }
 }
@@ -317,8 +344,7 @@ fun BeansScreenPreview() {
                 onBeanNameChanged = {},
                 onRoasterNameChanged = {},
                 onOriginChanged = {},
-                onRoastLevelChanged = {},
-                onProcessChanged = {},
+                onOptionSelectedFromBottomSheet = {},
                 onSubmitClicked = {},
                 onDeleteClicked = {},
                 navigateUp = {},

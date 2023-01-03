@@ -23,7 +23,7 @@ class AddBeanActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setNavigationBarColor(ContextCompat.getColor(this, R.color.colorBackground))
+        setNavigationBarColor(ContextCompat.getColor(this, R.color.transparent))
 
         val bean = intent.getSerializable<Bean?>(BEAN)
 
@@ -38,12 +38,11 @@ class AddBeanActivity : AppCompatActivity() {
                         onRoasterNameChanged = viewModel::onRoasterNameChanged,
                         onOriginChanged = viewModel::onOriginChanged,
                         onDateChanged = viewModel::onDateChanged,
-                        onRoastLevelChanged = viewModel::onRoastLevelChanged,
-                        onProcessChanged = viewModel::onProcessChanged,
                         onRoastLevelClick = viewModel::onRoastLevelClicked,
                         onProcessClick = viewModel::onProcessClicked,
                         onSubmitClicked = viewModel::onSubmitClicked,
                         onDeleteClicked = viewModel::onDeleteBeanClicked,
+                        onOptionSelectedFromBottomSheet = viewModel::onOptionSelectedFromBottomSheet,
                         navigateUp = { finish() },
                     )
                 }
