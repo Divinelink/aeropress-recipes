@@ -82,12 +82,8 @@ class AddBeanViewModelRobot {
         viewModel.onDateChanged(date)
     }
 
-    fun onRoastLevelChanged(roastLevel: String) = apply {
-        viewModel.onRoastLevelChanged(roastLevel)
-    }
-
-    fun onProcessChanged(process: String) = apply {
-        viewModel.onProcessChanged(process)
+    fun onSelectFromBottomSheet(value: String) = apply {
+        viewModel.onSelectFromBottomSheet(value)
     }
 
     fun onRoastLevelClicked() = apply {

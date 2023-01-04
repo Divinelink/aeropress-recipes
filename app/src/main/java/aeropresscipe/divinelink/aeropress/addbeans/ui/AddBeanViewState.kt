@@ -24,6 +24,9 @@ sealed class AddBeanViewState(
         override val openProcessMethodDrawer: Boolean = false,
         override val openRoastLevelDrawer: Boolean = false,
         override val withDeleteAction: Boolean = false,
+        val bottomSheetContent: MutableList<out UIText>? = mutableListOf(),
+        val bottomSheetTitle: UIText? = null,
+        val bottomSheetSelectedOption: UIText? = null,
     ) : AddBeanViewState(
         submitButtonText = submitButtonText,
         bean = bean,

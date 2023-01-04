@@ -129,6 +129,9 @@
     <string name="AddBeans__update_title">Update Beans</string>
     <string name="AddBeans__error_empty_bean_name">Please enter a beans name.</string>
 
+    <string name="AddBeans__select_process_method">Select Process Method</string>
+    <string name="AddBeans__select_roast_level">Select Roast Level</string>
+
     <!-- Process Method -->
     <string name="ProcessMethod__washed">Washed</string>
     <string name="ProcessMethod__natural">Natural</string>

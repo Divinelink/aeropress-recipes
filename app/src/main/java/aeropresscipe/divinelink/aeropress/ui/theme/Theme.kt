@@ -41,6 +41,11 @@ fun ColorScheme.textColorDisabled(): Color {
 }
 
 @Composable
+fun ColorScheme.fadedBackgroundColor(): Color {
+    return MaterialTheme.colorScheme.scrim.copy(alpha = 0.62f)
+}
+
+@Composable
 fun topBarColor(): Color {
     return MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.30f)
 }

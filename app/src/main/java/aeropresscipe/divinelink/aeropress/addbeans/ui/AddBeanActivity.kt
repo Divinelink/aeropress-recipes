@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.getSerializable
 import gr.divinelink.core.util.utils.setNavigationBarColor
@@ -23,6 +24,7 @@ class AddBeanActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setNavigationBarColor(ContextCompat.getColor(this, R.color.colorBackground))
 
         val bean = intent.getSerializable<Bean?>(BEAN)
@@ -38,12 +40,11 @@ class AddBeanActivity : AppCompatActivity() {
                         onRoasterNameChanged = viewModel::onRoasterNameChanged,
                         onOriginChanged = viewModel::onOriginChanged,
                         onDateChanged = viewModel::onDateChanged,
-                        onRoastLevelChanged = viewModel::onRoastLevelChanged,
-                        onProcessChanged = viewModel::onProcessChanged,
                         onRoastLevelClick = viewModel::onRoastLevelClicked,
                         onProcessClick = viewModel::onProcessClicked,
                         onSubmitClicked = viewModel::onSubmitClicked,
                         onDeleteClicked = viewModel::onDeleteBeanClicked,
+                        onOptionSelectedFromBottomSheet = viewModel::onSelectFromBottomSheet,
                         navigateUp = { finish() },
                     )
                 }

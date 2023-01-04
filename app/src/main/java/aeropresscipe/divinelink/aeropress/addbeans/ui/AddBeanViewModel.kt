@@ -15,7 +15,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.UUID
@@ -72,32 +71,46 @@ class AddBeanViewModel @Inject constructor(
         }
     }
 
-    fun onRoastLevelChanged(roastLevel: String) {
-        _viewState.updateBean { currentBean ->
-            currentBean.copy(roastLevel = enumValues<RoastLevel>().find { it.name == roastLevel })
+    fun onSelectFromBottomSheet(value: String) {
+        enumValues<RoastLevel>().find { it.name == value }?.let {
+            _viewState.updateBean { currentBean ->
+                currentBean.copy(roastLevel = it)
+            }
         }
-    }
 
-    fun onProcessChanged(process: String) {
-        _viewState.updateBean { currentBean ->
-            currentBean.copy(process = ProcessMethod.valueOf(process))
+        enumValues<ProcessMethod>().find { it.value == value }?.let {
+            _viewState.updateBean { currentBean ->
+                currentBean.copy(process = it)
+            }
         }
     }
 
     fun onRoastLevelClicked() {
-        _viewState.update { viewState ->
-            viewState.copy(
-                openRoastLevelDrawer = true
-            )
-        }
+        val content = RoastLevel.values().map { roastLevel ->
+            UIText.StringText(roastLevel.name)
+        }.toMutableList()
+
+        _viewState.value = _viewState.value.copy(
+            bottomSheetTitle = UIText.ResourceText(R.string.AddBeans__select_roast_level),
+            bottomSheetContent = content,
+            bottomSheetSelectedOption = viewState.value.bean.roastLevel?.name?.let {
+                UIText.StringText(it)
+            },
+        )
     }
 
     fun onProcessClicked() {
-        _viewState.update { viewState ->
-            viewState.copy(
-                openProcessMethodDrawer = true
-            )
-        }
+        val content = ProcessMethod.values().map { processMethod ->
+            UIText.ResourceText(processMethod.stringRes)
+        }.toMutableList()
+
+        _viewState.value = _viewState.value.copy(
+            bottomSheetTitle = UIText.ResourceText(R.string.AddBeans__select_process_method),
+            bottomSheetContent = content,
+            bottomSheetSelectedOption = viewState.value.bean.process?.stringRes?.let {
+                UIText.ResourceText(it)
+            },
+        )
     }
 
     fun onDeleteBeanClicked() {
@@ -200,8 +213,9 @@ private fun MutableStateFlow<AddBeanViewState>.updateBean(
  */
 private fun AddBeanViewState.copy(
     bean: Bean? = null,
-    openProcessMethodDrawer: Boolean? = null,
-    openRoastLevelDrawer: Boolean? = null,
+    bottomSheetTitle: UIText? = null,
+    bottomSheetContent: MutableList<out UIText>? = null,
+    bottomSheetSelectedOption: UIText? = null,
 ): AddBeanViewState {
     return when (this) {
         is AddBeanViewState.Initial -> AddBeanViewState.Initial
@@ -219,8 +233,9 @@ private fun AddBeanViewState.copy(
         )
         is AddBeanViewState.ModifyBean -> AddBeanViewState.ModifyBean(
             bean = bean ?: this.bean,
-            openProcessMethodDrawer = openProcessMethodDrawer ?: this.openProcessMethodDrawer,
-            openRoastLevelDrawer = openRoastLevelDrawer ?: this.openRoastLevelDrawer,
+            bottomSheetTitle = bottomSheetTitle,
+            bottomSheetContent = bottomSheetContent,
+            bottomSheetSelectedOption = bottomSheetSelectedOption,
             title = this.title,
             submitButtonText = this.submitButtonText,
             withDeleteAction = this.withDeleteAction,
