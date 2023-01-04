@@ -92,7 +92,7 @@ class AddBeanViewModel @Inject constructor(
 
         _viewState.value = _viewState.value.copy(
             bottomSheetTitle = UIText.ResourceText(R.string.AddBeans__select_roast_level),
-            content = content,
+            bottomSheetContent = content,
             bottomSheetSelectedOption = viewState.value.bean.roastLevel?.name?.let {
                 UIText.StringText(it)
             },
@@ -106,7 +106,7 @@ class AddBeanViewModel @Inject constructor(
 
         _viewState.value = _viewState.value.copy(
             bottomSheetTitle = UIText.ResourceText(R.string.AddBeans__select_process_method),
-            content = content,
+            bottomSheetContent = content,
             bottomSheetSelectedOption = viewState.value.bean.process?.stringRes?.let {
                 UIText.ResourceText(it)
             },
@@ -214,7 +214,7 @@ private fun MutableStateFlow<AddBeanViewState>.updateBean(
 private fun AddBeanViewState.copy(
     bean: Bean? = null,
     bottomSheetTitle: UIText? = null,
-    content: MutableList<out UIText>? = null,
+    bottomSheetContent: MutableList<out UIText>? = null,
     bottomSheetSelectedOption: UIText? = null,
 ): AddBeanViewState {
     return when (this) {
@@ -234,7 +234,7 @@ private fun AddBeanViewState.copy(
         is AddBeanViewState.ModifyBean -> AddBeanViewState.ModifyBean(
             bean = bean ?: this.bean,
             bottomSheetTitle = bottomSheetTitle,
-            bottomSheetContent = content,
+            bottomSheetContent = bottomSheetContent,
             bottomSheetSelectedOption = bottomSheetSelectedOption,
             title = this.title,
             submitButtonText = this.submitButtonText,

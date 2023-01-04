@@ -149,7 +149,7 @@ class AddBeanViewModelTest {
     fun `onRoastLevelChanged successfully updates roast level`() = runTest {
         testRobot
             .buildViewModel()
-            .onRoastLevelChanged(RoastLevel.Medium.name)
+            .onSelectFromBottomSheet(RoastLevel.Medium.name)
             .assertViewState(
                 AddBeanViewState.ModifyBean(
                     bean = emptyBean().copy(roastLevel = RoastLevel.Medium),
@@ -163,7 +163,7 @@ class AddBeanViewModelTest {
     fun `onProcessChanged successfully updates process method`() = runTest {
         testRobot
             .buildViewModel()
-            .onProcessChanged(ProcessMethod.Natural.name)
+            .onSelectFromBottomSheet(ProcessMethod.Natural.name)
             .assertViewState(
                 AddBeanViewState.ModifyBean(
                     bean = emptyBean().copy(process = ProcessMethod.Natural),
@@ -178,8 +178,8 @@ class AddBeanViewModelTest {
         testRobot
             .buildViewModel()
             .assertViewState(AddBeanViewState.Initial)
-            .onProcessChanged(ProcessMethod.Natural.name)
-            .onRoastLevelChanged(RoastLevel.Medium.name)
+            .onSelectFromBottomSheet(ProcessMethod.Natural.name)
+            .onSelectFromBottomSheet(RoastLevel.Medium.name)
             .onBeanNameChanged("Guji")
             .onOriginChanged("Ethiopia")
             .onRoasterNameChanged("Omsom Roastery")
@@ -330,6 +330,109 @@ class AddBeanViewModelTest {
                     submitButtonText = UIText.ResourceText(R.string.update),
                     error = AddBeanResult.Failure.Unknown,
                     withDeleteAction = true,
+                )
+            )
+    }
+
+    @Test
+    fun `when roastLevelClicked then I expect BottomSheet content with all of RoastLevel values`() = runTest {
+        val roastLevelContent = RoastLevel.values().map { roastLevel ->
+            UIText.StringText(roastLevel.name)
+        }.toMutableList()
+
+        testRobot
+            .buildViewModel()
+            .onSetBean(testBean)
+            .onRoastLevelClicked()
+            .assertViewState(
+                AddBeanViewState.ModifyBean(
+                    bean = testBean,
+                    title = UIText.ResourceText(R.string.AddBeans__update_title),
+                    submitButtonText = UIText.ResourceText(R.string.update),
+                    withDeleteAction = true,
+                    bottomSheetContent = roastLevelContent,
+                    bottomSheetTitle = UIText.ResourceText(R.string.AddBeans__select_roast_level),
+                )
+            )
+    }
+
+    @Test
+    fun `given a selected option for RoastLevel, when roastLevelClicked, then I expect BottomSheet content with selected option`() = runTest {
+        val roastLevelContent = RoastLevel.values().map { roastLevel ->
+            UIText.StringText(roastLevel.name)
+        }.toMutableList()
+
+        testRobot
+            .buildViewModel()
+            .onSetBean(testBean)
+            .onSelectFromBottomSheet(RoastLevel.Medium.name)
+            .onRoastLevelClicked()
+            .assertViewState(
+                AddBeanViewState.ModifyBean(
+                    bean = testBean.copy(roastLevel = RoastLevel.Medium),
+                    title = UIText.ResourceText(R.string.AddBeans__update_title),
+                    submitButtonText = UIText.ResourceText(R.string.update),
+                    withDeleteAction = true,
+                    bottomSheetContent = roastLevelContent,
+                    bottomSheetTitle = UIText.ResourceText(R.string.AddBeans__select_roast_level),
+                    bottomSheetSelectedOption = UIText.StringText(RoastLevel.Medium.name)
+                )
+            )
+    }
+
+    @Test
+    fun `when processClicked then I expect BottomSheet content with all of ProcessMethod values`() = runTest {
+        val processMethodContent = ProcessMethod.values().map { process ->
+            UIText.ResourceText(process.stringRes)
+        }.toMutableList()
+
+        testRobot
+            .buildViewModel()
+            .onSetBean(testBean)
+            .onProcessClicked()
+            .assertViewState(
+                AddBeanViewState.ModifyBean(
+                    bean = testBean,
+                    title = UIText.ResourceText(R.string.AddBeans__update_title),
+                    submitButtonText = UIText.ResourceText(R.string.update),
+                    withDeleteAction = true,
+                    bottomSheetContent = processMethodContent,
+                    bottomSheetTitle = UIText.ResourceText(R.string.AddBeans__select_process_method),
+                )
+            )
+    }
+
+    @Test
+    fun `given a selected process method, when processClicked then I expect BottomSheet content with selected option`() = runTest {
+        val processMethodContent = ProcessMethod.values().map { process ->
+            UIText.ResourceText(process.stringRes)
+        }.toMutableList()
+
+        testRobot
+            .buildViewModel()
+            .onSetBean(testBean)
+            .onProcessClicked()
+            .assertViewState(
+                AddBeanViewState.ModifyBean(
+                    bean = testBean,
+                    title = UIText.ResourceText(R.string.AddBeans__update_title),
+                    submitButtonText = UIText.ResourceText(R.string.update),
+                    withDeleteAction = true,
+                    bottomSheetContent = processMethodContent,
+                    bottomSheetTitle = UIText.ResourceText(R.string.AddBeans__select_process_method),
+                )
+            )
+            .onSelectFromBottomSheet(ProcessMethod.CarbonicMaceration.value)
+            .onProcessClicked()
+            .assertViewState(
+                AddBeanViewState.ModifyBean(
+                    bean = testBean.copy(process = ProcessMethod.CarbonicMaceration),
+                    title = UIText.ResourceText(R.string.AddBeans__update_title),
+                    submitButtonText = UIText.ResourceText(R.string.update),
+                    withDeleteAction = true,
+                    bottomSheetContent = processMethodContent,
+                    bottomSheetTitle = UIText.ResourceText(R.string.AddBeans__select_process_method),
+                    bottomSheetSelectedOption = UIText.ResourceText(ProcessMethod.CarbonicMaceration.stringRes)
                 )
             )
     }
