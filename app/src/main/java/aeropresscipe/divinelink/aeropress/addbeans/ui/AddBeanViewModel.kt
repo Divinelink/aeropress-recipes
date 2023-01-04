@@ -90,7 +90,11 @@ class AddBeanViewModel @Inject constructor(
             UIText.StringText(roastLevel.name)
         }.toMutableList()
 
-        _viewState.value = _viewState.value.copy(
+        _viewState.value = AddBeanViewState.ModifyBean(
+            bean = viewState.value.bean,
+            title = viewState.value.title,
+            submitButtonText = viewState.value.submitButtonText,
+            withDeleteAction = viewState.value.withDeleteAction,
             bottomSheetTitle = UIText.ResourceText(R.string.AddBeans__select_roast_level),
             bottomSheetContent = content,
             bottomSheetSelectedOption = viewState.value.bean.roastLevel?.name?.let {
@@ -104,9 +108,13 @@ class AddBeanViewModel @Inject constructor(
             UIText.ResourceText(processMethod.stringRes)
         }.toMutableList()
 
-        _viewState.value = _viewState.value.copy(
-            bottomSheetTitle = UIText.ResourceText(R.string.AddBeans__select_process_method),
+        _viewState.value = AddBeanViewState.ModifyBean(
+            bean = viewState.value.bean,
+            title = viewState.value.title,
+            submitButtonText = viewState.value.submitButtonText,
+            withDeleteAction = viewState.value.withDeleteAction,
             bottomSheetContent = content,
+            bottomSheetTitle = UIText.ResourceText(R.string.AddBeans__select_process_method),
             bottomSheetSelectedOption = viewState.value.bean.process?.stringRes?.let {
                 UIText.ResourceText(it)
             },
@@ -204,41 +212,5 @@ private fun MutableStateFlow<AddBeanViewState>.updateBean(
         is AddBeanViewState.Completed -> {
             // Intentionally Blank.
         }
-    }
-}
-
-/**
- * A helper method that enabled us to update the desired properties on the current ViewState.
- * This is needed since Sealed Classes doesn't have a copy method.
- */
-private fun AddBeanViewState.copy(
-    bean: Bean? = null,
-    bottomSheetTitle: UIText? = null,
-    bottomSheetContent: MutableList<out UIText>? = null,
-    bottomSheetSelectedOption: UIText? = null,
-): AddBeanViewState {
-    return when (this) {
-        is AddBeanViewState.Initial -> AddBeanViewState.Initial
-        is AddBeanViewState.Error -> AddBeanViewState.Error(
-            bean = this.bean,
-            submitButtonText = this.submitButtonText,
-            title = this.title,
-            error = error,
-            withDeleteAction = withDeleteAction,
-        )
-        is AddBeanViewState.Completed -> AddBeanViewState.Completed(
-            submitButtonText = this.submitButtonText,
-            title = this.title,
-            withDeleteAction = this.withDeleteAction,
-        )
-        is AddBeanViewState.ModifyBean -> AddBeanViewState.ModifyBean(
-            bean = bean ?: this.bean,
-            bottomSheetTitle = bottomSheetTitle,
-            bottomSheetContent = bottomSheetContent,
-            bottomSheetSelectedOption = bottomSheetSelectedOption,
-            title = this.title,
-            submitButtonText = this.submitButtonText,
-            withDeleteAction = this.withDeleteAction,
-        )
     }
 }
