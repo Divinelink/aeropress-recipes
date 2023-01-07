@@ -85,12 +85,18 @@ fun BeanListItem(
 
                 Text(
                     style = MaterialTheme.typography.bodySmall,
-                    text = bean.origin,
-                    color = MaterialTheme.colorScheme.onSurface
+                    text = bean.origin.splitToLines(),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Start,
                 )
             }
         }
     }
+}
+
+private fun CharSequence.splitToLines(): String {
+    return this.split(", ", ",")
+        .joinToString("\n")
 }
 
 @Composable
@@ -142,17 +148,18 @@ private class BeanPreviewParameterProvider : PreviewParameterProvider<Bean> {
 
             val singleLetterBean = doubleLetterBean.copy(
                 name = "Single",
-                roastLevel = RoastLevel.Medium
+                roastLevel = RoastLevel.Medium,
+                origin = "Brazil, Costa Rica, Columbia",
             )
 
             val multipleLetterBean = doubleLetterBean.copy(
                 name = "Omsom Roasters Athens",
-                roastLevel = RoastLevel.Medium
+                roastLevel = RoastLevel.Medium,
             )
 
             val largeBeanName = doubleLetterBean.copy(
                 name = "Roaster with a very large name that normally would not fit on this space.",
-                roastLevel = RoastLevel.Medium
+                roastLevel = RoastLevel.Medium,
             )
 
             return sequenceOf(
