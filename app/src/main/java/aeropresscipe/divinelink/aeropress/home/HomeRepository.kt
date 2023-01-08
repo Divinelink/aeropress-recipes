@@ -15,13 +15,13 @@ class HomeRepository @Inject constructor(
 ) : BaseRepository() {
 
     fun getRecipe(
-        completionBlock: (DiceDomain) -> Unit
+        completionBlock: (DiceDomain) -> Unit,
     ) = performTransaction(completionBlock) { remote.getRecipe() }
 
     fun updateRecipe(
         recipe: Recipe,
         update: Boolean,
-        completionBlock: (DiceDomain) -> Unit
+        completionBlock: (DiceDomain) -> Unit,
     ) = performTransaction(completionBlock) { remote.updateRecipe(recipe, update) }
 }
 
@@ -30,9 +30,9 @@ interface IHomeRemote {
     suspend fun updateRecipe(recipe: Recipe, update: Boolean): DiceDomain
 }
 
-class HomeRemote @Inject constructor(
+open class HomeRemote @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
-    private val recipeDao: RecipeDao
+    private val recipeDao: RecipeDao,
 ) : IHomeRemote {
 
     override suspend fun getRecipe(): DiceDomain {
@@ -41,7 +41,10 @@ class HomeRemote @Inject constructor(
         }
     }
 
-    override suspend fun updateRecipe(recipe: Recipe, update: Boolean): DiceDomain {
+    override suspend fun updateRecipe(
+        recipe: Recipe,
+        update: Boolean,
+    ): DiceDomain {
         return withContext(dispatcher) {
             if (update) {
                 recipeDao.updateRecipe(recipe)

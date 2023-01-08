@@ -28,6 +28,7 @@ class HomeViewModel @Inject constructor(
             Timber.d(value.toString())
             field = value
             delegate?.get()?.updateState(value)
+            statesList.add(value)
         }
 
     override fun init() {
