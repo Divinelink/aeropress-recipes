@@ -7,6 +7,7 @@ import aeropresscipe.divinelink.aeropress.home.HomeViewModel
 import aeropresscipe.divinelink.aeropress.recipe.models.DiceDomain
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.test.util.fakes.FakeThemedActivityDelegate
+import aeropresscipe.divinelink.aeropress.timer.TimerFlow
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
@@ -27,11 +28,39 @@ class HomeViewModelTestRobot {
         )
     }
 
+    fun onInit() = apply {
+        viewModel.init()
+    }
+
+    fun onResume() = apply {
+        viewModel.resume()
+    }
+
+    fun onResumeTimer() = apply {
+        viewModel.resumeTimer()
+    }
+
+    fun onGenerateRecipe() = apply {
+        viewModel.generateRecipe()
+    }
+
+    fun onStartTimer(
+        recipe: Recipe,
+        flow: TimerFlow,
+        update: Boolean,
+    ) = apply {
+        viewModel.startTimer(
+            recipe = recipe,
+            flow = flow,
+            update = update,
+        )
+    }
+
     fun assertViewState(
         expectedViewState: HomeState,
     ) = apply {
-        val actualViewState = viewModel.statesList
-        assertThat(actualViewState).contains(expectedViewState)
+        val actualViewStates = viewModel.statesList
+        assertThat(actualViewStates).contains(expectedViewState)
     }
 
     fun assertFalseViewState(
@@ -47,7 +76,7 @@ class HomeViewModelTestRobot {
         repository.mockGetRecipe(response)
     }
 
-    suspend fun mockGetRecipe(
+    suspend fun mockUpdateRecipe(
         recipe: Recipe,
         update: Boolean,
         response: DiceDomain,
