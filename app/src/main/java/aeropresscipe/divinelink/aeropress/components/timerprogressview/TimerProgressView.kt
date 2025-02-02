@@ -1,7 +1,6 @@
 package aeropresscipe.divinelink.aeropress.components.timerprogressview
 
 import aeropresscipe.divinelink.aeropress.components.timerprogressview.TimerProgressView.Callback
-import aeropresscipe.divinelink.aeropress.databinding.ViewTimerProgressBinding
 import aeropresscipe.divinelink.aeropress.recipe.models.DiceDomain
 import android.animation.ObjectAnimator
 import android.content.Context
@@ -11,6 +10,7 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewTreeViewModelStoreOwner
+import com.divinelink.aeropress.recipes.databinding.ViewTimerProgressBinding
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.fadeOut
 import gr.divinelink.core.util.timer.PreciseCountdown

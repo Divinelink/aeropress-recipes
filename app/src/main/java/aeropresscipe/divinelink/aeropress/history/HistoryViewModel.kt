@@ -6,6 +6,7 @@ import aeropresscipe.divinelink.aeropress.favorites.Favorites
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.divinelink.aeropress.recipes.history.History
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

@@ -1,12 +1,12 @@
 package aeropresscipe.divinelink.aeropress.addbeans.ui
 
 import aeropresscipe.divinelink.aeropress.MainDispatcherRule
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.beans.domain.model.AddBeanResult
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
 import aeropresscipe.divinelink.aeropress.beans.domain.model.RoastLevel
 import aeropresscipe.divinelink.aeropress.ui.UIText
+import com.divinelink.aeropress.recipes.R
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest

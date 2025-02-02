@@ -1,7 +1,5 @@
 package aeropresscipe.divinelink.aeropress.timer
 
-import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.databinding.FragmentTimerBinding
 import aeropresscipe.divinelink.aeropress.finish.FinishActivity
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.util.TimerTransferableModel
@@ -14,6 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.divinelink.aeropress.recipes.R
+import com.divinelink.aeropress.recipes.databinding.FragmentTimerBinding
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.constants.Numbers.ONE
 import gr.divinelink.core.util.constants.Numbers.ONE_THOUSAND

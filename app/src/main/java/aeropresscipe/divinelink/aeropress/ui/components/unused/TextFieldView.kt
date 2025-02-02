@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.beans
 
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -27,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.divinelink.aeropress.recipes.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.settings
 
-import aeropresscipe.divinelink.aeropress.R
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +13,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.divinelink.aeropress.recipes.R
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.addSystemWindowInsetToMargin
 

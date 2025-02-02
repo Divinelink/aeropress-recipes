@@ -4,6 +4,7 @@ import aeropresscipe.divinelink.aeropress.base.di.IoDispatcher
 import aeropresscipe.divinelink.aeropress.base.mvi.logic.BaseRepository
 import aeropresscipe.divinelink.aeropress.favorites.Favorites
 import aeropresscipe.divinelink.aeropress.favorites.FavoritesDao
+import com.divinelink.aeropress.recipes.history.History
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

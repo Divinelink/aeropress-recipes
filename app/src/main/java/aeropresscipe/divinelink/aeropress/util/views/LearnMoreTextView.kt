@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.util.views
 
-import aeropresscipe.divinelink.aeropress.R
 import android.content.Context
 import android.text.Spannable
 import android.text.SpannableString
@@ -15,6 +14,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import com.divinelink.aeropress.recipes.R
 import gr.divinelink.core.util.utils.CommunicationActions
 
 class LearnMoreTextView : AppCompatTextView {
@@ -34,7 +34,7 @@ class LearnMoreTextView : AppCompatTextView {
 
     private fun init() {
         movementMethod = LinkMovementMethod.getInstance()
-        setLinkTextInternal(R.string.LearnMoreTextView_learn_more)
+        setLinkTextInternal(com.divinelink.core.util.R.string.LearnMoreTextView_learn_more)
         setLinkColor(ContextCompat.getColor(context, R.color.colorOnSurface))
         visible = true
     }

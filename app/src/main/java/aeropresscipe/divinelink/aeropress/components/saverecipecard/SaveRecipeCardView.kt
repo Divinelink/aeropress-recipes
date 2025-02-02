@@ -1,7 +1,6 @@
 package aeropresscipe.divinelink.aeropress.components.saverecipecard
 
 import aeropresscipe.divinelink.aeropress.components.snackbar.Notification
-import aeropresscipe.divinelink.aeropress.databinding.ViewSaveRecipeCardBinding
 import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import android.content.Context
@@ -10,6 +9,7 @@ import android.view.LayoutInflater
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewTreeViewModelStoreOwner
+import com.divinelink.aeropress.recipes.databinding.ViewSaveRecipeCardBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
 import javax.inject.Inject

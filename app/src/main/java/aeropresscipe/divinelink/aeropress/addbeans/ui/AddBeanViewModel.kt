@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.addbeans.ui
 
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.addbeans.domain.usecase.AddBeanUseCase
 import aeropresscipe.divinelink.aeropress.addbeans.domain.usecase.DeleteBeanUseCase
 import aeropresscipe.divinelink.aeropress.beans.domain.model.AddBeanResult
@@ -11,6 +10,7 @@ import aeropresscipe.divinelink.aeropress.beans.domain.usecase.UpdateBeanUseCase
 import aeropresscipe.divinelink.aeropress.ui.UIText
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divinelink.aeropress.recipes.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.MutableStateFlow

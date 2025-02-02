@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.settings.models
 
-import aeropresscipe.divinelink.aeropress.databinding.DslAsyncSwitchPreferenceItemBinding
 import aeropresscipe.divinelink.aeropress.settings.DSLSettingsText
 import aeropresscipe.divinelink.aeropress.settings.PreferenceModel
 import aeropresscipe.divinelink.aeropress.settings.PreferenceViewHolder
@@ -8,6 +7,7 @@ import aeropresscipe.divinelink.aeropress.util.mapping.LayoutFactory
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.divinelink.aeropress.recipes.databinding.DslAsyncSwitchPreferenceItemBinding
 
 object AsyncSwitch {
 

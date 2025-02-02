@@ -1,12 +1,12 @@
 package aeropresscipe.divinelink.aeropress.settings.app.help
 
-import aeropresscipe.divinelink.aeropress.BuildConfig
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.settings.DSLConfiguration
 import aeropresscipe.divinelink.aeropress.settings.DSLSettingsAdapter
 import aeropresscipe.divinelink.aeropress.settings.DSLSettingsFragment
 import aeropresscipe.divinelink.aeropress.settings.DSLSettingsText
 import aeropresscipe.divinelink.aeropress.settings.configure
+import com.divinelink.aeropress.recipes.BuildConfig
+import com.divinelink.aeropress.recipes.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -1,7 +1,5 @@
 package aeropresscipe.divinelink.aeropress.components.menu
 
-import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.databinding.ContextMenuItemBinding
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -11,6 +9,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.divinelink.aeropress.recipes.R
+import com.divinelink.aeropress.recipes.databinding.ContextMenuItemBinding
 
 class ContextMenuAdapter(
     private val onItemClick: () -> Unit

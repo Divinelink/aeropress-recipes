@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.settings.models
 
-import aeropresscipe.divinelink.aeropress.databinding.DslSpacePreferenceBinding
 import aeropresscipe.divinelink.aeropress.settings.PreferenceModel
 import aeropresscipe.divinelink.aeropress.util.mapping.LayoutFactory
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
@@ -9,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.Px
 import androidx.core.view.updateLayoutParams
+import com.divinelink.aeropress.recipes.databinding.DslSpacePreferenceBinding
 
 /**
  * Adds extra space between elements in a DSL fragment

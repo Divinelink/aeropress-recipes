@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.addbeans.ui
 
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import android.content.Context
@@ -13,6 +12,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
+import com.divinelink.aeropress.recipes.R
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.getSerializable
 import gr.divinelink.core.util.utils.setNavigationBarColor

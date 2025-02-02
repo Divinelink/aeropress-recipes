@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.settings.app
 
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.settings.DSLConfiguration
 import aeropresscipe.divinelink.aeropress.settings.DSLSettingsAdapter
 import aeropresscipe.divinelink.aeropress.settings.DSLSettingsFragment
@@ -11,6 +10,7 @@ import aeropresscipe.divinelink.aeropress.settings.app.help.HelpSettingsFragment
 import aeropresscipe.divinelink.aeropress.settings.app.notifications.NotificationsSettingsFragment
 import aeropresscipe.divinelink.aeropress.settings.configure
 import androidx.fragment.app.FragmentTransaction
+import com.divinelink.aeropress.recipes.R
 
 class AppSettingsFragment : DSLSettingsFragment(R.string.settings) {
 

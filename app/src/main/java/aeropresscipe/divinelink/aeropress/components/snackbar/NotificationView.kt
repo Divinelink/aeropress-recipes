@@ -1,11 +1,11 @@
 package aeropresscipe.divinelink.aeropress.components.snackbar
 
-import aeropresscipe.divinelink.aeropress.databinding.ViewNotificationBinding
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.annotation.StringRes
+import com.divinelink.aeropress.recipes.databinding.ViewNotificationBinding
 import com.google.android.material.snackbar.ContentViewCallback
 
 class NotificationView : FrameLayout, ContentViewCallback {

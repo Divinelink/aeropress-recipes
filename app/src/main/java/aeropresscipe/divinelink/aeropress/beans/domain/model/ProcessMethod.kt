@@ -1,7 +1,7 @@
 package aeropresscipe.divinelink.aeropress.beans.domain.model
 
-import aeropresscipe.divinelink.aeropress.R
 import androidx.annotation.StringRes
+import com.divinelink.aeropress.recipes.R
 
 enum class ProcessMethod(
     @StringRes var stringRes: Int,

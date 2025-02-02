@@ -1,7 +1,7 @@
 package aeropresscipe.divinelink.aeropress.base
 
-import aeropresscipe.divinelink.aeropress.BuildConfig
 import android.app.Application
+import com.divinelink.aeropress.recipes.BuildConfig
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 

@@ -1,7 +1,6 @@
 @file:Suppress("MagicNumber")
 package aeropresscipe.divinelink.aeropress.components.menu
 
-import aeropresscipe.divinelink.aeropress.R
 import android.content.Context
 import android.graphics.Rect
 import android.view.LayoutInflater
@@ -9,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import androidx.core.content.ContextCompat
+import com.divinelink.aeropress.recipes.R
 import gr.divinelink.core.util.swipe.utils.isLtr
 
 /**

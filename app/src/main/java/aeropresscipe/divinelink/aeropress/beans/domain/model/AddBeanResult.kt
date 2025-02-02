@@ -1,7 +1,7 @@
 package aeropresscipe.divinelink.aeropress.beans.domain.model
 
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.ui.UIText
+import com.divinelink.aeropress.recipes.R
 
 /**
  * A collection of possible results for an add a new bean to the bean tracker feature.

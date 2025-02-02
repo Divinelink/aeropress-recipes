@@ -1,10 +1,10 @@
 package aeropresscipe.divinelink.aeropress.favorites.adapter
 
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.util.mapping.EmptyMappingModel
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingModel
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import com.divinelink.aeropress.recipes.R
 
 sealed class EmptyType<T : MappingModel>(
     @StringRes var text: Int,

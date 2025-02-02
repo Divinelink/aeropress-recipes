@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.ui.components
 
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import aeropresscipe.divinelink.aeropress.ui.theme.HorizontalIconPadding
 import aeropresscipe.divinelink.aeropress.ui.theme.TextFieldShape
@@ -25,6 +24,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.divinelink.aeropress.recipes.R
 
 @Composable
 fun SelectOptionField(

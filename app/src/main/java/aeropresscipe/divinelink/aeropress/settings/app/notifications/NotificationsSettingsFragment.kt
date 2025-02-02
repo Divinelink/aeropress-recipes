@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.settings.app.notifications
 
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.settings.DSLConfiguration
 import aeropresscipe.divinelink.aeropress.settings.DSLSettingsAdapter
 import aeropresscipe.divinelink.aeropress.settings.DSLSettingsFragment
@@ -10,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.divinelink.aeropress.recipes.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

@@ -1,11 +1,11 @@
 package aeropresscipe.divinelink.aeropress.settings
 
-import aeropresscipe.divinelink.aeropress.R
 import android.content.Context
 import android.text.SpannableStringBuilder
 import androidx.annotation.ColorInt
 import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
+import com.divinelink.aeropress.recipes.R
 import gr.divinelink.core.util.extensions.bold
 import gr.divinelink.core.util.extensions.center
 import gr.divinelink.core.util.extensions.color
@@ -70,7 +70,7 @@ sealed class DSLSettingsText {
     }
 
     object TitleLargeModifier : TextAppearanceModifier(R.style.Text_TitleLarge)
-    object Body1BoldModifier : TextAppearanceModifier(R.style.TextAppearance_AppCompat_Body1)
+    object Body1BoldModifier : TextAppearanceModifier(R.style.TextAppearance_Body1)
 
     open class TextAppearanceModifier(@StyleRes private val textAppearance: Int) : Modifier {
         override fun modify(context: Context, charSequence: CharSequence): CharSequence {

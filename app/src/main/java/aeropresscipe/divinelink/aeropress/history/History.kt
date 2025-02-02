@@ -1,4 +1,4 @@
-package aeropresscipe.divinelink.aeropress.history
+package com.divinelink.aeropress.recipes.history
 
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingModel

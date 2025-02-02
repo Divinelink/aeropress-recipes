@@ -1,9 +1,7 @@
 package aeropresscipe.divinelink.aeropress.history
 
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.base.HomeActivity.Companion.PAD_BOTTOM_OF_RECYCLER
 import aeropresscipe.divinelink.aeropress.base.TimerViewCallback
-import aeropresscipe.divinelink.aeropress.databinding.FragmentHistoryBinding
 import aeropresscipe.divinelink.aeropress.favorites.adapter.EmptyType
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.TimerFlow
@@ -17,6 +15,9 @@ import androidx.annotation.Px
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.divinelink.aeropress.recipes.R
+import com.divinelink.aeropress.recipes.databinding.FragmentHistoryBinding
+import com.divinelink.aeropress.recipes.history.History
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.addSystemWindowInsetToMargin

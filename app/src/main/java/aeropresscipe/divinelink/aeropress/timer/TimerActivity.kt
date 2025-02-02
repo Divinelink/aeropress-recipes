@@ -1,7 +1,5 @@
 package aeropresscipe.divinelink.aeropress.timer
 
-import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.databinding.ActivityTimerBinding
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import aeropresscipe.divinelink.aeropress.timer.TimerFragment.Companion.FLOW
 import aeropresscipe.divinelink.aeropress.timer.TimerFragment.Companion.newInstance
@@ -11,6 +9,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentTransaction
+import com.divinelink.aeropress.recipes.R
+import com.divinelink.aeropress.recipes.databinding.ActivityTimerBinding
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.addBackPressCallback
 import gr.divinelink.core.util.extensions.getSerializable

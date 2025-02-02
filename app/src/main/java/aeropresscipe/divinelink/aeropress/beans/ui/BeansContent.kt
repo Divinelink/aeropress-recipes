@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.beans.ui
 
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.addbeans.ui.AddBeanActivity
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
@@ -51,6 +50,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.divinelink.aeropress.recipes.R
 import java.time.LocalDate
 
 const val ADD_BREW_BUTTON_TAG = "ADD_BREW_BUTTON"

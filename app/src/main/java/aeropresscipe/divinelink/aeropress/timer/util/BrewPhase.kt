@@ -1,7 +1,7 @@
 package aeropresscipe.divinelink.aeropress.timer.util
 
-import aeropresscipe.divinelink.aeropress.R
 import androidx.annotation.StringRes
+import com.divinelink.aeropress.recipes.R
 
 class BrewPhase private constructor(
     var brewStates: MutableList<BrewState>?,

@@ -2,7 +2,6 @@
 
 package aeropresscipe.divinelink.aeropress.addbeans.ui
 
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.ui.UIText
 import aeropresscipe.divinelink.aeropress.ui.components.CustomOutlinedTextField
 import aeropresscipe.divinelink.aeropress.ui.components.DatePicker
@@ -58,6 +57,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.divinelink.aeropress.recipes.R
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 

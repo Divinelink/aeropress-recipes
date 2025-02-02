@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.settings
 
-import aeropresscipe.divinelink.aeropress.R
 import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
@@ -11,6 +10,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.Px
 import androidx.core.content.ContextCompat
+import com.divinelink.aeropress.recipes.R
 
 const val NO_TINT = -1
 

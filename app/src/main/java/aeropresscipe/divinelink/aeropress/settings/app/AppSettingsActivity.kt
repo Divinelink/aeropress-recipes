@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.settings.app
 
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.settings.DSLSettingsActivity
 import aeropresscipe.divinelink.aeropress.settings.SettingsViewModel
 import aeropresscipe.divinelink.aeropress.util.updateForTheme
@@ -12,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.divinelink.aeropress.recipes.R
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.utils.setNavigationBarColor
 import kotlinx.coroutines.launch
