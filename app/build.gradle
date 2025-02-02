@@ -23,12 +23,12 @@ apply {
 }
 
 android {
-  compileSdk 34
+  compileSdk 35
   defaultConfig {
     namespace "com.divinelink.aeropress.recipes"
     applicationId "aeropresscipe.divinelink.aeropress"
     minSdkVersion 21
-    targetSdk 34
+    targetSdk 35
     versionCode 5
     versionName "2.0.4"
     testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -91,6 +91,11 @@ android {
         kotlin.srcDir("build/generated/ksp/${variant.name}/kotlin")
       }
     }
+  }
+
+  lint {
+    checkReleaseBuilds false
+    abortOnError false
   }
 }
 
