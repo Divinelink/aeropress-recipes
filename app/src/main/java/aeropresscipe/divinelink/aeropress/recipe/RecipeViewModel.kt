@@ -54,7 +54,7 @@ class RecipeViewModel @AssistedInject constructor(
             }
         } else {
             Timber.d("Getting cached dice.")
-            dice?.let { it -> updateRecipeStates(it) }
+            dice?.let { updateRecipeStates(it) }
         }
     }
 

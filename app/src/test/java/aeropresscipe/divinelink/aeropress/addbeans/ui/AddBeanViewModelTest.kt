@@ -15,7 +15,6 @@ import java.time.LocalDate
 import java.util.UUID
 import kotlin.test.Test
 
-@Suppress("IllegalIdentifier")
 @OptIn(ExperimentalCoroutinesApi::class)
 class AddBeanViewModelTest {
 
@@ -226,6 +225,7 @@ class AddBeanViewModelTest {
     fun `given a random bean when submit clicked then I expect update use case with Completed State`() = runTest {
         val successResult: Result<AddBeanResult> = Result.Success(AddBeanResult.Success)
         testRobot
+            .mockAddBeanResult(successResult)
             .mockUpdateBeanResult(successResult)
             .buildViewModel()
             .onSetBean(testBean)

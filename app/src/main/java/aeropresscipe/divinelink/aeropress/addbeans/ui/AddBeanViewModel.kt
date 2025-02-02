@@ -104,7 +104,7 @@ class AddBeanViewModel @Inject constructor(
     }
 
     fun onProcessClicked() {
-        val content = ProcessMethod.values().map { processMethod ->
+        val content = ProcessMethod.entries.map { processMethod ->
             UIText.ResourceText(processMethod.stringRes)
         }.toMutableList()
 
