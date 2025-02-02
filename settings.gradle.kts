@@ -15,6 +15,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "AeropressRecipes"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(":app")
 include(":core-util")
