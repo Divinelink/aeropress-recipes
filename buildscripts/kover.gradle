@@ -10,10 +10,9 @@ kover {
           packages(
               "com.divinelink.core.ui.provider",
               ".provider",
-              // Destinations auto-generated classes
-              "*.screens",
               "dagger.hilt.internal.aggregatedroot.codegen.*",
-              "hilt_aggregated_deps.*"
+              "hilt_aggregated_deps.*",
+              "*.databinding*"
           )
           classes(
               "*ComposableSingletons*",
@@ -41,6 +40,7 @@ kover {
         }
         includes {
           packages("com.divinelink")
+          packages("aeropresscipe.divinelink")
         }
       }
 
