@@ -13,9 +13,10 @@ sealed class AddBeanViewState(
     open val openRoastLevelDrawer: Boolean = false,
     open val openProcessMethodDrawer: Boolean = false,
     open val withDeleteAction: Boolean = false,
+    open val isSubmitButtonEnabled: Boolean = false
 ) {
 
-    object Initial : AddBeanViewState()
+    data object Initial : AddBeanViewState()
 
     data class ModifyBean(
         override val bean: Bean = emptyBean(),
@@ -24,6 +25,7 @@ sealed class AddBeanViewState(
         override val openProcessMethodDrawer: Boolean = false,
         override val openRoastLevelDrawer: Boolean = false,
         override val withDeleteAction: Boolean = false,
+        override val isSubmitButtonEnabled: Boolean = false,
         val bottomSheetContent: MutableList<out UIText>? = mutableListOf(),
         val bottomSheetTitle: UIText? = null,
         val bottomSheetSelectedOption: UIText? = null,

@@ -7,17 +7,24 @@ import aeropresscipe.divinelink.aeropress.ui.components.CustomOutlinedTextField
 import aeropresscipe.divinelink.aeropress.ui.components.DatePicker
 import aeropresscipe.divinelink.aeropress.ui.components.SelectOptionField
 import aeropresscipe.divinelink.aeropress.ui.components.SimpleAlertDialog
+import aeropresscipe.divinelink.aeropress.ui.components.StarEvaluation
 import aeropresscipe.divinelink.aeropress.ui.getString
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
@@ -39,7 +46,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -58,6 +65,7 @@ fun AddBeanContent(
   onOriginChanged: (String) -> Unit,
   onDateChanged: (LocalDate) -> Unit,
   onOptionSelectedFromBottomSheet: (String) -> Unit,
+  onRatingChanged: (Int) -> Unit,
   onRoastLevelClick: () -> Unit,
   onProcessClick: () -> Unit,
   onSubmitClicked: () -> Unit,
@@ -108,6 +116,9 @@ fun AddBeanContent(
   }
 
   Scaffold(
+    modifier = Modifier
+      .fillMaxSize()
+      .navigationBarsPadding(),
     topBar = {
       TopAppBar(
         title = {
@@ -136,17 +147,32 @@ fun AddBeanContent(
         }
       )
     },
+    bottomBar = {
+      Button(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(8.dp),
+        onClick = onSubmitClicked,
+        enabled = viewState.isSubmitButtonEnabled
+      ) {
+        Text(viewState.submitButtonText.getString())
+      }
+    }
   ) { paddingValues ->
     Column(
-      modifier = Modifier.padding(
-        top = paddingValues.calculateTopPadding(),
-        start = 8.dp,
-        end = 8.dp
-      )
+      modifier = Modifier
+        .fillMaxSize()
+        .verticalScroll(rememberScrollState())
+        .padding(
+          top = paddingValues.calculateTopPadding(),
+          start = 8.dp,
+          end = 8.dp,
+          bottom = paddingValues.calculateBottomPadding(),
+        )
     ) {
-
       Spacer(modifier = Modifier.height(12.dp))
       CustomOutlinedTextField(
+        modifier = Modifier.fillMaxWidth(),
         text = viewState.bean.name,
         onValueChange = onBeanNameChanged,
         labelText = stringResource(id = R.string.Beans__bean_name),
@@ -158,26 +184,30 @@ fun AddBeanContent(
       )
 
       Spacer(modifier = Modifier.height(12.dp))
-      CustomOutlinedTextField(
-        text = viewState.bean.roasterName,
-        onValueChange = onRoasterNameChanged,
-        labelText = stringResource(id = R.string.Beans__roaster_name),
-        maxLines = 1,
-        keyboardOptions = KeyboardOptions(
-          imeAction = ImeAction.Next
-        ),
-      )
 
-      Spacer(modifier = Modifier.height(12.dp))
-      CustomOutlinedTextField(
-        text = viewState.bean.origin,
-        onValueChange = onOriginChanged,
-        labelText = stringResource(id = R.string.Beans__origin),
-        maxLines = 1,
-        keyboardOptions = KeyboardOptions(
-          imeAction = ImeAction.Next
-        ),
-      )
+      Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        CustomOutlinedTextField(
+          modifier = Modifier.fillMaxWidth(0.5f),
+          text = viewState.bean.roasterName,
+          onValueChange = onRoasterNameChanged,
+          labelText = stringResource(id = R.string.Beans__roaster_name),
+          maxLines = 1,
+          keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Next
+          ),
+        )
+
+        CustomOutlinedTextField(
+          modifier = Modifier.fillMaxWidth(1f),
+          text = viewState.bean.origin,
+          onValueChange = onOriginChanged,
+          labelText = stringResource(id = R.string.Beans__origin),
+          maxLines = 1,
+          keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Next
+          ),
+        )
+      }
       Spacer(modifier = Modifier.height(12.dp))
       DatePicker(
         onValueChange = onDateChanged,
@@ -221,21 +251,21 @@ fun AddBeanContent(
           stringResource(processMethod.stringRes)
         }
       )
-      Spacer(modifier = Modifier.height(120.dp))
 
-      Column(
+      Text(
         modifier = Modifier
           .fillMaxWidth()
-          .padding(bottom = 32.dp),
-        horizontalAlignment = CenterHorizontally
-      ) {
-        Button(
-          modifier = Modifier.fillMaxWidth(0.5F),
-          onClick = { onSubmitClicked() }
-        ) {
-          Text(viewState.submitButtonText.getString())
-        }
-      }
+          .padding(top = 12.dp)
+          .padding(vertical = 8.dp),
+        text = stringResource(R.string.Beans__rating),
+        style = MaterialTheme.typography.titleMedium,
+        color = MaterialTheme.colorScheme.onSurface,
+      )
+      StarEvaluation(
+        modifier = Modifier.align(Alignment.CenterHorizontally),
+        onValueChange = onRatingChanged,
+        value = viewState.bean.rating,
+      )
     }
 
     if (deleteBeanDialog.value) {
@@ -266,6 +296,7 @@ fun BeansScreenPreview() {
         onProcessClick = {},
         onBeanNameChanged = {},
         onRoasterNameChanged = {},
+        onRatingChanged = {},
         onOriginChanged = {},
         onOptionSelectedFromBottomSheet = {},
         onSubmitClicked = {},

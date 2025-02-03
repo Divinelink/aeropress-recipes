@@ -1,148 +1,146 @@
 <resources>
-    <string name="app_name">AeroPress Recipes</string>
-    <string name="terms_and_privacy_policy_url" translatable="false">https://andreo-harry.medium.com/aeropress-recipes-78539908d37b</string>
+  <string name="app_name">AeroPress Recipes</string>
+  <string name="terms_and_privacy_policy_url" translatable="false">https://andreo-harry.medium.com/aeropress-recipes-78539908d37b</string>
 
-    <string name="ok">OK</string>
-    <string name="close">Close</string>
-    <string name="save">Save</string>
-    <string name="update">Update</string>
+  <string name="ok">OK</string>
+  <string name="close">Close</string>
+  <string name="save">Save</string>
+  <string name="update">Update</string>
 
-    <!-- Error -->
-    <string name="empty_field_error_message">%s is required.</string>
-    <string name="general_error_message">Something when wrong.</string>
+  <!-- Error -->
+  <string name="empty_field_error_message">%s is required.</string>
+  <string name="general_error_message">Something when wrong.</string>
 
-    <!-- Recipe Steps. -->
-    <string name="heatWaterText">Heat &lt;b&gt;%dg&lt;/b&gt; of water to &lt;b&gt;%d°C / %d°F&lt;/b&gt;.</string>
-    <string name="grindCoffeeText">Grind &lt;b&gt;%dg&lt;/b&gt; of coffee to a &lt;b&gt;%s&lt;/b&gt; grind.</string>
-    <string name="normal_orientation_text">Place the aeropress on the mug in the &lt;b&gt;normal orientation&lt;/b&gt; with wet filter and cap on.</string>
-    <string name="inverted_orientation_text">Place the aeropress in the &lt;b&gt;upside-down&lt;/b&gt; orientation.</string>
-    <string name="addWaterText">Add &lt;b&gt;%dg&lt;/b&gt; of water and wait &lt;b&gt;%d&lt;/b&gt; seconds for the coffee to bloom.</string>
-    <string name="addRemainingWater">Add the remaining &lt;b&gt;%dg&lt;/b&gt; of water.</string>
-    <string name="addWaterSlowly">Add &lt;b&gt;%dg&lt;/b&gt; of water slowly.</string>
-    <string name="pourInCoffee">Pour in the ground coffee.</string>
-    <string name="pressText">Press &amp; Enjoy!</string>
-    <string name="waitToBrewText">Wait &lt;b&gt;%d:%02d&lt;/b&gt; %s to brew.</string>
-    <string name="upsideDownMethodText">Wet the filter paper, and put the cap on. Place the mug upside-down on the aeropress and flip to be the normal orientation.</string>
-    <string name="standard">Standard</string>
-    <string name="get_another_recipe">New Recipe</string>
-    <string name="bloomPhase">Blooming Phase</string>
-    <string name="bloomPhaseWaterText">Pour in %dg of water</string>
-    <string name="brewPhase">Brewing Phase</string>
-    <string name="finishPhaseTitle">Your timer is finished!</string>
-    <string name="finishPhaseDescription">Click for more details.</string>
-    <string name="brewPhaseWithBloom">Pour in the remaining %dg for a total of %dg water</string>
-    <string name="brewPhaseNoBloom">Pour in %dg of water</string>
+  <!-- Recipe Steps. -->
+  <string name="heatWaterText">Heat &lt;b&gt;%dg&lt;/b&gt; of water to &lt;b&gt;%d°C / %d°F&lt;/b&gt;.</string>
+  <string name="grindCoffeeText">Grind &lt;b&gt;%dg&lt;/b&gt; of coffee to a &lt;b&gt;%s&lt;/b&gt; grind.</string>
+  <string name="normal_orientation_text">Place the aeropress on the mug in the &lt;b&gt;normal orientation&lt;/b&gt; with wet filter and cap on.</string>
+  <string name="inverted_orientation_text">Place the aeropress in the &lt;b&gt;upside-down&lt;/b&gt; orientation.</string>
+  <string name="addWaterText">Add &lt;b&gt;%dg&lt;/b&gt; of water and wait &lt;b&gt;%d&lt;/b&gt; seconds for the coffee to bloom.</string>
+  <string name="addRemainingWater">Add the remaining &lt;b&gt;%dg&lt;/b&gt; of water.</string>
+  <string name="addWaterSlowly">Add &lt;b&gt;%dg&lt;/b&gt; of water slowly.</string>
+  <string name="pourInCoffee">Pour in the ground coffee.</string>
+  <string name="pressText">Press &amp; Enjoy!</string>
+  <string name="waitToBrewText">Wait &lt;b&gt;%d:%02d&lt;/b&gt; %s to brew.</string>
+  <string name="upsideDownMethodText">Wet the filter paper, and put the cap on. Place the mug upside-down on the aeropress and flip to be the normal orientation.</string>
+  <string name="standard">Standard</string>
+  <string name="get_another_recipe">New Recipe</string>
+  <string name="bloomPhase">Blooming Phase</string>
+  <string name="bloomPhaseWaterText">Pour in %dg of water</string>
+  <string name="brewPhase">Brewing Phase</string>
+  <string name="finishPhaseTitle">Your timer is finished!</string>
+  <string name="finishPhaseDescription">Click for more details.</string>
+  <string name="brewPhaseWithBloom">Pour in the remaining %dg for a total of %dg water</string>
+  <string name="brewPhaseNoBloom">Pour in %dg of water</string>
 
-    <string name="enjoyCoffee">Your coffee is ready.\nPress &amp; enjoy!</string>
-    <string name="brew">Start Timer</string>
-    <string name="resume_brew">Resume Brew</string>
-    <string name="alreadyBrewingDialog">You\'re brewing. Hold to get a new recipe.</string>
-    <string name="water_temperature_image">Water Temperature Image</string>
-    <string name="beans_weight_image">Beans Weight Image</string>
-    <string name="grind_level_image">Grind Level Image</string>
-    <string name="brew_method_image">Brew Method Image</string>
-    <string name="brew_time_image">Brew Time Image</string>
+  <string name="enjoyCoffee">Your coffee is ready.\nPress &amp; enjoy!</string>
+  <string name="brew">Start Timer</string>
+  <string name="resume_brew">Resume Brew</string>
+  <string name="alreadyBrewingDialog">You\'re brewing. Hold to get a new recipe.</string>
+  <string name="water_temperature_image">Water Temperature Image</string>
+  <string name="beans_weight_image">Beans Weight Image</string>
+  <string name="grind_level_image">Grind Level Image</string>
+  <string name="brew_method_image">Brew Method Image</string>
+  <string name="brew_time_image">Brew Time Image</string>
 
-    <string name="dateBrewedTextView">Date Brewed: %s</string>
-    <string name="SavedWaterAndTempTextView">%dg - %d°C / %d°F</string>
-    <string name="SavedCoffeeWeightTextView">%dg coffee</string>
-    <string name="SavedGrindLevelTextView">%s grind</string>
-    <string name="SavedBrewingMethodTextView">%s method</string>
-    <string name="SavedTotalTimeTextView">%d\"</string>
-    <string name="SavedTotalTimeWithBloomTextView">%d\" (+%d\" Bloom)</string>
+  <string name="dateBrewedTextView">Date Brewed: %s</string>
+  <string name="SavedWaterAndTempTextView">%dg - %d°C / %d°F</string>
+  <string name="SavedCoffeeWeightTextView">%dg coffee</string>
+  <string name="SavedGrindLevelTextView">%s grind</string>
+  <string name="SavedBrewingMethodTextView">%s method</string>
+  <string name="SavedTotalTimeTextView">%d\"</string>
+  <string name="SavedTotalTimeWithBloomTextView">%d\" (+%d\" Bloom)</string>
 
-    <string name="favorites">Favorites</string>
-    <string name="empty_favorites_text">Your favorite recipes will appear here\nConsider adding a recipe</string>
+  <string name="favorites">Favorites</string>
+  <string name="empty_favorites_text">Your favorite recipes will appear here\nConsider adding a recipe</string>
 
-    <string name="deleteRecipeDialogMessage">Are you sure you want to delete this recipe?</string>
-    <string name="deleteRecipeDialogTitle">Delete Recipe</string>
-    <string name="delete">Delete</string>
-    <string name="cancel">Cancel</string>
+  <string name="deleteRecipeDialogMessage">Are you sure you want to delete this recipe?</string>
+  <string name="deleteRecipeDialogTitle">Delete Recipe</string>
+  <string name="delete">Delete</string>
+  <string name="cancel">Cancel</string>
 
-    <string name="recipe">Recipe</string>
-    <string name="history">History</string>
-    <string name="history_subtitle">Recently brewed recipes</string>
-    <string name="empty_history_text">Your brewing history will appear here</string>
+  <string name="recipe">Recipe</string>
+  <string name="history">History</string>
+  <string name="history_subtitle">Recently brewed recipes</string>
+  <string name="empty_history_text">Your brewing history will appear here</string>
 
-    <string name="action_delete">Delete History</string>
-    <string name="deleteHistoryMessage">Are you sure you want to delete your history?</string>
+  <string name="action_delete">Delete History</string>
+  <string name="deleteHistoryMessage">Are you sure you want to delete your history?</string>
 
-    <string name="consider_adding_to_favorites">Enjoying the recipe?\nConsider adding it to your favorites.</string>
+  <string name="consider_adding_to_favorites">Enjoying the recipe?\nConsider adding it to your favorites.</string>
 
-    <string name="save_recipe_notification">Saved to %s.</string>
-    <string name="remove_recipe_notification">Removed from %s.</string>
-    <string name="add_favorite">Add Favorite</string>
-    <string name="step_image">step_image</string>
+  <string name="save_recipe_notification">Saved to %s.</string>
+  <string name="remove_recipe_notification">Removed from %s.</string>
+  <string name="add_favorite">Add Favorite</string>
+  <string name="step_image">step_image</string>
 
-    <string name="minute">minute</string>
-    <string name="minutes">minutes</string>
-    <string name="seconds">seconds</string>
+  <string name="minute">minute</string>
+  <string name="minutes">minutes</string>
+  <string name="seconds">seconds</string>
 
-    <plurals name="minutes">
-        <item quantity="one">@string/minute</item>
-        <item quantity="other">@string/minutes</item>
-    </plurals>
+  <plurals name="minutes">
+    <item quantity="one">@string/minute</item>
+    <item quantity="other">@string/minutes</item>
+  </plurals>
 
-    <string name="good_morning">Good morning</string>
-    <string name="good_afternoon">Good afternoon</string>
-    <string name="good_evening">Good evening</string>
+  <string name="good_morning">Good morning</string>
+  <string name="good_afternoon">Good afternoon</string>
+  <string name="good_evening">Good evening</string>
 
-    <string name="settings">Settings</string>
+  <string name="settings">Settings</string>
 
-    <!-- preferences.xml -->
-    <string name="preferences__none">None</string>
-    <string name="preferences__appearance">Appearance</string>
-    <string name="preferences__theme">Theme</string>
-    <string name="preferences__light_theme">Light</string>
-    <string name="preferences__dark_theme">Dark</string>
-    <string name="preferences__system_default">System default</string>
-    <string name="preferences__timer_sound">Timer sound</string>
-    <string name="preferences__timer_sound_summary">Sound notification on timer update</string>
+  <!-- preferences.xml -->
+  <string name="preferences__none">None</string>
+  <string name="preferences__appearance">Appearance</string>
+  <string name="preferences__theme">Theme</string>
+  <string name="preferences__light_theme">Light</string>
+  <string name="preferences__dark_theme">Dark</string>
+  <string name="preferences__system_default">System default</string>
+  <string name="preferences__timer_sound">Timer sound</string>
+  <string name="preferences__timer_sound_summary">Sound notification on timer update</string>
 
-    <!-- NotificationsSettingsFragment -->
-    <string name="NotificationsSettingsFragment__notifications">Notifications</string>
-    <string name="NotificationsSettingsFragment__sound">Sound</string>
+  <!-- NotificationsSettingsFragment -->
+  <string name="NotificationsSettingsFragment__notifications">Notifications</string>
+  <string name="NotificationsSettingsFragment__sound">Sound</string>
 
 
-    <!-- HelpSettingsFragment -->
-    <string name="HelpSettingsFragment__help">Help</string>
-    <string name="HelpSettingsFragment__terms_amp_privacy_policy">Terms &amp; Privacy Policy</string>
-    <string name="HelpSettingsFragment__version">Version</string>
+  <!-- HelpSettingsFragment -->
+  <string name="HelpSettingsFragment__help">Help</string>
+  <string name="HelpSettingsFragment__terms_amp_privacy_policy">Terms &amp; Privacy Policy</string>
+  <string name="HelpSettingsFragment__version">Version</string>
 
-    <!-- Beans -->
-    <string name="Beans__bean_tracker">Beans</string>
-    <string name="Beans__add_bean">Add Beans</string>
-    <string name="Beans__details">Details</string>
-    <string name="Beans__roast_level">Roast level</string>
-    <string name="Beans__process">Process</string>
-    <string name="Beans__bean_name">Bean name</string>
-    <string name="Beans__bean_name_placeholder">Bean name</string>
-    <string name="Beans__roaster_name">Roaster name</string>
-    <string name="Beans__roaster_name_placeholder">Enter roaster name</string>
-    <string name="Beans__origin">Origin</string>
-    <string name="Beans__origin_placeholder">Country or region</string>
-    <string name="Beans__roast_date">Roast date</string>
-    <string name="Beans__roast_date_placeholder">Enter roast date</string>
-    <string name="Beans__empty_bean_list_label">Keep track of the beans you’ve tried.\nAdd ratings, tasting notes and more.</string>
+  <!-- Beans -->
+  <string name="Beans__bean_tracker">Beans</string>
+  <string name="Beans__add_bean">Add Beans</string>
+  <string name="Beans__details">Details</string>
+  <string name="Beans__roast_level">Roast level</string>
+  <string name="Beans__process">Process</string>
+  <string name="Beans__bean_name">Coffee beans name</string>
+  <string name="Beans__roaster_name">Roaster name</string>
+  <string name="Beans__origin">Origin</string>
+  <string name="Beans__roast_date">Roast date</string>
+  <string name="Beans__empty_bean_list_label">Keep track of the beans you’ve tried.\nAdd ratings, tasting notes and more.</string>
 
-    <string name="AddBeans__add_title">Add Beans</string>
-    <string name="AddBeans__update_title">Update Beans</string>
-    <string name="AddBeans__error_empty_bean_name">Please enter a beans name.</string>
+  <string name="AddBeans__add_title">Add Coffee Beans</string>
+  <string name="AddBeans__update_title">Coffee Beans Details</string>
+  <string name="AddBeans__error_empty_bean_name">Please enter a name for the coffee beans.</string>
 
-    <string name="AddBeans__select_process_method">Select Process Method</string>
-    <string name="AddBeans__select_roast_level">Select Roast Level</string>
+  <string name="AddBeans__select_process_method">Select Process Method</string>
+  <string name="AddBeans__select_roast_level">Select Roast Level</string>
 
-    <!-- Process Method -->
-    <string name="ProcessMethod__washed">Washed</string>
-    <string name="ProcessMethod__natural">Natural</string>
-    <string name="ProcessMethod__honey">Honey</string>
-    <string name="ProcessMethod__anaerobic">Anaerobic</string>
-    <string name="ProcessMethod__carbonicMaceration">Carbonic Maceration</string>
-    <string name="ProcessMethod__gilingBasah">Giling Basah</string>
-    <string name="ProcessMethod__other">Other</string>
+  <string name="Beans__rating">Rating</string>
 
-    <string name="Beans__delete_bean">Delete Bean</string>
-    <string name="Beans__delete_bean_message">Are you sure you want to delete this bean? This action cannot be undone.</string>
+  <!-- Process Method -->
+  <string name="ProcessMethod__washed">Washed</string>
+  <string name="ProcessMethod__natural">Natural</string>
+  <string name="ProcessMethod__honey">Honey</string>
+  <string name="ProcessMethod__anaerobic">Anaerobic</string>
+  <string name="ProcessMethod__carbonicMaceration">Carbonic Maceration</string>
+  <string name="ProcessMethod__gilingBasah">Giling Basah</string>
+  <string name="ProcessMethod__other">Other</string>
+
+  <string name="Beans__delete_bean">Delete Coffee Beans</string>
+  <string name="Beans__delete_bean_message">Are you sure you want to delete these coffee beans? This action cannot be undone.</string>
 
 
 </resources>

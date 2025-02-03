@@ -242,7 +242,6 @@ class BeansContentViewStateProvider : PreviewParameterProvider<BeanTrackerViewSt
     uiMode = Configuration.UI_MODE_NIGHT_NO,
 )
 @Preview
-@Suppress("UnusedPrivateMember")
 @Composable
 private fun BeansContentPreview(
     @PreviewParameter(BeansContentViewStateProvider::class)

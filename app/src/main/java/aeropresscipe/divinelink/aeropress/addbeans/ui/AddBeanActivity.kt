@@ -6,12 +6,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.core.content.ContextCompat
-import androidx.core.view.WindowCompat
 import com.divinelink.aeropress.recipes.R
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.getSerializable
@@ -24,11 +24,10 @@ class AddBeanActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    WindowCompat.setDecorFitsSystemWindows(window, false)
     setNavigationBarColor(ContextCompat.getColor(this, R.color.colorBackground))
 
     val bean = intent.getSerializable<Bean?>(BEAN)
-
+    enableEdgeToEdge()
     setContent {
       AeropressTheme {
         val viewState = viewModel.viewState.collectAsState()
@@ -45,6 +44,7 @@ class AddBeanActivity : AppCompatActivity() {
             onSubmitClicked = viewModel::onSubmitClicked,
             onDeleteClicked = viewModel::onDeleteBeanClicked,
             onOptionSelectedFromBottomSheet = viewModel::onSelectFromBottomSheet,
+            onRatingChanged = viewModel::onRatingChanged,
             navigateUp = { finish() },
           )
         }

@@ -6,11 +6,10 @@ on:
     branches:
       - main
   pull_request:
-#    branches: [ "main" ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
     - uses: actions/checkout@v3
     - name: set up JDK 17
