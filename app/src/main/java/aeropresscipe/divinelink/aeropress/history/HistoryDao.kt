@@ -7,11 +7,12 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
+import com.divinelink.aeropress.recipes.history.History
 
 @Dao
 interface HistoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertRecipeToHistory(historyDomain: History?)
+    fun insertRecipeToHistory(historyDomain: History)
 
     @get:Query("SELECT * FROM HistoryRecipes")
     val historyRecipes: List<History>?

@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.recipe
 
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.base.HomeActivity
 import aeropresscipe.divinelink.aeropress.base.TimerViewCallback
 import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.DISLIKE_MAX_FRAME
@@ -8,7 +7,6 @@ import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCa
 import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.LIKE_MAX_FRAME
 import aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView.Companion.LIKE_MIN_FRAME
 import aeropresscipe.divinelink.aeropress.components.snackbar.Notification
-import aeropresscipe.divinelink.aeropress.databinding.FragmentRecipeBinding
 import aeropresscipe.divinelink.aeropress.helpers.LottieHelper
 import aeropresscipe.divinelink.aeropress.history.HistoryFragment
 import aeropresscipe.divinelink.aeropress.home.HomeViewModel
@@ -27,6 +25,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.airbnb.lottie.LottieAnimationView
+import com.divinelink.aeropress.recipes.R
+import com.divinelink.aeropress.recipes.databinding.FragmentRecipeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.addSystemWindowInsetToMargin
 import gr.divinelink.core.util.extensions.padding

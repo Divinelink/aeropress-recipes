@@ -1,9 +1,7 @@
 package aeropresscipe.divinelink.aeropress.base
 
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.beans.ui.BeansTrackerFragment
 import aeropresscipe.divinelink.aeropress.components.snackbar.Notification
-import aeropresscipe.divinelink.aeropress.databinding.ActivityHomeBinding
 import aeropresscipe.divinelink.aeropress.favorites.FavoritesFragment
 import aeropresscipe.divinelink.aeropress.history.HistoryFragment
 import aeropresscipe.divinelink.aeropress.history.HistoryState
@@ -28,6 +26,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.doOnAttach
 import androidx.fragment.app.Fragment
+import com.divinelink.aeropress.recipes.R
+import com.divinelink.aeropress.recipes.databinding.ActivityHomeBinding
 import com.google.android.material.navigation.NavigationBarView
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.addBackPressCallback

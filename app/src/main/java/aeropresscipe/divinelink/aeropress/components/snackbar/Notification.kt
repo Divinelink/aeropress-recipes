@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.components.snackbar
 
-import aeropresscipe.divinelink.aeropress.R
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +7,7 @@ import android.widget.FrameLayout
 import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import com.divinelink.aeropress.recipes.R
 import com.google.android.material.snackbar.BaseTransientBottomBar
 
 class Notification(

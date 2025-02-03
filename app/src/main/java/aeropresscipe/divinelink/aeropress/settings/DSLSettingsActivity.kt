@@ -1,9 +1,9 @@
 package aeropresscipe.divinelink.aeropress.settings
 
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.settings.app.AppSettingsFragment
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.divinelink.aeropress.recipes.R
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.addBackPressCallback
 

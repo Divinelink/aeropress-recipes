@@ -1,8 +1,8 @@
 package aeropresscipe.divinelink.aeropress.helpers
 
-import aeropresscipe.divinelink.aeropress.R
 import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.model.KeyPath
+import com.divinelink.aeropress.recipes.R
 import gr.divinelink.core.util.extensions.changeLayersColor
 
 object LottieHelper {

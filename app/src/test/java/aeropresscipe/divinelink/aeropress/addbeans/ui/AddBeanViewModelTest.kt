@@ -1,12 +1,12 @@
 package aeropresscipe.divinelink.aeropress.addbeans.ui
 
 import aeropresscipe.divinelink.aeropress.MainDispatcherRule
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.beans.domain.model.AddBeanResult
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
 import aeropresscipe.divinelink.aeropress.beans.domain.model.RoastLevel
 import aeropresscipe.divinelink.aeropress.ui.UIText
+import com.divinelink.aeropress.recipes.R
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -15,7 +15,6 @@ import java.time.LocalDate
 import java.util.UUID
 import kotlin.test.Test
 
-@Suppress("IllegalIdentifier")
 @OptIn(ExperimentalCoroutinesApi::class)
 class AddBeanViewModelTest {
 
@@ -226,6 +225,7 @@ class AddBeanViewModelTest {
     fun `given a random bean when submit clicked then I expect update use case with Completed State`() = runTest {
         val successResult: Result<AddBeanResult> = Result.Success(AddBeanResult.Success)
         testRobot
+            .mockAddBeanResult(successResult)
             .mockUpdateBeanResult(successResult)
             .buildViewModel()
             .onSetBean(testBean)

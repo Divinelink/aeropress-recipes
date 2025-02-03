@@ -1,6 +1,5 @@
 package aeropresscipe.divinelink.aeropress.settings.models
 
-import aeropresscipe.divinelink.aeropress.databinding.DslTextPreferenceBinding
 import aeropresscipe.divinelink.aeropress.settings.DSLSettingsText
 import aeropresscipe.divinelink.aeropress.settings.PreferenceModel
 import aeropresscipe.divinelink.aeropress.util.mapping.LayoutFactory
@@ -12,6 +11,7 @@ import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import com.divinelink.aeropress.recipes.databinding.DslTextPreferenceBinding
 
 /**
  * A Text without any padding, allowing for exact padding to be handed in at runtime.

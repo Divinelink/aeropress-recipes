@@ -5,13 +5,13 @@ import aeropresscipe.divinelink.aeropress.base.data.local.bean.PersistableBean
 import aeropresscipe.divinelink.aeropress.favorites.Converters
 import aeropresscipe.divinelink.aeropress.favorites.Favorites
 import aeropresscipe.divinelink.aeropress.favorites.FavoritesDao
-import aeropresscipe.divinelink.aeropress.history.History
 import aeropresscipe.divinelink.aeropress.history.HistoryDao
 import aeropresscipe.divinelink.aeropress.recipe.RecipeDao
 import aeropresscipe.divinelink.aeropress.recipe.models.DiceDomain
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.divinelink.aeropress.recipes.history.History
 
 @Database(
     entities = [

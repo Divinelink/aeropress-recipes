@@ -1,9 +1,7 @@
 package aeropresscipe.divinelink.aeropress.favorites
 
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.base.HomeActivity.Companion.PAD_BOTTOM_OF_RECYCLER
 import aeropresscipe.divinelink.aeropress.base.TimerViewCallback
-import aeropresscipe.divinelink.aeropress.databinding.FragmentSavedRecipesBinding
 import aeropresscipe.divinelink.aeropress.favorites.adapter.EmptyType
 import aeropresscipe.divinelink.aeropress.favorites.adapter.RecipesAdapter
 import aeropresscipe.divinelink.aeropress.favorites.ui.FavoritesViewModel
@@ -23,6 +21,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.divinelink.aeropress.recipes.R
+import com.divinelink.aeropress.recipes.databinding.FragmentSavedRecipesBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.addSystemWindowInsetToMargin

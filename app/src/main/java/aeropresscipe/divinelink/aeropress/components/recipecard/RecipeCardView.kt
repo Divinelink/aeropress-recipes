@@ -1,11 +1,11 @@
 package aeropresscipe.divinelink.aeropress.components.recipecard
 
-import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.databinding.ViewRecipeCardBinding
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.cardview.widget.CardView
+import com.divinelink.aeropress.recipes.R
+import com.divinelink.aeropress.recipes.databinding.ViewRecipeCardBinding
 import gr.divinelink.core.util.extensions.toFahrenheit
 import java.util.Locale
 

@@ -1,15 +1,15 @@
 package aeropresscipe.divinelink.aeropress.favorites.adapter
 
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.components.recipecard.RecipeCard
-import aeropresscipe.divinelink.aeropress.databinding.EmptyRecyclerLayoutBinding
-import aeropresscipe.divinelink.aeropress.databinding.ViewSwipeRecipeCardBinding
 import aeropresscipe.divinelink.aeropress.favorites.Favorites
 import aeropresscipe.divinelink.aeropress.history.HistoryAdapter
 import aeropresscipe.divinelink.aeropress.util.mapping.LayoutFactory
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingAdapter
 import aeropresscipe.divinelink.aeropress.util.mapping.MappingViewHolder
 import android.view.View
+import com.divinelink.aeropress.recipes.R
+import com.divinelink.aeropress.recipes.databinding.EmptyRecyclerLayoutBinding
+import com.divinelink.aeropress.recipes.databinding.ViewSwipeRecipeCardBinding
 import gr.divinelink.core.util.swipe.ActionBindHelper
 import gr.divinelink.core.util.swipe.SwipeAction
 import gr.divinelink.core.util.swipe.SwipeMenuListener

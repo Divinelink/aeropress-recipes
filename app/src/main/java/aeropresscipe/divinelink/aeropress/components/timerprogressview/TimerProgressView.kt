@@ -1,7 +1,6 @@
 package aeropresscipe.divinelink.aeropress.components.timerprogressview
 
 import aeropresscipe.divinelink.aeropress.components.timerprogressview.TimerProgressView.Callback
-import aeropresscipe.divinelink.aeropress.databinding.ViewTimerProgressBinding
 import aeropresscipe.divinelink.aeropress.recipe.models.DiceDomain
 import android.animation.ObjectAnimator
 import android.content.Context
@@ -10,7 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewTreeViewModelStoreOwner
+import androidx.lifecycle.findViewTreeViewModelStoreOwner
+import com.divinelink.aeropress.recipes.databinding.ViewTimerProgressBinding
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.fadeOut
 import gr.divinelink.core.util.timer.PreciseCountdown
@@ -35,7 +35,7 @@ class TimerProgressView :
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        viewModel = ViewModelProvider(ViewTreeViewModelStoreOwner.get(this)!!)[TimerProgressViewModel::class.java]
+        viewModel = ViewModelProvider(findViewTreeViewModelStoreOwner()!!)[TimerProgressViewModel::class.java]
         viewModel.delegate = WeakReference(this)
     }
 

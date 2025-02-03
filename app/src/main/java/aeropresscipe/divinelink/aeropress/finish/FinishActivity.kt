@@ -1,8 +1,6 @@
 package aeropresscipe.divinelink.aeropress.finish
 
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.components.recipecard.RecipeCard
-import aeropresscipe.divinelink.aeropress.databinding.ActivityFinishBinding
 import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
 import android.content.Context
 import android.content.Intent
@@ -11,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.airbnb.lottie.model.KeyPath
+import com.divinelink.aeropress.recipes.R
+import com.divinelink.aeropress.recipes.databinding.ActivityFinishBinding
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.addSystemWindowInsetToMargin
 import gr.divinelink.core.util.extensions.changeLayersColor

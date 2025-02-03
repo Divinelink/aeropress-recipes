@@ -2,13 +2,6 @@
 
 package aeropresscipe.divinelink.aeropress.settings
 
-import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.databinding.DslDividerItemBinding
-import aeropresscipe.divinelink.aeropress.databinding.DslLearnMorePreferenceItemBinding
-import aeropresscipe.divinelink.aeropress.databinding.DslPreferenceItemBinding
-import aeropresscipe.divinelink.aeropress.databinding.DslRadioPreferenceItemBinding
-import aeropresscipe.divinelink.aeropress.databinding.DslSectionHeaderBinding
-import aeropresscipe.divinelink.aeropress.databinding.DslSwitchPreferenceItemBinding
 import aeropresscipe.divinelink.aeropress.settings.models.AsyncSwitch
 import aeropresscipe.divinelink.aeropress.settings.models.Button
 import aeropresscipe.divinelink.aeropress.settings.models.Space
@@ -29,6 +22,13 @@ import android.widget.TextView
 import androidx.annotation.CallSuper
 import androidx.core.content.ContextCompat
 import androidx.viewbinding.ViewBinding
+import com.divinelink.aeropress.recipes.R
+import com.divinelink.aeropress.recipes.databinding.DslDividerItemBinding
+import com.divinelink.aeropress.recipes.databinding.DslLearnMorePreferenceItemBinding
+import com.divinelink.aeropress.recipes.databinding.DslPreferenceItemBinding
+import com.divinelink.aeropress.recipes.databinding.DslRadioPreferenceItemBinding
+import com.divinelink.aeropress.recipes.databinding.DslSectionHeaderBinding
+import com.divinelink.aeropress.recipes.databinding.DslSwitchPreferenceItemBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.switchmaterial.SwitchMaterial
 import gr.divinelink.core.util.extensions.visible

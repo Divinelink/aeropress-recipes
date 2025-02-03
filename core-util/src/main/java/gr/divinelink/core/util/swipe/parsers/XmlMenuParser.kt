@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.util.Xml
-import gr.divinelink.core.util.R
+import com.divinelink.core.util.R
 import gr.divinelink.core.util.swipe.SwipeAction
 import org.xmlpull.v1.XmlPullParser
 

@@ -1,7 +1,5 @@
 package aeropresscipe.divinelink.aeropress.recipe
 
-import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.databinding.ListRecipeItemBinding
 import aeropresscipe.divinelink.aeropress.recipe.models.RecipeStep
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.divinelink.aeropress.recipes.R
+import com.divinelink.aeropress.recipes.databinding.ListRecipeItemBinding
 import gr.divinelink.core.util.extensions.toFahrenheit
 import gr.divinelink.core.util.extensions.toSpanned
 

@@ -1,9 +1,9 @@
 package aeropresscipe.divinelink.aeropress.addbeans.ui
 
-import aeropresscipe.divinelink.aeropress.R
 import aeropresscipe.divinelink.aeropress.beans.domain.model.AddBeanResult
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.ui.UIText
+import com.divinelink.aeropress.recipes.R
 
 sealed class AddBeanViewState(
     open val showLoading: Boolean = true,

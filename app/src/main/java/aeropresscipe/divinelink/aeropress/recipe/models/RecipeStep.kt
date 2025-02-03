@@ -1,7 +1,7 @@
 package aeropresscipe.divinelink.aeropress.recipe.models
 
-import aeropresscipe.divinelink.aeropress.R
 import androidx.annotation.StringRes
+import com.divinelink.aeropress.recipes.R
 
 sealed class RecipeStep(
     @StringRes open val stepText: Int,

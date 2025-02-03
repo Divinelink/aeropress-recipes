@@ -16,7 +16,7 @@ import android.text.style.TextAppearanceSpan
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.StyleRes
-import gr.divinelink.core.util.R
+import com.divinelink.core.util.R
 
 fun CharSequence?.bold(): CharSequence {
     val spannable = SpannableString(this)

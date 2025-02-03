@@ -1,10 +1,6 @@
 @file:Suppress("MaxLineLength")
 package aeropresscipe.divinelink.aeropress.settings.models
 
-import aeropresscipe.divinelink.aeropress.R
-import aeropresscipe.divinelink.aeropress.databinding.DslButtonPrimaryBinding
-import aeropresscipe.divinelink.aeropress.databinding.DslButtonSecondaryBinding
-import aeropresscipe.divinelink.aeropress.databinding.DslButtonTonalBinding
 import aeropresscipe.divinelink.aeropress.settings.DSLSettingsIcon
 import aeropresscipe.divinelink.aeropress.settings.DSLSettingsText
 import aeropresscipe.divinelink.aeropress.settings.PreferenceModel
@@ -14,6 +10,10 @@ import aeropresscipe.divinelink.aeropress.util.mapping.MappingViewHolder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
+import com.divinelink.aeropress.recipes.R
+import com.divinelink.aeropress.recipes.databinding.DslButtonPrimaryBinding
+import com.divinelink.aeropress.recipes.databinding.DslButtonSecondaryBinding
+import com.divinelink.aeropress.recipes.databinding.DslButtonTonalBinding
 import com.google.android.material.button.MaterialButton
 
 object Button {

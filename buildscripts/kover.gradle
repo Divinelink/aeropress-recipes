@@ -1,22 +1,56 @@
-apply plugin: "kover"
+dependencies {
+  kover(projects.app)
+}
 
+kover {
+  reports {
+    variant("debug") {
+      filters {
+        excludes {
+          packages(
+              "com.divinelink.core.ui.provider",
+              ".provider",
+              "dagger.hilt.internal.aggregatedroot.codegen.*",
+              "hilt_aggregated_deps.*",
+              "*.databinding*"
+          )
+          classes(
+              "*ComposableSingletons*",
+              "*BuildConfig*",
+              "*Module*",
+              "*Hilt*",
+              "*_Factory*",
 
-//tasks.withType(Test) {
-//    kover {
-//        generateXml = false
-//        generateHtml = true
-//        coverageEngine = 'INTELLIJ'
-//        xmlReportFile.set(file("$buildDir/kover-coverage-report/report.xml"))
-//        htmlReportDir.set(file("$buildDir/kover-coverage-report/html"))
-//        binaryReportFile.set(file("$buildDir/kover-coverage-report/result.bin"))
-//    }
-//}
+              "*Service*",
+              "*Activity*",
+              "*Fragment*",
+              "*.BuildConfig",
+              "*.BR",
+              "*androidx*",
+              "*.DebugUtil",
 
-//tasks.koverVerify {
-//    rule {
-//        name = "Minimal line coverage rate in percents"
-//        bound {
-//            minValue = 98
-//        }
-//    }
-//}
+              "*Preview",
+              "*ParameterProvider.kt",
+          )
+          annotatedBy(
+              "androidx.compose.ui.tooling.preview.Preview",
+              "*.ExcludeFromKoverReport",
+              "com.divinelink.core.ui.Previews",
+          )
+        }
+        includes {
+          packages("com.divinelink")
+          packages("aeropresscipe.divinelink")
+        }
+      }
+
+      html {
+        htmlDir = layout.buildDirectory.dir("all-projects-reports")
+      }
+
+      xml {
+        xmlFile = layout.buildDirectory.file("all-projects-reports/kover.xml")
+      }
+    }
+  }
+}

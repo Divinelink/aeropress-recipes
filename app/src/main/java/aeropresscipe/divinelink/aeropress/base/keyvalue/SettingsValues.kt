@@ -17,7 +17,7 @@ class SettingsValues : StoreValues {
 enum class Theme(val storageKey: String) {
     SYSTEM("system"),
     LIGHT("light"),
-    DARK("dark");
+    DARK("dark")
 }
 
 /**
