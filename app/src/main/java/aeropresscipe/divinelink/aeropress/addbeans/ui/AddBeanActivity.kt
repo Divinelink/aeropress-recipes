@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.Surface
@@ -27,7 +26,6 @@ class AddBeanActivity : AppCompatActivity() {
     setNavigationBarColor(ContextCompat.getColor(this, R.color.colorBackground))
 
     val bean = intent.getSerializable<Bean?>(BEAN)
-    enableEdgeToEdge()
     setContent {
       AeropressTheme {
         val viewState = viewModel.viewState.collectAsState()
