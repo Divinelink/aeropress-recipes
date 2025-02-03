@@ -139,6 +139,7 @@
     <string name="ProcessMethod__anaerobic">Anaerobic</string>
     <string name="ProcessMethod__carbonicMaceration">Carbonic Maceration</string>
     <string name="ProcessMethod__gilingBasah">Giling Basah</string>
+    <string name="ProcessMethod__other">Other</string>
 
     <string name="Beans__delete_bean">Delete Bean</string>
     <string name="Beans__delete_bean_message">Are you sure you want to delete this bean? This action cannot be undone.</string>

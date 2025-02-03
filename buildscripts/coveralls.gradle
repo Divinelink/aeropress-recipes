@@ -1,0 +1,9 @@
+plugins.apply("com.github.kt3k.coveralls")
+
+coveralls {
+  jacocoReportPath = layout.buildDirectory.file("all-projects-reports/kover.xml")
+}
+
+tasks.coveralls {
+  dependsOn 'testDebugUnitTest'
+}

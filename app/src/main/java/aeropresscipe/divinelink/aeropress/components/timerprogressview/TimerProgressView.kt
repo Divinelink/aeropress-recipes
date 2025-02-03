@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewTreeViewModelStoreOwner
+import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import com.divinelink.aeropress.recipes.databinding.ViewTimerProgressBinding
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.extensions.fadeOut
@@ -35,7 +35,7 @@ class TimerProgressView :
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        viewModel = ViewModelProvider(ViewTreeViewModelStoreOwner.get(this)!!)[TimerProgressViewModel::class.java]
+        viewModel = ViewModelProvider(findViewTreeViewModelStoreOwner()!!)[TimerProgressViewModel::class.java]
         viewModel.delegate = WeakReference(this)
     }
 

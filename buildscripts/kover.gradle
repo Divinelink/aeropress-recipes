@@ -24,6 +24,7 @@ kover {
 
               "*Service*",
               "*Activity*",
+              "*Fragment*",
               "*.BuildConfig",
               "*.BR",
               "*androidx*",
@@ -31,8 +32,6 @@ kover {
 
               "*Preview",
               "*ParameterProvider.kt",
-
-              "ConnectivityManagerNetworkMonitor.kt"
           )
           annotatedBy(
               "androidx.compose.ui.tooling.preview.Preview",

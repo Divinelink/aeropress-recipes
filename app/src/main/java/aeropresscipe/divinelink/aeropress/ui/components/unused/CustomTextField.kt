@@ -1,5 +1,5 @@
 @file:Suppress("LongMethod")
-package aeropresscipe.divinelink.aeropress.components
+package aeropresscipe.divinelink.aeropress.ui.components.unused
 
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import androidx.annotation.DrawableRes
@@ -38,8 +38,6 @@ import com.divinelink.aeropress.recipes.R
 @Composable
 fun CustomTextField(
     modifier: Modifier = Modifier,
-//    leadingIcon: (@Composable () -> Unit)? = null,
-//    trailingIcon: (@Composable () -> Unit)? = null,
     @DrawableRes leadingIconRes: Int? = null,
     @DrawableRes trailingIconRes: Int? = null,
     @StringRes titleRes: Int? = null,

@@ -8,7 +8,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewTreeViewModelStoreOwner
+import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import com.divinelink.aeropress.recipes.databinding.ViewSaveRecipeCardBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
@@ -36,7 +36,7 @@ class SaveRecipeCardView :
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         val viewModelFactory = SaveRecipeCardViewModelFactory(assistedFactory, WeakReference<ISaveRecipeCardViewModel>(this))
-        viewModel = ViewModelProvider(ViewTreeViewModelStoreOwner.get(this)!!, viewModelFactory)[SaveRecipeCardViewModel::class.java]
+        viewModel = ViewModelProvider(findViewTreeViewModelStoreOwner()!!, viewModelFactory)[SaveRecipeCardViewModel::class.java]
         viewModel.delegate = WeakReference(this)
         viewModel.init(recipe)
     }

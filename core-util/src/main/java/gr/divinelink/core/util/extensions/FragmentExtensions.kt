@@ -21,7 +21,7 @@ fun FragmentActivity.addBackPressCallback(
     onBackPressed: OnBackPressedCallback.() -> Unit,
 ) {
     onBackPressedDispatcher.addBackPressCallback(
-        lifecycleOwner = { fragmentLifecycleRegistryField.get(this) as Lifecycle },
+        lifecycleOwner = fragmentLifecycleRegistryField.get(this) as LifecycleOwner ,
         onBackPressed = onBackPressed,
     )
 }

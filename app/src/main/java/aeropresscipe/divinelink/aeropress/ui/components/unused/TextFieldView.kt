@@ -1,4 +1,4 @@
-package aeropresscipe.divinelink.aeropress.beans
+package aeropresscipe.divinelink.aeropress.ui.components.unused
 
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import androidx.annotation.DrawableRes
@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -28,7 +27,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.divinelink.aeropress.recipes.R
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextFieldView(
     modifier: Modifier = Modifier,
@@ -57,7 +55,7 @@ fun TextFieldView(
             value = text,
             singleLine = true,
             onValueChange = { text = it },
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),

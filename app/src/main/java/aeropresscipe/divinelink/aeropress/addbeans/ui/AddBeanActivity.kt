@@ -20,48 +20,48 @@ import gr.divinelink.core.util.utils.setNavigationBarColor
 @AndroidEntryPoint
 class AddBeanActivity : AppCompatActivity() {
 
-    private val viewModel: AddBeanViewModel by viewModels()
+  private val viewModel: AddBeanViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        setNavigationBarColor(ContextCompat.getColor(this, R.color.colorBackground))
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    WindowCompat.setDecorFitsSystemWindows(window, false)
+    setNavigationBarColor(ContextCompat.getColor(this, R.color.colorBackground))
 
-        val bean = intent.getSerializable<Bean?>(BEAN)
+    val bean = intent.getSerializable<Bean?>(BEAN)
 
-        setContent {
-            AeropressTheme {
-                val viewState = viewModel.viewState.collectAsState()
-                viewModel.setBean(bean)
-                Surface {
-                    AddBeanContent(
-                        viewState = viewState.value,
-                        onBeanNameChanged = viewModel::onBeanNameChanged,
-                        onRoasterNameChanged = viewModel::onRoasterNameChanged,
-                        onOriginChanged = viewModel::onOriginChanged,
-                        onDateChanged = viewModel::onDateChanged,
-                        onRoastLevelClick = viewModel::onRoastLevelClicked,
-                        onProcessClick = viewModel::onProcessClicked,
-                        onSubmitClicked = viewModel::onSubmitClicked,
-                        onDeleteClicked = viewModel::onDeleteBeanClicked,
-                        onOptionSelectedFromBottomSheet = viewModel::onSelectFromBottomSheet,
-                        navigateUp = { finish() },
-                    )
-                }
-            }
+    setContent {
+      AeropressTheme {
+        val viewState = viewModel.viewState.collectAsState()
+        viewModel.setBean(bean)
+        Surface {
+          AddBeanContent(
+            viewState = viewState.value,
+            onBeanNameChanged = viewModel::onBeanNameChanged,
+            onRoasterNameChanged = viewModel::onRoasterNameChanged,
+            onOriginChanged = viewModel::onOriginChanged,
+            onDateChanged = viewModel::onDateChanged,
+            onRoastLevelClick = viewModel::onRoastLevelClicked,
+            onProcessClick = viewModel::onProcessClicked,
+            onSubmitClicked = viewModel::onSubmitClicked,
+            onDeleteClicked = viewModel::onDeleteBeanClicked,
+            onOptionSelectedFromBottomSheet = viewModel::onSelectFromBottomSheet,
+            navigateUp = { finish() },
+          )
         }
+      }
     }
+  }
 
-    companion object {
-        private const val BEAN = "BEAN"
+  companion object {
+    private const val BEAN = "BEAN"
 
-        fun newIntent(
-            context: Context?,
-            bean: Bean?,
-        ): Intent {
-            val intent = Intent(context, AddBeanActivity::class.java)
-            intent.putExtra(BEAN, bean)
-            return intent
-        }
+    fun newIntent(
+      context: Context?,
+      bean: Bean?,
+    ): Intent {
+      val intent = Intent(context, AddBeanActivity::class.java)
+      intent.putExtra(BEAN, bean)
+      return intent
     }
+  }
 }

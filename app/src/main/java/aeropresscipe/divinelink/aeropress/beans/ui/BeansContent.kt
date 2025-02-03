@@ -69,7 +69,7 @@ fun BeansContent(
 ) {
     val scrollState = rememberLazyListState()
     var fabExtended by remember { mutableStateOf(true) }
-    val scrollColors = TopAppBarDefaults.smallTopAppBarColors(
+    val scrollColors = TopAppBarDefaults.topAppBarColors(
         scrolledContainerColor = topBarColor(),
     )
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())

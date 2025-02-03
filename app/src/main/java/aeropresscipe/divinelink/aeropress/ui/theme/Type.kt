@@ -130,9 +130,3 @@ val AppTypography = Typography(
         fontSize = 14.sp
     ),
 )
-
-val MD2Typography = androidx.compose.material.Typography(
-    defaultFontFamily = appFontFamily,
-    subtitle1 = AppTypography.bodyMedium,
-    caption = AppTypography.bodySmall,
-)

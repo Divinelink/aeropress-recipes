@@ -52,6 +52,13 @@ class ProcessMethodTest {
         ).isEqualTo(
             ProcessMethod.GilingBasah
         )
+
+        // Other
+        assertThat(
+            "Other".toProcessMethod()
+        ).isEqualTo(
+            ProcessMethod.Other
+        )
     }
 
     @Test
