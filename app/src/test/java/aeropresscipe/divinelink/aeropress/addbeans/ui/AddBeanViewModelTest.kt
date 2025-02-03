@@ -84,6 +84,7 @@ class AddBeanViewModelTest {
                     bean = emptyBean().copy(name = "name changed"),
                     title = UIText.ResourceText(R.string.AddBeans__add_title),
                     submitButtonText = UIText.ResourceText(R.string.save),
+                    isSubmitButtonEnabled = true,
                 )
             )
     }
@@ -98,6 +99,7 @@ class AddBeanViewModelTest {
                     bean = emptyBean().copy(name = "name changed"),
                     title = UIText.ResourceText(R.string.AddBeans__add_title),
                     submitButtonText = UIText.ResourceText(R.string.save),
+                    isSubmitButtonEnabled = true,
                 )
             )
     }
@@ -112,6 +114,7 @@ class AddBeanViewModelTest {
                     bean = emptyBean().copy(roasterName = "roaster name changed"),
                     title = UIText.ResourceText(R.string.AddBeans__add_title),
                     submitButtonText = UIText.ResourceText(R.string.save),
+                    isSubmitButtonEnabled = true,
                 )
             )
     }
@@ -126,6 +129,7 @@ class AddBeanViewModelTest {
                     bean = emptyBean().copy(origin = "origin name changed"),
                     title = UIText.ResourceText(R.string.AddBeans__add_title),
                     submitButtonText = UIText.ResourceText(R.string.save),
+                    isSubmitButtonEnabled = true,
                 )
             )
     }
@@ -140,6 +144,7 @@ class AddBeanViewModelTest {
                     bean = emptyBean().copy(roastDate = LocalDate.now()),
                     title = UIText.ResourceText(R.string.AddBeans__add_title),
                     submitButtonText = UIText.ResourceText(R.string.save),
+                    isSubmitButtonEnabled = true,
                 )
             )
     }
@@ -154,6 +159,7 @@ class AddBeanViewModelTest {
                     bean = emptyBean().copy(roastLevel = RoastLevel.Medium),
                     title = UIText.ResourceText(R.string.AddBeans__add_title),
                     submitButtonText = UIText.ResourceText(R.string.save),
+                    isSubmitButtonEnabled = true
                 )
             )
     }
@@ -168,6 +174,7 @@ class AddBeanViewModelTest {
                     bean = emptyBean().copy(process = ProcessMethod.Natural),
                     title = UIText.ResourceText(R.string.AddBeans__add_title),
                     submitButtonText = UIText.ResourceText(R.string.save),
+                    isSubmitButtonEnabled = true,
                 )
             )
     }
@@ -198,6 +205,7 @@ class AddBeanViewModelTest {
                     ),
                     title = UIText.ResourceText(R.string.AddBeans__add_title),
                     submitButtonText = UIText.ResourceText(R.string.save),
+                    isSubmitButtonEnabled = true,
                 )
             )
     }
