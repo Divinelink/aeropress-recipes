@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface BeanDAO {
 
-  @Query("SELECT * FROM bean")
+  @Query("SELECT * FROM bean ORDER BY timestamp DESC")
   fun fetchAllBeans(): Flow<List<PersistableBean>>
 
   @Query("SELECT * FROM bean WHERE id = :id")

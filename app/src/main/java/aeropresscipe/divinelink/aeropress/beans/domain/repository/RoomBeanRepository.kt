@@ -5,14 +5,19 @@ import aeropresscipe.divinelink.aeropress.base.data.local.bean.PersistableBean
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
 import aeropresscipe.divinelink.aeropress.beans.domain.model.RoastLevel
+import aeropresscipe.divinelink.aeropress.extension.currentEpochSeconds
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.Clock
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
-class RoomBeanRepository @Inject constructor(private val beanDAO: BeanDAO) : BeanRepository {
+class RoomBeanRepository @Inject constructor(
+  private val beanDAO: BeanDAO,
+  private val clock: Clock,
+) : BeanRepository {
 
   override fun fetchAllBeans(): Flow<BeanListResult> = beanDAO
     .fetchAllBeans()
@@ -22,15 +27,15 @@ class RoomBeanRepository @Inject constructor(private val beanDAO: BeanDAO) : Bea
 
   override suspend fun addBean(bean: Bean): Result<Unit> {
     beanDAO
-      .insertBean(bean.toPersistableBean())
+      .insertBean(bean.toPersistableBean(clock.currentEpochSeconds()))
       .also {
         return Result.Success(Unit)
       }
   }
 
-  override suspend fun fetchBean(bean: Bean): Result<Bean> {
+  override suspend fun fetchBean(id: String): Result<Bean> {
     beanDAO
-      .fetchBeanById(bean.id)
+      .fetchBeanById(id)
       .toBean()
       .also {
         return Result.Success(it)
@@ -39,7 +44,7 @@ class RoomBeanRepository @Inject constructor(private val beanDAO: BeanDAO) : Bea
 
   override suspend fun updateBean(bean: Bean): Result<Unit> {
     beanDAO
-      .updateBean(bean.toPersistableBean())
+      .updateBean(bean.toPersistableBean(bean.timestamp))
       .also {
         return Result.Success(it)
       }
@@ -79,10 +84,11 @@ private fun PersistableBean.toBean(): Bean {
     rating = this.rating,
     tastingNotes = this.tastingNotes,
     additionalNotes = this.additionalNotes,
+    timestamp = this.timestamp,
   )
 }
 
-private fun Bean.toPersistableBean(): PersistableBean = PersistableBean(
+private fun Bean.toPersistableBean(timestamp: String): PersistableBean = PersistableBean(
   id = this.id,
   name = this.name,
   roasterName = this.roasterName,
@@ -93,4 +99,5 @@ private fun Bean.toPersistableBean(): PersistableBean = PersistableBean(
   rating = this.rating,
   tastingNotes = this.tastingNotes,
   additionalNotes = this.additionalNotes,
+  timestamp = timestamp,
 )

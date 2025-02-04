@@ -30,6 +30,7 @@ class RoomBeanRepositoryTest {
     rating = 0,
     tastingNotes = "Full bodied by kinda rotteny after taste.",
     additionalNotes = "",
+    timestamp = "",
   )
 
   private val persistableBean = PersistableBean(
@@ -43,6 +44,7 @@ class RoomBeanRepositoryTest {
     rating = 0,
     tastingNotes = "Full bodied by kinda rotteny after taste.",
     additionalNotes = "",
+    timestamp = "",
   )
 
   private var beanDAO = FakeBeanDAO()
@@ -90,7 +92,7 @@ class RoomBeanRepositoryTest {
 
     beanDAO.mockFetchBeanById("1", persistableBean)
 
-    val actualResult = repository.fetchBean(expectedResult) as Result.Success
+    val actualResult = repository.fetchBean(expectedResult.id) as Result.Success
 
     // Assert
     assertEquals(expectedResult, actualResult.data)

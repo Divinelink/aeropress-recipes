@@ -76,4 +76,5 @@ private fun emptyBean(): Bean = Bean(
   rating = 0,
   tastingNotes = "",
   additionalNotes = "",
+  timestamp = "",
 )
