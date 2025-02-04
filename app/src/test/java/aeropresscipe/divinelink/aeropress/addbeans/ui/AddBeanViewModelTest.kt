@@ -7,12 +7,12 @@ import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
 import aeropresscipe.divinelink.aeropress.beans.domain.model.RoastLevel
 import aeropresscipe.divinelink.aeropress.ui.UIText
 import com.divinelink.aeropress.recipes.R
+import com.divinelink.aerorecipe.sample.model.BeanSample
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import java.time.LocalDate
-import java.util.UUID
 import kotlin.test.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -23,31 +23,9 @@ class AddBeanViewModelTest {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
-  private val testBean = Bean(
-    id = UUID.randomUUID().toString(),
-    name = "testBean",
-    roasterName = "testRoaster",
-    origin = "",
-    roastDate = null,
-    roastLevel = null,
-    process = null,
-    rating = 0,
-    tastingNotes = "nothing",
-    additionalNotes = "empty notes",
-  )
+  private val testBean = BeanSample.ethiopia()
 
-  private fun emptyBean(): Bean = Bean(
-    id = "",
-    name = "",
-    roasterName = "",
-    origin = "",
-    roastDate = null,
-    roastLevel = null,
-    process = null,
-    rating = 0,
-    tastingNotes = "",
-    additionalNotes = "",
-  )
+  private val emptyBean = BeanSample.empty()
 
   @Test
   fun initialiseViewModelTest() = runTest {
@@ -79,7 +57,7 @@ class AddBeanViewModelTest {
       .onBeanNameChanged("name changed")
       .assertViewState(
         AddBeanViewState.ModifyBean(
-          bean = emptyBean().copy(name = "name changed"),
+          bean = emptyBean.copy(name = "name changed"),
           title = UIText.ResourceText(R.string.AddBeans__add_title),
           submitButtonText = UIText.ResourceText(R.string.save),
           isSubmitButtonEnabled = true,
@@ -95,7 +73,7 @@ class AddBeanViewModelTest {
         .onBeanNameChanged("name changed")
         .assertViewState(
           AddBeanViewState.ModifyBean(
-            bean = emptyBean().copy(name = "name changed"),
+            bean = emptyBean.copy(name = "name changed"),
             title = UIText.ResourceText(R.string.AddBeans__add_title),
             submitButtonText = UIText.ResourceText(R.string.save),
             isSubmitButtonEnabled = true,
@@ -110,7 +88,7 @@ class AddBeanViewModelTest {
       .onRoasterNameChanged("roaster name changed")
       .assertViewState(
         AddBeanViewState.ModifyBean(
-          bean = emptyBean().copy(roasterName = "roaster name changed"),
+          bean = emptyBean.copy(roasterName = "roaster name changed"),
           title = UIText.ResourceText(R.string.AddBeans__add_title),
           submitButtonText = UIText.ResourceText(R.string.save),
           isSubmitButtonEnabled = true,
@@ -125,7 +103,7 @@ class AddBeanViewModelTest {
       .onOriginChanged("origin name changed")
       .assertViewState(
         AddBeanViewState.ModifyBean(
-          bean = emptyBean().copy(origin = "origin name changed"),
+          bean = emptyBean.copy(origin = "origin name changed"),
           title = UIText.ResourceText(R.string.AddBeans__add_title),
           submitButtonText = UIText.ResourceText(R.string.save),
           isSubmitButtonEnabled = true,
@@ -140,7 +118,7 @@ class AddBeanViewModelTest {
       .onDateChanged(LocalDate.now())
       .assertViewState(
         AddBeanViewState.ModifyBean(
-          bean = emptyBean().copy(roastDate = LocalDate.now()),
+          bean = emptyBean.copy(roastDate = LocalDate.now()),
           title = UIText.ResourceText(R.string.AddBeans__add_title),
           submitButtonText = UIText.ResourceText(R.string.save),
           isSubmitButtonEnabled = true,
@@ -155,7 +133,7 @@ class AddBeanViewModelTest {
       .onSelectFromBottomSheet(RoastLevel.Medium.name)
       .assertViewState(
         AddBeanViewState.ModifyBean(
-          bean = emptyBean().copy(roastLevel = RoastLevel.Medium),
+          bean = emptyBean.copy(roastLevel = RoastLevel.Medium),
           title = UIText.ResourceText(R.string.AddBeans__add_title),
           submitButtonText = UIText.ResourceText(R.string.save),
           isSubmitButtonEnabled = true,
@@ -170,7 +148,7 @@ class AddBeanViewModelTest {
       .onSelectFromBottomSheet(ProcessMethod.Natural.name)
       .assertViewState(
         AddBeanViewState.ModifyBean(
-          bean = emptyBean().copy(process = ProcessMethod.Natural),
+          bean = emptyBean.copy(process = ProcessMethod.Natural),
           title = UIText.ResourceText(R.string.AddBeans__add_title),
           submitButtonText = UIText.ResourceText(R.string.save),
           isSubmitButtonEnabled = true,
@@ -201,6 +179,7 @@ class AddBeanViewModelTest {
             rating = 0,
             tastingNotes = "",
             additionalNotes = "",
+            timestamp = "",
           ),
           title = UIText.ResourceText(R.string.AddBeans__add_title),
           submitButtonText = UIText.ResourceText(R.string.save),
@@ -229,7 +208,7 @@ class AddBeanViewModelTest {
   }
 
   @Test
-  fun `given a random bean when submit clicked then I expect update use case with Completed State`() =
+  fun `given a random bean when submit clicked then I expect update use case with Completed `() =
     runTest {
       val successResult: Result<AddBeanResult> = Result.Success(AddBeanResult.Success)
       testRobot
@@ -345,17 +324,19 @@ class AddBeanViewModelTest {
   @Test
   fun `when roastLevelClicked then I expect BottomSheet content with all of RoastLevel values`() =
     runTest {
-      val roastLevelContent = RoastLevel.values().map { roastLevel ->
+      val roastLevelContent = RoastLevel.entries.map { roastLevel ->
         UIText.StringText(roastLevel.name)
       }.toMutableList()
 
+      val initialCoffeeBean = testBean.copy(roastLevel = null)
+
       testRobot
         .buildViewModel()
-        .onSetBean(testBean)
+        .onSetBean(initialCoffeeBean)
         .onRoastLevelClicked()
         .assertViewState(
           AddBeanViewState.ModifyBean(
-            bean = testBean,
+            bean = initialCoffeeBean,
             title = UIText.ResourceText(R.string.AddBeans__update_title),
             submitButtonText = UIText.ResourceText(R.string.update),
             withDeleteAction = true,
@@ -393,17 +374,19 @@ class AddBeanViewModelTest {
   @Test
   fun `when processClicked then I expect BottomSheet content with all of ProcessMethod values`() =
     runTest {
-      val processMethodContent = ProcessMethod.values().map { process ->
+      val processMethodContent = ProcessMethod.entries.map { process ->
         UIText.ResourceText(process.stringRes)
       }.toMutableList()
 
+      val initialCoffeeBean = testBean.copy(process = null)
+
       testRobot
         .buildViewModel()
-        .onSetBean(testBean)
+        .onSetBean(initialCoffeeBean)
         .onProcessClicked()
         .assertViewState(
           AddBeanViewState.ModifyBean(
-            bean = testBean,
+            bean = initialCoffeeBean,
             title = UIText.ResourceText(R.string.AddBeans__update_title),
             submitButtonText = UIText.ResourceText(R.string.update),
             withDeleteAction = true,
@@ -416,17 +399,19 @@ class AddBeanViewModelTest {
   @Test
   fun `given a selected process method, when processClicked then I expect BottomSheet content with selected option`() =
     runTest {
-      val processMethodContent = ProcessMethod.values().map { process ->
+      val processMethodContent = ProcessMethod.entries.map { process ->
         UIText.ResourceText(process.stringRes)
       }.toMutableList()
 
+      val initialCoffeeBean = testBean.copy(process = null)
+
       testRobot
         .buildViewModel()
-        .onSetBean(testBean)
+        .onSetBean(initialCoffeeBean)
         .onProcessClicked()
         .assertViewState(
           AddBeanViewState.ModifyBean(
-            bean = testBean,
+            bean = initialCoffeeBean,
             title = UIText.ResourceText(R.string.AddBeans__update_title),
             submitButtonText = UIText.ResourceText(R.string.update),
             withDeleteAction = true,
@@ -438,7 +423,7 @@ class AddBeanViewModelTest {
         .onProcessClicked()
         .assertViewState(
           AddBeanViewState.ModifyBean(
-            bean = testBean.copy(process = ProcessMethod.CarbonicMaceration),
+            bean = initialCoffeeBean.copy(process = ProcessMethod.CarbonicMaceration),
             title = UIText.ResourceText(R.string.AddBeans__update_title),
             submitButtonText = UIText.ResourceText(R.string.update),
             withDeleteAction = true,
@@ -450,16 +435,4 @@ class AddBeanViewModelTest {
           ),
         )
     }
-
-  //    fun onRoastLevelClicked() = apply {
-  //        viewModel.onRoastLevelClicked()
-  //    }
-  //
-  //    fun onProcessClicked() = apply {
-  //        viewModel.onProcessClicked()
-  //    }
-  //
-  //    fun onAddBean(bean: Bean) = apply {
-  //        viewModel.addBean(bean)
-  //    }
 }

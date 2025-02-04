@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="8dp"
+    android:layout_marginHorizontal="16dp"
     android:layout_marginTop="8dp"
-    android:layout_marginEnd="8dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
-    app:cardCornerRadius="8dp">
+    app:cardBackgroundColor="@color/colorSurfaceVariant"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp">
 
   <gr.divinelink.core.util.swipe.SwipeToActionLayout
       android:id="@+id/swipe_action_layout"
@@ -22,8 +23,7 @@
     <aeropresscipe.divinelink.aeropress.components.recipecard.RecipeCardView
         android:id="@+id/card"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardElevation="0dp" />
+        android:layout_height="wrap_content" />
 
   </gr.divinelink.core.util.swipe.SwipeToActionLayout>
 

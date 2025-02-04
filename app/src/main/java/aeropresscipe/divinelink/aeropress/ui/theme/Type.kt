@@ -54,14 +54,14 @@ val AppTypography = Typography(
   ),
   bodyMedium = TextStyle(
     fontFamily = appFontFamily,
-    fontWeight = FontWeight.W400,
+    fontWeight = FontWeight.W500,
     letterSpacing = 0.sp,
     lineHeight = 20.sp,
     fontSize = 14.sp,
   ),
   bodySmall = TextStyle(
     fontFamily = appFontFamily,
-    fontWeight = FontWeight.W400,
+    fontWeight = FontWeight.W500,
     letterSpacing = 0.10000000149011612.sp,
     lineHeight = 16.sp,
     fontSize = 12.sp,

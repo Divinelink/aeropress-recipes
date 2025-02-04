@@ -26,18 +26,12 @@ fun AeropressTheme(
 }
 
 @Composable
-fun ColorScheme.textColorDisabled(): Color {
-  return MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-}
+fun ColorScheme.textColorDisabled(): Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
 
 @Composable
-fun ColorScheme.fadedBackgroundColor(): Color {
-  return MaterialTheme.colorScheme.scrim.copy(alpha = 0.62f)
-}
+fun ColorScheme.fadedBackgroundColor(): Color = MaterialTheme.colorScheme.scrim.copy(alpha = 0.62f)
 
 @Composable
-fun topBarColor(): Color {
-  return MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.30f)
-}
+fun topBarColor(): Color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.30f)
 
 val FabSize = 56.dp

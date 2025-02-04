@@ -22,7 +22,7 @@ interface BeanRepository {
    */
   suspend fun addBean(bean: Bean): Result<Unit>
 
-  suspend fun fetchBean(bean: Bean): Result<Bean>
+  suspend fun fetchBean(id: String): Result<Bean>
 
   /**
    * Update existing [bean] from user's input.

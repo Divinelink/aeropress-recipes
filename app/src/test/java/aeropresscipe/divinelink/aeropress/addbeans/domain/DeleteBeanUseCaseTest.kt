@@ -3,10 +3,8 @@ package aeropresscipe.divinelink.aeropress.addbeans.domain
 import aeropresscipe.divinelink.aeropress.MainDispatcherRule
 import aeropresscipe.divinelink.aeropress.addbeans.domain.usecase.DeleteBeanUseCase
 import aeropresscipe.divinelink.aeropress.beans.domain.model.AddBeanResult
-import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
-import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
-import aeropresscipe.divinelink.aeropress.beans.domain.model.RoastLevel
 import aeropresscipe.divinelink.aeropress.fakes.FakeBeanRepository
+import com.divinelink.aerorecipe.sample.model.BeanSample
 import com.google.common.truth.Truth
 import gr.divinelink.core.util.domain.Result
 import gr.divinelink.core.util.domain.data
@@ -15,7 +13,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.time.LocalDate
 import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
@@ -27,18 +24,7 @@ class DeleteBeanUseCaseTest {
 
   private lateinit var beanRepository: FakeBeanRepository
 
-  private val bean = Bean(
-    id = "0",
-    name = "beanName",
-    roasterName = "roasterName",
-    origin = "originName",
-    roastDate = LocalDate.now(),
-    roastLevel = RoastLevel.Dark,
-    process = ProcessMethod.Honey,
-    rating = 0,
-    tastingNotes = "",
-    additionalNotes = "",
-  )
+  private val bean = BeanSample.ethiopia()
 
   @Before
   fun setUp() {

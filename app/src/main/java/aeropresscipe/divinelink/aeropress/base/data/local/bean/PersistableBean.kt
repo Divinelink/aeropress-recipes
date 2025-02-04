@@ -16,4 +16,5 @@ data class PersistableBean(
   val rating: Int,
   val tastingNotes: String,
   val additionalNotes: String,
+  val timestamp: String,
 )

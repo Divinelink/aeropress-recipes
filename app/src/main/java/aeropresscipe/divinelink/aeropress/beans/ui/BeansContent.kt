@@ -2,15 +2,17 @@ package aeropresscipe.divinelink.aeropress.beans.ui
 
 import aeropresscipe.divinelink.aeropress.addbeans.ui.AddBeanActivity
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
+import aeropresscipe.divinelink.aeropress.beans.domain.model.GroupedCoffeeBeans
 import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
 import aeropresscipe.divinelink.aeropress.beans.domain.model.RoastLevel
 import aeropresscipe.divinelink.aeropress.ui.components.ExtendableFloatingActionButton
 import aeropresscipe.divinelink.aeropress.ui.components.Material3CircularProgressIndicator
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import aeropresscipe.divinelink.aeropress.ui.theme.FabSize
-import aeropresscipe.divinelink.aeropress.ui.theme.topBarColor
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,8 +23,8 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,7 +33,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -70,9 +71,9 @@ fun BeansContent(
   val scrollState = rememberLazyListState()
   var fabExtended by remember { mutableStateOf(true) }
   val scrollColors = TopAppBarDefaults.topAppBarColors(
-    scrolledContainerColor = topBarColor(),
+    scrolledContainerColor = MaterialTheme.colorScheme.surface,
   )
-  val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+  val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
   LaunchedEffect(scrollState) {
     var prev = 0
@@ -90,7 +91,7 @@ fun BeansContent(
         AddBeanActivity.newIntent(
           context = context,
           bean = viewState.selectedBean,
-          ),
+        ),
       )
       onAddBeanOpened()
     }
@@ -98,10 +99,7 @@ fun BeansContent(
 
   Scaffold(
     contentWindowInsets = WindowInsets(
-      left = 0.dp,
       top = WindowInsets.systemBars.asPaddingValues().calculateTopPadding().value.dp,
-      right = 0.dp,
-      bottom = 0.dp,
     ),
     modifier = Modifier
       .nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -116,7 +114,7 @@ fun BeansContent(
       TopAppBar(
         title = {
           Text(
-            text = stringResource(id = R.string.Beans__bean_tracker),
+            text = stringResource(id = R.string.Beans__bean_tracker_title),
             style = MaterialTheme.typography.titleMedium,
           )
         },
@@ -124,7 +122,7 @@ fun BeansContent(
           IconButton(
             onClick = onNavigateUp,
           ) {
-            Icon(Icons.Filled.ArrowBack, null)
+            Icon(Icons.AutoMirrored.Filled.ArrowBack, null)
           }
         },
         scrollBehavior = scrollBehavior,
@@ -133,14 +131,16 @@ fun BeansContent(
     },
   ) { paddingValues ->
     if (viewState is BeanTrackerViewState.Completed) {
-      BeansList(
-        viewState.beans,
-        modifier = modifier
-          .padding(top = paddingValues.calculateTopPadding()),
-        onBeanClicked = onBeanClicked,
-        state = scrollState,
-        bottomPadding = bottomPadding,
-      )
+      Column {
+        Spacer(modifier = Modifier.height(paddingValues.calculateTopPadding()))
+
+        BeansList(
+          coffeeBeans = viewState.coffeeBeans,
+          onBeanClicked = onBeanClicked,
+          state = scrollState,
+          bottomPadding = bottomPadding,
+        )
+      }
     }
   }
 
@@ -157,24 +157,22 @@ private fun AddBeanButton(
 ) {
   ExtendableFloatingActionButton(
     modifier = modifier
-          .height(FabSize)
-          .widthIn(min = FabSize)
-          .testTag(ADD_BREW_BUTTON_TAG),
+      .height(FabSize)
+      .widthIn(min = FabSize)
+      .testTag(ADD_BREW_BUTTON_TAG),
     extended = extended,
     text = {
-          Text(
-              style = MaterialTheme.typography.bodyMedium,
-              text = stringResource(
-                R.string.Beans__add_bean,
-              ),
-          )
-      },
+      Text(
+        style = MaterialTheme.typography.bodyMedium,
+        text = stringResource(R.string.Beans__add_bean),
+      )
+    },
     icon = {
-          Icon(
-              Icons.Default.Add,
-              contentDescription = stringResource(R.string.Beans__add_bean),
-          )
-      },
+      Icon(
+        Icons.Default.Add,
+        contentDescription = stringResource(R.string.Beans__add_bean),
+      )
+    },
     onClick = onClick,
   )
 }
@@ -187,8 +185,8 @@ private fun BeansLoadingContent() {
   ) {
     Material3CircularProgressIndicator(
       modifier = Modifier
-          .wrapContentSize()
-          .align(Alignment.Center),
+        .wrapContentSize()
+        .align(Alignment.Center),
     )
   }
 }
@@ -209,19 +207,22 @@ class BeansContentViewStateProvider : PreviewParameterProvider<BeanTrackerViewSt
           tastingNotes = "",
           additionalNotes = "",
           roastDate = LocalDate.now(),
+          timestamp = "1738652265",
         )
       }.toMutableList()
+
+      val group = beans.groupBy { it.timestamp }
 
       val initialState = BeanTrackerViewState.Initial
 
       val activeState = BeanTrackerViewState.Active()
 
       val emptyState = BeanTrackerViewState.Completed(
-        beans = emptyList(),
+        coffeeBeans = GroupedCoffeeBeans(emptyMap()),
       )
 
       val completedState = BeanTrackerViewState.Completed(
-        beans = beans,
+        coffeeBeans = GroupedCoffeeBeans(group),
       )
 
       return sequenceOf(

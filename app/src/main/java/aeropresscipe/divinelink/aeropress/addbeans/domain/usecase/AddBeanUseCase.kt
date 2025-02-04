@@ -33,12 +33,10 @@ open class AddBeanUseCase @Inject constructor(
   }
 }
 
-internal fun Bean.trimFields(): Bean {
-  return this.copy(
-    name = this.name.trim(),
-    roasterName = this.roasterName.trim(),
-    origin = this.origin.trim(),
-    tastingNotes = this.tastingNotes.trim(),
-    additionalNotes = this.additionalNotes.trim(),
-  )
-}
+internal fun Bean.trimFields(): Bean = this.copy(
+  name = this.name.trim(),
+  roasterName = this.roasterName.trim(),
+  origin = this.origin.trim(),
+  tastingNotes = this.tastingNotes.trim(),
+  additionalNotes = this.additionalNotes.trim(),
+)

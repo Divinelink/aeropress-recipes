@@ -24,15 +24,14 @@ class DemoBeanRepository @Inject constructor() : BeanRepository {
       tastingNotes = "",
       additionalNotes = "",
       roastDate = null,
+      timestamp = "",
     )
   }.toMutableList()
 
   private val beansFlow = MutableStateFlow(beans)
 
-  override fun fetchAllBeans(): Flow<BeanListResult> {
-    return beansFlow.map { beans ->
-      Result.Success(beans)
-    }
+  override fun fetchAllBeans(): Flow<BeanListResult> = beansFlow.map { beans ->
+    Result.Success(beans)
   }
 
   override suspend fun addBean(bean: Bean): Result<Unit> {
@@ -43,15 +42,11 @@ class DemoBeanRepository @Inject constructor() : BeanRepository {
     return Result.Success(Unit)
   }
 
-  override suspend fun fetchBean(bean: Bean): Result<Bean> {
-    //        TODO("Not yet implemented")
-    return Result.Success(bean)
-  }
+  override suspend fun fetchBean(id: String): Result<Bean> = Result.Success(
+    beans.find { it.id == id } ?: beans.first(),
+  )
 
-  override suspend fun updateBean(bean: Bean): Result<Unit> {
-    // TODO("Not yet implemented")
-    return Result.Success(Unit)
-  }
+  override suspend fun updateBean(bean: Bean): Result<Unit> = Result.Success(Unit)
 
   override suspend fun removeBean(bean: Bean): Result<Unit> {
     beans.remove(bean)

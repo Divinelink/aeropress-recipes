@@ -14,6 +14,7 @@ data class Bean(
   val rating: Int,
   val tastingNotes: String,
   val additionalNotes: String,
+  val timestamp: String,
 ) : Serializable {
   companion object {
     private const val serialVersionUID: Long = 1L
