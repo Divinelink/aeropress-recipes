@@ -182,7 +182,6 @@ fun AddBeanContent(
       )
 
       Spacer(modifier = Modifier.height(12.dp))
-
       CustomOutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
         text = viewState.bean.origin,
@@ -194,6 +193,7 @@ fun AddBeanContent(
         ),
       )
 
+      Spacer(modifier = Modifier.height(12.dp))
       CustomOutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
         text = viewState.bean.roasterName,

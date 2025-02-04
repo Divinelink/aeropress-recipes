@@ -90,7 +90,8 @@ private fun EmptySectionCard(
 ) {
   Card(
     modifier = modifier
-      .fillMaxWidth(),
+      .fillMaxWidth()
+      .padding(16.dp),
   ) {
     Text(
       text = text,
