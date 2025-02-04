@@ -1,11 +1,11 @@
 package aeropresscipe.divinelink.aeropress.util.mapping
 
 interface MappingModel {
-    fun areItemsTheSame(newItem: Any): Boolean
-    fun areContentsTheSame(newItem: Any): Boolean
-    fun getChangePayload(newItem: Any): Any? {
-        return null
-    }
+  fun areItemsTheSame(newItem: Any): Boolean
+  fun areContentsTheSame(newItem: Any): Boolean
+  fun getChangePayload(newItem: Any): Any? {
+    return null
+  }
 }
 
 /**
@@ -13,7 +13,7 @@ interface MappingModel {
  */
 
 interface EmptyMappingModel : MappingModel {
-    override fun areItemsTheSame(newItem: Any): Boolean = true
-    override fun areContentsTheSame(newItem: Any): Boolean = true
-    override fun getChangePayload(newItem: Any): Any? = null
+  override fun areItemsTheSame(newItem: Any): Boolean = true
+  override fun areContentsTheSame(newItem: Any): Boolean = true
+  override fun getChangePayload(newItem: Any): Any? = null
 }

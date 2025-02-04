@@ -9,33 +9,29 @@ import org.mockito.kotlin.whenever
 
 class FakeRecipeDao {
 
-    val mock: RecipeDao = mock()
+  val mock: RecipeDao = mock()
 
-    suspend fun mockGetRecipe(
-        response: DiceDomain,
-    ) {
-        whenever(
-            mock.getRecipe()
-        ).thenReturn(
-            response
-        )
-    }
+  suspend fun mockGetRecipe(response: DiceDomain) {
+    whenever(
+      mock.getRecipe(),
+    ).thenReturn(
+      response,
+    )
+  }
 
-    suspend fun verifyGetRecipe() {
-        verify(mock).getRecipe()
-    }
+  suspend fun verifyGetRecipe() {
+    verify(mock).getRecipe()
+  }
 
-    suspend fun mockUpdateRecipe(
-        recipe: Recipe,
-    ) {
-        whenever(
-            mock.updateRecipe(recipe)
-        ).thenReturn(
-            Unit
-        )
-    }
+  suspend fun mockUpdateRecipe(recipe: Recipe) {
+    whenever(
+      mock.updateRecipe(recipe),
+    ).thenReturn(
+      Unit,
+    )
+  }
 
-    suspend fun verifyUpdateRecipe(recipe: Recipe) {
-        verify(mock).updateRecipe(recipe)
-    }
+  suspend fun verifyUpdateRecipe(recipe: Recipe) {
+    verify(mock).updateRecipe(recipe)
+  }
 }

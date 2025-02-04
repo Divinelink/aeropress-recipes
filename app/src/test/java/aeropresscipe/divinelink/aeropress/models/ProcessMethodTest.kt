@@ -9,61 +9,61 @@ import kotlin.test.assertFailsWith
 
 class ProcessMethodTest {
 
-    @Test
-    fun `Get Process Method from String`() {
-        // Washed
-        assertThat(
-            "Washed".toProcessMethod()
-        ).isEqualTo(
-            ProcessMethod.Washed
-        )
+  @Test
+  fun `Get Process Method from String`() {
+    // Washed
+    assertThat(
+      "Washed".toProcessMethod(),
+    ).isEqualTo(
+      ProcessMethod.Washed,
+    )
 
-        // Natural
-        assertThat(
-            "Natural".toProcessMethod()
-        ).isEqualTo(
-            ProcessMethod.Natural
-        )
+    // Natural
+    assertThat(
+      "Natural".toProcessMethod(),
+    ).isEqualTo(
+      ProcessMethod.Natural,
+    )
 
-        // Honey
-        assertThat(
-            "Honey".toProcessMethod()
-        ).isEqualTo(
-            ProcessMethod.Honey
-        )
+    // Honey
+    assertThat(
+      "Honey".toProcessMethod(),
+    ).isEqualTo(
+      ProcessMethod.Honey,
+    )
 
-        // Anaerobic
-        assertThat(
-            "Anaerobic".toProcessMethod()
-        ).isEqualTo(
-            ProcessMethod.Anaerobic
-        )
+    // Anaerobic
+    assertThat(
+      "Anaerobic".toProcessMethod(),
+    ).isEqualTo(
+      ProcessMethod.Anaerobic,
+    )
 
-        // CarbonicMaceration
-        assertThat(
-            "CarbonicMaceration".toProcessMethod()
-        ).isEqualTo(
-            ProcessMethod.CarbonicMaceration
-        )
+    // CarbonicMaceration
+    assertThat(
+      "CarbonicMaceration".toProcessMethod(),
+    ).isEqualTo(
+      ProcessMethod.CarbonicMaceration,
+    )
 
-        // GilingBasah
-        assertThat(
-            "GilingBasah".toProcessMethod()
-        ).isEqualTo(
-            ProcessMethod.GilingBasah
-        )
+    // GilingBasah
+    assertThat(
+      "GilingBasah".toProcessMethod(),
+    ).isEqualTo(
+      ProcessMethod.GilingBasah,
+    )
 
-        // Other
-        assertThat(
-            "Other".toProcessMethod()
-        ).isEqualTo(
-            ProcessMethod.Other
-        )
-    }
+    // Other
+    assertThat(
+      "Other".toProcessMethod(),
+    ).isEqualTo(
+      ProcessMethod.Other,
+    )
+  }
 
-    @Test
-    fun unknownProcessMethod() {
-        assertFailsWith<IllegalArgumentException> { "Unknown".toProcessMethod() }
-        Assert.assertThrows(IllegalArgumentException::class.java) { "Unknown".toProcessMethod() }
-    }
+  @Test
+  fun unknownProcessMethod() {
+    assertFailsWith<IllegalArgumentException> { "Unknown".toProcessMethod() }
+    Assert.assertThrows(IllegalArgumentException::class.java) { "Unknown".toProcessMethod() }
+  }
 }

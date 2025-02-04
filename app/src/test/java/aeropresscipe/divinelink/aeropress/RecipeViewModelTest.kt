@@ -45,14 +45,16 @@ class RecipeViewModelTest {
 
   private fun initViewModel() {
     viewModel = RecipeViewModel(
-      delegate = WeakReference(object :
-                                 IRecipeViewModel {
-        override fun updateState(state: RecipeState) {
-          // do nothing
-        }
-      }),
+      delegate = WeakReference(
+        object :
+          IRecipeViewModel {
+          override fun updateState(state: RecipeState) {
+            // do nothing
+          }
+        },
+      ),
       repository = repository.mock,
-      timerRepository = timerRepository.mock
+      timerRepository = timerRepository.mock,
     )
 
     viewModelIntent = viewModel
@@ -104,7 +106,7 @@ class RecipeViewModelTest {
     assertEquals(viewModel.statesList[1], RecipeState.UpdateToolbarState(R.string.good_morning))
     assertNotEquals(
       viewModel.statesList[1],
-      RecipeState.UpdateToolbarState(R.string.good_afternoon)
+      RecipeState.UpdateToolbarState(R.string.good_afternoon),
     )
     assertNotEquals(viewModel.statesList[1], RecipeState.UpdateToolbarState(R.string.good_evening))
   }
@@ -127,7 +129,7 @@ class RecipeViewModelTest {
     assertNotEquals(viewModel.statesList[1], RecipeState.UpdateToolbarState(R.string.good_morning))
     assertNotEquals(
       viewModel.statesList[1],
-      RecipeState.UpdateToolbarState(R.string.good_afternoon)
+      RecipeState.UpdateToolbarState(R.string.good_afternoon),
     )
   }
 
@@ -202,7 +204,7 @@ class RecipeViewModelTest {
 
       assertEquals(
         viewModel.statesList[0],
-        RecipeState.RefreshRecipeState(response.recipe.buildSteps())
+        RecipeState.RefreshRecipeState(response.recipe.buildSteps()),
       )
       assertEquals(viewModel.statesList[1], RecipeState.UpdateSavedIndicator(DISLIKE_MAX_FRAME))
     }
@@ -219,7 +221,7 @@ class RecipeViewModelTest {
       viewModel.startTimer(false)
       assertEquals(
         viewModel.statesList[0],
-        RecipeState.StartTimerState(recipeModel(), TimerFlow.START)
+        RecipeState.StartTimerState(recipeModel(), TimerFlow.START),
       )
     }
 
@@ -234,7 +236,7 @@ class RecipeViewModelTest {
     viewModel.startTimer(true)
     assertEquals(
       viewModel.statesList[0],
-      RecipeState.StartTimerState(recipeModel(), TimerFlow.RESUME)
+      RecipeState.StartTimerState(recipeModel(), TimerFlow.RESUME),
     )
   }
 
@@ -251,7 +253,7 @@ class RecipeViewModelTest {
       viewModel.startTimer(true)
       assertEquals(
         viewModel.statesList[0],
-        RecipeState.StartTimerState(recipeModel(), TimerFlow.RESUME)
+        RecipeState.StartTimerState(recipeModel(), TimerFlow.RESUME),
       )
     }
 
@@ -306,16 +308,14 @@ class RecipeViewModelTest {
     brewWaterAmount: Int = 0,
     groundSize: CoffeeGrindSize = CoffeeGrindSize.MEDIUM,
     brewingMethod: BrewMethod = BrewMethod.STANDARD,
-  ): Recipe {
-    return Recipe(
-      diceTemperature = diceTemperature,
-      brewTime = brewTime,
-      bloomTime = bloomTime,
-      bloomWater = bloomWater,
-      coffeeAmount = coffeeAmount,
-      brewWaterAmount = brewWaterAmount,
-      grindSize = groundSize,
-      brewMethod = brewingMethod
-    )
-  }
+  ): Recipe = Recipe(
+    diceTemperature = diceTemperature,
+    brewTime = brewTime,
+    bloomTime = bloomTime,
+    bloomWater = bloomWater,
+    coffeeAmount = coffeeAmount,
+    brewWaterAmount = brewWaterAmount,
+    grindSize = groundSize,
+    brewMethod = brewingMethod,
+  )
 }

@@ -16,30 +16,30 @@ import kotlin.test.assertNotEquals
 @OptIn(ExperimentalCoroutinesApi::class)
 class GetThemeUseCaseTest {
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-    private val testDispatcher = mainDispatcherRule.testDispatcher
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+  private val testDispatcher = mainDispatcherRule.testDispatcher
 
-    private lateinit var fakePreferenceStorage: FakePreferenceStorage
+  private lateinit var fakePreferenceStorage: FakePreferenceStorage
 
-    @Before
-    fun setUp() {
-        fakePreferenceStorage = FakePreferenceStorage()
-    }
+  @Before
+  fun setUp() {
+    fakePreferenceStorage = FakePreferenceStorage()
+  }
 
-    @Test
-    fun `correctly get theme use case`() = runTest {
-        // Given
-        val response = Result.Success(Theme.DARK)
-        val failResponse = Result.Error(Exception("Some exception"))
+  @Test
+  fun `correctly get theme use case`() = runTest {
+    // Given
+    val response = Result.Success(Theme.DARK)
+    val failResponse = Result.Error(Exception("Some exception"))
 
-        fakePreferenceStorage.selectedTheme.value = response.data.storageKey
+    fakePreferenceStorage.selectedTheme.value = response.data.storageKey
 
-        // When
-        val useCase = GetThemeUseCase(fakePreferenceStorage, testDispatcher)
-        val result = useCase(Unit)
-        // Then
-        assertEquals(response, result)
-        assertNotEquals(failResponse, result)
-    }
+    // When
+    val useCase = GetThemeUseCase(fakePreferenceStorage, testDispatcher)
+    val result = useCase(Unit)
+    // Then
+    assertEquals(response, result)
+    assertNotEquals(failResponse, result)
+  }
 }

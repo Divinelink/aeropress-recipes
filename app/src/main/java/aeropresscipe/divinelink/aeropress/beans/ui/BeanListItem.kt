@@ -20,7 +20,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -44,13 +43,12 @@ fun BeanListItem(
   Card(
     modifier = modifier,
     onClick = onBeanClicked,
-    elevation = CardDefaults.elevatedCardElevation()
   ) {
     Row(
       modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp),
-      verticalAlignment = Alignment.CenterVertically
+      verticalAlignment = Alignment.CenterVertically,
     ) {
       CircularText(bean.name)
 
@@ -58,27 +56,27 @@ fun BeanListItem(
         modifier = Modifier
           .fillMaxWidth(MAX_COLUMN_WIDTH)
           .padding(start = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        verticalArrangement = Arrangement.spacedBy(4.dp),
       ) {
 
         Text(
           style = MaterialTheme.typography.bodyLarge,
           text = bean.name,
-          color = MaterialTheme.colorScheme.onSurface
+          color = MaterialTheme.colorScheme.onSurface,
         )
 
         if (bean.roasterName.isNotEmpty()) {
           Text(
             style = MaterialTheme.typography.bodyMedium,
             text = bean.roasterName,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
           )
         }
       }
 
       Column(
         modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.End
+        horizontalAlignment = Alignment.End,
       ) {
         if (bean.rating > 0) {
           RatingItem(bean.rating)
@@ -104,13 +102,13 @@ private fun RatingItem(rating: Int) {
     Text(
       style = MaterialTheme.typography.titleSmall,
       text = rating.toString(),
-      color = MaterialTheme.colorScheme.onSurface
+      color = MaterialTheme.colorScheme.onSurface,
     )
     Spacer(modifier = Modifier.width(4.dp))
     Icon(
       imageVector = Icons.Rounded.Star,
       contentDescription = "Rating",
-      tint = STAR_COLOR
+      tint = STAR_COLOR,
     )
   }
 }
@@ -129,7 +127,7 @@ private fun CircularText(
     modifier = Modifier
       .width(48.dp)
       .height(48.dp)
-      .background(MaterialTheme.colorScheme.primaryContainer, shape = CircleShape)
+      .background(MaterialTheme.colorScheme.primaryContainer, shape = CircleShape),
   ) {
     Text(
       text = name.extraFirstTwoLetters(),
@@ -187,7 +185,7 @@ private class BeanPreviewParameterProvider : PreviewParameterProvider<Bean> {
         doubleLetterBean,
         singleLetterBean,
         multipleLetterBean,
-        largeBeanName
+        largeBeanName,
       )
     }
 }
@@ -197,11 +195,11 @@ private const val MAX_COLUMN_WIDTH = 0.7F
 @Composable
 @Preview(
   name = "Day mode",
-  uiMode = Configuration.UI_MODE_NIGHT_NO
+  uiMode = Configuration.UI_MODE_NIGHT_NO,
 )
 @Preview(
   name = "Night mode",
-  uiMode = Configuration.UI_MODE_NIGHT_YES
+  uiMode = Configuration.UI_MODE_NIGHT_YES,
 )
 fun BeanListItemPreview(
   @PreviewParameter(BeanPreviewParameterProvider::class)
@@ -211,7 +209,7 @@ fun BeanListItemPreview(
     Surface(modifier = Modifier.padding(8.dp)) {
       BeanListItem(
         bean,
-        onBeanClicked = {}
+        onBeanClicked = {},
       )
     }
   }

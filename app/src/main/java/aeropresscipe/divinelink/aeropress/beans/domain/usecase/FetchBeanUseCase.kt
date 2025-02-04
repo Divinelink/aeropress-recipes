@@ -12,11 +12,11 @@ import javax.inject.Inject
  */
 
 class FetchBeanUseCase @Inject constructor(
-    // private val beanRepository: BeanRepository,
-    @IoDispatcher dispatcher: CoroutineDispatcher,
+  // private val beanRepository: BeanRepository,
+  @IoDispatcher dispatcher: CoroutineDispatcher,
 ) : UseCase<Bean, Bean>(dispatcher) {
-    override suspend fun execute(parameters: Bean): Bean {
-        TODO()
+  override suspend fun execute(parameters: Bean): Bean {
+    TODO()
 //        val result = beanRepository.fetchBean(parameters)
 //
 //        return when (result) {
@@ -24,5 +24,5 @@ class FetchBeanUseCase @Inject constructor(
 //            is Result.Error -> throw result.exception
 //            Result.Loading -> throw IllegalStateException()
 //        }
-    }
+  }
 }

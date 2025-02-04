@@ -7,18 +7,18 @@ import java.lang.ref.WeakReference
 
 @Suppress("UNCHECKED_CAST")
 class FinishViewModelFactory(
-    private val assistedFactory: FinishViewModelAssistedFactory,
-    private val delegate: WeakReference<IFinishViewModel>?,
+  private val assistedFactory: FinishViewModelAssistedFactory,
+  private val delegate: WeakReference<IFinishViewModel>?,
 ) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(FinishViewModel::class.java)) {
-            return assistedFactory.create(delegate) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
+  override fun <T : ViewModel> create(modelClass: Class<T>): T {
+    if (modelClass.isAssignableFrom(FinishViewModel::class.java)) {
+      return assistedFactory.create(delegate) as T
     }
+    throw IllegalArgumentException("Unknown ViewModel class")
+  }
 }
 
 @AssistedFactory
 interface FinishViewModelAssistedFactory {
-    fun create(delegate: WeakReference<IFinishViewModel>?): FinishViewModel
+  fun create(delegate: WeakReference<IFinishViewModel>?): FinishViewModel
 }

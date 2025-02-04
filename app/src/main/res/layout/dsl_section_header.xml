@@ -9,10 +9,10 @@
     android:paddingEnd="@dimen/dsl_settings_gutter"
     android:paddingBottom="12dp">
 
-    <TextView
-        android:id="@+id/section_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/Text.TitleSmall"
-        tools:text="Section Header" />
+  <TextView
+      android:id="@+id/section_header"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:textAppearance="@style/Text.TitleSmall"
+      tools:text="Section Header" />
 </FrameLayout>

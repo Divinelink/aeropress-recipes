@@ -47,7 +47,7 @@ fun SelectOptionField(
             .padding(end = HorizontalIconPadding)
             .align(Alignment.CenterEnd),
           painter = painterResource(trailingIcon),
-          contentDescription = null
+          contentDescription = null,
         )
       },
     )
@@ -58,7 +58,7 @@ fun SelectOptionField(
         .clip(TextFieldShape)
         .clickable(onClick = onClick)
         .height(56.dp)
-        .fillMaxWidth()
+        .fillMaxWidth(),
     )
   }
 }
@@ -73,7 +73,7 @@ fun RoastLevelPreview() {
         onClick = { },
         onValueChange = { },
         label = R.string.Beans__roast_level,
-        trailingIcon = R.drawable.ic_calendar
+        trailingIcon = R.drawable.ic_calendar,
       )
     }
   }

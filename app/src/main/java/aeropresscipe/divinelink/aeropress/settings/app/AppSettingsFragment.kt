@@ -14,48 +14,45 @@ import com.divinelink.aeropress.recipes.R
 
 class AppSettingsFragment : DSLSettingsFragment(R.string.settings) {
 
-    override fun bindAdapter(adapter: DSLSettingsAdapter) {
-        adapter.submitList(getConfiguration().toMappingModelList())
-    }
+  override fun bindAdapter(adapter: DSLSettingsAdapter) {
+    adapter.submitList(getConfiguration().toMappingModelList())
+  }
 
-    private fun getConfiguration(): DSLConfiguration {
-        return configure {
+  private fun getConfiguration(): DSLConfiguration = configure {
+    clickPref(
+      title = DSLSettingsText.from(R.string.preferences__appearance),
+      icon = DSLSettingsIcon.from(R.drawable.ic_appearance_24),
+      onClick = {
+        updateFragment(AppearanceSettingsFragment())
+      },
+    )
 
-            clickPref(
-                title = DSLSettingsText.from(R.string.preferences__appearance),
-                icon = DSLSettingsIcon.from(R.drawable.ic_appearance_24),
-                onClick = {
-                    updateFragment(AppearanceSettingsFragment())
-                }
-            )
+    clickPref(
+      title = DSLSettingsText.from(R.string.NotificationsSettingsFragment__notifications),
+      icon = DSLSettingsIcon.from(R.drawable.ic_bell_24),
+      onClick = {
+        updateFragment(NotificationsSettingsFragment())
+      },
+    )
 
-            clickPref(
-                title = DSLSettingsText.from(R.string.NotificationsSettingsFragment__notifications),
-                icon = DSLSettingsIcon.from(R.drawable.ic_bell_24),
-                onClick = {
-                    updateFragment(NotificationsSettingsFragment())
-                }
-            )
+    dividerPref()
 
-            dividerPref()
+    clickPref(
+      title = DSLSettingsText.from(R.string.HelpSettingsFragment__help),
+      icon = DSLSettingsIcon.from(R.drawable.ic_help_24),
+      onClick = {
+        updateFragment(HelpSettingsFragment())
+      },
+    )
 
-            clickPref(
-                title = DSLSettingsText.from(R.string.HelpSettingsFragment__help),
-                icon = DSLSettingsIcon.from(R.drawable.ic_help_24),
-                onClick = {
-                    updateFragment(HelpSettingsFragment())
-                }
-            )
+    dividerPref()
+  }
 
-            dividerPref()
-        }
-    }
-
-    private fun updateFragment(fragment: DSLSettingsFragment) {
-        parentFragmentManager.beginTransaction()
-            .add(R.id.nav_host_fragment, fragment)
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            .addToBackStack(fragment::class.java.name)
-            .commit()
-    }
+  private fun updateFragment(fragment: DSLSettingsFragment) {
+    parentFragmentManager.beginTransaction()
+      .add(R.id.nav_host_fragment, fragment)
+      .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+      .addToBackStack(fragment::class.java.name)
+      .commit()
+  }
 }

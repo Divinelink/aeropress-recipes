@@ -79,13 +79,13 @@ fun BottomSheetContent(
           .fillMaxWidth()
           .clickable {
             onOptionSelected(item)
-          }
+          },
       ) {
         Text(
           modifier = Modifier
             .fillMaxWidth(0.9F)
             .padding(start = 16.dp),
-          text = uiText.getString()
+          text = uiText.getString(),
         )
 
         RadioButton(
@@ -93,7 +93,7 @@ fun BottomSheetContent(
             .fillMaxWidth()
             .padding(end = 16.dp),
           selected = selectedOption?.getString() == item,
-          onClick = null
+          onClick = null,
         )
       }
     }

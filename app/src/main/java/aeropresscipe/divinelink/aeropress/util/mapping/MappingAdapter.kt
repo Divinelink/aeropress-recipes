@@ -31,68 +31,77 @@ import gr.divinelink.core.util.views.NoCrossfadeChangeDefaultAnimator
  * same factory can be registered multiple times for multiple model types (if the model type class hierarchy supports it).
  */
 
-abstract class MappingAdapter : ListAdapter<MappingModel, MappingViewHolder<MappingModel>>(MappingDiffCallback()), RegisterFactory {
-    var factories: MutableMap<Int, Factory<*>> = HashMap()
-    var itemTypes: MutableMap<Any, Int> = HashMap()
-    var typeCount: Int = 0
+abstract class MappingAdapter :
+  ListAdapter<MappingModel, MappingViewHolder<MappingModel>>(MappingDiffCallback()),
+  RegisterFactory {
+  var factories: MutableMap<Int, Factory<*>> = HashMap()
+  var itemTypes: MutableMap<Any, Int> = HashMap()
+  var typeCount: Int = 0
 
-    init {
-        this.register()
-    }
+  init {
+    this.register()
+  }
 
-    override fun onViewAttachedToWindow(holder: MappingViewHolder<MappingModel>) {
-        super.onViewAttachedToWindow(holder)
-        holder.onAttachedToWindow()
-    }
+  override fun onViewAttachedToWindow(holder: MappingViewHolder<MappingModel>) {
+    super.onViewAttachedToWindow(holder)
+    holder.onAttachedToWindow()
+  }
 
-    override fun onViewDetachedFromWindow(holder: MappingViewHolder<MappingModel>) {
-        super.onViewDetachedFromWindow(holder)
-        holder.onDetachedFromWindow()
-    }
+  override fun onViewDetachedFromWindow(holder: MappingViewHolder<MappingModel>) {
+    super.onViewDetachedFromWindow(holder)
+    holder.onDetachedFromWindow()
+  }
 
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
-        if (recyclerView.itemAnimator != null && recyclerView.itemAnimator?.javaClass == DefaultItemAnimator::class.java) {
-            recyclerView.itemAnimator = NoCrossfadeChangeDefaultAnimator()
-        }
+  override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+    super.onAttachedToRecyclerView(recyclerView)
+    if (recyclerView.itemAnimator != null && recyclerView.itemAnimator?.javaClass == DefaultItemAnimator::class.java) {
+      recyclerView.itemAnimator = NoCrossfadeChangeDefaultAnimator()
     }
+  }
 
-    // Needed to call from Java code
-    fun <T : MappingModel> registerFactory(clazz: Class<T>, factory: Factory<T>) {
-        val type = typeCount++
-        factories[type] = factory
-        itemTypes[clazz] = type
-    }
+  // Needed to call from Java code
+  fun <T : MappingModel> registerFactory(clazz: Class<T>, factory: Factory<T>) {
+    val type = typeCount++
+    factories[type] = factory
+    itemTypes[clazz] = type
+  }
 
-    inline fun <reified T : MappingModel> registerFactory(factory: Factory<T>) {
-        val type = typeCount++
-        factories[type] = factory
-        itemTypes[T::class.java] = type
-    }
+  inline fun <reified T : MappingModel> registerFactory(factory: Factory<T>) {
+    val type = typeCount++
+    factories[type] = factory
+    itemTypes[T::class.java] = type
+  }
 
-    override fun getItemViewType(position: Int): Int {
-        val type = itemTypes[getItem(position).javaClass]
-        if (type != null) {
-            return type
-        }
-        throw AssertionError("No view holder factory for type: " + getItem(position)?.javaClass)
+  override fun getItemViewType(position: Int): Int {
+    val type = itemTypes[getItem(position).javaClass]
+    if (type != null) {
+      return type
     }
+    throw AssertionError("No view holder factory for type: " + getItem(position)?.javaClass)
+  }
 
-    @Suppress("unchecked_cast")
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MappingViewHolder<MappingModel> {
-        return (factories[viewType]?.createViewHolder(parent) as MappingViewHolder<MappingModel>)
-    }
+  @Suppress("unchecked_cast")
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ): MappingViewHolder<MappingModel> {
+    return (factories[viewType]?.createViewHolder(parent) as MappingViewHolder<MappingModel>)
+  }
 
-    override fun onBindViewHolder(holder: MappingViewHolder<MappingModel>, position: Int, payloads: List<Any>) {
-        holder.setPayload(payloads)
-        onBindViewHolder(holder, position)
-    }
+  override fun onBindViewHolder(
+    holder: MappingViewHolder<MappingModel>,
+    position: Int,
+    payloads: List<Any>,
+  ) {
+    holder.setPayload(payloads)
+    onBindViewHolder(holder, position)
+  }
 
-    override fun onBindViewHolder(holder: MappingViewHolder<MappingModel>, position: Int) {
-        holder.bind(getItem(position))
-    }
+  override fun onBindViewHolder(holder: MappingViewHolder<MappingModel>, position: Int) {
+    holder.bind(getItem(position))
+  }
 }
 
 private interface RegisterFactory {
-    fun register()
+  fun register()
 }

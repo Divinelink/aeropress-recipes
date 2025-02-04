@@ -78,7 +78,7 @@ class AddBeanViewModel @Inject constructor(
           0
         } else {
           rating
-        }
+        },
       )
     }
   }
@@ -204,21 +204,19 @@ class AddBeanViewModel @Inject constructor(
  * @param [newBean] A lambda function that takes as an argument the current state's value of the bean property
  * and returns the updated bean value.
  */
-private fun MutableStateFlow<AddBeanViewState>.updateBean(
-  newBean: (Bean) -> Bean,
-) {
+private fun MutableStateFlow<AddBeanViewState>.updateBean(newBean: (Bean) -> Bean) {
   when (this.value) {
     is AddBeanViewState.Initial,
     is AddBeanViewState.ModifyBean,
     is AddBeanViewState.Error,
-      -> this.value = AddBeanViewState.ModifyBean(
+    -> this.value = AddBeanViewState.ModifyBean(
       newBean.invoke(this.value.bean),
       title = this.value.title,
       submitButtonText = this.value.submitButtonText,
       openProcessMethodDrawer = this.value.openProcessMethodDrawer,
       openRoastLevelDrawer = this.value.openRoastLevelDrawer,
       withDeleteAction = this.value.withDeleteAction,
-      isSubmitButtonEnabled = true
+      isSubmitButtonEnabled = true,
     )
     is AddBeanViewState.Completed -> {
       // Intentionally Blank.

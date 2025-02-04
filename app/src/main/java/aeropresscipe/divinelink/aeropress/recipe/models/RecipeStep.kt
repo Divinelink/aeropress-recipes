@@ -4,27 +4,32 @@ import androidx.annotation.StringRes
 import com.divinelink.aeropress.recipes.R
 
 sealed class RecipeStep(
-    @StringRes open val stepText: Int,
+  @StringRes open val stepText: Int,
 ) {
-    data class HeatWaterStep(val waterAmount: Int, val temperature: Int) : RecipeStep(stepText = R.string.heatWaterText)
-    data class CoffeeGrindStep(val coffeeAmount: Int, val grindSize: CoffeeGrindSize) : RecipeStep(R.string.grindCoffeeText)
-    object StandardMethodStep : RecipeStep(R.string.normal_orientation_text)
-    object InvertedMethodStep : RecipeStep(R.string.inverted_orientation_text)
-    object PourGroundCoffeeStep : RecipeStep(R.string.pourInCoffee)
+  data class HeatWaterStep(val waterAmount: Int, val temperature: Int) :
+    RecipeStep(stepText = R.string.heatWaterText)
 
-    // Bloom Region
-    data class BloomStep(val bloomWater: Int, val bloomTime: Long) : RecipeStep(R.string.addWaterText)
-    data class RemainingWaterStep(val remainingWater: Int) : RecipeStep(R.string.addRemainingWater)
+  data class CoffeeGrindStep(val coffeeAmount: Int, val grindSize: CoffeeGrindSize) :
+    RecipeStep(R.string.grindCoffeeText)
 
-    // End Bloom Region
-    // -- -- -- -- -- --
-    // No Bloom Region
-    data class PourWaterStep(val waterAmount: Int) : RecipeStep(R.string.addWaterSlowly)
+  object StandardMethodStep : RecipeStep(R.string.normal_orientation_text)
+  object InvertedMethodStep : RecipeStep(R.string.inverted_orientation_text)
+  object PourGroundCoffeeStep : RecipeStep(R.string.pourInCoffee)
 
-    // End No Bloom Region
-    data class WaitToBrewStep(val minutes: Long, val seconds: Long) : RecipeStep(R.string.waitToBrewText)
+  // Bloom Region
+  data class BloomStep(val bloomWater: Int, val bloomTime: Long) : RecipeStep(R.string.addWaterText)
+  data class RemainingWaterStep(val remainingWater: Int) : RecipeStep(R.string.addRemainingWater)
 
-    object FlipToNormalOrientation : RecipeStep(R.string.upsideDownMethodText)
+  // End Bloom Region
+  // -- -- -- -- -- --
+  // No Bloom Region
+  data class PourWaterStep(val waterAmount: Int) : RecipeStep(R.string.addWaterSlowly)
 
-    object PressStep : RecipeStep(R.string.pressText)
+  // End No Bloom Region
+  data class WaitToBrewStep(val minutes: Long, val seconds: Long) :
+    RecipeStep(R.string.waitToBrewText)
+
+  object FlipToNormalOrientation : RecipeStep(R.string.upsideDownMethodText)
+
+  object PressStep : RecipeStep(R.string.pressText)
 }

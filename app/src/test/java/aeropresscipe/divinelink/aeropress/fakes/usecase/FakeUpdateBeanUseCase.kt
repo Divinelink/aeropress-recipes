@@ -9,11 +9,11 @@ import org.mockito.kotlin.whenever
 
 class FakeUpdateBeanUseCase {
 
-    val mock: UpdateBeanUseCase = mock()
+  val mock: UpdateBeanUseCase = mock()
 
-    suspend fun mockResultUpdateBean(
-        result: Result<AddBeanResult>,
-    ) {
-        whenever(mock(any())).thenReturn(result)
-    }
+  suspend fun mockResultUpdateBean(
+    result: Result<AddBeanResult>,
+  ) {
+    whenever(mock(any())).thenReturn(result)
+  }
 }

@@ -19,99 +19,99 @@ import kotlin.test.assertEquals
 @OptIn(ExperimentalCoroutinesApi::class)
 class RoomBeanRepositoryTest {
 
-    val bean = Bean(
-        id = "1",
-        name = "Bean 1",
-        roasterName = "",
-        origin = "",
-        roastDate = LocalDate.of(1995, 12, 31),
-        roastLevel = RoastLevel.Dark,
-        process = ProcessMethod.Natural,
-        rating = 0,
-        tastingNotes = "Full bodied by kinda rotteny after taste.",
-        additionalNotes = ""
+  val bean = Bean(
+    id = "1",
+    name = "Bean 1",
+    roasterName = "",
+    origin = "",
+    roastDate = LocalDate.of(1995, 12, 31),
+    roastLevel = RoastLevel.Dark,
+    process = ProcessMethod.Natural,
+    rating = 0,
+    tastingNotes = "Full bodied by kinda rotteny after taste.",
+    additionalNotes = "",
+  )
+
+  private val persistableBean = PersistableBean(
+    id = "1",
+    name = "Bean 1",
+    roasterName = "",
+    origin = "",
+    roastDate = "1995-12-31",
+    roastLevel = "Dark",
+    process = "Natural",
+    rating = 0,
+    tastingNotes = "Full bodied by kinda rotteny after taste.",
+    additionalNotes = "",
+  )
+
+  private var beanDAO = FakeBeanDAO()
+
+  private lateinit var repository: BeanRepository
+
+  @Before
+  fun setUp() {
+    repository = RoomBeanRepository(beanDAO.mock)
+  }
+
+  @Test
+  fun testFetchAllBeans() = runTest {
+    val expectedResult = listOf(
+      bean,
+      bean.copy(id = "2", name = "Bean 2"),
     )
 
-    private val persistableBean = PersistableBean(
-        id = "1",
-        name = "Bean 1",
-        roasterName = "",
-        origin = "",
-        roastDate = "1995-12-31",
-        roastLevel = "Dark",
-        process = "Natural",
-        rating = 0,
-        tastingNotes = "Full bodied by kinda rotteny after taste.",
-        additionalNotes = ""
+    val expectedPersistableBeanResult = flowOf(
+      listOf(
+        persistableBean,
+        persistableBean.copy(id = "2", name = "Bean 2"),
+      ),
     )
 
-    private var beanDAO = FakeBeanDAO()
+    beanDAO.mockFetchAllBeans(expectedPersistableBeanResult)
 
-    private lateinit var repository: BeanRepository
+    val actualResult = repository.fetchAllBeans().first() as Result.Success
 
-    @Before
-    fun setUp() {
-        repository = RoomBeanRepository(beanDAO.mock)
-    }
+    assertThat(expectedResult).isEqualTo(actualResult.data)
+  }
 
-    @Test
-    fun testFetchAllBeans() = runTest {
-        val expectedResult = listOf(
-            bean,
-            bean.copy(id = "2", name = "Bean 2"),
-        )
+  @Test
+  fun testAddBean() = runTest {
+    // Act
+    repository.addBean(bean)
 
-        val expectedPersistableBeanResult = flowOf(
-            listOf(
-                persistableBean,
-                persistableBean.copy(id = "2", name = "Bean 2"),
-            )
-        )
+    // Assert
+    beanDAO.verifyInsertBean(persistableBean)
+  }
 
-        beanDAO.mockFetchAllBeans(expectedPersistableBeanResult)
+  @Test
+  fun testFetchBean() = runTest {
+    val expectedResult = bean
 
-        val actualResult = repository.fetchAllBeans().first() as Result.Success
+    beanDAO.mockFetchBeanById("1", persistableBean)
 
-        assertThat(expectedResult).isEqualTo(actualResult.data)
-    }
+    val actualResult = repository.fetchBean(expectedResult) as Result.Success
 
-    @Test
-    fun testAddBean() = runTest {
-        // Act
-        repository.addBean(bean)
+    // Assert
+    assertEquals(expectedResult, actualResult.data)
+  }
 
-        // Assert
-        beanDAO.verifyInsertBean(persistableBean)
-    }
+  //
+  @Test
+  fun testUpdateBean() = runTest {
+    // Act
+    repository.updateBean(bean)
 
-    @Test
-    fun testFetchBean() = runTest {
-        val expectedResult = bean
+    // Assert
+    beanDAO.verifyUpdateBean(persistableBean)
+  }
 
-        beanDAO.mockFetchBeanById("1", persistableBean)
+  @Test
+  fun testRemoveBean() = runTest {
+    // Act
+    repository.removeBean(bean)
 
-        val actualResult = repository.fetchBean(expectedResult) as Result.Success
-
-        // Assert
-        assertEquals(expectedResult, actualResult.data)
-    }
-
-    //
-    @Test
-    fun testUpdateBean() = runTest {
-        // Act
-        repository.updateBean(bean)
-
-        // Assert
-        beanDAO.verifyUpdateBean(persistableBean)
-    }
-
-    @Test
-    fun testRemoveBean() = runTest {
-        // Act
-        repository.removeBean(bean)
-
-        // Assert
-        beanDAO.verifyRemoveBean(bean.id)
-    }
+    // Assert
+    beanDAO.verifyRemoveBean(bean.id)
+  }
 }

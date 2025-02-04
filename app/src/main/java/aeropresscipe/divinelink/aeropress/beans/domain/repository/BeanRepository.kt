@@ -11,31 +11,23 @@ typealias BeanListResult = Result<List<Bean>>
  */
 interface BeanRepository {
 
-    /**
-     * Request all the beans that have been created for this user.
-     * Uses [Flow] in order to observe changes to our beans list.
-     */
-    fun fetchAllBeans(): Flow<BeanListResult>
+  /**
+   * Request all the beans that have been created for this user.
+   * Uses [Flow] in order to observe changes to our beans list.
+   */
+  fun fetchAllBeans(): Flow<BeanListResult>
 
-    /**
-     * Add a new [bean] to the user's stored beans.
-     */
-    suspend fun addBean(
-        bean: Bean,
-    ): Result<Unit>
+  /**
+   * Add a new [bean] to the user's stored beans.
+   */
+  suspend fun addBean(bean: Bean): Result<Unit>
 
-    suspend fun fetchBean(
-        bean: Bean,
-    ): Result<Bean>
+  suspend fun fetchBean(bean: Bean): Result<Bean>
 
-    /**
-     * Update existing [bean] from user's input.
-     */
-    suspend fun updateBean(
-        bean: Bean,
-    ): Result<Unit>
+  /**
+   * Update existing [bean] from user's input.
+   */
+  suspend fun updateBean(bean: Bean): Result<Unit>
 
-    suspend fun removeBean(
-        bean: Bean,
-    ): Result<Unit>
+  suspend fun removeBean(bean: Bean): Result<Unit>
 }

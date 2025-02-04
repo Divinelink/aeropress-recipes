@@ -7,10 +7,10 @@ import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 open class SetTimerSoundUseCase @Inject constructor(
-    private val preferenceStorage: PreferenceStorage,
-    @IoDispatcher dispatcher: CoroutineDispatcher
+  private val preferenceStorage: PreferenceStorage,
+  @IoDispatcher dispatcher: CoroutineDispatcher,
 ) : UseCase<Boolean, Unit>(dispatcher) {
-    override suspend fun execute(parameters: Boolean) {
-        preferenceStorage.updateTimerSound(parameters)
-    }
+  override suspend fun execute(parameters: Boolean) {
+    preferenceStorage.updateTimerSound(parameters)
+  }
 }

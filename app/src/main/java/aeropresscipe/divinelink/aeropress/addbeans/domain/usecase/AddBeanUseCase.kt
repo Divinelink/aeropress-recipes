@@ -15,30 +15,30 @@ import javax.inject.Inject
  */
 @Suppress("ThrowingExceptionsWithoutMessageOrCause")
 open class AddBeanUseCase @Inject constructor(
-    private val beanRepository: BeanRepository,
-    @IoDispatcher dispatcher: CoroutineDispatcher,
+  private val beanRepository: BeanRepository,
+  @IoDispatcher dispatcher: CoroutineDispatcher,
 ) : UseCase<Bean, AddBeanResult>(dispatcher) {
-    override suspend fun execute(parameters: Bean): AddBeanResult {
-        val bean = parameters.trimFields()
-        if (bean.name.isEmpty()) {
-            return AddBeanResult.Failure.EmptyName
-        }
-        val result = beanRepository.addBean(bean)
-
-        return when (result) {
-            is Result.Success -> AddBeanResult.Success
-            is Result.Error -> AddBeanResult.Failure.Unknown
-            Result.Loading -> throw IllegalStateException()
-        }
+  override suspend fun execute(parameters: Bean): AddBeanResult {
+    val bean = parameters.trimFields()
+    if (bean.name.isEmpty()) {
+      return AddBeanResult.Failure.EmptyName
     }
+    val result = beanRepository.addBean(bean)
+
+    return when (result) {
+      is Result.Success -> AddBeanResult.Success
+      is Result.Error -> AddBeanResult.Failure.Unknown
+      Result.Loading -> throw IllegalStateException()
+    }
+  }
 }
 
 internal fun Bean.trimFields(): Bean {
-    return this.copy(
-        name = this.name.trim(),
-        roasterName = this.roasterName.trim(),
-        origin = this.origin.trim(),
-        tastingNotes = this.tastingNotes.trim(),
-        additionalNotes = this.additionalNotes.trim(),
-    )
+  return this.copy(
+    name = this.name.trim(),
+    roasterName = this.roasterName.trim(),
+    origin = this.origin.trim(),
+    tastingNotes = this.tastingNotes.trim(),
+    additionalNotes = this.additionalNotes.trim(),
+  )
 }

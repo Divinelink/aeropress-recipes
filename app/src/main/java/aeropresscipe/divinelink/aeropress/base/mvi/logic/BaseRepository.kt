@@ -7,12 +7,12 @@ import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
 open class BaseRepository {
-    private companion object {
-        const val HTTP_STATUS_200 = 200
-        const val HTTP_STATUS_401 = 401
-    }
+  private companion object {
+    const val HTTP_STATUS_200 = 200
+    const val HTTP_STATUS_401 = 401
+  }
 
-    protected open var coroutineContext: CoroutineContext = Dispatchers.Main
+  protected open var coroutineContext: CoroutineContext = Dispatchers.Main
 
 //    //region web
 //    protected fun <ApiResponse : KmmApiBaseResponse, DomainResponse : KmmBaseResponse> performRequest(
@@ -71,60 +71,60 @@ open class BaseRepository {
 //    }
 //    //endregion web
 
-    //region db
-    protected fun performTransaction(
-        completionBlock: () -> Unit,
-        transaction: suspend () -> Unit
-    ) = MainScope().launch(coroutineContext) {
-        runCatching {
-            transaction()
-        }.onSuccess {
-            runCompletionBlock(completionBlock)
-        }
+  //region db
+  protected fun performTransaction(
+    completionBlock: () -> Unit,
+    transaction: suspend () -> Unit,
+  ) = MainScope().launch(coroutineContext) {
+    runCatching {
+      transaction()
+    }.onSuccess {
+      runCompletionBlock(completionBlock)
     }
+  }
 
-    protected fun performTransaction(
-        transaction: suspend () -> Unit
-    ) = MainScope().launch(coroutineContext) {
-        runCatching {
-            transaction()
-        }.onSuccess {
-            runCompletionBlock {
-                // Do nothing
-            }
-        }
+  protected fun performTransaction(
+    transaction: suspend () -> Unit,
+  ) = MainScope().launch(coroutineContext) {
+    runCatching {
+      transaction()
+    }.onSuccess {
+      runCompletionBlock {
+        // Do nothing
+      }
     }
+  }
 
-    protected fun <T : Any?> performTransaction(
-        completionBlock: (T) -> Unit,
-        transaction: suspend () -> T
-    ) = MainScope().launch(coroutineContext) {
-        runCatching {
-            transaction()
-        }.onSuccess { response ->
-            runCompletionBlock(completionBlock, response)
-        }
+  protected fun <T : Any?> performTransaction(
+    completionBlock: (T) -> Unit,
+    transaction: suspend () -> T,
+  ) = MainScope().launch(coroutineContext) {
+    runCatching {
+      transaction()
+    }.onSuccess { response ->
+      runCompletionBlock(completionBlock, response)
     }
+  }
 
-    protected suspend fun runCompletionBlock(
-        completionBlock: () -> Unit
-    ) = withContext(coroutineContext) {
-        completionBlock()
-    }
+  protected suspend fun runCompletionBlock(
+    completionBlock: () -> Unit,
+  ) = withContext(coroutineContext) {
+    completionBlock()
+  }
 
-    protected suspend fun <T : Any?> runCompletionBlock(
-        completionBlock: (T) -> Unit,
-        response: T
-    ) = withContext(coroutineContext) {
-        completionBlock(response)
-    }
-    //endregion db
+  protected suspend fun <T : Any?> runCompletionBlock(
+    completionBlock: (T) -> Unit,
+    response: T,
+  ) = withContext(coroutineContext) {
+    completionBlock(response)
+  }
+  //endregion db
 
-    /**
-     *      1. tries to fetch data from local DB
-     *      2. if (conditionToCheckWeb is TRUE) then fetches data from BE
-     *      3. returns results
-     */
+  /**
+   *      1. tries to fetch data from local DB
+   *      2. if (conditionToCheckWeb is TRUE) then fetches data from BE
+   *      3. returns results
+   */
 //    @Suppress("LongParameterList")
 //    protected fun <DBResponse : Any?, ApiResponse : KmmApiBaseResponse, DomainResponse : KmmBaseResponse> getFromDbOrWeb(
 //        dbCompletionBlock: (DBResponse) -> Unit,

@@ -15,76 +15,76 @@ import org.junit.Rule
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModelTestRobot {
 
-    private lateinit var viewModel: HomeViewModel
-    private var repository: FakeHomeRepository = FakeHomeRepository()
+  private lateinit var viewModel: HomeViewModel
+  private var repository: FakeHomeRepository = FakeHomeRepository()
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
 
-    fun buildViewModel() = apply {
-        viewModel = HomeViewModel(
-            repository = repository.mock,
-            themedActivityDelegate = FakeThemedActivityDelegate(),
-        )
-    }
+  fun buildViewModel() = apply {
+    viewModel = HomeViewModel(
+      repository = repository.mock,
+      themedActivityDelegate = FakeThemedActivityDelegate(),
+    )
+  }
 
-    fun onInit() = apply {
-        viewModel.init()
-    }
+  fun onInit() = apply {
+    viewModel.init()
+  }
 
-    fun onResume() = apply {
-        viewModel.resume()
-    }
+  fun onResume() = apply {
+    viewModel.resume()
+  }
 
-    fun onResumeTimer() = apply {
-        viewModel.resumeTimer()
-    }
+  fun onResumeTimer() = apply {
+    viewModel.resumeTimer()
+  }
 
-    fun onGenerateRecipe() = apply {
-        viewModel.generateRecipe()
-    }
+  fun onGenerateRecipe() = apply {
+    viewModel.generateRecipe()
+  }
 
-    fun onStartTimer(
-        recipe: Recipe,
-        flow: TimerFlow,
-        update: Boolean,
-    ) = apply {
-        viewModel.startTimer(
-            recipe = recipe,
-            flow = flow,
-            update = update,
-        )
-    }
+  fun onStartTimer(
+    recipe: Recipe,
+    flow: TimerFlow,
+    update: Boolean,
+  ) = apply {
+    viewModel.startTimer(
+      recipe = recipe,
+      flow = flow,
+      update = update,
+    )
+  }
 
-    fun assertViewState(
-        expectedViewState: HomeState,
-    ) = apply {
-        val actualViewStates = viewModel.statesList
-        assertThat(actualViewStates).contains(expectedViewState)
-    }
+  fun assertViewState(
+    expectedViewState: HomeState,
+  ) = apply {
+    val actualViewStates = viewModel.statesList
+    assertThat(actualViewStates).contains(expectedViewState)
+  }
 
-    fun assertFalseViewState(
-        expectedViewState: HomeState,
-    ) = apply {
-        val actualViewState = viewModel.statesList
-        assertThat(actualViewState).doesNotContain(expectedViewState)
-    }
+  fun assertFalseViewState(
+    expectedViewState: HomeState,
+  ) = apply {
+    val actualViewState = viewModel.statesList
+    assertThat(actualViewState).doesNotContain(expectedViewState)
+  }
 
-    suspend fun mockGetRecipe(
-        response: DiceDomain,
-    ) = apply {
-        repository.mockGetRecipe(response)
-    }
+  suspend fun mockGetRecipe(
+    response: DiceDomain,
+  ) = apply {
+    repository.mockGetRecipe(response)
+  }
 
-    suspend fun mockUpdateRecipe(
-        recipe: Recipe,
-        update: Boolean,
-        response: DiceDomain,
-    ) = apply {
-        repository.mockUpdateRecipe(
-            recipe = recipe,
-            update = update,
-            response = response,
-        )
-    }
+  suspend fun mockUpdateRecipe(
+    recipe: Recipe,
+    update: Boolean,
+    response: DiceDomain,
+  ) = apply {
+    repository.mockUpdateRecipe(
+      recipe = recipe,
+      update = update,
+      response = response,
+    )
+  }
 }

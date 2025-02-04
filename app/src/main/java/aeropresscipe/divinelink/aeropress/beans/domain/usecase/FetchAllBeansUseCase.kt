@@ -12,19 +12,19 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class FetchAllBeansUseCase @Inject constructor(
-    private val beanRepository: BeanRepository,
-    @IoDispatcher dispatcher: CoroutineDispatcher,
+  private val beanRepository: BeanRepository,
+  @IoDispatcher dispatcher: CoroutineDispatcher,
 ) : FlowUseCase<Unit, List<Bean>>(dispatcher) {
 
-    override fun execute(
-        parameters: Unit
-    ): Flow<BeanListResult> {
-        return beanRepository.fetchAllBeans().map { result ->
-            when (result) {
-                is Result.Success -> result
-                is Result.Error -> result
-                Result.Loading -> result
-            }
-        }
+  override fun execute(
+    parameters: Unit,
+  ): Flow<BeanListResult> {
+    return beanRepository.fetchAllBeans().map { result ->
+      when (result) {
+        is Result.Success -> result
+        is Result.Error -> result
+        Result.Loading -> result
+      }
     }
+  }
 }

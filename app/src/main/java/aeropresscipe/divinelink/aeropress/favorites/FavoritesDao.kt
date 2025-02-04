@@ -9,18 +9,18 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavoritesDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertLikedRecipe(savedRecipeDomain: Favorites)
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertLikedRecipe(savedRecipeDomain: Favorites)
 
-    @Query("SELECT * FROM SavedRecipes")
-    fun fetchAllFavorites(): Flow<List<Favorites>>
+  @Query("SELECT * FROM SavedRecipes")
+  fun fetchAllFavorites(): Flow<List<Favorites>>
 
-    @Query("SELECT EXISTS (SELECT 1 FROM SavedRecipes WHERE  recipe= :recipe)")
-    fun recipeExists(recipe: Recipe?): Boolean
+  @Query("SELECT EXISTS (SELECT 1 FROM SavedRecipes WHERE  recipe= :recipe)")
+  fun recipeExists(recipe: Recipe?): Boolean
 
-    @Query("DELETE FROM SavedRecipes")
-    fun deleteAll()
+  @Query("DELETE FROM SavedRecipes")
+  fun deleteAll()
 
-    @Query("DELETE FROM SavedRecipes WHERE recipe=:recipe")
-    fun delete(recipe: Recipe?)
+  @Query("DELETE FROM SavedRecipes WHERE recipe=:recipe")
+  fun delete(recipe: Recipe?)
 }

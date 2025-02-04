@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/recipe"
-        android:enabled="true"
-        android:icon="@drawable/ic_aeropressbyxnimrodx"
-        android:title="@string/recipe" />
-    <item
-        android:id="@+id/favorites"
-        android:enabled="true"
-        android:icon="@drawable/ic_heart"
-        android:title="@string/favorites" />
-    <item
-        android:id="@+id/beans"
-        android:enabled="true"
-        android:icon="@drawable/ic_beansbysmashicons"
-        android:title="@string/Beans__bean_tracker" />
-    <item
-        android:id="@+id/history"
-        android:enabled="true"
-        android:icon="@drawable/ic_history_24"
-        android:title="@string/history" />
+  <item
+      android:id="@+id/recipe"
+      android:enabled="true"
+      android:icon="@drawable/ic_aeropressbyxnimrodx"
+      android:title="@string/recipe" />
+  <item
+      android:id="@+id/favorites"
+      android:enabled="true"
+      android:icon="@drawable/ic_heart"
+      android:title="@string/favorites" />
+  <item
+      android:id="@+id/beans"
+      android:enabled="true"
+      android:icon="@drawable/ic_beansbysmashicons"
+      android:title="@string/Beans__bean_tracker" />
+  <item
+      android:id="@+id/history"
+      android:enabled="true"
+      android:icon="@drawable/ic_history_24"
+      android:title="@string/history" />
 </menu>

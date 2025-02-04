@@ -16,29 +16,29 @@ import kotlin.test.assertNotEquals
 @OptIn(ExperimentalCoroutinesApi::class)
 class GetAvailableThemesUseCaseTest {
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-    private val testDispatcher = mainDispatcherRule.testDispatcher
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+  private val testDispatcher = mainDispatcherRule.testDispatcher
 
-    private lateinit var fakePreferenceStorage: FakePreferenceStorage
+  private lateinit var fakePreferenceStorage: FakePreferenceStorage
 
-    @Before
-    fun setUp() {
-        fakePreferenceStorage = FakePreferenceStorage()
-    }
+  @Before
+  fun setUp() {
+    fakePreferenceStorage = FakePreferenceStorage()
+  }
 
-    @Test
-    fun `given I have SDK_INT less than 29, then I see only two theme options`() = runTest {
-        // Given
-        val response = Result.Success(listOf(Theme.LIGHT, Theme.DARK))
-        val failResponse = Result.Error(Exception("Some exception"))
+  @Test
+  fun `given I have SDK_INT less than 29, then I see only two theme options`() = runTest {
+    // Given
+    val response = Result.Success(listOf(Theme.LIGHT, Theme.DARK))
+    val failResponse = Result.Error(Exception("Some exception"))
 
-        // When
-        val useCase = GetAvailableThemesUseCase(testDispatcher)
-        val result = useCase(Unit)
+    // When
+    val useCase = GetAvailableThemesUseCase(testDispatcher)
+    val result = useCase(Unit)
 
-        // Then
-        assertThat(response).isEqualTo(result)
-        assertNotEquals(failResponse, result)
-    }
+    // Then
+    assertThat(response).isEqualTo(result)
+    assertNotEquals(failResponse, result)
+  }
 }

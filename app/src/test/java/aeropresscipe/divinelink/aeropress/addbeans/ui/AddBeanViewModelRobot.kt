@@ -15,90 +15,90 @@ import java.time.LocalDate
 @OptIn(ExperimentalCoroutinesApi::class)
 class AddBeanViewModelRobot {
 
-    private lateinit var viewModel: AddBeanViewModel
+  private lateinit var viewModel: AddBeanViewModel
 
-    private val fakeAddBeanUseCase = FakeAddBeanUseCase()
-    private val fakeUpdateBeanUseCase = FakeUpdateBeanUseCase()
-    private val fakeDeleteBeanUseCase = FakeDeleteBeanUseCase()
+  private val fakeAddBeanUseCase = FakeAddBeanUseCase()
+  private val fakeUpdateBeanUseCase = FakeUpdateBeanUseCase()
+  private val fakeDeleteBeanUseCase = FakeDeleteBeanUseCase()
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
 
-    fun buildViewModel() = apply {
-        viewModel = AddBeanViewModel(
-            addBeanUseCase = fakeAddBeanUseCase.mock,
-            updateBeanUseCase = fakeUpdateBeanUseCase.mock,
-            deleteBeanUseCase = fakeDeleteBeanUseCase.mock,
-        )
-    }
+  fun buildViewModel() = apply {
+    viewModel = AddBeanViewModel(
+      addBeanUseCase = fakeAddBeanUseCase.mock,
+      updateBeanUseCase = fakeUpdateBeanUseCase.mock,
+      deleteBeanUseCase = fakeDeleteBeanUseCase.mock,
+    )
+  }
 
-    suspend fun mockAddBeanResult(
-        response: Result<AddBeanResult>,
-    ) = apply {
-        fakeAddBeanUseCase.mockAddBeanResult(response)
-    }
+  suspend fun mockAddBeanResult(
+    response: Result<AddBeanResult>,
+  ) = apply {
+    fakeAddBeanUseCase.mockAddBeanResult(response)
+  }
 
-    suspend fun mockUpdateBeanResult(
-        response: Result<AddBeanResult>,
-    ) = apply {
-        fakeUpdateBeanUseCase.mockResultUpdateBean(response)
-    }
+  suspend fun mockUpdateBeanResult(
+    response: Result<AddBeanResult>,
+  ) = apply {
+    fakeUpdateBeanUseCase.mockResultUpdateBean(response)
+  }
 
-    suspend fun mockDeleteBeanResult(
-        response: Result<AddBeanResult>,
-    ) = apply {
-        fakeDeleteBeanUseCase.mockResultDeleteBean(response)
-    }
+  suspend fun mockDeleteBeanResult(
+    response: Result<AddBeanResult>,
+  ) = apply {
+    fakeDeleteBeanUseCase.mockResultDeleteBean(response)
+  }
 
-    fun assertViewState(
-        expectedViewState: AddBeanViewState,
-    ) = apply {
-        assertThat(viewModel.viewState.value).isEqualTo(expectedViewState)
-    }
+  fun assertViewState(
+    expectedViewState: AddBeanViewState,
+  ) = apply {
+    assertThat(viewModel.viewState.value).isEqualTo(expectedViewState)
+  }
 
-    fun assertFalseViewState(
-        expectedViewState: AddBeanViewState,
-    ) = apply {
-        assertThat(viewModel.viewState.value).isNotEqualTo(expectedViewState)
-    }
+  fun assertFalseViewState(
+    expectedViewState: AddBeanViewState,
+  ) = apply {
+    assertThat(viewModel.viewState.value).isNotEqualTo(expectedViewState)
+  }
 
-    fun onSetBean(bean: Bean?) = apply {
-        viewModel.setBean(bean)
-    }
+  fun onSetBean(bean: Bean?) = apply {
+    viewModel.setBean(bean)
+  }
 
-    fun onBeanNameChanged(name: String) = apply {
-        viewModel.onBeanNameChanged(name)
-    }
+  fun onBeanNameChanged(name: String) = apply {
+    viewModel.onBeanNameChanged(name)
+  }
 
-    fun onRoasterNameChanged(name: String) = apply {
-        viewModel.onRoasterNameChanged(name)
-    }
+  fun onRoasterNameChanged(name: String) = apply {
+    viewModel.onRoasterNameChanged(name)
+  }
 
-    fun onOriginChanged(origin: String) = apply {
-        viewModel.onOriginChanged(origin)
-    }
+  fun onOriginChanged(origin: String) = apply {
+    viewModel.onOriginChanged(origin)
+  }
 
-    fun onDateChanged(date: LocalDate) = apply {
-        viewModel.onDateChanged(date)
-    }
+  fun onDateChanged(date: LocalDate) = apply {
+    viewModel.onDateChanged(date)
+  }
 
-    fun onSelectFromBottomSheet(value: String) = apply {
-        viewModel.onSelectFromBottomSheet(value)
-    }
+  fun onSelectFromBottomSheet(value: String) = apply {
+    viewModel.onSelectFromBottomSheet(value)
+  }
 
-    fun onRoastLevelClicked() = apply {
-        viewModel.onRoastLevelClicked()
-    }
+  fun onRoastLevelClicked() = apply {
+    viewModel.onRoastLevelClicked()
+  }
 
-    fun onProcessClicked() = apply {
-        viewModel.onProcessClicked()
-    }
+  fun onProcessClicked() = apply {
+    viewModel.onProcessClicked()
+  }
 
-    fun onSubmitClicked() = apply {
-        viewModel.onSubmitClicked()
-    }
+  fun onSubmitClicked() = apply {
+    viewModel.onSubmitClicked()
+  }
 
-    fun onDeleteClicked() = apply {
-        viewModel.onDeleteBeanClicked()
-    }
+  fun onDeleteClicked() = apply {
+    viewModel.onDeleteBeanClicked()
+  }
 }

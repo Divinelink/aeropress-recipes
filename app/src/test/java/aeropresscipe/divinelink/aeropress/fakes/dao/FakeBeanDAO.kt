@@ -9,36 +9,32 @@ import org.mockito.kotlin.whenever
 
 class FakeBeanDAO {
 
-    val mock: BeanDAO = mock()
+  val mock: BeanDAO = mock()
 
-    fun mockFetchAllBeans(
-        result: Flow<List<PersistableBean>>,
-    ) {
-        whenever(
-            mock.fetchAllBeans()
-        ).thenReturn(
-            result
-        )
-    }
+  fun mockFetchAllBeans(result: Flow<List<PersistableBean>>) {
+    whenever(
+      mock.fetchAllBeans(),
+    ).thenReturn(
+      result,
+    )
+  }
 
-    fun mockFetchBeanById(
-        id: String,
-        result: PersistableBean,
-    ) {
-        whenever(mock.fetchBeanById(id)).thenReturn(result)
-    }
+  fun mockFetchBeanById(
+    id: String,
+    result: PersistableBean,
+  ) {
+    whenever(mock.fetchBeanById(id)).thenReturn(result)
+  }
 
-    suspend fun verifyInsertBean(
-        bean: PersistableBean,
-    ) {
-        verify(mock).insertBean(bean)
-    }
+  suspend fun verifyInsertBean(bean: PersistableBean) {
+    verify(mock).insertBean(bean)
+  }
 
-    suspend fun verifyUpdateBean(bean: PersistableBean) {
-        verify(mock).updateBean(bean)
-    }
+  suspend fun verifyUpdateBean(bean: PersistableBean) {
+    verify(mock).updateBean(bean)
+  }
 
-    fun verifyRemoveBean(id: String) {
-        verify(mock).removeBean(id)
-    }
+  fun verifyRemoveBean(id: String) {
+    verify(mock).removeBean(id)
+  }
 }

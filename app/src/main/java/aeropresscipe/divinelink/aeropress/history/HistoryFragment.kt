@@ -32,183 +32,199 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class HistoryFragment :
-    Fragment(),
-    HistoryStateHandler,
-    IHistoryViewModel,
-    TimerViewCallback {
-    private var binding: FragmentHistoryBinding? = null
+  Fragment(),
+  HistoryStateHandler,
+  IHistoryViewModel,
+  TimerViewCallback {
+  private var binding: FragmentHistoryBinding? = null
 
-    private lateinit var callback: Callback
+  private lateinit var callback: Callback
 
-    @Inject
-    lateinit var assistedFactory: HistoryViewModelAssistedFactory
-    private lateinit var viewModel: HistoryViewModel
+  @Inject
+  lateinit var assistedFactory: HistoryViewModelAssistedFactory
+  private lateinit var viewModel: HistoryViewModel
 
-    private lateinit var historyAdapter: HistoryAdapter
+  private lateinit var historyAdapter: HistoryAdapter
 
-    private var clearMenuItem: MenuItem? = null
+  private var clearMenuItem: MenuItem? = null
 
-    @Px
-    private var recyclerViewPadding: Int = DimensionUnit.PIXELS.toPixels(PAD_BOTTOM_OF_RECYCLER).toInt()
+  @Px
+  private var recyclerViewPadding: Int =
+    DimensionUnit.PIXELS.toPixels(PAD_BOTTOM_OF_RECYCLER).toInt()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentHistoryBinding.inflate(inflater, container, false)
-        val view = binding?.root
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?,
+  ): View? {
+    binding = FragmentHistoryBinding.inflate(inflater, container, false)
+    val view = binding?.root
 
-        val viewModelFactory = HistoryViewModelFactory(assistedFactory, WeakReference<IHistoryViewModel>(this))
-        viewModel = ViewModelProvider(this, viewModelFactory)[(HistoryViewModel::class.java)]
-        viewModel.delegate = WeakReference(this)
-        return view
-    }
+    val viewModelFactory = HistoryViewModelFactory(
+      assistedFactory = assistedFactory,
+      delegate = WeakReference<IHistoryViewModel>(this),
+    )
+    viewModel = ViewModelProvider(this, viewModelFactory)[(HistoryViewModel::class.java)]
+    viewModel.delegate = WeakReference(this)
+    return view
+  }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding?.recyclerView?.padding(bottom = recyclerViewPadding)
-        setToolbar()
-        bindAdapter()
-    }
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
+    super.onViewCreated(view, savedInstanceState)
+    binding?.recyclerView?.padding(bottom = recyclerViewPadding)
+    setToolbar()
+    bindAdapter()
+  }
 
-    private fun setToolbar() {
-        binding?.toolbar?.apply {
-            addSystemWindowInsetToMargin(top = true)
-            setNavigationOnClickListener { callback.onBackPressed() }
-            inflateMenu(R.menu.history)
-            setOnMenuItemClickListener { item ->
-                clearMenuItem = binding?.toolbar?.menu?.findItem(R.menu.history)
-                when (item.itemId) {
-                    R.id.menu_clear -> {
-                        viewModel.clearHistory(false)
-                        true
-                    }
-                    else -> false
-                }
-            }
+  private fun setToolbar() {
+    binding?.toolbar?.apply {
+      addSystemWindowInsetToMargin(top = true)
+      setNavigationOnClickListener { callback.onBackPressed() }
+      inflateMenu(R.menu.history)
+      setOnMenuItemClickListener { item ->
+        clearMenuItem = binding?.toolbar?.menu?.findItem(R.menu.history)
+        when (item.itemId) {
+          R.id.menu_clear -> {
+            viewModel.clearHistory(false)
+            true
+          }
+          else -> false
         }
+      }
     }
+  }
 
-    private fun bindAdapter() {
-        historyAdapter = HistoryAdapter(
-            onActionClicked = { recipe: History, swipeAction: SwipeAction ->
-                when (swipeAction.actionId) {
-                    R.id.brew -> viewModel.startBrew(recipe.recipe)
-                }
-            },
-            onLike = { recipe: History, position: Int ->
-                viewModel.likeRecipe(recipe, position)
-            },
-            actionBindHelper = ActionBindHelper()
-        )
-
-        binding?.recyclerView?.apply {
-            layoutManager = LinearLayoutManager(activity)
-            adapter = historyAdapter
+  private fun bindAdapter() {
+    historyAdapter = HistoryAdapter(
+      onActionClicked = { recipe: History, swipeAction: SwipeAction ->
+        when (swipeAction.actionId) {
+          R.id.brew -> viewModel.startBrew(recipe.recipe)
         }
-    }
+      },
+      onLike = { recipe: History, position: Int ->
+        viewModel.likeRecipe(recipe, position)
+      },
+      actionBindHelper = ActionBindHelper(),
+    )
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.refresh()
+    binding?.recyclerView?.apply {
+      layoutManager = LinearLayoutManager(activity)
+      adapter = historyAdapter
     }
+  }
 
-    override fun updateState(state: HistoryState) {
-        when (state) {
-            is HistoryState.ErrorState -> handleErrorState(state)
-            is HistoryState.InitialState -> handleInitialState()
-            is HistoryState.LoadingState -> handleLoadingState()
-            is HistoryState.EmptyHistoryState -> handleEmptyHistoryState()
-            is HistoryState.ShowHistoryState -> handleShowHistoryState(state)
-            is HistoryState.StartNewBrewState -> handleStartNewBrewState(state)
-            is HistoryState.RecipeLikedState -> handleRecipeLikedState(state)
-            is HistoryState.ClearHistoryPopUpState -> handleClearHistoryPopUpState()
-            is HistoryState.ShowSnackBar -> handleShowSnackBar(state)
-        }
+  override fun onResume() {
+    super.onResume()
+    viewModel.refresh()
+  }
+
+  override fun updateState(state: HistoryState) {
+    when (state) {
+      is HistoryState.ErrorState -> handleErrorState(state)
+      is HistoryState.InitialState -> handleInitialState()
+      is HistoryState.LoadingState -> handleLoadingState()
+      is HistoryState.EmptyHistoryState -> handleEmptyHistoryState()
+      is HistoryState.ShowHistoryState -> handleShowHistoryState(state)
+      is HistoryState.StartNewBrewState -> handleStartNewBrewState(state)
+      is HistoryState.RecipeLikedState -> handleRecipeLikedState(state)
+      is HistoryState.ClearHistoryPopUpState -> handleClearHistoryPopUpState()
+      is HistoryState.ShowSnackBar -> handleShowSnackBar(state)
     }
+  }
 
-    override fun handleInitialState() {
+  override fun handleInitialState() {
+    // Intentionally Blank.
+  }
+
+  override fun handleLoadingState() {
+    // Intentionally Blank.
+  }
+
+  override fun handleErrorState(state: HistoryState.ErrorState) {
+    // Intentionally Blank.
+  }
+
+  override fun handleShowHistoryState(state: HistoryState.ShowHistoryState) {
+    historyAdapter.submitList(state.list)
+    updateToolbar(true)
+  }
+
+  override fun handleEmptyHistoryState() {
+    historyAdapter.submitList(listOf(EmptyType.EmptyHistory))
+    updateToolbar(false)
+  }
+
+  private fun updateToolbar(enable: Boolean) {
+    clearMenuItem = binding?.toolbar?.menu?.findItem(R.id.menu_clear)
+    when (enable) {
+      true -> clearMenuItem?.setEnabled()
+      false -> clearMenuItem?.setDisabled()
+    }
+  }
+
+  override fun handleStartNewBrewState(state: HistoryState.StartNewBrewState) {
+    callback.onUpdateRecipe(state.recipe, TimerFlow.START, true)
+  }
+
+  override fun handleRecipeLikedState(state: HistoryState.RecipeLikedState) {
+    val items = historyAdapter.currentList.toMutableList()
+    items[state.position] = state.item
+    historyAdapter.submitList(items)
+  }
+
+  override fun handleClearHistoryPopUpState() {
+    MaterialAlertDialogBuilder(requireContext())
+      .setTitle(R.string.action_delete)
+      .setMessage(R.string.deleteHistoryMessage)
+      .setPositiveButton(R.string.delete) { _, _ ->
+        viewModel.clearHistory(true)
+      }
+      .setNegativeButton(R.string.cancel) { _, _ ->
         // Intentionally Blank.
-    }
+      }
+      .show()
+  }
 
-    override fun handleLoadingState() {
-        // Intentionally Blank.
-    }
+  override fun handleShowSnackBar(state: HistoryState.ShowSnackBar) {
+    callback.onSnackbarShow(state)
+  }
 
-    override fun handleErrorState(state: HistoryState.ErrorState) {
-        // Intentionally Blank.
-    }
+  override fun updateBottomPadding(bottomPadding: Int) {
+    recyclerViewPadding = bottomPadding
+    binding?.recyclerView?.padding(bottom = bottomPadding)
+  }
 
-    override fun handleShowHistoryState(state: HistoryState.ShowHistoryState) {
-        historyAdapter.submitList(state.list)
-        updateToolbar(true)
+  companion object {
+    @JvmStatic
+    fun newInstance(): HistoryFragment {
+      val fragment = HistoryFragment()
+      val args = Bundle()
+      fragment.arguments = args
+      return fragment
     }
+  }
 
-    override fun handleEmptyHistoryState() {
-        historyAdapter.submitList(listOf(EmptyType.EmptyHistory))
-        updateToolbar(false)
-    }
+  override fun onAttach(context: Context) {
+    super.onAttach(context)
+    callback = context as Callback
+  }
 
-    private fun updateToolbar(enable: Boolean) {
-        clearMenuItem = binding?.toolbar?.menu?.findItem(R.id.menu_clear)
-        when (enable) {
-            true -> clearMenuItem?.setEnabled()
-            false -> clearMenuItem?.setDisabled()
-        }
-    }
+  override fun onDestroyView() {
+    super.onDestroyView()
+    binding = null
+  }
 
-    override fun handleStartNewBrewState(state: HistoryState.StartNewBrewState) {
-        callback.onUpdateRecipe(state.recipe, TimerFlow.START, true)
-    }
+  interface Callback {
+    fun onSnackbarShow(state: HistoryState.ShowSnackBar)
+    fun onUpdateRecipe(
+      recipe: Recipe,
+      flow: TimerFlow,
+      update: Boolean,
+    )
 
-    override fun handleRecipeLikedState(state: HistoryState.RecipeLikedState) {
-        val items = historyAdapter.currentList.toMutableList()
-        items[state.position] = state.item
-        historyAdapter.submitList(items)
-    }
-
-    override fun handleClearHistoryPopUpState() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.action_delete)
-            .setMessage(R.string.deleteHistoryMessage)
-            .setPositiveButton(R.string.delete) { _, _ ->
-                viewModel.clearHistory(true)
-            }
-            .setNegativeButton(R.string.cancel) { _, _ ->
-                // Intentionally Blank.
-            }
-            .show()
-    }
-
-    override fun handleShowSnackBar(state: HistoryState.ShowSnackBar) {
-        callback.onSnackbarShow(state)
-    }
-
-    override fun updateBottomPadding(bottomPadding: Int) {
-        recyclerViewPadding = bottomPadding
-        binding?.recyclerView?.padding(bottom = bottomPadding)
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(): HistoryFragment {
-            val fragment = HistoryFragment()
-            val args = Bundle()
-            fragment.arguments = args
-            return fragment
-        }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = context as Callback
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
-    }
-
-    interface Callback {
-        fun onSnackbarShow(state: HistoryState.ShowSnackBar)
-        fun onUpdateRecipe(recipe: Recipe, flow: TimerFlow, update: Boolean)
-        fun onBackPressed()
-    }
+    fun onBackPressed()
+  }
 }

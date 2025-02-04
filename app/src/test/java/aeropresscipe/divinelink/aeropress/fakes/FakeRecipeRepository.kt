@@ -12,26 +12,26 @@ import org.mockito.kotlin.whenever
  */
 class FakeRecipeRepository {
 
-    private val mockRemote: GenerateRecipeRemote = mock()
+  private val mockRemote: GenerateRecipeRemote = mock()
 
-    val mock = RoomRecipeRepository(mockRemote)
-    // Fixme by injecting a FakeRecipeRepository instead of passing mockRemote
+  val mock = RoomRecipeRepository(mockRemote)
+  // Fixme by injecting a FakeRecipeRepository instead of passing mockRemote
 
-    suspend fun mockCreateNewRecipe(
-        response: DiceDomain,
-    ) {
-        whenever(mockRemote.createNewRecipe()).thenReturn(response)
-    }
+  suspend fun mockCreateNewRecipe(
+    response: DiceDomain,
+  ) {
+    whenever(mockRemote.createNewRecipe()).thenReturn(response)
+  }
 
-    suspend fun mockGetRecipe(
-        response: DiceDomain?,
-    ) {
-        whenever(mockRemote.getRecipe()).thenReturn(response)
-    }
+  suspend fun mockGetRecipe(
+    response: DiceDomain?,
+  ) {
+    whenever(mockRemote.getRecipe()).thenReturn(response)
+  }
 
-    suspend fun mockGenerateRecipe(
-        response: Boolean,
-    ) {
-        whenever(mockRemote.alreadyBrewing()).thenReturn(response)
-    }
+  suspend fun mockGenerateRecipe(
+    response: Boolean,
+  ) {
+    whenever(mockRemote.alreadyBrewing()).thenReturn(response)
+  }
 }

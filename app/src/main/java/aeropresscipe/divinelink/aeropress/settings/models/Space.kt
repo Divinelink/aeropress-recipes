@@ -13,32 +13,40 @@ import com.divinelink.aeropress.recipes.databinding.DslSpacePreferenceBinding
 /**
  * Adds extra space between elements in a DSL fragment
  */
-data class Space(
-    @Px val pixels: Int
-) {
+data class Space(@Px val pixels: Int) {
 
-    companion object {
-        fun register(mappingAdapter: MappingAdapter) {
-            mappingAdapter.registerFactory(LayoutFactory({ i: LayoutInflater, r: ViewGroup -> ViewHolder(DslSpacePreferenceBinding.inflate(i, r, false)) }))
-        }
+  companion object {
+    fun register(mappingAdapter: MappingAdapter) {
+      mappingAdapter.registerFactory(
+        LayoutFactory(
+          { i: LayoutInflater, r: ViewGroup ->
+            ViewHolder(
+              DslSpacePreferenceBinding.inflate(
+                i,
+                r,
+                false,
+              ),
+            )
+          },
+        ),
+      )
     }
+  }
 
-    class Model(val space: Space) : PreferenceModel<Model>() {
-        override fun areItemsTheSame(newItem: Any): Boolean {
-            return true
-        }
+  class Model(val space: Space) : PreferenceModel<Model>() {
+    override fun areItemsTheSame(newItem: Any): Boolean = true
 
-        override fun areContentsTheSame(newItem: Any): Boolean {
-            newItem as Model
-            return super.areContentsTheSame(newItem) && newItem.space == space
-        }
+    override fun areContentsTheSame(newItem: Any): Boolean {
+      newItem as Model
+      return super.areContentsTheSame(newItem) && newItem.space == space
     }
+  }
 
-    class ViewHolder(binding: DslSpacePreferenceBinding) : MappingViewHolder<Model>(binding.root) {
-        override fun bind(model: Model) {
-            itemView.updateLayoutParams {
-                height = model.space.pixels
-            }
-        }
+  class ViewHolder(binding: DslSpacePreferenceBinding) : MappingViewHolder<Model>(binding.root) {
+    override fun bind(model: Model) {
+      itemView.updateLayoutParams {
+        height = model.space.pixels
+      }
     }
+  }
 }

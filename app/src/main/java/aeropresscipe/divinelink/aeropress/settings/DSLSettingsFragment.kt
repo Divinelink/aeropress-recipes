@@ -19,95 +19,96 @@ import gr.divinelink.core.util.extensions.addSystemWindowInsetToMargin
 
 @AndroidEntryPoint
 open class DSLSettingsFragment() : Fragment() {
-    private lateinit var callback: Callback
+  private lateinit var callback: Callback
 
-    @StringRes
-    var titleId: Int = -1
+  @StringRes
+  var titleId: Int = -1
 
-    @MenuRes
-    var menuId: Int = -1
+  @MenuRes
+  var menuId: Int = -1
 
-    @LayoutRes
-    var layoutId: Int = R.layout.dsl_settings_fragment
+  @LayoutRes
+  var layoutId: Int = R.layout.dsl_settings_fragment
 
-    var layoutManagerProducer: (Context) -> RecyclerView.LayoutManager = { context -> LinearLayoutManager(context) }
+  var layoutManagerProducer: (Context) -> RecyclerView.LayoutManager =
+    { context -> LinearLayoutManager(context) }
 
-    protected var recyclerView: RecyclerView? = null
-        private set
+  protected var recyclerView: RecyclerView? = null
+    private set
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        return inflater.inflate(layoutId, container, false)
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?,
+  ): View? {
+    return inflater.inflate(layoutId, container, false)
+  }
+
+  @CallSuper
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    val toolbar: Toolbar? = view.findViewById(R.id.toolbar)
+
+    if (titleId != -1) {
+      toolbar?.setTitle(titleId)
+    }
+    toolbar?.addSystemWindowInsetToMargin(top = true)
+
+    toolbar?.setNavigationOnClickListener {
+      onToolbarNavigationClicked()
     }
 
-    @CallSuper
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val toolbar: Toolbar? = view.findViewById(R.id.toolbar)
-
-        if (titleId != -1) {
-            toolbar?.setTitle(titleId)
-        }
-        toolbar?.addSystemWindowInsetToMargin(top = true)
-
-        toolbar?.setNavigationOnClickListener {
-            onToolbarNavigationClicked()
-        }
-
-        if (menuId != -1) {
-            toolbar?.inflateMenu(menuId)
-            toolbar?.setOnMenuItemClickListener { onOptionsItemSelected(it) }
-        }
-
-        val settingsAdapter = DSLSettingsAdapter()
-
-        recyclerView = view.findViewById<RecyclerView>(R.id.recycler).apply {
-            layoutManager = layoutManagerProducer(requireContext())
-            adapter = settingsAdapter
-        }
-
-        bindAdapter(settingsAdapter)
+    if (menuId != -1) {
+      toolbar?.inflateMenu(menuId)
+      toolbar?.setOnMenuItemClickListener { onOptionsItemSelected(it) }
     }
 
-    open fun onToolbarNavigationClicked() {
-        callback.onBackPressed()
+    val settingsAdapter = DSLSettingsAdapter()
+
+    recyclerView = view.findViewById<RecyclerView>(R.id.recycler).apply {
+      layoutManager = layoutManagerProducer(requireContext())
+      adapter = settingsAdapter
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        recyclerView = null
-    }
+    bindAdapter(settingsAdapter)
+  }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = context as Callback
-    }
+  open fun onToolbarNavigationClicked() {
+    callback.onBackPressed()
+  }
 
-    open fun bindAdapter(adapter: DSLSettingsAdapter) {
-        // Intentionally Blank
-    }
+  override fun onDestroyView() {
+    super.onDestroyView()
+    recyclerView = null
+  }
 
-    interface Callback {
-        fun onBackPressed()
-    }
+  override fun onAttach(context: Context) {
+    super.onAttach(context)
+    callback = context as Callback
+  }
 
-    constructor(
-        @StringRes titleId: Int,
-        @MenuRes menuId: Int,
-        @LayoutRes layoutId: Int,
-        //        layoutManagerProducer: (Context) -> RecyclerView.LayoutManager,
-    ) : this() {
-        this.titleId = titleId
-        this.menuId = menuId
-        this.layoutId = layoutId
-        //        this.layoutManagerProducer = layoutManagerProducer
-    }
+  open fun bindAdapter(adapter: DSLSettingsAdapter) {
+    // Intentionally Blank
+  }
 
-    constructor(
-        @StringRes titleId: Int,
-    ) : this() {
-        this.titleId = titleId
-    }
+  interface Callback {
+    fun onBackPressed()
+  }
+
+  constructor(
+    @StringRes titleId: Int,
+    @MenuRes menuId: Int,
+    @LayoutRes layoutId: Int,
+    //        layoutManagerProducer: (Context) -> RecyclerView.LayoutManager,
+  ) : this() {
+    this.titleId = titleId
+    this.menuId = menuId
+    this.layoutId = layoutId
+    //        this.layoutManagerProducer = layoutManagerProducer
+  }
+
+  constructor(
+    @StringRes titleId: Int,
+  ) : this() {
+    this.titleId = titleId
+  }
 }

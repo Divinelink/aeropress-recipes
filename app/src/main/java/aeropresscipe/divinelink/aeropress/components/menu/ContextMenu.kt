@@ -1,4 +1,5 @@
 @file:Suppress("MagicNumber")
+
 package aeropresscipe.divinelink.aeropress.components.menu
 
 import android.content.Context
@@ -19,159 +20,160 @@ import gr.divinelink.core.util.swipe.utils.isLtr
  * chop off the part that doesn't fit, and make the menu scrollable.
  */
 class ContextMenu private constructor(
-    val anchor: View,
-    val container: ViewGroup,
-    val items: List<ActionItem>,
-    val baseOffsetX: Int = 0,
-    val baseOffsetY: Int = 0,
-    val horizontalPosition: HorizontalPosition = HorizontalPosition.START,
-    val verticalPosition: VerticalPosition = VerticalPosition.BELOW,
-    val onDismiss: Runnable? = null
+  val anchor: View,
+  val container: ViewGroup,
+  val items: List<ActionItem>,
+  val baseOffsetX: Int = 0,
+  val baseOffsetY: Int = 0,
+  val horizontalPosition: HorizontalPosition = HorizontalPosition.START,
+  val verticalPosition: VerticalPosition = VerticalPosition.BELOW,
+  val onDismiss: Runnable? = null,
 ) : PopupWindow(
-    LayoutInflater.from(anchor.context).inflate(R.layout.context_menu, container, false),
-    ViewGroup.LayoutParams.WRAP_CONTENT,
-    ViewGroup.LayoutParams.WRAP_CONTENT
+  LayoutInflater.from(anchor.context).inflate(R.layout.context_menu, container, false),
+  ViewGroup.LayoutParams.WRAP_CONTENT,
+  ViewGroup.LayoutParams.WRAP_CONTENT,
 ) {
 
-    val context: Context = anchor.context
+  val context: Context = anchor.context
 
-    private val contextMenuList = ContextMenuList(
-        recyclerView = contentView.findViewById(R.id.context_menu_list),
-        onItemClick = { dismiss() },
+  private val contextMenuList = ContextMenuList(
+    recyclerView = contentView.findViewById(R.id.context_menu_list),
+    onItemClick = { dismiss() },
+  )
+
+  init {
+    setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.context_menu_background))
+    inputMethodMode = INPUT_METHOD_NOT_NEEDED
+
+    isFocusable = true
+
+    if (onDismiss != null) {
+      setOnDismissListener { onDismiss.run() }
+    }
+
+    elevation = 20f
+
+    contextMenuList.setItems(items)
+  }
+
+  private fun show(): ContextMenu {
+    if (anchor.width == 0 || anchor.height == 0) {
+      anchor.post(this::show)
+      return this
+    }
+
+    contentView.measure(
+      View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+      View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
     )
 
-    init {
-        setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.context_menu_background))
-        inputMethodMode = INPUT_METHOD_NOT_NEEDED
-
-        isFocusable = true
-
-        if (onDismiss != null) {
-            setOnDismissListener { onDismiss.run() }
-        }
-
-        elevation = 20f
-
-        contextMenuList.setItems(items)
+    val anchorRect = Rect(anchor.left, anchor.top, anchor.right, anchor.bottom).also {
+      if (anchor.parent != container) {
+        container.offsetDescendantRectToMyCoords(anchor, it)
+      }
     }
 
-    private fun show(): ContextMenu {
-        if (anchor.width == 0 || anchor.height == 0) {
-            anchor.post(this::show)
-            return this
-        }
+    val menuBottomBound = anchorRect.bottom + contentView.measuredHeight + baseOffsetY
+    val menuTopBound = anchorRect.top - contentView.measuredHeight - baseOffsetY
 
-        contentView.measure(
-            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-        )
+    val screenBottomBound = container.height
+    val screenTopBound = container.y
 
-        val anchorRect = Rect(anchor.left, anchor.top, anchor.right, anchor.bottom).also {
-            if (anchor.parent != container) {
-                container.offsetDescendantRectToMyCoords(anchor, it)
-            }
-        }
+    val offsetY: Int
 
-        val menuBottomBound = anchorRect.bottom + contentView.measuredHeight + baseOffsetY
-        val menuTopBound = anchorRect.top - contentView.measuredHeight - baseOffsetY
-
-        val screenBottomBound = container.height
-        val screenTopBound = container.y
-
-        val offsetY: Int
-
-        if (verticalPosition == VerticalPosition.ABOVE && menuTopBound > screenTopBound ||
-            menuTopBound > screenTopBound
-        ) {
-            offsetY = -(anchorRect.height() + contentView.measuredHeight + baseOffsetY)
-            contextMenuList.setItems(items.reversed())
-        } else if (menuBottomBound < screenBottomBound) {
-            offsetY = baseOffsetY
-        } else {
-            offsetY = -((anchorRect.height() / 2) + (contentView.measuredHeight / 2) + baseOffsetY)
-        }
-
-        val offsetX: Int = when (horizontalPosition) {
-            HorizontalPosition.START -> {
-                if (isLtr()) {
-                    baseOffsetX
-                } else {
-                    -(baseOffsetX + contentView.measuredWidth)
-                }
-            }
-            HorizontalPosition.END -> {
-                if (isLtr()) {
-                    -(baseOffsetX + contentView.measuredWidth - anchorRect.width())
-                } else {
-                    baseOffsetX - anchorRect.width()
-                }
-            }
-        }
-
-        showAsDropDown(anchor, offsetX, offsetY)
-
-        return this
-    }
-
-    enum class HorizontalPosition {
-        START, END
-    }
-
-    enum class VerticalPosition {
-        ABOVE, BELOW
-    }
-
-    /**
-     * @param anchor The view to put the pop-up on
-     * @param container A parent of [anchor] that represents the acceptable boundaries of the popup
-     */
-    class Builder(
-        val anchor: View,
-        val container: ViewGroup
+    if (verticalPosition == VerticalPosition.ABOVE &&
+      menuTopBound > screenTopBound ||
+      menuTopBound > screenTopBound
     ) {
-
-        var onDismiss: Runnable? = null
-        var offsetX = 0
-        var offsetY = 0
-        var horizontalPosition = HorizontalPosition.START
-        var verticalPosition = VerticalPosition.BELOW
-
-        fun onDismiss(onDismiss: Runnable): Builder {
-            this.onDismiss = onDismiss
-            return this
-        }
-
-        fun offsetX(offsetPx: Int): Builder {
-            this.offsetX = offsetPx
-            return this
-        }
-
-        fun offsetY(offsetPx: Int): Builder {
-            this.offsetY = offsetPx
-            return this
-        }
-
-        fun preferredHorizontalPosition(horizontalPosition: HorizontalPosition): Builder {
-            this.horizontalPosition = horizontalPosition
-            return this
-        }
-
-        fun preferredVerticalPosition(verticalPosition: VerticalPosition): Builder {
-            this.verticalPosition = verticalPosition
-            return this
-        }
-
-        fun show(items: List<ActionItem>): ContextMenu {
-            return ContextMenu(
-                anchor = anchor,
-                container = container,
-                items = items,
-                baseOffsetX = offsetX,
-                baseOffsetY = offsetY,
-                horizontalPosition = horizontalPosition,
-                verticalPosition = verticalPosition,
-                onDismiss = onDismiss
-            ).show()
-        }
+      offsetY = -(anchorRect.height() + contentView.measuredHeight + baseOffsetY)
+      contextMenuList.setItems(items.reversed())
+    } else if (menuBottomBound < screenBottomBound) {
+      offsetY = baseOffsetY
+    } else {
+      offsetY = -((anchorRect.height() / 2) + (contentView.measuredHeight / 2) + baseOffsetY)
     }
+
+    val offsetX: Int = when (horizontalPosition) {
+      HorizontalPosition.START -> {
+        if (isLtr()) {
+          baseOffsetX
+        } else {
+          -(baseOffsetX + contentView.measuredWidth)
+        }
+      }
+      HorizontalPosition.END -> {
+        if (isLtr()) {
+          -(baseOffsetX + contentView.measuredWidth - anchorRect.width())
+        } else {
+          baseOffsetX - anchorRect.width()
+        }
+      }
+    }
+
+    showAsDropDown(anchor, offsetX, offsetY)
+
+    return this
+  }
+
+  enum class HorizontalPosition {
+    START,
+    END,
+  }
+
+  enum class VerticalPosition {
+    ABOVE,
+    BELOW,
+  }
+
+  /**
+   * @param anchor The view to put the pop-up on
+   * @param container A parent of [anchor] that represents the acceptable boundaries of the popup
+   */
+  class Builder(
+    val anchor: View,
+    val container: ViewGroup,
+  ) {
+
+    var onDismiss: Runnable? = null
+    var offsetX = 0
+    var offsetY = 0
+    var horizontalPosition = HorizontalPosition.START
+    var verticalPosition = VerticalPosition.BELOW
+
+    fun onDismiss(onDismiss: Runnable): Builder {
+      this.onDismiss = onDismiss
+      return this
+    }
+
+    fun offsetX(offsetPx: Int): Builder {
+      this.offsetX = offsetPx
+      return this
+    }
+
+    fun offsetY(offsetPx: Int): Builder {
+      this.offsetY = offsetPx
+      return this
+    }
+
+    fun preferredHorizontalPosition(horizontalPosition: HorizontalPosition): Builder {
+      this.horizontalPosition = horizontalPosition
+      return this
+    }
+
+    fun preferredVerticalPosition(verticalPosition: VerticalPosition): Builder {
+      this.verticalPosition = verticalPosition
+      return this
+    }
+
+    fun show(items: List<ActionItem>): ContextMenu = ContextMenu(
+      anchor = anchor,
+      container = container,
+      items = items,
+      baseOffsetX = offsetX,
+      baseOffsetY = offsetY,
+      horizontalPosition = horizontalPosition,
+      verticalPosition = verticalPosition,
+      onDismiss = onDismiss,
+    ).show()
+  }
 }

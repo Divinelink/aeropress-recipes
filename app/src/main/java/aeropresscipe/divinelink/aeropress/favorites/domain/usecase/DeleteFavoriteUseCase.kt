@@ -8,11 +8,11 @@ import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 class DeleteFavoriteUseCase @Inject constructor(
-    private val repository: FavoritesRepository,
-    @IoDispatcher dispatcher: CoroutineDispatcher,
+  private val repository: FavoritesRepository,
+  @IoDispatcher dispatcher: CoroutineDispatcher,
 ) : UseCase<Recipe, Unit>(dispatcher) {
 
-    override suspend fun execute(parameters: Recipe) {
-        repository.deleteFavorite(recipe = parameters)
-    }
+  override suspend fun execute(parameters: Recipe) {
+    repository.deleteFavorite(recipe = parameters)
+  }
 }

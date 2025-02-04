@@ -59,202 +59,202 @@ const val ADD_BREW_BUTTON_TAG = "ADD_BREW_BUTTON"
 @Suppress("LongMethod")
 @Composable
 fun BeansContent(
-    viewState: BeanTrackerViewState,
-    onAddButtonClicked: () -> Unit,
-    onBeanClicked: (Bean) -> Unit,
-    onAddBeanOpened: () -> Unit,
-    onNavigateUp: () -> Unit,
-    bottomPadding: Dp,
-    modifier: Modifier = Modifier,
+  viewState: BeanTrackerViewState,
+  onAddButtonClicked: () -> Unit,
+  onBeanClicked: (Bean) -> Unit,
+  onAddBeanOpened: () -> Unit,
+  onNavigateUp: () -> Unit,
+  bottomPadding: Dp,
+  modifier: Modifier = Modifier,
 ) {
-    val scrollState = rememberLazyListState()
-    var fabExtended by remember { mutableStateOf(true) }
-    val scrollColors = TopAppBarDefaults.topAppBarColors(
-        scrolledContainerColor = topBarColor(),
-    )
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+  val scrollState = rememberLazyListState()
+  var fabExtended by remember { mutableStateOf(true) }
+  val scrollColors = TopAppBarDefaults.topAppBarColors(
+    scrolledContainerColor = topBarColor(),
+  )
+  val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
-    LaunchedEffect(scrollState) {
-        var prev = 0
-        snapshotFlow { scrollState.firstVisibleItemIndex }
-            .collect {
-                fabExtended = it <= prev
-                prev = it
-            }
+  LaunchedEffect(scrollState) {
+    var prev = 0
+    snapshotFlow { scrollState.firstVisibleItemIndex }
+      .collect {
+        fabExtended = it <= prev
+        prev = it
+      }
+  }
+
+  val context = LocalContext.current
+  LaunchedEffect(viewState as? BeanTrackerViewState.Completed) {
+    if ((viewState as? BeanTrackerViewState.Completed)?.goToAddBean == true) {
+      context.startActivity(
+        AddBeanActivity.newIntent(
+          context = context,
+          bean = viewState.selectedBean,
+          ),
+      )
+      onAddBeanOpened()
     }
+  }
 
-    val context = LocalContext.current
-    LaunchedEffect(viewState as? BeanTrackerViewState.Completed) {
-        if ((viewState as? BeanTrackerViewState.Completed)?.goToAddBean == true) {
-            context.startActivity(
-                AddBeanActivity.newIntent(
-                    context = context,
-                    bean = viewState.selectedBean
-                )
-            )
-            onAddBeanOpened()
-        }
-    }
-
-    Scaffold(
-        contentWindowInsets = WindowInsets(
-            left = 0.dp,
-            top = WindowInsets.systemBars.asPaddingValues().calculateTopPadding().value.dp,
-            right = 0.dp,
-            bottom = 0.dp,
-        ),
-        modifier = Modifier
-            .nestedScroll(scrollBehavior.nestedScrollConnection),
-        floatingActionButton = {
-            AddBeanButton(
-                modifier = Modifier.padding(vertical = bottomPadding),
-                onClick = onAddButtonClicked,
-                extended = fabExtended
-            )
+  Scaffold(
+    contentWindowInsets = WindowInsets(
+      left = 0.dp,
+      top = WindowInsets.systemBars.asPaddingValues().calculateTopPadding().value.dp,
+      right = 0.dp,
+      bottom = 0.dp,
+    ),
+    modifier = Modifier
+      .nestedScroll(scrollBehavior.nestedScrollConnection),
+    floatingActionButton = {
+      AddBeanButton(
+        modifier = Modifier.padding(vertical = bottomPadding),
+        onClick = onAddButtonClicked,
+        extended = fabExtended,
+      )
+    },
+    topBar = {
+      TopAppBar(
+        title = {
+          Text(
+            text = stringResource(id = R.string.Beans__bean_tracker),
+            style = MaterialTheme.typography.titleMedium,
+          )
         },
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(id = R.string.Beans__bean_tracker),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = onNavigateUp,
-                    ) {
-                        Icon(Icons.Filled.ArrowBack, null)
-                    }
-                },
-                scrollBehavior = scrollBehavior,
-                colors = scrollColors,
-            )
+        navigationIcon = {
+          IconButton(
+            onClick = onNavigateUp,
+          ) {
+            Icon(Icons.Filled.ArrowBack, null)
+          }
         },
-    ) { paddingValues ->
-        if (viewState is BeanTrackerViewState.Completed) {
-            BeansList(
-                viewState.beans,
-                modifier = modifier
-                    .padding(top = paddingValues.calculateTopPadding()),
-                onBeanClicked = onBeanClicked,
-                state = scrollState,
-                bottomPadding = bottomPadding,
-            )
-        }
+        scrollBehavior = scrollBehavior,
+        colors = scrollColors,
+      )
+    },
+  ) { paddingValues ->
+    if (viewState is BeanTrackerViewState.Completed) {
+      BeansList(
+        viewState.beans,
+        modifier = modifier
+          .padding(top = paddingValues.calculateTopPadding()),
+        onBeanClicked = onBeanClicked,
+        state = scrollState,
+        bottomPadding = bottomPadding,
+      )
     }
+  }
 
-    if (viewState.showLoading) {
-        BeansLoadingContent()
-    }
+  if (viewState.showLoading) {
+    BeansLoadingContent()
+  }
 }
 
 @Composable
 private fun AddBeanButton(
-    onClick: () -> Unit,
-    extended: Boolean,
-    modifier: Modifier = Modifier,
+  onClick: () -> Unit,
+  extended: Boolean,
+  modifier: Modifier = Modifier,
 ) {
-    ExtendableFloatingActionButton(
-        modifier = modifier
-            .height(FabSize)
-            .widthIn(min = FabSize)
-            .testTag(ADD_BREW_BUTTON_TAG),
-        extended = extended,
-        text = {
-            Text(
-                style = MaterialTheme.typography.bodyMedium,
-                text = stringResource(
-                    R.string.Beans__add_bean
-                ),
-            )
-        },
-        icon = {
-            Icon(
-                Icons.Default.Add,
-                contentDescription = stringResource(R.string.Beans__add_bean),
-            )
-        },
-        onClick = onClick
-    )
+  ExtendableFloatingActionButton(
+    modifier = modifier
+          .height(FabSize)
+          .widthIn(min = FabSize)
+          .testTag(ADD_BREW_BUTTON_TAG),
+    extended = extended,
+    text = {
+          Text(
+              style = MaterialTheme.typography.bodyMedium,
+              text = stringResource(
+                R.string.Beans__add_bean,
+              ),
+          )
+      },
+    icon = {
+          Icon(
+              Icons.Default.Add,
+              contentDescription = stringResource(R.string.Beans__add_bean),
+          )
+      },
+    onClick = onClick,
+  )
 }
 
 @Composable
 private fun BeansLoadingContent() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-    ) {
-        Material3CircularProgressIndicator(
-            modifier = Modifier
-                .wrapContentSize()
-                .align(Alignment.Center),
-        )
-    }
+  Box(
+    modifier = Modifier
+      .fillMaxSize(),
+  ) {
+    Material3CircularProgressIndicator(
+      modifier = Modifier
+          .wrapContentSize()
+          .align(Alignment.Center),
+    )
+  }
 }
 
 @Suppress("MagicNumber")
 class BeansContentViewStateProvider : PreviewParameterProvider<BeanTrackerViewState> {
-    override val values: Sequence<BeanTrackerViewState>
-        get() {
-            val beans = (1..12).map { index ->
-                Bean(
-                    id = index.toString(),
-                    name = "Bean name $index",
-                    roasterName = "Roaster name $index",
-                    origin = "Origin $index",
-                    roastLevel = RoastLevel.Medium,
-                    process = ProcessMethod.Honey,
-                    rating = index,
-                    tastingNotes = "",
-                    additionalNotes = "",
-                    roastDate = LocalDate.now(),
-                )
-            }.toMutableList()
+  override val values: Sequence<BeanTrackerViewState>
+    get() {
+      val beans = (1..12).map { index ->
+        Bean(
+          id = index.toString(),
+          name = "Bean name $index",
+          roasterName = "Roaster name $index",
+          origin = "Origin $index",
+          roastLevel = RoastLevel.Medium,
+          process = ProcessMethod.Honey,
+          rating = index,
+          tastingNotes = "",
+          additionalNotes = "",
+          roastDate = LocalDate.now(),
+        )
+      }.toMutableList()
 
-            val initialState = BeanTrackerViewState.Initial
+      val initialState = BeanTrackerViewState.Initial
 
-            val activeState = BeanTrackerViewState.Active()
+      val activeState = BeanTrackerViewState.Active()
 
-            val emptyState = BeanTrackerViewState.Completed(
-                beans = emptyList()
-            )
+      val emptyState = BeanTrackerViewState.Completed(
+        beans = emptyList(),
+      )
 
-            val completedState = BeanTrackerViewState.Completed(
-                beans = beans
-            )
+      val completedState = BeanTrackerViewState.Completed(
+        beans = beans,
+      )
 
-            return sequenceOf(
-                initialState,
-                activeState,
-                emptyState,
-                completedState
-            )
-        }
+      return sequenceOf(
+        initialState,
+        activeState,
+        emptyState,
+        completedState,
+      )
+    }
 }
 
 @Preview(
-    name = "Night Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
+  name = "Night Mode",
+  uiMode = Configuration.UI_MODE_NIGHT_YES,
 )
 @Preview(
-    name = "Day Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
+  name = "Day Mode",
+  uiMode = Configuration.UI_MODE_NIGHT_NO,
 )
 @Preview
 @Composable
 private fun BeansContentPreview(
-    @PreviewParameter(BeansContentViewStateProvider::class)
-    viewState: BeanTrackerViewState,
+  @PreviewParameter(BeansContentViewStateProvider::class)
+  viewState: BeanTrackerViewState,
 ) {
-    AeropressTheme {
-        BeansContent(
-            viewState = viewState,
-            onAddButtonClicked = {},
-            onBeanClicked = {},
-            onAddBeanOpened = {},
-            onNavigateUp = {},
-            bottomPadding = 0.dp,
-        )
-    }
+  AeropressTheme {
+    BeansContent(
+      viewState = viewState,
+      onAddButtonClicked = {},
+      onBeanClicked = {},
+      onAddBeanOpened = {},
+      onNavigateUp = {},
+      bottomPadding = 0.dp,
+    )
+  }
 }

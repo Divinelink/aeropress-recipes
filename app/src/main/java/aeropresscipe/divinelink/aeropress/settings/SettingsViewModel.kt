@@ -7,6 +7,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    themedActivityDelegate: ThemedActivityDelegate,
+  themedActivityDelegate: ThemedActivityDelegate,
 ) : ViewModel(),
     ThemedActivityDelegate by themedActivityDelegate

@@ -16,25 +16,22 @@ import org.mockito.kotlin.whenever
  */
 class FakeFavoritesRepository : FavoritesRepository {
 
-    val mock: FavoritesRepository = mock()
+  val mock: FavoritesRepository = mock()
 
-    val deleteFavoritesResult: MutableMap<Recipe, Result<Unit>> = mutableMapOf()
+  val deleteFavoritesResult: MutableMap<Recipe, Result<Unit>> = mutableMapOf()
 
-    fun mockFetchAllFavoritesResult(
-        response: Result<List<Favorites>>,
-    ) {
-        whenever(
-            mock.fetchAllFavorites()
-        ).thenReturn(
-            flowOf(response)
-        )
-    }
+  fun mockFetchAllFavoritesResult(response: Result<List<Favorites>>) {
+    whenever(
+      mock.fetchAllFavorites(),
+    ).thenReturn(
+      flowOf(response),
+    )
+  }
 
-    override fun fetchAllFavorites(): Flow<FavoritesListResult> {
-        TODO("Not yet implemented")
-    }
+  override fun fetchAllFavorites(): Flow<FavoritesListResult> {
+    TODO("Not yet implemented")
+  }
 
-    override suspend fun deleteFavorite(recipe: Recipe): Result<Unit> {
-        return deleteFavoritesResult[recipe]!!
-    }
+  override suspend fun deleteFavorite(recipe: Recipe): Result<Unit> =
+    deleteFavoritesResult[recipe]!!
 }

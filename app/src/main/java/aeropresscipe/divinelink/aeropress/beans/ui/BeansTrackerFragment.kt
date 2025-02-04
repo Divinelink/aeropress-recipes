@@ -19,45 +19,49 @@ import gr.divinelink.core.util.utils.DimensionUnit
 
 @AndroidEntryPoint
 class BeansTrackerFragment :
-    Fragment(),
-    TimerViewCallback {
+  Fragment(),
+  TimerViewCallback {
 
-    private lateinit var composeView: ComposeView
-    private lateinit var callback: HistoryFragment.Callback
+  private lateinit var composeView: ComposeView
+  private lateinit var callback: HistoryFragment.Callback
 
-    private val viewModel: BeansTrackerViewModel by viewModels()
-    private var bottomPadding: Dp = 0.dp
+  private val viewModel: BeansTrackerViewModel by viewModels()
+  private var bottomPadding: Dp = 0.dp
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return ComposeView(requireContext()).also {
-            composeView = it
-        }
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?,
+  ): View {
+    return ComposeView(requireContext()).also {
+      composeView = it
     }
+  }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        composeView.setContent {
-            AeropressTheme {
-                val viewState = viewModel.viewState.collectAsState()
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    composeView.setContent {
+      AeropressTheme {
+        val viewState = viewModel.viewState.collectAsState()
 
-                BeansContent(
-                    viewState = viewState.value,
-                    onAddButtonClicked = viewModel::onAddButtonClicked,
-                    onBeanClicked = viewModel::onBeanClicked,
-                    onAddBeanOpened = viewModel::onAddBeanOpened,
-                    onNavigateUp = callback::onBackPressed,
-                    bottomPadding = bottomPadding,
-                )
-            }
-        }
+        BeansContent(
+          viewState = viewState.value,
+          onAddButtonClicked = viewModel::onAddButtonClicked,
+          onBeanClicked = viewModel::onBeanClicked,
+          onAddBeanOpened = viewModel::onAddBeanOpened,
+          onNavigateUp = callback::onBackPressed,
+          bottomPadding = bottomPadding,
+        )
+      }
     }
+  }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = context as HistoryFragment.Callback
-    }
+  override fun onAttach(context: Context) {
+    super.onAttach(context)
+    callback = context as HistoryFragment.Callback
+  }
 
-    override fun updateBottomPadding(bottomPadding: Int) {
-        this.bottomPadding = DimensionUnit.PIXELS.toDp(bottomPadding.toFloat()).dp
-    }
+  override fun updateBottomPadding(bottomPadding: Int) {
+    this.bottomPadding = DimensionUnit.PIXELS.toDp(bottomPadding.toFloat()).dp
+  }
 }

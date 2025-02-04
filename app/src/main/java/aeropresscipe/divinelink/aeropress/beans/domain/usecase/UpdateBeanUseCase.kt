@@ -12,20 +12,20 @@ import javax.inject.Inject
 
 @Suppress("ThrowingExceptionsWithoutMessageOrCause")
 open class UpdateBeanUseCase @Inject constructor(
-    private val repository: BeanRepository,
-    @IoDispatcher dispatcher: CoroutineDispatcher,
+  private val repository: BeanRepository,
+  @IoDispatcher dispatcher: CoroutineDispatcher,
 ) : UseCase<Bean, AddBeanResult>(dispatcher) {
-    override suspend fun execute(parameters: Bean): AddBeanResult {
-        val bean = parameters.trimFields()
-        if (bean.name.isEmpty()) {
-            return AddBeanResult.Failure.EmptyName
-        }
-        val result = repository.updateBean(bean)
-
-        return when (result) {
-            is Result.Success -> AddBeanResult.Success
-            is Result.Error -> AddBeanResult.Failure.Unknown
-            Result.Loading -> throw IllegalStateException()
-        }
+  override suspend fun execute(parameters: Bean): AddBeanResult {
+    val bean = parameters.trimFields()
+    if (bean.name.isEmpty()) {
+      return AddBeanResult.Failure.EmptyName
     }
+    val result = repository.updateBean(bean)
+
+    return when (result) {
+      is Result.Success -> AddBeanResult.Success
+      is Result.Error -> AddBeanResult.Failure.Unknown
+      Result.Loading -> throw IllegalStateException()
+    }
+  }
 }

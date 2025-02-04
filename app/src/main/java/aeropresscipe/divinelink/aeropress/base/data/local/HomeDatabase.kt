@@ -14,27 +14,27 @@ import androidx.room.TypeConverters
 import com.divinelink.aeropress.recipes.history.History
 
 @Database(
-    entities = [
-        DiceDomain::class,
-        Favorites::class,
-        History::class,
-        PersistableBean::class,
-    ],
-    version = HomeDatabase.LATEST_VERSION,
-    exportSchema = true
+  entities = [
+    DiceDomain::class,
+    Favorites::class,
+    History::class,
+    PersistableBean::class,
+  ],
+  version = HomeDatabase.LATEST_VERSION,
+  exportSchema = true,
 )
 @TypeConverters(
-    Converters::class
+  Converters::class,
 )
 abstract class HomeDatabase : RoomDatabase() {
 
-    abstract fun recipeDao(): RecipeDao
-    abstract fun favoritesDao(): FavoritesDao
-    abstract fun historyDao(): HistoryDao
-    abstract fun beanDAO(): BeanDAO
+  abstract fun recipeDao(): RecipeDao
+  abstract fun favoritesDao(): FavoritesDao
+  abstract fun historyDao(): HistoryDao
+  abstract fun beanDAO(): BeanDAO
 
-    companion object {
-        const val DB_NAME = "Home_Database"
-        const val LATEST_VERSION = 23
-    }
+  companion object {
+    const val DB_NAME = "Home_Database"
+    const val LATEST_VERSION = 23
+  }
 }

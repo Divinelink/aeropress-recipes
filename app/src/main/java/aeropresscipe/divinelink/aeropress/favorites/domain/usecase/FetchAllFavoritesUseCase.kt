@@ -12,23 +12,23 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class FetchAllFavoritesUseCase @Inject constructor(
-    private val repository: FavoritesRepository,
-    @IoDispatcher dispatcher: CoroutineDispatcher,
+  private val repository: FavoritesRepository,
+  @IoDispatcher dispatcher: CoroutineDispatcher,
 ) : FlowUseCase<Unit, List<Favorites>>(dispatcher) {
 
-    override fun execute(
-        parameters: Unit,
-    ): Flow<FavoritesListResult> {
-        return repository.fetchAllFavorites().map { result ->
-            when (result) {
-                is Result.Success -> {
-                    result
-                }
-                is Result.Error -> {
-                    Result.Error(result.exception)
-                }
-                Result.Loading -> Result.Loading
-            }
+  override fun execute(
+    parameters: Unit,
+  ): Flow<FavoritesListResult> {
+    return repository.fetchAllFavorites().map { result ->
+      when (result) {
+        is Result.Success -> {
+          result
         }
+        is Result.Error -> {
+          Result.Error(result.exception)
+        }
+        Result.Loading -> Result.Loading
+      }
     }
+  }
 }

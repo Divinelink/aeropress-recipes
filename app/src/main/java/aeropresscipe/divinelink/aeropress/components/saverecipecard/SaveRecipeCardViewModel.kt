@@ -16,89 +16,89 @@ import timber.log.Timber
 import java.lang.ref.WeakReference
 
 class SaveRecipeCardViewModel @AssistedInject constructor(
-    private var repository: TimerRepository,
-    @Assisted public override var delegate: WeakReference<ISaveRecipeCardViewModel>? = null
+  private var repository: TimerRepository,
+  @Assisted public override var delegate: WeakReference<ISaveRecipeCardViewModel>? = null,
 ) : BaseViewModel<ISaveRecipeCardViewModel>(),
     SaveRecipeCardIntents {
-    internal var statesList: MutableList<SaveRecipeCardState> = mutableListOf()
+  internal var statesList: MutableList<SaveRecipeCardState> = mutableListOf()
 
-    var state: SaveRecipeCardState = SaveRecipeCardState.InitialState
-        set(value) {
-            Timber.d(value.toString())
-            field = value
-            delegate?.get()?.updateState(value)
-            statesList.add(value)
-        }
-
-    override fun init(recipe: Recipe?) {
-        state = SaveRecipeCardState.InitialState
-        repository.isRecipeSaved(recipe) { saved ->
-            val frame = when (saved) {
-                true -> LIKE_MAX_FRAME
-                false -> DISLIKE_MAX_FRAME
-            }
-            state = SaveRecipeCardState.UpdateSavedIndicator(frame)
-        }
+  var state: SaveRecipeCardState = SaveRecipeCardState.InitialState
+    set(value) {
+      Timber.d(value.toString())
+      field = value
+      delegate?.get()?.updateState(value)
+      statesList.add(value)
     }
 
-    override fun likeRecipe(recipe: Recipe?) {
-        if (recipe != null) {
-            repository.likeRecipe(recipe) { recipeLiked ->
-                if (recipeLiked) {
-                    state = SaveRecipeCardState.RecipeSavedState
-                    state = SaveRecipeCardState.ShowSnackBar(LikeSnackBar.Like)
-                } else {
-                    state = SaveRecipeCardState.RecipeRemovedState
-                    state = SaveRecipeCardState.ShowSnackBar(LikeSnackBar.Remove)
-                }
-            }
-        }
+  override fun init(recipe: Recipe?) {
+    state = SaveRecipeCardState.InitialState
+    repository.isRecipeSaved(recipe) { saved ->
+      val frame = when (saved) {
+        true -> LIKE_MAX_FRAME
+        false -> DISLIKE_MAX_FRAME
+      }
+      state = SaveRecipeCardState.UpdateSavedIndicator(frame)
     }
+  }
+
+  override fun likeRecipe(recipe: Recipe?) {
+    if (recipe != null) {
+      repository.likeRecipe(recipe) { recipeLiked ->
+        if (recipeLiked) {
+          state = SaveRecipeCardState.RecipeSavedState
+          state = SaveRecipeCardState.ShowSnackBar(LikeSnackBar.Like)
+        } else {
+          state = SaveRecipeCardState.RecipeRemovedState
+          state = SaveRecipeCardState.ShowSnackBar(LikeSnackBar.Remove)
+        }
+      }
+    }
+  }
 }
 
 interface ISaveRecipeCardViewModel {
-    fun updateState(state: SaveRecipeCardState)
+  fun updateState(state: SaveRecipeCardState)
 }
 
 interface SaveRecipeCardIntents : MVIBaseView {
-    fun init(recipe: Recipe?)
-    fun likeRecipe(recipe: Recipe?)
+  fun init(recipe: Recipe?)
+  fun likeRecipe(recipe: Recipe?)
 }
 
 sealed class SaveRecipeCardState {
-    object InitialState : SaveRecipeCardState()
+  object InitialState : SaveRecipeCardState()
 
-    object RecipeSavedState : SaveRecipeCardState()
-    object RecipeRemovedState : SaveRecipeCardState()
+  object RecipeSavedState : SaveRecipeCardState()
+  object RecipeRemovedState : SaveRecipeCardState()
 
-    data class UpdateSavedIndicator(val frame: Int) : SaveRecipeCardState()
-    data class ShowSnackBar(val value: LikeSnackBar) : SaveRecipeCardState()
+  data class UpdateSavedIndicator(val frame: Int) : SaveRecipeCardState()
+  data class ShowSnackBar(val value: LikeSnackBar) : SaveRecipeCardState()
 }
 
 interface SaveRecipeCardStateHandler {
-    fun handleInitialState()
+  fun handleInitialState()
 
-    fun handleRecipeSavedState()
-    fun handleRecipeRemovedState()
+  fun handleRecipeSavedState()
+  fun handleRecipeRemovedState()
 
-    fun handleUpdateSavedIndicator(state: SaveRecipeCardState.UpdateSavedIndicator)
-    fun handleShowSnackBar(state: SaveRecipeCardState.ShowSnackBar)
+  fun handleUpdateSavedIndicator(state: SaveRecipeCardState.UpdateSavedIndicator)
+  fun handleShowSnackBar(state: SaveRecipeCardState.ShowSnackBar)
 }
 
 @Suppress("UNCHECKED_CAST")
 class SaveRecipeCardViewModelFactory(
-    private val assistedFactory: SaveRecipeCardViewModelAssistedFactory,
-    private val delegate: WeakReference<ISaveRecipeCardViewModel>?,
+  private val assistedFactory: SaveRecipeCardViewModelAssistedFactory,
+  private val delegate: WeakReference<ISaveRecipeCardViewModel>?,
 ) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(SaveRecipeCardViewModel::class.java)) {
-            return assistedFactory.create(delegate) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
+  override fun <T : ViewModel> create(modelClass: Class<T>): T {
+    if (modelClass.isAssignableFrom(SaveRecipeCardViewModel::class.java)) {
+      return assistedFactory.create(delegate) as T
     }
+    throw IllegalArgumentException("Unknown ViewModel class")
+  }
 }
 
 @AssistedFactory
 interface SaveRecipeCardViewModelAssistedFactory {
-    fun create(delegate: WeakReference<ISaveRecipeCardViewModel>?): SaveRecipeCardViewModel
+  fun create(delegate: WeakReference<ISaveRecipeCardViewModel>?): SaveRecipeCardViewModel
 }
