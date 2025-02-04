@@ -20,6 +20,7 @@ class MethodsTest {
       rating = 0,
       tastingNotes = "",
       additionalNotes = "",
+      timestamp = "",
     )
 
     assertThat(
@@ -36,6 +37,7 @@ class MethodsTest {
         rating = 0,
         tastingNotes = "",
         additionalNotes = "",
+        timestamp = "",
       ),
     )
   }

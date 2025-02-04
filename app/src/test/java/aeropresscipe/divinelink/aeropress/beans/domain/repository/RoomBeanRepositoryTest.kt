@@ -4,10 +4,11 @@ import aeropresscipe.divinelink.aeropress.base.data.local.bean.PersistableBean
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
 import aeropresscipe.divinelink.aeropress.beans.domain.model.RoastLevel
+import aeropresscipe.divinelink.aeropress.extension.currentEpochSeconds
 import aeropresscipe.divinelink.aeropress.fakes.dao.FakeBeanDAO
+import com.divinelink.aerorecipe.sample.ClockSample
 import com.google.common.truth.Truth.assertThat
 import gr.divinelink.core.util.domain.Result
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -16,7 +17,6 @@ import org.junit.Test
 import java.time.LocalDate
 import kotlin.test.assertEquals
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class RoomBeanRepositoryTest {
 
   val bean = Bean(
@@ -53,7 +53,10 @@ class RoomBeanRepositoryTest {
 
   @Before
   fun setUp() {
-    repository = RoomBeanRepository(beanDAO.mock)
+    repository = RoomBeanRepository(
+      beanDAO = beanDAO.mock,
+      clock = ClockSample.augustFifteenth2021(),
+    )
   }
 
   @Test
@@ -78,12 +81,14 @@ class RoomBeanRepositoryTest {
   }
 
   @Test
-  fun testAddBean() = runTest {
-    // Act
+  fun `test add bean correctly adds current timestamp`() = runTest {
     repository.addBean(bean)
 
-    // Assert
-    beanDAO.verifyInsertBean(persistableBean)
+    beanDAO.verifyInsertBean(
+      persistableBean.copy(
+        timestamp = ClockSample.augustFifteenth2021().currentEpochSeconds(),
+      ),
+    )
   }
 
   @Test
