@@ -9,59 +9,51 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class HistoryRepository @Inject constructor(
-    private val remote: HistoryRemote,
-) : BaseRepository() {
+class HistoryRepository @Inject constructor(private val remote: HistoryRemote) : BaseRepository() {
 
-    fun getHistory(
-        completionBlock: (List<History>) -> Unit
-    ) = performTransaction(completionBlock) { remote.getHistory() }
+  fun getHistory(completionBlock: (List<History>) -> Unit) =
+    performTransaction(completionBlock) { remote.getHistory() }
 
-    fun likeRecipe(
-        favorite: Favorites,
-        completionBlock: (History) -> Unit
-    ) = performTransaction(completionBlock) { remote.likeRecipe(favorite) }
+  fun likeRecipe(
+    favorite: Favorites,
+    completionBlock: (History) -> Unit,
+  ) = performTransaction(completionBlock) { remote.likeRecipe(favorite) }
 
-    fun clearHistory(
-        completionBlock: () -> Unit
-    ) = performTransaction(completionBlock) { remote.clearHistory() }
+  fun clearHistory(completionBlock: () -> Unit) =
+    performTransaction(completionBlock) { remote.clearHistory() }
 }
 
 interface IHistoryRemote {
-    suspend fun getHistory(): List<History>
-    suspend fun likeRecipe(favorite: Favorites): History
-    suspend fun clearHistory()
+  suspend fun getHistory(): List<History>
+  suspend fun likeRecipe(favorite: Favorites): History
+  suspend fun clearHistory()
 }
 
 class HistoryRemote @Inject constructor(
-    private val historyDao: HistoryDao,
-    private val savedRecipeDao: FavoritesDao,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+  private val historyDao: HistoryDao,
+  private val savedRecipeDao: FavoritesDao,
+  @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : IHistoryRemote {
 
-    override suspend fun getHistory(): List<History> {
-        return withContext(dispatcher) {
-            historyDao.historyRecipes ?: emptyList()
-        }
-    }
+  override suspend fun getHistory(): List<History> = withContext(dispatcher) {
+    historyDao.historyRecipes ?: emptyList()
+  }
 
-    override suspend fun likeRecipe(favorite: Favorites): History {
-        val recipe = favorite.recipe
-        return withContext(dispatcher) {
-            if (savedRecipeDao.recipeExists(recipe)) {
-                savedRecipeDao.delete(recipe)
-                historyDao.updateLike(recipe, false)
-            } else {
-                savedRecipeDao.insertLikedRecipe(favorite)
-                historyDao.updateLike(recipe, true)
-            }
-            historyDao.getHistoryRecipe(recipe) ?: History(recipe, favorite.dateBrewed, true)
-        }
+  override suspend fun likeRecipe(favorite: Favorites): History {
+    val recipe = favorite.recipe
+    return withContext(dispatcher) {
+      if (savedRecipeDao.recipeExists(recipe)) {
+        savedRecipeDao.delete(recipe)
+        historyDao.updateLike(recipe, false)
+      } else {
+        savedRecipeDao.insertLikedRecipe(favorite)
+        historyDao.updateLike(recipe, true)
+      }
+      historyDao.getHistoryRecipe(recipe) ?: History(recipe, favorite.dateBrewed, true)
     }
+  }
 
-    override suspend fun clearHistory() {
-        return withContext(dispatcher) {
-            historyDao.deleteAll()
-        }
-    }
+  override suspend fun clearHistory() = withContext(dispatcher) {
+    historyDao.deleteAll()
+  }
 }

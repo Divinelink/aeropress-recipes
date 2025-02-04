@@ -7,9 +7,14 @@ import androidx.annotation.StringRes
 import com.divinelink.aeropress.recipes.R
 
 sealed class EmptyType<T : MappingModel>(
-    @StringRes var text: Int,
-    @DrawableRes var image: Int
+  @StringRes var text: Int,
+  @DrawableRes var image: Int,
 ) : EmptyMappingModel {
-    object EmptyHistory : EmptyType<EmptyHistory>(text = R.string.empty_history_text, image = R.drawable.ic_history_fragment_image)
-    object EmptyFavorites : EmptyType<EmptyFavorites>(text = R.string.empty_favorites_text, image = R.drawable.ic_heart)
+  object EmptyHistory : EmptyType<EmptyHistory>(
+    text = R.string.empty_history_text,
+    image = R.drawable.ic_history_fragment_image,
+  )
+
+  object EmptyFavorites :
+    EmptyType<EmptyFavorites>(text = R.string.empty_favorites_text, image = R.drawable.ic_heart)
 }

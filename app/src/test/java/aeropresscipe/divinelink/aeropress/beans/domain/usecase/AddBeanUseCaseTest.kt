@@ -21,90 +21,90 @@ import java.time.LocalDate
 @ExperimentalCoroutinesApi
 class AddBeanUseCaseTest {
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-    private val testDispatcher = mainDispatcherRule.testDispatcher
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+  private val testDispatcher = mainDispatcherRule.testDispatcher
 
-    private lateinit var beanRepository: FakeBeanRepository
+  private lateinit var beanRepository: FakeBeanRepository
 
-    private val bean = Bean(
-        id = "0",
-        name = "beanName",
-        roasterName = "roasterName",
-        origin = "originName",
-        roastDate = LocalDate.now(),
-        roastLevel = RoastLevel.Dark,
-        process = ProcessMethod.Honey,
-        rating = 0,
-        tastingNotes = "",
-        additionalNotes = ""
+  private val bean = Bean(
+    id = "0",
+    name = "beanName",
+    roasterName = "roasterName",
+    origin = "originName",
+    roastDate = LocalDate.now(),
+    roastLevel = RoastLevel.Dark,
+    process = ProcessMethod.Honey,
+    rating = 0,
+    tastingNotes = "",
+    additionalNotes = "",
+  )
+
+  @Before
+  fun setUp() {
+    beanRepository = FakeBeanRepository()
+  }
+
+  @Test
+  fun testAddBeanSuccessfully() = runTest {
+    val addBeanResponse = Result.Success(Unit)
+
+    beanRepository.givenAddBeanResult(
+      bean = bean,
+      beanResult = addBeanResponse,
     )
 
-    @Before
-    fun setUp() {
-        beanRepository = FakeBeanRepository()
-    }
+    val useCase = AddBeanUseCase(beanRepository.mock, testDispatcher)
+    val result = useCase(bean)
 
-    @Test
-    fun testAddBeanSuccessfully() = runTest {
-        val addBeanResponse = Result.Success(Unit)
+    assertTrue(result.data == AddBeanResult.Success)
+  }
 
-        beanRepository.givenAddBeanResult(
-            bean = bean,
-            beanResult = addBeanResponse
-        )
+  @Test
+  fun testAddBeanFailure() = runTest {
+    val addBeanResponse = Result.Error(
+      Exception("Damn it"),
+    )
 
-        val useCase = AddBeanUseCase(beanRepository.mock, testDispatcher)
-        val result = useCase(bean)
+    beanRepository.givenAddBeanResult(
+      bean = bean,
+      beanResult = addBeanResponse,
+    )
 
-        assertTrue(result.data == AddBeanResult.Success)
-    }
+    val useCase = AddBeanUseCase(beanRepository.mock, testDispatcher)
+    val result = useCase(bean)
+    assertTrue(result.data == AddBeanResult.Failure.Unknown)
+  }
 
-    @Test
-    fun testAddBeanFailure() = runTest {
-        val addBeanResponse = Result.Error(
-            Exception("Damn it")
-        )
+  @Test
+  fun testAddBeanLoading() = runTest {
+    val addBeanResponse = Result.Loading
 
-        beanRepository.givenAddBeanResult(
-            bean = bean,
-            beanResult = addBeanResponse
-        )
+    beanRepository.givenAddBeanResult(
+      bean = bean,
+      beanResult = addBeanResponse,
+    )
 
-        val useCase = AddBeanUseCase(beanRepository.mock, testDispatcher)
-        val result = useCase(bean)
-        assertTrue(result.data == AddBeanResult.Failure.Unknown)
-    }
+    val useCase = AddBeanUseCase(beanRepository.mock, testDispatcher)
+    val result = useCase(bean)
 
-    @Test
-    fun testAddBeanLoading() = runTest {
-        val addBeanResponse = Result.Loading
+    assertThat(result).isInstanceOf(Result.Error::class.java)
+  }
 
-        beanRepository.givenAddBeanResult(
-            bean = bean,
-            beanResult = addBeanResponse
-        )
+  @Test
+  fun `on empty bean name I expect EmptyName Error`() = runTest {
+    val addBeanResponse = Result.Error(
+      Exception("Empty Name"),
+    )
 
-        val useCase = AddBeanUseCase(beanRepository.mock, testDispatcher)
-        val result = useCase(bean)
+    beanRepository.givenAddBeanResult(
+      bean = bean.copy(name = ""),
+      beanResult = addBeanResponse,
+    )
 
-        assertThat(result).isInstanceOf(Result.Error::class.java)
-    }
+    val useCase = AddBeanUseCase(beanRepository.mock, testDispatcher)
+    val result = useCase(bean.copy(name = ""))
 
-    @Test
-    fun `on empty bean name I expect EmptyName Error`() = runTest {
-        val addBeanResponse = Result.Error(
-            Exception("Empty Name")
-        )
-
-        beanRepository.givenAddBeanResult(
-            bean = bean.copy(name = ""),
-            beanResult = addBeanResponse,
-        )
-
-        val useCase = AddBeanUseCase(beanRepository.mock, testDispatcher)
-        val result = useCase(bean.copy(name = ""))
-
-        assertThat(result.data).isEqualTo(AddBeanResult.Failure.EmptyName)
-    }
+    assertThat(result.data).isEqualTo(AddBeanResult.Failure.EmptyName)
+  }
 }

@@ -12,36 +12,34 @@ import org.mockito.kotlin.whenever
  */
 class FakeBeanRepository {
 
-    val mock: BeanRepository = mock()
+  val mock: BeanRepository = mock()
 
-    suspend fun givenAddBeanResult(
-        bean: Bean,
-        beanResult: Result<Unit>,
-    ) {
-        whenever(mock.addBean(bean)).thenReturn(beanResult)
-    }
+  suspend fun givenAddBeanResult(
+    bean: Bean,
+    beanResult: Result<Unit>,
+  ) {
+    whenever(mock.addBean(bean)).thenReturn(beanResult)
+  }
 
-    suspend fun mockUpdateBeanResult(
-        bean: Bean,
-        beanResult: Result<Unit>,
-    ) {
-        whenever(mock.updateBean(bean)).thenReturn(beanResult)
-    }
+  suspend fun mockUpdateBeanResult(
+    bean: Bean,
+    beanResult: Result<Unit>,
+  ) {
+    whenever(mock.updateBean(bean)).thenReturn(beanResult)
+  }
 
-    fun mockFetchAllBeansResult(
-        response: Result<List<Bean>>,
-    ) {
-        whenever(
-            mock.fetchAllBeans()
-        ).thenReturn(
-            flowOf(response)
-        )
-    }
+  fun mockFetchAllBeansResult(response: Result<List<Bean>>) {
+    whenever(
+      mock.fetchAllBeans(),
+    ).thenReturn(
+      flowOf(response),
+    )
+  }
 
-    suspend fun mockRemoveBeanResult(
-        bean: Bean,
-        beanResult: Result<Unit>,
-    ) {
-        whenever(mock.removeBean(bean)).thenReturn(beanResult)
-    }
+  suspend fun mockRemoveBeanResult(
+    bean: Bean,
+    beanResult: Result<Unit>,
+  ) {
+    whenever(mock.removeBean(bean)).thenReturn(beanResult)
+  }
 }

@@ -21,7 +21,7 @@ fun AeropressTheme(
   MaterialTheme(
     colorScheme = colors,
     typography = AppTypography,
-    content = content
+    content = content,
   )
 }
 

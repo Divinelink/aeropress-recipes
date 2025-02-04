@@ -57,7 +57,7 @@ fun DatePicker(
 
             showDatePicker = false
             onValueChange(selectedLocalDate)
-          }
+          },
         ) {
           Text(stringResource(R.string.ok))
         }
@@ -66,7 +66,7 @@ fun DatePicker(
         TextButton(onClick = { showDatePicker = false }) {
           Text(stringResource(R.string.cancel))
         }
-      }
+      },
     ) {
       DatePicker(state = datePickerState)
     }
@@ -83,7 +83,7 @@ fun DatePicker(
     },
     label = label,
     trailingIcon = trailingIcon,
-    onValueChange = { /* No-op, as clicking should open date picker */ }
+    onValueChange = { /* No-op, as clicking should open date picker */ },
   )
 }
 

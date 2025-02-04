@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <item
-        android:id="@+id/brew"
-        android:background="@drawable/swipe_action_brew"
-        android:icon="@drawable/ic_timer"
-        android:iconTint="@color/colorOnPrimary"
-        android:title="@string/brew"
-        android:titleTextColor="@color/colorOnPrimary"
-        tools:ignore="MenuTitle,UnusedAttribute" />
+  <item
+      android:id="@+id/brew"
+      android:background="@drawable/swipe_action_brew"
+      android:icon="@drawable/ic_timer"
+      android:iconTint="@color/colorOnPrimary"
+      android:title="@string/brew"
+      android:titleTextColor="@color/colorOnPrimary"
+      tools:ignore="MenuTitle,UnusedAttribute" />
 
 </menu>

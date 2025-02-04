@@ -11,47 +11,47 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class HomeRepository @Inject constructor(
-    private val remote: HomeRemote,
+  private val remote: HomeRemote,
 ) : BaseRepository() {
 
-    fun getRecipe(
-        completionBlock: (DiceDomain) -> Unit,
-    ) = performTransaction(completionBlock) { remote.getRecipe() }
+  fun getRecipe(
+    completionBlock: (DiceDomain) -> Unit,
+  ) = performTransaction(completionBlock) { remote.getRecipe() }
 
-    fun updateRecipe(
-        recipe: Recipe,
-        update: Boolean,
-        completionBlock: (DiceDomain) -> Unit,
-    ) = performTransaction(completionBlock) { remote.updateRecipe(recipe, update) }
+  fun updateRecipe(
+    recipe: Recipe,
+    update: Boolean,
+    completionBlock: (DiceDomain) -> Unit,
+  ) = performTransaction(completionBlock) { remote.updateRecipe(recipe, update) }
 }
 
 interface IHomeRemote {
-    suspend fun getRecipe(): DiceDomain
-    suspend fun updateRecipe(recipe: Recipe, update: Boolean): DiceDomain
+  suspend fun getRecipe(): DiceDomain
+  suspend fun updateRecipe(recipe: Recipe, update: Boolean): DiceDomain
 }
 
 open class HomeRemote @Inject constructor(
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
-    private val recipeDao: RecipeDao,
+  @IoDispatcher private val dispatcher: CoroutineDispatcher,
+  private val recipeDao: RecipeDao,
 ) : IHomeRemote {
 
-    override suspend fun getRecipe(): DiceDomain {
-        return withContext(dispatcher) {
-            return@withContext recipeDao.getRecipe()
-        }
+  override suspend fun getRecipe(): DiceDomain {
+    return withContext(dispatcher) {
+      return@withContext recipeDao.getRecipe()
     }
+  }
 
-    override suspend fun updateRecipe(
-        recipe: Recipe,
-        update: Boolean,
-    ): DiceDomain {
-        return withContext(dispatcher) {
-            if (update) {
-                recipeDao.updateRecipe(recipe)
-            }
-            val updatedRecipe = recipeDao.getRecipe()
-            Timber.d("Recipe updated with id ${updatedRecipe.id}")
-            return@withContext updatedRecipe
-        }
+  override suspend fun updateRecipe(
+    recipe: Recipe,
+    update: Boolean,
+  ): DiceDomain {
+    return withContext(dispatcher) {
+      if (update) {
+        recipeDao.updateRecipe(recipe)
+      }
+      val updatedRecipe = recipeDao.getRecipe()
+      Timber.d("Recipe updated with id ${updatedRecipe.id}")
+      return@withContext updatedRecipe
     }
+  }
 }

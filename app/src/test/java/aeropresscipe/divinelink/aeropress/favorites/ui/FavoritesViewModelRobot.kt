@@ -14,50 +14,51 @@ import org.junit.Rule
 @OptIn(ExperimentalCoroutinesApi::class)
 class FavoritesViewModelRobot {
 
-    private lateinit var viewModel: FavoritesViewModel
+  private lateinit var viewModel: FavoritesViewModel
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-    private val testDispatcher = mainDispatcherRule.testDispatcher
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+  private val testDispatcher = mainDispatcherRule.testDispatcher
 
-    private val fakeFavoritesRepository = FakeFavoritesRepository()
+  private val fakeFavoritesRepository = FakeFavoritesRepository()
 
-    fun buildViewModel() = apply {
-        viewModel = FavoritesViewModel(
-            deleteFavoriteUseCase = DeleteFavoriteUseCase(fakeFavoritesRepository.mock, testDispatcher),
-            fetchAllFavoritesUseCase = FetchAllFavoritesUseCase(fakeFavoritesRepository.mock, testDispatcher)
-        )
-    }
+  fun buildViewModel() = apply {
+    viewModel = FavoritesViewModel(
+      deleteFavoriteUseCase = DeleteFavoriteUseCase(fakeFavoritesRepository.mock, testDispatcher),
+      fetchAllFavoritesUseCase = FetchAllFavoritesUseCase(
+        fakeFavoritesRepository.mock,
+        testDispatcher,
+      ),
+    )
+  }
 
-    fun assertViewState(expectedViewState: FavoritesViewState) = apply {
-        val actualViewState = viewModel.viewState.value
-        assertThat(actualViewState).isEqualTo(expectedViewState)
-    }
+  fun assertViewState(expectedViewState: FavoritesViewState) = apply {
+    val actualViewState = viewModel.viewState.value
+    assertThat(actualViewState).isEqualTo(expectedViewState)
+  }
 
-    fun assertNotEqualViewState(expectedViewState: FavoritesViewState) = apply {
-        val actualViewState = viewModel.viewState.value
-        assertThat(actualViewState).isNotEqualTo(expectedViewState)
-    }
+  fun assertNotEqualViewState(expectedViewState: FavoritesViewState) = apply {
+    val actualViewState = viewModel.viewState.value
+    assertThat(actualViewState).isNotEqualTo(expectedViewState)
+  }
 
-    fun mockFetchAllFavorites(
-        response: Result<List<Favorites>>,
-    ) = apply {
-        fakeFavoritesRepository.mockFetchAllFavoritesResult(response)
-    }
+  fun mockFetchAllFavorites(response: Result<List<Favorites>>) = apply {
+    fakeFavoritesRepository.mockFetchAllFavoritesResult(response)
+  }
 
-    fun onRefreshClick() = apply {
-        viewModel.refresh()
-    }
+  fun onRefreshClick() = apply {
+    viewModel.refresh()
+  }
 
-    fun onStartBrewClick(recipe: Recipe) = apply {
-        viewModel.startBrewClicked(recipe)
-    }
+  fun onStartBrewClick(recipe: Recipe) = apply {
+    viewModel.startBrewClicked(recipe)
+  }
 
-    fun deleteRecipe(recipe: Recipe) = apply {
-        viewModel.deleteRecipe(recipe)
-    }
+  fun deleteRecipe(recipe: Recipe) = apply {
+    viewModel.deleteRecipe(recipe)
+  }
 
-    fun onBrewStarted() = apply {
-        viewModel.brewStarted()
-    }
+  fun onBrewStarted() = apply {
+    viewModel.brewStarted()
+  }
 }

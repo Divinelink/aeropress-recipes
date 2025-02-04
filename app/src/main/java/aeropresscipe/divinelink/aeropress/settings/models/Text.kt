@@ -16,39 +16,44 @@ import com.divinelink.aeropress.recipes.databinding.DslTextPreferenceBinding
 /**
  * A Text without any padding, allowing for exact padding to be handed in at runtime.
  */
-data class Text(
-    val text: DSLSettingsText,
-) {
+data class Text(val text: DSLSettingsText) {
 
-    companion object {
-        fun register(adapter: MappingAdapter) {
-            adapter.registerFactory(LayoutFactory({ i: LayoutInflater, r: ViewGroup -> ViewHolder(DslTextPreferenceBinding.inflate(i, r, false)) }))
-        }
+  companion object {
+    fun register(adapter: MappingAdapter) {
+      adapter.registerFactory(
+        LayoutFactory(
+          { i: LayoutInflater, r: ViewGroup ->
+            ViewHolder(
+              DslTextPreferenceBinding.inflate(i, r, false),
+            )
+          },
+        ),
+      )
     }
+  }
 
-    class Model(val paddableText: Text) : PreferenceModel<Model>() {
-        override fun areItemsTheSame(newItem: Any): Boolean {
-            return true
-        }
+  class Model(val paddableText: Text) : PreferenceModel<Model>() {
+    override fun areItemsTheSame(newItem: Any): Boolean = true
 
-        override fun areContentsTheSame(newItem: Any): Boolean {
-            newItem as Model
-            return super.areContentsTheSame(newItem) && newItem.paddableText == paddableText
-        }
+    override fun areContentsTheSame(newItem: Any): Boolean {
+      newItem as Model
+      return super.areContentsTheSame(newItem) && newItem.paddableText == paddableText
     }
+  }
 
-    class ViewHolder(binding: DslTextPreferenceBinding) : MappingViewHolder<Model>(binding.root) {
-        private val text: TextView = binding.title
+  class ViewHolder(binding: DslTextPreferenceBinding) : MappingViewHolder<Model>(binding.root) {
+    private val text: TextView = binding.title
 
-        override fun bind(model: Model) {
-            text.text = model.paddableText.text.resolve(context)
+    override fun bind(model: Model) {
+      text.text = model.paddableText.text.resolve(context)
 
-            val clickableSpans = (text.text as? Spanned)?.getSpans(0, text.text.length, ClickableSpan::class.java)
-            if (clickableSpans?.isEmpty() == false) {
-                text.movementMethod = LinkMovementMethod.getInstance()
-            } else {
-                text.movementMethod = null
-            }
-        }
+      val clickableSpans =
+        (text.text as? Spanned)?.getSpans(0, text.text.length, ClickableSpan::class.java)
+      if (clickableSpans?.isEmpty() == false) {
+        text.movementMethod = LinkMovementMethod.getInstance()
+      } else {
+        text.movementMethod = null
+      }
     }
+  }
 }

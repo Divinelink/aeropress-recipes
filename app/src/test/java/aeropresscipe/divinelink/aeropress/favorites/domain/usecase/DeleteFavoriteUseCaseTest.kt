@@ -15,34 +15,34 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class DeleteFavoriteUseCaseTest {
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-    private val testDispatcher = mainDispatcherRule.testDispatcher
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+  private val testDispatcher = mainDispatcherRule.testDispatcher
 
-    private var favoritesRepository = FakeFavoritesRepository()
+  private var favoritesRepository = FakeFavoritesRepository()
 
-    @Test
-    fun deleteFavoriteRecipe() = runTest {
-        val favoriteRecipe = Favorites(
-            recipe = Recipe(
-                diceTemperature = 50,
-                brewTime = 30,
-                bloomTime = 5,
-                bloomWater = 100,
-                coffeeAmount = 20,
-                brewWaterAmount = 10,
-                grindSize = CoffeeGrindSize.COARSE,
-                brewMethod = BrewMethod.INVERTED,
-            ),
-            dateBrewed = ""
-        )
+  @Test
+  fun deleteFavoriteRecipe() = runTest {
+    val favoriteRecipe = Favorites(
+      recipe = Recipe(
+        diceTemperature = 50,
+        brewTime = 30,
+        bloomTime = 5,
+        bloomWater = 100,
+        coffeeAmount = 20,
+        brewWaterAmount = 10,
+        grindSize = CoffeeGrindSize.COARSE,
+        brewMethod = BrewMethod.INVERTED,
+      ),
+      dateBrewed = "",
+    )
 
-        favoritesRepository.deleteFavoritesResult[favoriteRecipe.recipe] = Result.Success(Unit)
+    favoritesRepository.deleteFavoritesResult[favoriteRecipe.recipe] = Result.Success(Unit)
 
-        val useCase = DeleteFavoriteUseCase(
-            repository = favoritesRepository,
-            dispatcher = testDispatcher,
-        )
-        useCase.invoke(favoriteRecipe.recipe)
-    }
+    val useCase = DeleteFavoriteUseCase(
+      repository = favoritesRepository,
+      dispatcher = testDispatcher,
+    )
+    useCase.invoke(favoriteRecipe.recipe)
+  }
 }

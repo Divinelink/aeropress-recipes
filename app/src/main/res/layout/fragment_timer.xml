@@ -7,74 +7,74 @@
     android:clipChildren="false"
     tools:context=".timer.TimerFragment">
 
-    <TextView
-        android:id="@+id/timer_header"
-        style="@style/Text.TitleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="XXX Phase!" />
+  <TextView
+      android:id="@+id/timer_header"
+      style="@style/Text.TitleLarge"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:gravity="center"
+      android:textAlignment="center"
+      app:layout_constraintBottom_toTopOf="@+id/progressBar"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="XXX Phase!" />
 
-    <TextView
-        android:id="@+id/water_description"
-        style="@style/Text.TitleLarge"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timer_header"
+  <TextView
+      android:id="@+id/water_description"
+      style="@style/Text.TitleLarge"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_marginStart="16dp"
+      android:layout_marginEnd="16dp"
+      android:gravity="center"
+      android:textAlignment="center"
+      android:textSize="22sp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/timer_header"
 
-        tools:text="Pour in Xg amount of water" />
-
-
-    <TextView
-        android:id="@+id/brewingTimeTextView"
-        style="@style/Text.DisplayLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        app:layout_constraintBottom_toTopOf="@id/likeButtonCard"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/timer_header"
-        tools:text="00:10" />
+      tools:text="Pour in Xg amount of water" />
 
 
-    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
-        android:id="@+id/progressBar"
-        style="@style/Widget.MaterialProgressBar.ProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minWidth="300dp"
-        android:minHeight="300dp"
-        app:layout_constraintBottom_toTopOf="@id/likeButtonCard"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/timer_header"
-        app:mpb_progressTint="@color/colorPrimary" />
+  <TextView
+      android:id="@+id/brewingTimeTextView"
+      style="@style/Text.DisplayLarge"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_margin="10dp"
+      app:layout_constraintBottom_toTopOf="@id/likeButtonCard"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/timer_header"
+      tools:text="00:10" />
 
-    <aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView
-        android:id="@+id/likeButtonCard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="68dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="4dp"
-        app:layout_constraintBottom_toBottomOf="parent" />
+
+  <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+      android:id="@+id/progressBar"
+      style="@style/Widget.MaterialProgressBar.ProgressBar"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:minWidth="300dp"
+      android:minHeight="300dp"
+      app:layout_constraintBottom_toTopOf="@id/likeButtonCard"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/timer_header"
+      app:mpb_progressTint="@color/colorPrimary" />
+
+  <aeropresscipe.divinelink.aeropress.components.saverecipecard.SaveRecipeCardView
+      android:id="@+id/likeButtonCard"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="32dp"
+      android:layout_marginEnd="32dp"
+      android:layout_marginBottom="68dp"
+      app:cardCornerRadius="16dp"
+      app:cardElevation="4dp"
+      app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

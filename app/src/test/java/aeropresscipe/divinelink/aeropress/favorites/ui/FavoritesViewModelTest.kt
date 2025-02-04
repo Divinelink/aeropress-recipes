@@ -13,189 +13,189 @@ import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class FavoritesViewModelTest {
-    private val testRobot = FavoritesViewModelRobot()
+  private val testRobot = FavoritesViewModelRobot()
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
 
-    private val favorite = Favorites(
-        recipe = Recipe(
-            diceTemperature = 0,
-            brewTime = 0,
-            bloomTime = 0,
-            bloomWater = 0,
-            coffeeAmount = 0,
-            brewWaterAmount = 0,
-            grindSize = CoffeeGrindSize.COARSE,
-            brewMethod = BrewMethod.INVERTED
+  private val favorite = Favorites(
+    recipe = Recipe(
+      diceTemperature = 0,
+      brewTime = 0,
+      bloomTime = 0,
+      bloomWater = 0,
+      coffeeAmount = 0,
+      brewWaterAmount = 0,
+      grindSize = CoffeeGrindSize.COARSE,
+      brewMethod = BrewMethod.INVERTED,
+    ),
+    dateBrewed = "",
+  )
+
+  private val favoritesList = listOf(favorite)
+
+  @Test
+  fun successfulInitialState() = runTest {
+    testRobot
+      .mockFetchAllFavorites(
+        Result.Loading,
+      )
+      .buildViewModel()
+      .assertViewState(FavoritesViewState())
+      .assertNotEqualViewState(FavoritesViewState(isLoading = false))
+  }
+
+  @Test
+  fun `successfully fetch all favorites`() = runTest {
+    testRobot
+      .mockFetchAllFavorites(Result.Success(favoritesList))
+      .buildViewModel()
+      .assertViewState(
+        FavoritesViewState(
+          isLoading = false,
+          recipes = listOf(favorite),
+          errorMessage = null,
+          emptyRecipes = false,
         ),
-        dateBrewed = ""
-    )
+      )
+  }
 
-    private val favoritesList = listOf(favorite)
+  @Test
+  fun `failed fetching all favorites resulting in error state`() = runTest {
+    testRobot
+      .mockFetchAllFavorites(Result.Error(Exception()))
+      .buildViewModel()
+      .assertViewState(
+        FavoritesViewState(
+          isLoading = false,
+          errorMessage = Exception().toString(),
+        ),
+      )
+  }
 
-    @Test
-    fun successfulInitialState() = runTest {
-        testRobot
-            .mockFetchAllFavorites(
-                Result.Loading
-            )
-            .buildViewModel()
-            .assertViewState(FavoritesViewState())
-            .assertNotEqualViewState(FavoritesViewState(isLoading = false))
-    }
+  @Test
+  fun `given a list of recipes, when I click refresh then I expect success state`() = runTest {
+    testRobot
+      .mockFetchAllFavorites(
+        Result.Success(favoritesList),
+      )
+      .buildViewModel()
+      .onRefreshClick()
+      .assertViewState(
+        FavoritesViewState(
+          isLoading = false,
+          recipes = listOf(favorite),
+          emptyRecipes = false,
+        ),
+      )
+  }
 
-    @Test
-    fun `successfully fetch all favorites`() = runTest {
-        testRobot
-            .mockFetchAllFavorites(Result.Success(favoritesList))
-            .buildViewModel()
-            .assertViewState(
-                FavoritesViewState(
-                    isLoading = false,
-                    recipes = listOf(favorite),
-                    errorMessage = null,
-                    emptyRecipes = false
-                )
-            )
-    }
+  @Test
+  fun `given empty recipe list, on init, then I expect empty recipes to be true`() = runTest {
+    testRobot
+      .mockFetchAllFavorites(
+        Result.Success(emptyList()),
+      )
+      .buildViewModel()
+      .onRefreshClick()
+      .assertViewState(
+        FavoritesViewState(
+          isLoading = false,
+          emptyRecipes = true,
+        ),
+      )
+  }
 
-    @Test
-    fun `failed fetching all favorites resulting in error state`() = runTest {
-        testRobot
-            .mockFetchAllFavorites(Result.Error(Exception()))
-            .buildViewModel()
-            .assertViewState(
-                FavoritesViewState(
-                    isLoading = false,
-                    errorMessage = Exception().toString()
-                )
-            )
-    }
+  @Test
+  fun `on initial error, when I refresh then I expect success state`() = runTest {
+    testRobot
+      .mockFetchAllFavorites(
+        Result.Error(Exception("Initial error!")),
+      )
+      .buildViewModel()
+      .assertViewState(
+        FavoritesViewState(
+          isLoading = false,
+          recipes = null,
+          errorMessage = Exception("Initial error!").toString(),
+        ),
+      )
+      .mockFetchAllFavorites(
+        Result.Success(favoritesList),
+      )
+      .onRefreshClick()
+      .assertViewState(
+        FavoritesViewState(
+          isLoading = false,
+          emptyRecipes = false,
+          recipes = listOf(favorite),
+          errorMessage = null,
+        ),
+      )
+  }
 
-    @Test
-    fun `given a list of recipes, when I click refresh then I expect success state`() = runTest {
-        testRobot
-            .mockFetchAllFavorites(
-                Result.Success(favoritesList)
-            )
-            .buildViewModel()
-            .onRefreshClick()
-            .assertViewState(
-                FavoritesViewState(
-                    isLoading = false,
-                    recipes = listOf(favorite),
-                    emptyRecipes = false
-                )
-            )
-    }
+  @Test
+  fun `successfully start new brew`() = runTest {
+    testRobot
+      .buildViewModel()
+      .onStartBrewClick(favorite.recipe)
+      .assertViewState(
+        FavoritesViewState(
+          isLoading = false,
+          brewRecipe = favorite.recipe,
+        ),
+      )
+      .onBrewStarted()
+      .assertViewState(
+        FavoritesViewState(
+          isLoading = false,
+          brewRecipe = null,
+        ),
+      )
+  }
 
-    @Test
-    fun `given empty recipe list, on init, then I expect empty recipes to be true`() = runTest {
-        testRobot
-            .mockFetchAllFavorites(
-                Result.Success(emptyList())
-            )
-            .buildViewModel()
-            .onRefreshClick()
-            .assertViewState(
-                FavoritesViewState(
-                    isLoading = false,
-                    emptyRecipes = true
-                )
-            )
-    }
+  //    @Test
+  //    fun `given a list with one item, when I delete recipe, then i expect emptyList`() = runTest {
+  //        testRobot
+  //            .mockFetchAllFavorites(Result.Success(favoritesList))
+  //            .buildViewModel()
+  //            .assertViewState(
+  //                FavoritesViewState(
+  //                    isLoading = false,
+  //                    emptyRecipes = false,
+  //                    recipes = favoritesList,
+  //                    errorMessage = null,
+  //                    brewRecipe = null
+  //                )
+  //            )
+  // //            .mockFetchAllFavorites(Result.Error(Exception()))
+  //            .deleteRecipe(favorite.recipe)
+  //            .assertViewState(
+  //                FavoritesViewState(
+  //                    isLoading = false,
+  //                    emptyRecipes = true,
+  //                    recipes = emptyList(),
+  //                    errorMessage = null,
+  //                    brewRecipe = null
+  //                )
+  //            )
+  //    }
 
-    @Test
-    fun `on initial error, when I refresh then I expect success state`() = runTest {
-        testRobot
-            .mockFetchAllFavorites(
-                Result.Error(Exception("Initial error!"))
-            )
-            .buildViewModel()
-            .assertViewState(
-                FavoritesViewState(
-                    isLoading = false,
-                    recipes = null,
-                    errorMessage = Exception("Initial error!").toString()
-                )
-            )
-            .mockFetchAllFavorites(
-                Result.Success(favoritesList)
-            )
-            .onRefreshClick()
-            .assertViewState(
-                FavoritesViewState(
-                    isLoading = false,
-                    emptyRecipes = false,
-                    recipes = listOf(favorite),
-                    errorMessage = null
-                )
-            )
-    }
-
-    @Test
-    fun `successfully start new brew`() = runTest {
-        testRobot
-            .buildViewModel()
-            .onStartBrewClick(favorite.recipe)
-            .assertViewState(
-                FavoritesViewState(
-                    isLoading = false,
-                    brewRecipe = favorite.recipe
-                )
-            )
-            .onBrewStarted()
-            .assertViewState(
-                FavoritesViewState(
-                    isLoading = false,
-                    brewRecipe = null
-                )
-            )
-    }
-
-    //    @Test
-    //    fun `given a list with one item, when I delete recipe, then i expect emptyList`() = runTest {
-    //        testRobot
-    //            .mockFetchAllFavorites(Result.Success(favoritesList))
-    //            .buildViewModel()
-    //            .assertViewState(
-    //                FavoritesViewState(
-    //                    isLoading = false,
-    //                    emptyRecipes = false,
-    //                    recipes = favoritesList,
-    //                    errorMessage = null,
-    //                    brewRecipe = null
-    //                )
-    //            )
-    // //            .mockFetchAllFavorites(Result.Error(Exception()))
-    //            .deleteRecipe(favorite.recipe)
-    //            .assertViewState(
-    //                FavoritesViewState(
-    //                    isLoading = false,
-    //                    emptyRecipes = true,
-    //                    recipes = emptyList(),
-    //                    errorMessage = null,
-    //                    brewRecipe = null
-    //                )
-    //            )
-    //    }
-
-    //    @Test
-    //    fun `given a list of recipes, when I delete recipe, then i expect a list without that recipe`() = runTest {
-    //        testRobot
-    //            .mockDeleteFavoriteRecipe(
-    //                recipe = favorite.recipe,
-    //                //                response = Result.Success(Unit)
-    //            )
-    //            .buildViewModel()
-    //            .deleteRecipe(favorite.recipe)
-    //            .assertViewState(
-    //                FavoritesViewState(
-    //                    isLoading = false,
-    //                    emptyRecipes = false,
-    //                    recipes = favoritesList
-    //                )
-    //            )
-    //    }
+  //    @Test
+  //    fun `given a list of recipes, when I delete recipe, then i expect a list without that recipe`() = runTest {
+  //        testRobot
+  //            .mockDeleteFavoriteRecipe(
+  //                recipe = favorite.recipe,
+  //                //                response = Result.Success(Unit)
+  //            )
+  //            .buildViewModel()
+  //            .deleteRecipe(favorite.recipe)
+  //            .assertViewState(
+  //                FavoritesViewState(
+  //                    isLoading = false,
+  //                    emptyRecipes = false,
+  //                    recipes = favoritesList
+  //                )
+  //            )
+  //    }
 }

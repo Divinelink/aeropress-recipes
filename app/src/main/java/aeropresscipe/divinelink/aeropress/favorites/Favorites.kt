@@ -7,18 +7,18 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "SavedRecipes")
 data class Favorites(
-    var recipe: Recipe,
-    var dateBrewed: String
+  var recipe: Recipe,
+  var dateBrewed: String,
 ) : MappingModel {
-    @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
+  @PrimaryKey(autoGenerate = true)
+  var id: Int = 0
 
-    override fun areItemsTheSame(newItem: Any): Boolean {
-        newItem as Favorites
-        return id == newItem.id
-    }
+  override fun areItemsTheSame(newItem: Any): Boolean {
+    newItem as Favorites
+    return id == newItem.id
+  }
 
-    override fun areContentsTheSame(newItem: Any): Boolean {
-        return hashCode() == newItem.hashCode()
-    }
+  override fun areContentsTheSame(newItem: Any): Boolean {
+    return hashCode() == newItem.hashCode()
+  }
 }

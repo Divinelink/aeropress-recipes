@@ -44,202 +44,207 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class RecipeFragment :
-    Fragment(),
-    IRecipeViewModel,
-    GenerateRecipeStateHandler,
-    TimerViewCallback {
-    private var binding: FragmentRecipeBinding? = null
+  Fragment(),
+  IRecipeViewModel,
+  GenerateRecipeStateHandler,
+  TimerViewCallback {
+  private var binding: FragmentRecipeBinding? = null
 
-    @Inject
-    lateinit var assistedFactory: RecipeViewModelAssistedFactory
-    private lateinit var viewModel: RecipeViewModel
-    private lateinit var callback: HistoryFragment.Callback
-    private val parentViewModel: HomeViewModel by activityViewModels()
+  @Inject
+  lateinit var assistedFactory: RecipeViewModelAssistedFactory
+  private lateinit var viewModel: RecipeViewModel
+  private lateinit var callback: HistoryFragment.Callback
+  private val parentViewModel: HomeViewModel by activityViewModels()
 
-    private lateinit var fadeInAnimation: Animation
-    private lateinit var adapterAnimation: Animation
+  private lateinit var fadeInAnimation: Animation
+  private lateinit var adapterAnimation: Animation
 
-    private val currentMoment: Instant by lazy { Clock.System.now() }
-    private val datetime: LocalDateTime by lazy { currentMoment.toLocalDateTime(TimeZone.currentSystemDefault()) }
+  private val currentMoment: Instant by lazy { Clock.System.now() }
+  private val datetime: LocalDateTime by lazy { currentMoment.toLocalDateTime(TimeZone.currentSystemDefault()) }
 
-    private var lottieFavorite: LottieAnimationView? = null
+  private var lottieFavorite: LottieAnimationView? = null
 
-    @Px
-    private var coordinatorPadding: Int = 0
+  @Px
+  private var coordinatorPadding: Int = 0
 
-    var refresh: Boolean = false
+  var refresh: Boolean = false
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentRecipeBinding.inflate(inflater, container, false)
-        val view = binding?.root
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?,
+  ): View? {
+    binding = FragmentRecipeBinding.inflate(inflater, container, false)
+    val view = binding?.root
 
-        val viewModelFactory = RecipeViewModelFactory(assistedFactory, WeakReference<IRecipeViewModel>(this))
-        viewModel = ViewModelProvider(this, viewModelFactory)[RecipeViewModel::class.java]
-        viewModel.delegate = WeakReference(this)
-        return view
+    val viewModelFactory =
+      RecipeViewModelFactory(assistedFactory, WeakReference<IRecipeViewModel>(this))
+    viewModel = ViewModelProvider(this, viewModelFactory)[RecipeViewModel::class.java]
+    viewModel.delegate = WeakReference(this)
+    return view
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    Timber.d("onViewCreated")
+    viewModel.init(datetime.hour)
+    val favoriteMenuItem = binding?.toolbar?.menu?.findItem(R.id.favorite)
+    favoriteMenuItem?.setActionView(R.layout.layout_favorite_item)
+    lottieFavorite = favoriteMenuItem?.actionView as LottieAnimationView?
+
+    LottieHelper.updateLikeButton(lottieFavorite)
+
+    binding?.toolbar?.addSystemWindowInsetToMargin(top = true)
+
+    fadeInAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.initiliaze_animation)
+    adapterAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.adapter_anim)
+    binding?.coordinator?.padding(bottom = coordinatorPadding)
+    initListeners()
+  }
+
+  override fun onResume() {
+    super.onResume()
+    Timber.d("Resume")
+    viewModel.getRecipe(refresh)
+  }
+
+  override fun updateBottomPadding(bottomPadding: Int) {
+    coordinatorPadding = bottomPadding
+    binding?.coordinator?.updatePaddingAnimator(bottom = bottomPadding)
+  }
+
+  override fun updateState(state: RecipeState) {
+    when (state) {
+      is RecipeState.InitialState -> handleInitialState()
+      is RecipeState.ShowAlreadyBrewingState -> handleShowAlreadyBrewingState()
+      is RecipeState.ShowRecipeState -> handleShowRecipeState(state)
+      is RecipeState.RefreshRecipeState -> handleRefreshRecipeState(state)
+      is RecipeState.StartTimerState -> handleStartTimerState(state)
+      is RecipeState.HideResumeButtonState -> handleHideResumeButtonState()
+      is RecipeState.UpdateToolbarState -> handleUpdateToolbarState(state)
+      is RecipeState.ShowSnackBar -> handleShowSnackBar(state)
+      is RecipeState.UpdateSavedIndicator -> handleUpdateSavedIndicator(state)
+      is RecipeState.RecipeRemovedState -> handleRecipeRemovedState()
+      is RecipeState.RecipeSavedState -> handleRecipeSavedState()
+    }
+  }
+
+  override fun handleHideResumeButtonState() {
+    parentViewModel.generateRecipe()
+  }
+
+  override fun handleInitialState() {
+    // Intentionally Blank.
+  }
+
+  override fun handleShowAlreadyBrewingState() {
+    Notification.make(binding?.generateRecipeButton, R.string.alreadyBrewingDialog)
+      .setAnchorView((activity as HomeActivity).findViewById(R.id.bottom_navigation))
+      .show()
+  }
+
+  override fun handleShowRecipeState(state: RecipeState.ShowRecipeState) {
+    Timber.d("Recipe updated. Set refresh to false.")
+    binding?.recipeList?.adapter = RecipeListView(
+      steps = state.steps,
+      context = requireContext(),
+    )
+    refresh = false
+  }
+
+  override fun handleRefreshRecipeState(state: RecipeState.RefreshRecipeState) {
+    binding?.recipeList?.startAnimation(adapterAnimation)
+    viewLifecycleOwner.lifecycleScope.launch {
+      delay(adapterAnimation.duration)
+      binding?.recipeList?.adapter = RecipeListView(
+        steps = state.steps,
+        context = requireContext(),
+      )
+    }
+  }
+
+  override fun handleStartTimerState(state: RecipeState.StartTimerState) {
+    callback.onUpdateRecipe(state.recipe, state.flow, false)
+  }
+
+  override fun handleUpdateToolbarState(state: RecipeState.UpdateToolbarState) {
+    binding?.toolbar?.title = resources.getString(state.title)
+  }
+
+  override fun handleUpdateSavedIndicator(state: RecipeState.UpdateSavedIndicator) {
+    lottieFavorite?.setMinAndMaxFrame(state.frame, state.frame)
+    lottieFavorite?.playAnimation()
+  }
+
+  override fun handleShowSnackBar(state: RecipeState.ShowSnackBar) {
+    Notification
+      .make(
+        view = binding?.generateRecipeButton,
+        text = resources.getString(state.value.string, getString(state.value.favorites)),
+      )
+      .setAnchorView((activity as HomeActivity).findViewById(R.id.bottom_navigation))
+      .show()
+  }
+
+  override fun handleRecipeSavedState() {
+    lottieFavorite?.apply {
+      setMinAndMaxFrame(LIKE_MIN_FRAME, LIKE_MAX_FRAME)
+      playAnimation()
+    }
+  }
+
+  override fun handleRecipeRemovedState() {
+    lottieFavorite?.apply {
+      setMinAndMaxFrame(DISLIKE_MIN_FRAME, DISLIKE_MAX_FRAME)
+      playAnimation()
+    }
+  }
+
+  private fun initListeners() {
+    binding?.apply {
+      generateRecipeButton.setOnClickListener {
+        viewModel.generateRecipe()
+      }
+      generateRecipeButton.setOnLongClickListener {
+        viewModel.forceGenerateRecipe()
+        true
+      }
+      startTimerButton.setOnClickListener {
+        viewModel.startTimer(resume = false)
+      }
+    }
+    lottieFavorite?.setOnClickListener {
+      viewModel.likeRecipe()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        Timber.d("onViewCreated")
-        viewModel.init(datetime.hour)
-        val favoriteMenuItem = binding?.toolbar?.menu?.findItem(R.id.favorite)
-        favoriteMenuItem?.setActionView(R.layout.layout_favorite_item)
-        lottieFavorite = favoriteMenuItem?.actionView as LottieAnimationView?
-
-        LottieHelper.updateLikeButton(lottieFavorite)
-
-        binding?.toolbar?.addSystemWindowInsetToMargin(top = true)
-
-        fadeInAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.initiliaze_animation)
-        adapterAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.adapter_anim)
-        binding?.coordinator?.padding(bottom = coordinatorPadding)
-        initListeners()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Timber.d("Resume")
-        viewModel.getRecipe(refresh)
-    }
-
-    override fun updateBottomPadding(bottomPadding: Int) {
-        coordinatorPadding = bottomPadding
-        binding?.coordinator?.updatePaddingAnimator(bottom = bottomPadding)
-    }
-
-    override fun updateState(state: RecipeState) {
-        when (state) {
-            is RecipeState.InitialState -> handleInitialState()
-            is RecipeState.ShowAlreadyBrewingState -> handleShowAlreadyBrewingState()
-            is RecipeState.ShowRecipeState -> handleShowRecipeState(state)
-            is RecipeState.RefreshRecipeState -> handleRefreshRecipeState(state)
-            is RecipeState.StartTimerState -> handleStartTimerState(state)
-            is RecipeState.HideResumeButtonState -> handleHideResumeButtonState()
-            is RecipeState.UpdateToolbarState -> handleUpdateToolbarState(state)
-            is RecipeState.ShowSnackBar -> handleShowSnackBar(state)
-            is RecipeState.UpdateSavedIndicator -> handleUpdateSavedIndicator(state)
-            is RecipeState.RecipeRemovedState -> handleRecipeRemovedState()
-            is RecipeState.RecipeSavedState -> handleRecipeSavedState()
+    binding?.toolbar?.setOnMenuItemClickListener { item ->
+      when (item.itemId) {
+        R.id.menu_settings -> {
+          startActivity(Intent(context, AppSettingsActivity::class.java))
+          true
         }
+        else -> false
+      }
     }
+  }
 
-    override fun handleHideResumeButtonState() {
-        parentViewModel.generateRecipe()
+  override fun onDestroyView() {
+    super.onDestroyView()
+    binding = null
+  }
+
+  override fun onAttach(context: Context) {
+    super.onAttach(context)
+    callback = context as HistoryFragment.Callback
+  }
+
+  companion object {
+    @JvmStatic
+    fun newInstance(): RecipeFragment {
+      val args = Bundle()
+      val fragment = RecipeFragment()
+      fragment.arguments = args
+      return fragment
     }
-
-    override fun handleInitialState() {
-        // Intentionally Blank.
-    }
-
-    override fun handleShowAlreadyBrewingState() {
-        Notification.make(binding?.generateRecipeButton, R.string.alreadyBrewingDialog)
-            .setAnchorView((activity as HomeActivity).findViewById(R.id.bottom_navigation))
-            .show()
-    }
-
-    override fun handleShowRecipeState(state: RecipeState.ShowRecipeState) {
-        Timber.d("Recipe updated. Set refresh to false.")
-        binding?.recipeList?.adapter = RecipeListView(
-            steps = state.steps,
-            context = requireContext()
-        )
-        refresh = false
-    }
-
-    override fun handleRefreshRecipeState(state: RecipeState.RefreshRecipeState) {
-        binding?.recipeList?.startAnimation(adapterAnimation)
-        viewLifecycleOwner.lifecycleScope.launch {
-            delay(adapterAnimation.duration)
-            binding?.recipeList?.adapter = RecipeListView(
-                steps = state.steps,
-                context = requireContext()
-            )
-        }
-    }
-
-    override fun handleStartTimerState(state: RecipeState.StartTimerState) {
-        callback.onUpdateRecipe(state.recipe, state.flow, false)
-    }
-
-    override fun handleUpdateToolbarState(state: RecipeState.UpdateToolbarState) {
-        binding?.toolbar?.title = resources.getString(state.title)
-    }
-
-    override fun handleUpdateSavedIndicator(state: RecipeState.UpdateSavedIndicator) {
-        lottieFavorite?.setMinAndMaxFrame(state.frame, state.frame)
-        lottieFavorite?.playAnimation()
-    }
-
-    override fun handleShowSnackBar(state: RecipeState.ShowSnackBar) {
-        Notification
-            .make(
-                view = binding?.generateRecipeButton,
-                text = resources.getString(state.value.string, getString(state.value.favorites))
-            )
-            .setAnchorView((activity as HomeActivity).findViewById(R.id.bottom_navigation))
-            .show()
-    }
-
-    override fun handleRecipeSavedState() {
-        lottieFavorite?.apply {
-            setMinAndMaxFrame(LIKE_MIN_FRAME, LIKE_MAX_FRAME)
-            playAnimation()
-        }
-    }
-
-    override fun handleRecipeRemovedState() {
-        lottieFavorite?.apply {
-            setMinAndMaxFrame(DISLIKE_MIN_FRAME, DISLIKE_MAX_FRAME)
-            playAnimation()
-        }
-    }
-
-    private fun initListeners() {
-        binding?.apply {
-            generateRecipeButton.setOnClickListener {
-                viewModel.generateRecipe()
-            }
-            generateRecipeButton.setOnLongClickListener {
-                viewModel.forceGenerateRecipe()
-                true
-            }
-            startTimerButton.setOnClickListener {
-                viewModel.startTimer(resume = false)
-            }
-        }
-        lottieFavorite?.setOnClickListener {
-            viewModel.likeRecipe()
-        }
-
-        binding?.toolbar?.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.menu_settings -> {
-                    startActivity(Intent(context, AppSettingsActivity::class.java))
-                    true
-                }
-                else -> false
-            }
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = context as HistoryFragment.Callback
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(): RecipeFragment {
-            val args = Bundle()
-            val fragment = RecipeFragment()
-            fragment.arguments = args
-            return fragment
-        }
-    }
+  }
 }

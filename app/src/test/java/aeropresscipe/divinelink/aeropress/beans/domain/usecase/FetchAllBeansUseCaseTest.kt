@@ -18,67 +18,67 @@ import kotlin.test.assertEquals
 @ExperimentalCoroutinesApi
 class FetchAllBeansUseCaseTest {
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-    private val testDispatcher = mainDispatcherRule.testDispatcher
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+  private val testDispatcher = mainDispatcherRule.testDispatcher
 
-    private lateinit var beanRepository: FakeBeanRepository
+  private lateinit var beanRepository: FakeBeanRepository
 
-    @Before
-    fun setUp() {
-        beanRepository = FakeBeanRepository()
-    }
+  @Before
+  fun setUp() {
+    beanRepository = FakeBeanRepository()
+  }
 
-    private val beans = (1..10).map { index ->
-        Bean(
-            id = index.toString(),
-            name = "Bean name $index",
-            roasterName = "Roaster name $index",
-            origin = "Origin $index",
-            roastLevel = RoastLevel.Dark,
-            process = ProcessMethod.Honey,
-            rating = 0,
-            tastingNotes = "",
-            additionalNotes = "",
-            roastDate = LocalDate.now(),
-        )
-    }.toMutableList()
+  private val beans = (1..10).map { index ->
+    Bean(
+      id = index.toString(),
+      name = "Bean name $index",
+      roasterName = "Roaster name $index",
+      origin = "Origin $index",
+      roastLevel = RoastLevel.Dark,
+      process = ProcessMethod.Honey,
+      rating = 0,
+      tastingNotes = "",
+      additionalNotes = "",
+      roastDate = LocalDate.now(),
+    )
+  }.toMutableList()
 
-    @Test
-    fun `given success result when fetchAllBeans then I expect success data`() = runTest {
-        val expectedResult = Result.Success<List<Bean>>(
-            beans
-        )
+  @Test
+  fun `given success result when fetchAllBeans then I expect success data`() = runTest {
+    val expectedResult = Result.Success<List<Bean>>(
+      beans,
+    )
 
-        beanRepository.mockFetchAllBeansResult(
-            response = expectedResult
-        )
+    beanRepository.mockFetchAllBeansResult(
+      response = expectedResult,
+    )
 
-        val useCase = FetchAllBeansUseCase(
-            beanRepository = beanRepository.mock,
-            dispatcher = testDispatcher
-        )
-        val result = useCase(Unit)
+    val useCase = FetchAllBeansUseCase(
+      beanRepository = beanRepository.mock,
+      dispatcher = testDispatcher,
+    )
+    val result = useCase(Unit)
 
-        assertEquals(expectedResult, result.first())
-    }
+    assertEquals(expectedResult, result.first())
+  }
 
-    @Test
-    fun `given fail result when fetchAllBeans then I expect exception`() = runTest {
-        val expectedResult = Result.Error(
-            Exception("No data")
-        )
+  @Test
+  fun `given fail result when fetchAllBeans then I expect exception`() = runTest {
+    val expectedResult = Result.Error(
+      Exception("No data"),
+    )
 
-        beanRepository.mockFetchAllBeansResult(
-            response = expectedResult
-        )
+    beanRepository.mockFetchAllBeansResult(
+      response = expectedResult,
+    )
 
-        val useCase = FetchAllBeansUseCase(
-            beanRepository = beanRepository.mock,
-            dispatcher = testDispatcher
-        )
-        val result = useCase(Unit)
+    val useCase = FetchAllBeansUseCase(
+      beanRepository = beanRepository.mock,
+      dispatcher = testDispatcher,
+    )
+    val result = useCase(Unit)
 
-        assertEquals(expectedResult, result.first())
-    }
+    assertEquals(expectedResult, result.first())
+  }
 }

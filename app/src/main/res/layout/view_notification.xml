@@ -9,17 +9,17 @@
     app:cardCornerRadius="8dp"
     app:cardElevation="0dp">
 
-    <TextView
-        android:id="@+id/notification_text"
-        style="@style/Text.LabelMedium"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="start|center"
-        android:paddingStart="16dp"
-        android:paddingTop="12dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="12dp"
-        android:textColor="@color/colorOnPrimaryContainer"
-        tools:text="Custom SnackBar Title" />
+  <TextView
+      android:id="@+id/notification_text"
+      style="@style/Text.LabelMedium"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:gravity="start|center"
+      android:paddingStart="16dp"
+      android:paddingTop="12dp"
+      android:paddingEnd="16dp"
+      android:paddingBottom="12dp"
+      android:textColor="@color/colorOnPrimaryContainer"
+      tools:text="Custom SnackBar Title" />
 
 </androidx.cardview.widget.CardView>

@@ -21,73 +21,73 @@ import kotlin.test.assertEquals
 @ExperimentalCoroutinesApi
 class DeleteBeanUseCaseTest {
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-    private val testDispatcher = mainDispatcherRule.testDispatcher
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+  private val testDispatcher = mainDispatcherRule.testDispatcher
 
-    private lateinit var beanRepository: FakeBeanRepository
+  private lateinit var beanRepository: FakeBeanRepository
 
-    private val bean = Bean(
-        id = "0",
-        name = "beanName",
-        roasterName = "roasterName",
-        origin = "originName",
-        roastDate = LocalDate.now(),
-        roastLevel = RoastLevel.Dark,
-        process = ProcessMethod.Honey,
-        rating = 0,
-        tastingNotes = "",
-        additionalNotes = ""
+  private val bean = Bean(
+    id = "0",
+    name = "beanName",
+    roasterName = "roasterName",
+    origin = "originName",
+    roastDate = LocalDate.now(),
+    roastLevel = RoastLevel.Dark,
+    process = ProcessMethod.Honey,
+    rating = 0,
+    tastingNotes = "",
+    additionalNotes = "",
+  )
+
+  @Before
+  fun setUp() {
+    beanRepository = FakeBeanRepository()
+  }
+
+  @Test
+  fun `successfully remove bean`() = runTest {
+    val removeBeanResponse = Result.Success(Unit)
+
+    beanRepository.mockRemoveBeanResult(
+      bean = bean,
+      beanResult = removeBeanResponse,
     )
 
-    @Before
-    fun setUp() {
-        beanRepository = FakeBeanRepository()
-    }
+    val useCase = DeleteBeanUseCase(beanRepository.mock, testDispatcher)
+    val result = useCase(bean)
 
-    @Test
-    fun `successfully remove bean`() = runTest {
-        val removeBeanResponse = Result.Success(Unit)
+    assertEquals(result.data, AddBeanResult.Success)
+  }
 
-        beanRepository.mockRemoveBeanResult(
-            bean = bean,
-            beanResult = removeBeanResponse
-        )
+  @Test
+  fun testRemoveBeanFailure() = runTest {
+    val removeBeanResponse = Result.Error(
+      Exception("Damn it"),
+    )
 
-        val useCase = DeleteBeanUseCase(beanRepository.mock, testDispatcher)
-        val result = useCase(bean)
+    beanRepository.mockRemoveBeanResult(
+      bean = bean,
+      beanResult = removeBeanResponse,
+    )
 
-        assertEquals(result.data, AddBeanResult.Success)
-    }
+    val useCase = DeleteBeanUseCase(beanRepository.mock, testDispatcher)
+    val result = useCase(bean)
+    assertEquals(result.data, AddBeanResult.Failure.Unknown)
+  }
 
-    @Test
-    fun testRemoveBeanFailure() = runTest {
-        val removeBeanResponse = Result.Error(
-            Exception("Damn it")
-        )
+  @Test
+  fun testRemoveBeanLoading() = runTest {
+    val removeBeanResponse = Result.Loading
 
-        beanRepository.mockRemoveBeanResult(
-            bean = bean,
-            beanResult = removeBeanResponse
-        )
+    beanRepository.mockRemoveBeanResult(
+      bean = bean,
+      beanResult = removeBeanResponse,
+    )
 
-        val useCase = DeleteBeanUseCase(beanRepository.mock, testDispatcher)
-        val result = useCase(bean)
-        assertEquals(result.data, AddBeanResult.Failure.Unknown)
-    }
+    val useCase = DeleteBeanUseCase(beanRepository.mock, testDispatcher)
+    val result = useCase(bean)
 
-    @Test
-    fun testRemoveBeanLoading() = runTest {
-        val removeBeanResponse = Result.Loading
-
-        beanRepository.mockRemoveBeanResult(
-            bean = bean,
-            beanResult = removeBeanResponse
-        )
-
-        val useCase = DeleteBeanUseCase(beanRepository.mock, testDispatcher)
-        val result = useCase(bean)
-
-        Truth.assertThat(result).isInstanceOf(Result.Error::class.java)
-    }
+    Truth.assertThat(result).isInstanceOf(Result.Error::class.java)
+  }
 }

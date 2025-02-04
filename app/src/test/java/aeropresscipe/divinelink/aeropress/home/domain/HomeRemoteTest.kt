@@ -18,71 +18,71 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeRemoteTest {
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-    private val testDispatcher = mainDispatcherRule.testDispatcher
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+  private val testDispatcher = mainDispatcherRule.testDispatcher
 
-    private var recipeDao = FakeRecipeDao()
-    private val homeRemote = HomeRemote(
-        dispatcher = testDispatcher,
-        recipeDao = recipeDao.mock
-    )
+  private var recipeDao = FakeRecipeDao()
+  private val homeRemote = HomeRemote(
+    dispatcher = testDispatcher,
+    recipeDao = recipeDao.mock,
+  )
 
-    private lateinit var repository: HomeRepository
+  private lateinit var repository: HomeRepository
 
-    private val testDice = DiceDomain(
-        recipe = Recipe(
-            diceTemperature = 0,
-            brewTime = 0,
-            bloomTime = 0,
-            bloomWater = 0,
-            coffeeAmount = 0,
-            brewWaterAmount = 0,
-            grindSize = CoffeeGrindSize.COARSE,
-            brewMethod = BrewMethod.STANDARD
-        ),
-        isBrewing = true,
-        timeStartedMillis = 0,
-    )
+  private val testDice = DiceDomain(
+    recipe = Recipe(
+      diceTemperature = 0,
+      brewTime = 0,
+      bloomTime = 0,
+      bloomWater = 0,
+      coffeeAmount = 0,
+      brewWaterAmount = 0,
+      grindSize = CoffeeGrindSize.COARSE,
+      brewMethod = BrewMethod.STANDARD,
+    ),
+    isBrewing = true,
+    timeStartedMillis = 0,
+  )
 
-    @Before
-    fun setUp() {
-        repository = HomeRepository(homeRemote)
-    }
+  @Before
+  fun setUp() {
+    repository = HomeRepository(homeRemote)
+  }
 
-    @Test
-    fun testGetRecipe() = runTest {
-        recipeDao.mockGetRecipe(testDice)
+  @Test
+  fun testGetRecipe() = runTest {
+    recipeDao.mockGetRecipe(testDice)
 
-        val result = homeRemote.getRecipe()
+    val result = homeRemote.getRecipe()
 
-        assertThat(result).isNotNull()
-        recipeDao.verifyGetRecipe()
-    }
+    assertThat(result).isNotNull()
+    recipeDao.verifyGetRecipe()
+  }
 
-    @Test
-    fun testUpdateRecipe_UpdateTrue() = runTest {
-        // Arrange
-        recipeDao.mockUpdateRecipe(testDice.recipe)
-        recipeDao.mockGetRecipe(testDice)
-        // Act
-        val result = homeRemote.updateRecipe(testDice.recipe, true)
+  @Test
+  fun testUpdateRecipe_UpdateTrue() = runTest {
+    // Arrange
+    recipeDao.mockUpdateRecipe(testDice.recipe)
+    recipeDao.mockGetRecipe(testDice)
+    // Act
+    val result = homeRemote.updateRecipe(testDice.recipe, true)
 
-        // Assert
-        assertThat(result).isNotNull()
-        recipeDao.verifyUpdateRecipe(testDice.recipe)
-        recipeDao.verifyGetRecipe()
-    }
+    // Assert
+    assertThat(result).isNotNull()
+    recipeDao.verifyUpdateRecipe(testDice.recipe)
+    recipeDao.verifyGetRecipe()
+  }
 
-    @Test
-    fun testUpdateRecipe_UpdateFalse() = runTest {
-        // Arrange
-        recipeDao.mockGetRecipe(testDice)
-        // Act
-        val result = homeRemote.updateRecipe(testDice.recipe, false)
+  @Test
+  fun testUpdateRecipe_UpdateFalse() = runTest {
+    // Arrange
+    recipeDao.mockGetRecipe(testDice)
+    // Act
+    val result = homeRemote.updateRecipe(testDice.recipe, false)
 
-        // Assert
-        assertThat(result).isNotNull()
-        recipeDao.verifyGetRecipe()
-    }
+    // Assert
+    assertThat(result).isNotNull()
+    recipeDao.verifyGetRecipe()
+  }
 }

@@ -8,26 +8,27 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 
 class ActivityLauncher : IActivityLauncher {
-    private var onActivityResultAction: ((result: ActivityResult) -> Unit)? = null
-    private var launcher: ActivityResultLauncher<Intent>? = null
+  private var onActivityResultAction: ((result: ActivityResult) -> Unit)? = null
+  private var launcher: ActivityResultLauncher<Intent>? = null
 
-    override fun registerLauncher(activity: AppCompatActivity) {
-        launcher = activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                onActivityResultAction?.invoke(it)
-            }
+  override fun registerLauncher(activity: AppCompatActivity) {
+    launcher =
+      activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK) {
+          onActivityResultAction?.invoke(it)
         }
-    }
+      }
+  }
 
-    override fun launchActivity(intent: Intent?, onResult: ((result: ActivityResult) -> Unit)?) {
-        onActivityResultAction = onResult
-        if (intent != null) {
-            launcher?.launch(intent)
-        }
+  override fun launchActivity(intent: Intent?, onResult: ((result: ActivityResult) -> Unit)?) {
+    onActivityResultAction = onResult
+    if (intent != null) {
+      launcher?.launch(intent)
     }
+  }
 }
 
 interface IActivityLauncher {
-    fun registerLauncher(activity: AppCompatActivity)
-    fun launchActivity(intent: Intent?, onResult: ((result: ActivityResult) -> Unit)?)
+  fun registerLauncher(activity: AppCompatActivity)
+  fun launchActivity(intent: Intent?, onResult: ((result: ActivityResult) -> Unit)?)
 }

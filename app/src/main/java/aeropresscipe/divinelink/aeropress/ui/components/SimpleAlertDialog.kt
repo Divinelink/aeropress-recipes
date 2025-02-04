@@ -27,7 +27,7 @@ fun SimpleAlertDialog(
         colors = ButtonDefaults.filledTonalButtonColors(
           contentColor = MaterialTheme.colorScheme.onErrorContainer,
           containerColor = MaterialTheme.colorScheme.errorContainer,
-        )
+        ),
       ) {
         Text(text = confirmText.getString())
       }

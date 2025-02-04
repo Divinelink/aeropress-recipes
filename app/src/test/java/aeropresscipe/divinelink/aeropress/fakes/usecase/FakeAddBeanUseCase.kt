@@ -9,13 +9,13 @@ import org.mockito.kotlin.whenever
 
 class FakeAddBeanUseCase {
 
-    val mock: AddBeanUseCase = mock()
+  val mock: AddBeanUseCase = mock()
 
-    suspend fun mockAddBeanResult(
-        result: Result<AddBeanResult>,
-    ) {
-        whenever(mock.invoke(any())).thenReturn(result)
-    }
+  suspend fun mockAddBeanResult(
+    result: Result<AddBeanResult>,
+  ) {
+    whenever(mock.invoke(any())).thenReturn(result)
+  }
 }
 
 /* class FakeAddBeanUseCase @Inject constructor(

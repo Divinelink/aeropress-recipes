@@ -12,52 +12,46 @@ import org.junit.Rule
 @OptIn(ExperimentalCoroutinesApi::class)
 class BeansTrackerViewModelRobot {
 
-    private lateinit var viewModel: BeansTrackerViewModel
+  private lateinit var viewModel: BeansTrackerViewModel
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-    private val testDispatcher = mainDispatcherRule.testDispatcher
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+  private val testDispatcher = mainDispatcherRule.testDispatcher
 
-    private val fakeBeanRepository = FakeBeanRepository()
+  private val fakeBeanRepository = FakeBeanRepository()
 
-    fun buildViewModel() = apply {
-        viewModel = BeansTrackerViewModel(
-            fetchAllBeansUseCase = FetchAllBeansUseCase(
-                beanRepository = fakeBeanRepository.mock,
-                dispatcher = testDispatcher
-            )
-        )
-    }
+  fun buildViewModel() = apply {
+    viewModel = BeansTrackerViewModel(
+      fetchAllBeansUseCase = FetchAllBeansUseCase(
+        beanRepository = fakeBeanRepository.mock,
+        dispatcher = testDispatcher,
+      ),
+    )
+  }
 
-    fun assertViewState(
-        expectedViewState: BeanTrackerViewState,
-    ) = apply {
-        assertThat(viewModel.viewState.value).isEqualTo(expectedViewState)
-    }
+  fun assertViewState(expectedViewState: BeanTrackerViewState) = apply {
+    assertThat(viewModel.viewState.value).isEqualTo(expectedViewState)
+  }
 
-    fun assertFalseViewState(
-        expectedViewState: BeanTrackerViewState,
-    ) = apply {
-        assertThat(viewModel.viewState.value).isNotEqualTo(expectedViewState)
-    }
+  fun assertFalseViewState(expectedViewState: BeanTrackerViewState) = apply {
+    assertThat(viewModel.viewState.value).isNotEqualTo(expectedViewState)
+  }
 
-    fun mockFetchAllBeans(
-        response: Result<List<Bean>>,
-    ) = apply {
-        fakeBeanRepository.mockFetchAllBeansResult(
-            response
-        )
-    }
+  fun mockFetchAllBeans(response: Result<List<Bean>>) = apply {
+    fakeBeanRepository.mockFetchAllBeansResult(
+      response,
+    )
+  }
 
-    fun onAddButtonClicked() = apply {
-        viewModel.onAddButtonClicked()
-    }
+  fun onAddButtonClicked() = apply {
+    viewModel.onAddButtonClicked()
+  }
 
-    fun onAddBeanOpened() = apply {
-        viewModel.onAddBeanOpened()
-    }
+  fun onAddBeanOpened() = apply {
+    viewModel.onAddBeanOpened()
+  }
 
-    fun onBeanClicked(bean: Bean) = apply {
-        viewModel.onBeanClicked(bean)
-    }
+  fun onBeanClicked(bean: Bean) = apply {
+    viewModel.onBeanClicked(bean)
+  }
 }

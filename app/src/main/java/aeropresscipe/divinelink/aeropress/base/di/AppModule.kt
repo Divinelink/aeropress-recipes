@@ -20,49 +20,49 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    @Singleton // Tell Dagger-Hilt to create a singleton accessible everywhere in ApplicationComponent (i.e. everywhere in the application)
-    @Provides
-    fun provideYourDatabase(
-        @ApplicationContext app: Context,
-    ) = Room.databaseBuilder(
-        app,
-        HomeDatabase::class.java,
-        DB_NAME
-    ).fallbackToDestructiveMigration().build() // The reason we can construct a database for the repo
+  @Singleton // Tell Dagger-Hilt to create a singleton accessible everywhere in ApplicationComponent (i.e. everywhere in the application)
+  @Provides
+  fun provideYourDatabase(
+    @ApplicationContext app: Context,
+  ) = Room.databaseBuilder(
+    app,
+    HomeDatabase::class.java,
+    DB_NAME,
+  ).fallbackToDestructiveMigration().build() // The reason we can construct a database for the repo
 
-    @Singleton
-    @Provides
-    fun provideHistoryDao(db: HomeDatabase) = db.historyDao()
+  @Singleton
+  @Provides
+  fun provideHistoryDao(db: HomeDatabase) = db.historyDao()
 
-    @Singleton
-    @Provides
-    fun provideRecipeDao(db: HomeDatabase) = db.recipeDao()
+  @Singleton
+  @Provides
+  fun provideRecipeDao(db: HomeDatabase) = db.recipeDao()
 
-    @Singleton
-    @Provides
-    fun provideSavedRecipeDao(db: HomeDatabase) = db.favoritesDao()
+  @Singleton
+  @Provides
+  fun provideSavedRecipeDao(db: HomeDatabase) = db.favoritesDao()
 
-    @Singleton
-    @Provides
-    fun provideBeanDAO(db: HomeDatabase) = db.beanDAO()
+  @Singleton
+  @Provides
+  fun provideBeanDAO(db: HomeDatabase) = db.beanDAO()
 
-    @ApplicationContext
-    @Provides
-    fun providesApplicationContext() = Application()
+  @ApplicationContext
+  @Provides
+  fun providesApplicationContext() = Application()
 
-    @ApplicationScope
-    @Singleton
-    @Provides
-    fun providesApplicationScope(
-        @DefaultDispatcher defaultDispatcher: CoroutineDispatcher,
-    ): CoroutineScope = CoroutineScope(SupervisorJob() + defaultDispatcher)
+  @ApplicationScope
+  @Singleton
+  @Provides
+  fun providesApplicationScope(
+    @DefaultDispatcher defaultDispatcher: CoroutineDispatcher,
+  ): CoroutineScope = CoroutineScope(SupervisorJob() + defaultDispatcher)
 
-    @Provides
-    @Singleton
-    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
-        return context.getSharedPreferences(
-            context.packageName + "_preferences",
-            Context.MODE_PRIVATE
-        )
-    }
+  @Provides
+  @Singleton
+  fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
+    return context.getSharedPreferences(
+      context.packageName + "_preferences",
+      Context.MODE_PRIVATE,
+    )
+  }
 }

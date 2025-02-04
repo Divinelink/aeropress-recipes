@@ -11,16 +11,16 @@ import javax.inject.Inject
 
 @Suppress("ThrowingExceptionsWithoutMessageOrCause")
 open class DeleteBeanUseCase @Inject constructor(
-    private val beanRepository: BeanRepository,
-    @IoDispatcher dispatcher: CoroutineDispatcher,
+  private val beanRepository: BeanRepository,
+  @IoDispatcher dispatcher: CoroutineDispatcher,
 ) : UseCase<Bean, AddBeanResult>(dispatcher) {
-    override suspend fun execute(parameters: Bean): AddBeanResult {
-        val result = beanRepository.removeBean(parameters)
+  override suspend fun execute(parameters: Bean): AddBeanResult {
+    val result = beanRepository.removeBean(parameters)
 
-        return when (result) {
-            is Result.Success -> AddBeanResult.Success
-            is Result.Error -> AddBeanResult.Failure.Unknown
-            Result.Loading -> throw IllegalStateException()
-        }
+    return when (result) {
+      is Result.Success -> AddBeanResult.Success
+      is Result.Error -> AddBeanResult.Failure.Unknown
+      Result.Loading -> throw IllegalStateException()
     }
+  }
 }

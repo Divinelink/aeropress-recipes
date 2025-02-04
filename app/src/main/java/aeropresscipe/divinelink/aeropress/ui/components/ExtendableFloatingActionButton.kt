@@ -15,33 +15,33 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ExtendableFloatingActionButton(
-    modifier: Modifier = Modifier,
-    extended: Boolean,
-    text: @Composable () -> Unit,
-    icon: @Composable () -> Unit,
-    onClick: () -> Unit = {},
+  modifier: Modifier = Modifier,
+  extended: Boolean,
+  text: @Composable () -> Unit,
+  icon: @Composable () -> Unit,
+  onClick: () -> Unit = {},
 ) {
-    FloatingActionButton(
-        modifier = modifier,
-        onClick = onClick,
+  FloatingActionButton(
+    modifier = modifier,
+    onClick = onClick,
+  ) {
+    Row(
+      modifier = Modifier.padding(
+        start = PaddingSize,
+        end = PaddingSize,
+      ),
+      verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row(
-            modifier = Modifier.padding(
-                start = PaddingSize,
-                end = PaddingSize
-            ),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            icon()
+      icon()
 
-            AnimatedVisibility(visible = extended) {
-                Row {
-                    Spacer(Modifier.width(12.dp))
-                    text()
-                }
-            }
+      AnimatedVisibility(visible = extended) {
+        Row {
+          Spacer(Modifier.width(12.dp))
+          text()
         }
+      }
     }
+  }
 }
 
 private val PaddingSize = 16.dp

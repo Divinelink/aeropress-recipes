@@ -21,23 +21,23 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
 
-    @Binds
-    abstract fun bindRecipeRepository(
-        roomRepository: RoomRecipeRepository,
-    ): RecipeRepository
+  @Binds
+  abstract fun bindRecipeRepository(
+    roomRepository: RoomRecipeRepository,
+  ): RecipeRepository
 
-    @Binds
-    abstract fun bindFavoritesRepository(
-        roomRepository: RoomFavoritesRepository,
-    ): FavoritesRepository
+  @Binds
+  abstract fun bindFavoritesRepository(
+    roomRepository: RoomFavoritesRepository,
+  ): FavoritesRepository
 
-    @Binds
-    abstract fun bindTimerRepository(
-        timerRepository: RoomTimerRepository,
-    ): TimerRepository
+  @Binds
+  abstract fun bindTimerRepository(
+    timerRepository: RoomTimerRepository,
+  ): TimerRepository
 
-    @Binds
-    abstract fun bindBeanRepository(
-        beanRepository: RoomBeanRepository,
-    ): BeanRepository
+  @Binds
+  abstract fun bindBeanRepository(
+    beanRepository: RoomBeanRepository,
+  ): BeanRepository
 }

@@ -8,33 +8,41 @@ import androidx.annotation.StringRes
 import com.divinelink.aeropress.recipes.databinding.ViewNotificationBinding
 import com.google.android.material.snackbar.ContentViewCallback
 
-class NotificationView : FrameLayout, ContentViewCallback {
-    private var binding = ViewNotificationBinding.inflate(LayoutInflater.from(context), this, false)
+class NotificationView :
+  FrameLayout,
+  ContentViewCallback {
+  private var binding = ViewNotificationBinding.inflate(LayoutInflater.from(context), this, false)
 
-    override fun animateContentIn(delay: Int, duration: Int) {
-        // Intentionally Empty
-    }
+  override fun animateContentIn(
+    delay: Int,
+    duration: Int,
+  ) {
+    // Intentionally Empty
+  }
 
-    override fun animateContentOut(delay: Int, duration: Int) {
-        // Intentionally Empty
-    }
+  override fun animateContentOut(
+    delay: Int,
+    duration: Int,
+  ) {
+    // Intentionally Empty
+  }
 
-    constructor(context: Context) : this(context, null)
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    ) {
+  constructor(context: Context) : this(context, null)
+  constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
+  constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+    context,
+    attrs,
+    defStyleAttr,
+  ) {
 
-        addView(binding.root)
-    }
+    addView(binding.root)
+  }
 
-    fun setText(@StringRes resId: Int) {
-        setText(context.getText(resId))
-    }
+  fun setText(@StringRes resId: Int) {
+    setText(context.getText(resId))
+  }
 
-    fun setText(text: CharSequence) {
-        binding.notificationText.text = text
-    }
+  fun setText(text: CharSequence) {
+    binding.notificationText.text = text
+  }
 }

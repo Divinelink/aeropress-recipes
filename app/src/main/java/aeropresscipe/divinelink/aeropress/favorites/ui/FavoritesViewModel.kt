@@ -17,88 +17,88 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
-    private val deleteFavoriteUseCase: DeleteFavoriteUseCase,
-    private val fetchAllFavoritesUseCase: FetchAllFavoritesUseCase,
+  private val deleteFavoriteUseCase: DeleteFavoriteUseCase,
+  private val fetchAllFavoritesUseCase: FetchAllFavoritesUseCase,
 ) : ViewModel() {
-    private val _viewState = MutableStateFlow(FavoritesViewState())
-    val viewState = _viewState.asStateFlow()
+  private val _viewState = MutableStateFlow(FavoritesViewState())
+  val viewState = _viewState.asStateFlow()
 
-    init {
-        fetchFavorites()
+  init {
+    fetchFavorites()
+  }
+
+  fun startBrewClicked(recipe: Recipe) {
+    _viewState.update {
+      it.copy(
+        isLoading = false,
+        brewRecipe = recipe,
+        errorMessage = null,
+      )
     }
+  }
 
-    fun startBrewClicked(recipe: Recipe) {
+  /**
+   * This is called once [startBrewClicked] has been clicked to ensure that state is updated.
+   */
+  fun brewStarted() {
+    _viewState.update {
+      it.copy(
+        isLoading = false,
+        brewRecipe = null,
+        errorMessage = null,
+      )
+    }
+  }
+
+  fun deleteRecipe(recipe: Recipe) {
+    viewModelScope.launch {
+      deleteFavoriteUseCase(recipe)
+    }
+  }
+
+  fun refresh() {
+    Timber.d("Refreshing favorites.")
+    fetchFavorites()
+  }
+
+  private fun getFavoritesViewState(result: Result<List<Favorites>>) {
+    when (result) {
+      is Result.Error -> {
         _viewState.update {
-            it.copy(
-                isLoading = false,
-                brewRecipe = recipe,
-                errorMessage = null
+          FavoritesViewState(
+            isLoading = false,
+            errorMessage = result.exception.toString(),
+          )
+        }
+      }
+      is Result.Loading -> _viewState.update { FavoritesViewState() }
+      is Result.Success -> {
+        if (result.data.isEmpty()) {
+          _viewState.update {
+            FavoritesViewState(
+              isLoading = false,
+              emptyRecipes = true,
             )
-        }
-    }
-
-    /**
-     * This is called once [startBrewClicked] has been clicked to ensure that state is updated.
-     */
-    fun brewStarted() {
-        _viewState.update {
-            it.copy(
-                isLoading = false,
-                brewRecipe = null,
-                errorMessage = null,
+          }
+        } else {
+          _viewState.update {
+            FavoritesViewState(
+              isLoading = false,
+              emptyRecipes = false,
+              recipes = result.data,
+              errorMessage = null,
             )
+          }
         }
+      }
     }
+  }
 
-    fun deleteRecipe(recipe: Recipe) {
-        viewModelScope.launch {
-            deleteFavoriteUseCase(recipe)
-        }
+  private fun fetchFavorites() {
+    viewModelScope.launch {
+      fetchAllFavoritesUseCase.invoke(Unit).collect { result ->
+        getFavoritesViewState(result)
+      }
     }
-
-    fun refresh() {
-        Timber.d("Refreshing favorites.")
-        fetchFavorites()
-    }
-
-    private fun getFavoritesViewState(result: Result<List<Favorites>>) {
-        when (result) {
-            is Result.Error -> {
-                _viewState.update {
-                    FavoritesViewState(
-                        isLoading = false,
-                        errorMessage = result.exception.toString()
-                    )
-                }
-            }
-            is Result.Loading -> _viewState.update { FavoritesViewState() }
-            is Result.Success -> {
-                if (result.data.isEmpty()) {
-                    _viewState.update {
-                        FavoritesViewState(
-                            isLoading = false,
-                            emptyRecipes = true,
-                        )
-                    }
-                } else {
-                    _viewState.update {
-                        FavoritesViewState(
-                            isLoading = false,
-                            emptyRecipes = false,
-                            recipes = result.data,
-                            errorMessage = null,
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    private fun fetchFavorites() {
-        viewModelScope.launch {
-            fetchAllFavoritesUseCase.invoke(Unit).collect { result ->
-                getFavoritesViewState(result)
-            }
-        }
-    }
+  }
 }

@@ -9,7 +9,7 @@ typealias FavoritesListResult = Result<List<Favorites>>
 
 interface FavoritesRepository {
 
-    fun fetchAllFavorites(): Flow<FavoritesListResult>
+  fun fetchAllFavorites(): Flow<FavoritesListResult>
 
-    suspend fun deleteFavorite(recipe: Recipe): Result<Unit>
+  suspend fun deleteFavorite(recipe: Recipe): Result<Unit>
 }

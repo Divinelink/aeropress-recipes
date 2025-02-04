@@ -35,7 +35,7 @@ fun StarEvaluation(
 ) {
   Box(
     modifier = modifier,
-    contentAlignment = Alignment.Center
+    contentAlignment = Alignment.Center,
   ) {
     Row(modifier = Modifier.padding(horizontal = 16.dp)) {
       for (index in 0 until STAR_COUNT) {
@@ -48,7 +48,7 @@ fun StarEvaluation(
               Color.Gray
             },
             contentDescription = null,
-            modifier = Modifier.size(36.dp)
+            modifier = Modifier.size(36.dp),
           )
         }
       }
@@ -63,7 +63,7 @@ private fun StarEvaluationPreview() {
     Surface {
       Column(
         modifier = Modifier.padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
       ) {
         val values = List(5) { remember { mutableIntStateOf(it + 1) } }
         values.forEachIndexed { index, value ->

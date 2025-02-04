@@ -1,7 +1,7 @@
 package aeropresscipe.divinelink.aeropress.base.keyvalue
 
 interface StoreValues {
-    fun onFirstEverAppLaunch()
+  fun onFirstEverAppLaunch()
 
-    fun getKeysToIncludeInBackup(): List<String>
+  fun getKeysToIncludeInBackup(): List<String>
 }

@@ -8,9 +8,9 @@ import aeropresscipe.divinelink.aeropress.recipe.models.Recipe
  * @param brewRecipe starts a new with the given recipe.
  */
 data class FavoritesViewState(
-    val isLoading: Boolean = true,
-    val emptyRecipes: Boolean? = null,
-    val recipes: List<Favorites>? = null,
-    val errorMessage: String? = null,
-    val brewRecipe: Recipe? = null,
+  val isLoading: Boolean = true,
+  val emptyRecipes: Boolean? = null,
+  val recipes: List<Favorites>? = null,
+  val errorMessage: String? = null,
+  val brewRecipe: Recipe? = null,
 )

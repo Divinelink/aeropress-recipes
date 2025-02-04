@@ -15,46 +15,48 @@ import kotlin.test.assertNotEquals
 @OptIn(ExperimentalCoroutinesApi::class)
 class GetTimerSoundUseCaseTest {
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-    private val testDispatcher = mainDispatcherRule.testDispatcher
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+  private val testDispatcher = mainDispatcherRule.testDispatcher
 
-    private lateinit var fakePreferenceStorage: FakePreferenceStorage
+  private lateinit var fakePreferenceStorage: FakePreferenceStorage
 
-    @Before
-    fun setUp() {
-        fakePreferenceStorage = FakePreferenceStorage()
+  @Before
+  fun setUp() {
+    fakePreferenceStorage = FakePreferenceStorage()
+  }
+
+  @Test
+  fun `given timer sound is false, when I get timer, then I expect timer sound to be false`() =
+    runTest {
+      // Given
+      val response = Result.Success(false)
+      val failResponse = Result.Error(Exception("Some exception"))
+
+      fakePreferenceStorage.timerSound.value = false
+
+      // When
+      val useCase = GetTimerSoundUseCase(fakePreferenceStorage, testDispatcher)
+      val result = useCase(Unit)
+      // Then
+      assertEquals(response, result)
+      assertNotEquals(failResponse, result)
     }
 
-    @Test
-    fun `given timer sound is false, when I get timer, then I expect timer sound to be false`() = runTest {
-        // Given
-        val response = Result.Success(false)
-        val failResponse = Result.Error(Exception("Some exception"))
+  @Test
+  fun `given timer sound is true, when I get timer, then I expect timer sound to be true`() =
+    runTest {
+      // Given
+      val response = Result.Success(true)
+      val failResponse = Result.Error(Exception("Some exception"))
 
-        fakePreferenceStorage.timerSound.value = false
+      fakePreferenceStorage.timerSound.value = true
 
-        // When
-        val useCase = GetTimerSoundUseCase(fakePreferenceStorage, testDispatcher)
-        val result = useCase(Unit)
-        // Then
-        assertEquals(response, result)
-        assertNotEquals(failResponse, result)
-    }
-
-    @Test
-    fun `given timer sound is true, when I get timer, then I expect timer sound to be true`() = runTest {
-        // Given
-        val response = Result.Success(true)
-        val failResponse = Result.Error(Exception("Some exception"))
-
-        fakePreferenceStorage.timerSound.value = true
-
-        // When
-        val useCase = GetTimerSoundUseCase(fakePreferenceStorage, testDispatcher)
-        val result = useCase(Unit)
-        // Then
-        assertEquals(response, result)
-        assertNotEquals(failResponse, result)
+      // When
+      val useCase = GetTimerSoundUseCase(fakePreferenceStorage, testDispatcher)
+      val result = useCase(Unit)
+      // Then
+      assertEquals(response, result)
+      assertNotEquals(failResponse, result)
     }
 }

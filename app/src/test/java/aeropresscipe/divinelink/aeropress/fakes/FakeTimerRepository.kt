@@ -9,46 +9,42 @@ import org.mockito.kotlin.whenever
 
 class FakeTimerRepository {
 
-    private val mockRemote: TimerServices = mock()
+  private val mockRemote: TimerServices = mock()
 
-    val mock = RoomTimerRepository(mockRemote)
+  val mock = RoomTimerRepository(mockRemote)
 
-    suspend fun mockLikeRecipe(
-        recipe: Recipe,
-        response: Boolean,
-    ) {
-        whenever(mockRemote.likeRecipe(recipe)).thenReturn(response)
-    }
+  suspend fun mockLikeRecipe(
+    recipe: Recipe,
+    response: Boolean,
+  ) {
+    whenever(mockRemote.likeRecipe(recipe)).thenReturn(response)
+  }
 
-    suspend fun mockAddToHistory(
-        recipe: Recipe,
-    ) {
-        whenever(mockRemote.addToHistory(recipe)).thenReturn(Unit)
-    }
+  suspend fun mockAddToHistory(recipe: Recipe) {
+    whenever(mockRemote.addToHistory(recipe)).thenReturn(Unit)
+  }
 
-    suspend fun mockIsRecipeSaved(
-        recipe: Recipe?,
-        response: Boolean,
-    ) {
-        whenever(mockRemote.isRecipeSaved(recipe)).thenReturn(response)
-    }
+  suspend fun mockIsRecipeSaved(
+    recipe: Recipe?,
+    response: Boolean,
+  ) {
+    whenever(mockRemote.isRecipeSaved(recipe)).thenReturn(response)
+  }
 
-    suspend fun mockUpdateBrewingState(
-        setBrewing: Boolean,
-        timeStartedMillis: Long,
-        response: Unit,
-    ) {
-        whenever(
-            mockRemote.updateBrewingState(
-                brewing = setBrewing,
-                timeStartedMillis = timeStartedMillis
-            )
-        ).thenReturn(response)
-    }
+  suspend fun mockUpdateBrewingState(
+    setBrewing: Boolean,
+    timeStartedMillis: Long,
+    response: Unit,
+  ) {
+    whenever(
+      mockRemote.updateBrewingState(
+        brewing = setBrewing,
+        timeStartedMillis = timeStartedMillis,
+      ),
+    ).thenReturn(response)
+  }
 
-    suspend fun mockResume(
-        response: DiceDomain,
-    ) {
-        whenever(mockRemote.getResumeTimes()).thenReturn(response)
-    }
+  suspend fun mockResume(response: DiceDomain) {
+    whenever(mockRemote.getResumeTimes()).thenReturn(response)
+  }
 }

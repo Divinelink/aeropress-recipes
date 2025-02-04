@@ -9,28 +9,26 @@ import org.mockito.kotlin.whenever
 
 class FakeHomeRepository {
 
-    private val mockRemote: HomeRemote = mock()
+  private val mockRemote: HomeRemote = mock()
 
-    val mock = HomeRepository(mockRemote)
+  val mock = HomeRepository(mockRemote)
 
-    suspend fun mockGetRecipe(
-        response: DiceDomain,
-    ) {
-        whenever(mockRemote.getRecipe()).thenReturn(response)
-    }
+  suspend fun mockGetRecipe(response: DiceDomain) {
+    whenever(mockRemote.getRecipe()).thenReturn(response)
+  }
 
-    suspend fun mockUpdateRecipe(
-        recipe: Recipe,
-        update: Boolean,
-        response: DiceDomain,
-    ) {
-        whenever(
-            mockRemote.updateRecipe(
-                recipe = recipe,
-                update = update,
-            )
-        ).thenReturn(
-            response
-        )
-    }
+  suspend fun mockUpdateRecipe(
+    recipe: Recipe,
+    update: Boolean,
+    response: DiceDomain,
+  ) {
+    whenever(
+      mockRemote.updateRecipe(
+        recipe = recipe,
+        update = update,
+      ),
+    ).thenReturn(
+      response,
+    )
+  }
 }

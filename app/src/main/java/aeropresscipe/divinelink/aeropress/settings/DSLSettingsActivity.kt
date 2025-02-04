@@ -10,35 +10,35 @@ import gr.divinelink.core.util.extensions.addBackPressCallback
 @AndroidEntryPoint
 open class DSLSettingsActivity : AppCompatActivity(), DSLSettingsFragment.Callback {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.dsl_settings_activity)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.dsl_settings_activity)
 
-        if (savedInstanceState == null) {
-            val fragment = AppSettingsFragment()
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment, fragment)
-                .commitNow()
-        }
-
-        onBackPressedDispatcher.addBackPressCallback(this) { onBackPressed() }
+    if (savedInstanceState == null) {
+      val fragment = AppSettingsFragment()
+      supportFragmentManager.beginTransaction()
+        .replace(R.id.nav_host_fragment, fragment)
+        .commitNow()
     }
 
-    override fun onNavigateUp(): Boolean {
-        return if (!supportFragmentManager.popBackStackImmediate()) {
-            onWillFinish()
-            finish()
-            true
-        } else {
-            false
-        }
-    }
+    onBackPressedDispatcher.addBackPressCallback(this) { onBackPressed() }
+  }
 
-    protected open fun onWillFinish() {
-        // Intentionally Blank.
+  override fun onNavigateUp(): Boolean {
+    return if (!supportFragmentManager.popBackStackImmediate()) {
+      onWillFinish()
+      finish()
+      true
+    } else {
+      false
     }
+  }
 
-    override fun onBackPressed() {
-        onNavigateUp()
-    }
+  protected open fun onWillFinish() {
+    // Intentionally Blank.
+  }
+
+  override fun onBackPressed() {
+    onNavigateUp()
+  }
 }

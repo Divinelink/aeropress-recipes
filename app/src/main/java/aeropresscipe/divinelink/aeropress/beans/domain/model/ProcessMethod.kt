@@ -13,27 +13,27 @@ enum class ProcessMethod(
   ),
   Natural(
     stringRes = R.string.ProcessMethod__natural,
-    value = "Natural"
+    value = "Natural",
   ),
   Honey(
     stringRes = R.string.ProcessMethod__honey,
-    value = "Honey"
+    value = "Honey",
   ),
   Anaerobic(
     stringRes = R.string.ProcessMethod__anaerobic,
-    value = "Anaerobic"
+    value = "Anaerobic",
   ),
   CarbonicMaceration(
     stringRes = R.string.ProcessMethod__carbonicMaceration,
-    value = "Carbonic Maceration"
+    value = "Carbonic Maceration",
   ),
   GilingBasah(
     stringRes = R.string.ProcessMethod__gilingBasah,
-    value = "Giling Basah"
+    value = "Giling Basah",
   ),
   Other(
     stringRes = R.string.ProcessMethod__other,
-    value = "Other"
+    value = "Other",
   )
 }
 

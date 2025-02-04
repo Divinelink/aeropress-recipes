@@ -41,22 +41,22 @@ fun BeansList(
     state = state,
     contentPadding = PaddingValues(dimensionResource(id = R.dimen.list_padding)),
     verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.list_padding)),
-    modifier = modifier
+    modifier = modifier,
   ) {
     if (beans.isEmpty()) {
       item {
         EmptySectionCard(
-          text = stringResource(id = R.string.Beans__empty_bean_list_label)
+          text = stringResource(id = R.string.Beans__empty_bean_list_label),
         )
       }
     } else {
       items(
         items = beans,
-        key = { it.id }
+        key = { it.id },
       ) { bean ->
         BeanListItem(
           bean = bean,
-          onBeanClicked = { onBeanClicked(bean) }
+          onBeanClicked = { onBeanClicked(bean) },
         )
       }
 
@@ -96,7 +96,7 @@ fun EmptyBeansScreenPreview() {
     Surface {
       BeansList(
         beans = listOf(),
-        onBeanClicked = {}
+        onBeanClicked = {},
       )
     }
   }
@@ -126,7 +126,7 @@ fun ListBeansScreenPreview() {
     Surface {
       BeansList(
         beans = beans,
-        onBeanClicked = {}
+        onBeanClicked = {},
       )
     }
   }

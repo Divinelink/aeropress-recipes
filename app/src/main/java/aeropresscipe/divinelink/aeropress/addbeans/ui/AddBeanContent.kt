@@ -111,7 +111,7 @@ fun AddBeanContent(
             title = viewState.bottomSheetTitle,
           )
         }
-      }
+      },
     )
   }
 
@@ -124,7 +124,7 @@ fun AddBeanContent(
         title = {
           Text(
             text = viewState.title.getString(),
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
           )
         },
         navigationIcon = {
@@ -144,7 +144,7 @@ fun AddBeanContent(
               Icon(Icons.Default.Delete, null)
             }
           }
-        }
+        },
       )
     },
     bottomBar = {
@@ -153,11 +153,11 @@ fun AddBeanContent(
           .fillMaxWidth()
           .padding(8.dp),
         onClick = onSubmitClicked,
-        enabled = viewState.isSubmitButtonEnabled
+        enabled = viewState.isSubmitButtonEnabled,
       ) {
         Text(viewState.submitButtonText.getString())
       }
-    }
+    },
   ) { paddingValues ->
     Column(
       modifier = Modifier
@@ -168,7 +168,7 @@ fun AddBeanContent(
           start = 8.dp,
           end = 8.dp,
           bottom = paddingValues.calculateBottomPadding(),
-        )
+        ),
     ) {
       Spacer(modifier = Modifier.height(12.dp))
       CustomOutlinedTextField(
@@ -179,7 +179,7 @@ fun AddBeanContent(
         maxLines = 1,
         isError = (viewState is AddBeanViewState.Error),
         keyboardOptions = KeyboardOptions(
-          imeAction = ImeAction.Next
+          imeAction = ImeAction.Next,
         ),
       )
 
@@ -193,7 +193,7 @@ fun AddBeanContent(
           labelText = stringResource(id = R.string.Beans__roaster_name),
           maxLines = 1,
           keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Next
+            imeAction = ImeAction.Next,
           ),
         )
 
@@ -204,7 +204,7 @@ fun AddBeanContent(
           labelText = stringResource(id = R.string.Beans__origin),
           maxLines = 1,
           keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Next
+            imeAction = ImeAction.Next,
           ),
         )
       }
@@ -234,7 +234,7 @@ fun AddBeanContent(
           // Intentionally Blank.
         },
         label = R.string.Beans__roast_level,
-        value = viewState.bean.roastLevel?.name
+        value = viewState.bean.roastLevel?.name,
       )
 
       Spacer(modifier = Modifier.height(12.dp))
@@ -249,7 +249,7 @@ fun AddBeanContent(
         label = R.string.Beans__process,
         value = viewState.bean.process?.let { processMethod ->
           stringResource(processMethod.stringRes)
-        }
+        },
       )
 
       Text(

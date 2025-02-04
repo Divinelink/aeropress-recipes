@@ -12,86 +12,86 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    var repository: HomeRepository,
-    themedActivityDelegate: ThemedActivityDelegate,
+  var repository: HomeRepository,
+  themedActivityDelegate: ThemedActivityDelegate,
 ) : ViewModel(),
     HomeIntents,
     ThemedActivityDelegate by themedActivityDelegate {
-    var delegate: WeakReference<IHomeViewModel>? = null
-    internal var statesList: MutableList<HomeState> = mutableListOf()
+  var delegate: WeakReference<IHomeViewModel>? = null
+  internal var statesList: MutableList<HomeState> = mutableListOf()
 
-    private lateinit var dice: DiceDomain
-    private var canResume = false
+  private lateinit var dice: DiceDomain
+  private var canResume = false
 
-    var state: HomeState = HomeState.InitialState
-        set(value) {
-            Timber.d(value.toString())
-            field = value
-            delegate?.get()?.updateState(value)
-            statesList.add(value)
-        }
-
-    override fun init() {
-        state = HomeState.InitialState
+  var state: HomeState = HomeState.InitialState
+    set(value) {
+      Timber.d(value.toString())
+      field = value
+      delegate?.get()?.updateState(value)
+      statesList.add(value)
     }
 
-    override fun resume() {
-        getResumeState()
-    }
+  override fun init() {
+    state = HomeState.InitialState
+  }
 
-    private fun getResumeState() {
-        repository.getRecipe { dice ->
-            this.dice = dice
-            state = when (dice.isBrewing) {
-                true -> HomeState.ShowResumeButtonState(dice)
-                false -> HomeState.HideResumeButtonState
-            }
-            canResume = dice.isBrewing
-        }
-    }
+  override fun resume() {
+    getResumeState()
+  }
 
-    override fun generateRecipe() {
-        state = HomeState.HideResumeButtonState
-        canResume = false
+  private fun getResumeState() {
+    repository.getRecipe { dice ->
+      this.dice = dice
+      state = when (dice.isBrewing) {
+        true -> HomeState.ShowResumeButtonState(dice)
+        false -> HomeState.HideResumeButtonState
+      }
+      canResume = dice.isBrewing
     }
+  }
 
-    override fun startTimer(recipe: Recipe, flow: TimerFlow, update: Boolean) {
-        repository.updateRecipe(recipe, update) { dice ->
-            Timber.d("Starting timer with recipeId: ${dice.id}")
-            this.dice = dice
-            state = HomeState.StartTimerState(dice.recipe, flow)
-        }
-    }
+  override fun generateRecipe() {
+    state = HomeState.HideResumeButtonState
+    canResume = false
+  }
 
-    override fun resumeTimer() {
-        if (canResume) {
-            state = HomeState.StartTimerState(dice.recipe, TimerFlow.RESUME)
-        }
+  override fun startTimer(recipe: Recipe, flow: TimerFlow, update: Boolean) {
+    repository.updateRecipe(recipe, update) { dice ->
+      Timber.d("Starting timer with recipeId: ${dice.id}")
+      this.dice = dice
+      state = HomeState.StartTimerState(dice.recipe, flow)
     }
+  }
+
+  override fun resumeTimer() {
+    if (canResume) {
+      state = HomeState.StartTimerState(dice.recipe, TimerFlow.RESUME)
+    }
+  }
 }
 
 interface IHomeViewModel {
-    fun updateState(state: HomeState)
+  fun updateState(state: HomeState)
 }
 
 interface HomeIntents {
-    fun init()
-    fun resume()
-    fun resumeTimer()
-    fun generateRecipe()
-    fun startTimer(recipe: Recipe, flow: TimerFlow, update: Boolean)
+  fun init()
+  fun resume()
+  fun resumeTimer()
+  fun generateRecipe()
+  fun startTimer(recipe: Recipe, flow: TimerFlow, update: Boolean)
 }
 
 sealed class HomeState {
-    object InitialState : HomeState()
-    data class ShowResumeButtonState(val dice: DiceDomain) : HomeState()
-    object HideResumeButtonState : HomeState()
-    data class StartTimerState(val recipe: Recipe, val flow: TimerFlow) : HomeState()
+  object InitialState : HomeState()
+  data class ShowResumeButtonState(val dice: DiceDomain) : HomeState()
+  object HideResumeButtonState : HomeState()
+  data class StartTimerState(val recipe: Recipe, val flow: TimerFlow) : HomeState()
 }
 
 interface HomeStateHandler {
-    fun handleInitialState()
-    fun handleShowResumeButtonState(state: HomeState.ShowResumeButtonState)
-    fun handleHideResumeButtonState()
-    fun handleStartTimerState(state: HomeState.StartTimerState)
+  fun handleInitialState()
+  fun handleShowResumeButtonState(state: HomeState.ShowResumeButtonState)
+  fun handleHideResumeButtonState()
+  fun handleStartTimerState(state: HomeState.StartTimerState)
 }
