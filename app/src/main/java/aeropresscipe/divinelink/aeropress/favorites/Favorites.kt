@@ -18,7 +18,5 @@ data class Favorites(
     return id == newItem.id
   }
 
-  override fun areContentsTheSame(newItem: Any): Boolean {
-    return hashCode() == newItem.hashCode()
-  }
+  override fun areContentsTheSame(newItem: Any): Boolean = hashCode() == newItem.hashCode()
 }

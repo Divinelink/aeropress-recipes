@@ -1,11 +1,10 @@
 package aeropresscipe.divinelink.aeropress.util
 
-import aeropresscipe.divinelink.aeropress.base.keyvalue.Theme
-import androidx.appcompat.app.AppCompatActivity
+import aeropresscipe.divinelink.aeropress.model.Theme
 import androidx.appcompat.app.AppCompatDelegate
 import timber.log.Timber
 
-fun AppCompatActivity.updateForTheme(theme: Theme) = when (theme) {
+fun updateForTheme(theme: Theme) = when (theme) {
   Theme.SYSTEM -> {
     Timber.d("Setting to follow system")
     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)

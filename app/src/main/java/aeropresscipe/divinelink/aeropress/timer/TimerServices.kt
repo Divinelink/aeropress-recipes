@@ -17,7 +17,10 @@ interface ITimerServices {
   suspend fun likeRecipe(recipe: Recipe): Boolean
   suspend fun addToHistory(recipe: Recipe)
   suspend fun isRecipeSaved(recipe: Recipe?): Boolean
-  suspend fun updateBrewingState(brewing: Boolean, timeStartedMillis: Long)
+  suspend fun updateBrewingState(
+    brewing: Boolean,
+    timeStartedMillis: Long,
+  )
   suspend fun getResumeTimes(): DiceDomain
 }
 
@@ -28,23 +31,19 @@ open class TimerServices @Inject constructor(
   @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ITimerServices {
 
-  override suspend fun likeRecipe(recipe: Recipe): Boolean {
-    return withContext(dispatcher) {
-      if (savedRecipeDao.recipeExists(recipe)) {
-        savedRecipeDao.delete(recipe)
-        historyDao.updateLike(recipe, false)
-        false
-      } else {
-        savedRecipeDao.insertLikedRecipe(Favorites(recipe, getCurrentDate()))
-        historyDao.updateLike(recipe, true)
-        true
-      }
+  override suspend fun likeRecipe(recipe: Recipe): Boolean = withContext(dispatcher) {
+    if (savedRecipeDao.recipeExists(recipe)) {
+      savedRecipeDao.delete(recipe)
+      historyDao.updateLike(recipe, false)
+      false
+    } else {
+      savedRecipeDao.insertLikedRecipe(Favorites(recipe, getCurrentDate()))
+      historyDao.updateLike(recipe, true)
+      true
     }
   }
 
-  override suspend fun addToHistory(
-    recipe: Recipe,
-  ) {
+  override suspend fun addToHistory(recipe: Recipe) {
     withContext(dispatcher) {
       val isLiked = savedRecipeDao.recipeExists(recipe)
       val historyRecipe = historyDao.getHistoryRecipe(recipe)
@@ -56,12 +55,8 @@ open class TimerServices @Inject constructor(
     }
   }
 
-  override suspend fun isRecipeSaved(
-    recipe: Recipe?,
-  ): Boolean {
-    return withContext(dispatcher) {
-      savedRecipeDao.recipeExists(recipe)
-    }
+  override suspend fun isRecipeSaved(recipe: Recipe?): Boolean = withContext(dispatcher) {
+    savedRecipeDao.recipeExists(recipe)
   }
 
   override suspend fun updateBrewingState(
@@ -73,9 +68,7 @@ open class TimerServices @Inject constructor(
     }
   }
 
-  override suspend fun getResumeTimes(): DiceDomain {
-    return withContext(dispatcher) {
-      recipeDao.getRecipe()
-    }
+  override suspend fun getResumeTimes(): DiceDomain = withContext(dispatcher) {
+    recipeDao.getRecipe()
   }
 }

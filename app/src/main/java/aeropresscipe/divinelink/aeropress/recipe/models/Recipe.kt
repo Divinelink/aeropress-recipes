@@ -19,13 +19,9 @@ data class Recipe(
   }
 }
 
-fun Recipe.withBloom(): Boolean {
-  return this.bloomTime != 0L
-}
+fun Recipe.withBloom(): Boolean = this.bloomTime != 0L
 
-fun Recipe.remainingWater(): Int {
-  return this.brewWaterAmount - this.bloomWater
-}
+fun Recipe.remainingWater(): Int = this.brewWaterAmount - this.bloomWater
 
 fun Recipe.getBrewingStates(): MutableList<BrewState> {
   val brewStates: MutableList<BrewState> = mutableListOf()

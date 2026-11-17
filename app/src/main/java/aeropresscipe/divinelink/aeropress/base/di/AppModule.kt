@@ -20,11 +20,9 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-  @Singleton // Tell Dagger-Hilt to create a singleton accessible everywhere in ApplicationComponent (i.e. everywhere in the application)
+  @Singleton
   @Provides
-  fun provideYourDatabase(
-    @ApplicationContext app: Context,
-  ) = Room.databaseBuilder(
+  fun provideYourDatabase(@ApplicationContext app: Context) = Room.databaseBuilder(
     app,
     HomeDatabase::class.java,
     DB_NAME,
@@ -59,10 +57,9 @@ object AppModule {
 
   @Provides
   @Singleton
-  fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
-    return context.getSharedPreferences(
+  fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
+    context.getSharedPreferences(
       context.packageName + "_preferences",
       Context.MODE_PRIVATE,
     )
-  }
 }

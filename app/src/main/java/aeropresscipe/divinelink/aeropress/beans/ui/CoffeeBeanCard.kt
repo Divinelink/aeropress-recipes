@@ -3,9 +3,16 @@ package aeropresscipe.divinelink.aeropress.beans.ui
 import aeropresscipe.divinelink.aeropress.beans.domain.model.Bean
 import aeropresscipe.divinelink.aeropress.beans.domain.model.ProcessMethod
 import aeropresscipe.divinelink.aeropress.beans.domain.model.RoastLevel
+import aeropresscipe.divinelink.aeropress.ui.UIText
 import aeropresscipe.divinelink.aeropress.ui.components.STAR_COLOR
+import aeropresscipe.divinelink.aeropress.ui.components.SimpleAlertDialog
+import aeropresscipe.divinelink.aeropress.ui.components.swipeable.SwipeActions
+import aeropresscipe.divinelink.aeropress.ui.components.swipeable.SwipeActionsUiModel
+import aeropresscipe.divinelink.aeropress.ui.components.swipeable.SwipeUiModels
 import aeropresscipe.divinelink.aeropress.ui.theme.AeropressTheme
 import android.content.res.Configuration
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
@@ -16,13 +23,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Star
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.buildAnnotatedString
@@ -31,6 +39,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import com.divinelink.aeropress.recipes.R
+import timber.log.Timber
 import java.time.LocalDate
 
 @Composable
@@ -39,73 +49,100 @@ fun CoffeeBeanCard(
   onBeanClicked: (Bean) -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  ElevatedCard(
-    modifier = modifier.padding(horizontal = 16.dp),
-    onClick = { onBeanClicked.invoke(coffeeBean) },
-    colors = CardDefaults.cardColors(
-      contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-      containerColor = MaterialTheme.colorScheme.surfaceVariant,
+  val deleteBeanDialog = remember { mutableStateOf(false) }
+
+  if (deleteBeanDialog.value) {
+    SimpleAlertDialog(
+      confirmClick = {
+      },
+      dismissClick = {
+        deleteBeanDialog.value = false
+      },
+      title = UIText.ResourceText(R.string.Beans__delete_bean),
+      text = UIText.ResourceText(R.string.Beans__delete_bean_message),
+      confirmText = UIText.ResourceText(R.string.delete),
+      dismissText = UIText.ResourceText(R.string.cancel),
+    )
+  }
+
+  SwipeableItem(
+    swipeActionsUiModel = SwipeActionsUiModel(
+      start = SwipeUiModels.None,
+      end = SwipeUiModels.Trash,
     ),
-    elevation = CardDefaults.elevatedCardElevation(
-      defaultElevation = 6.dp,
+    swipeActionCallbacks = SwipeActions.Actions(
+      onNone = {},
+      onTrash = {
+        Timber.d("Trash bean: $coffeeBean")
+        deleteBeanDialog.value = true
+        // Open dialog
+      },
     ),
   ) {
-    Row(
+    Column(
       modifier = Modifier
-        .fillMaxWidth()
-        .padding(16.dp),
-      verticalAlignment = Alignment.CenterVertically,
+        .background(MaterialTheme.colorScheme.surfaceVariant)
+        .clickable { onBeanClicked.invoke(coffeeBean) },
     ) {
-      Column(
+      Row(
         modifier = Modifier
-          .fillMaxWidth(MAX_COLUMN_WIDTH)
-          .padding(start = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+          .fillMaxWidth()
+          .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
       ) {
-        FlowRow(
-          modifier = Modifier.fillMaxWidth(),
-          horizontalArrangement = Arrangement.spacedBy(4.dp),
+        Column(
+          modifier = Modifier
+            .fillMaxWidth(MAX_COLUMN_WIDTH)
+            .padding(start = 8.dp),
           verticalArrangement = Arrangement.spacedBy(4.dp),
-          itemVerticalAlignment = Alignment.CenterVertically,
         ) {
-          val annotatedString = buildAnnotatedString {
-            withStyle(
-              MaterialTheme.typography.titleMedium.toSpanStyle().copy(
-                color = MaterialTheme.colorScheme.onSurface,
-              ),
-            ) {
-              append(coffeeBean.name)
-            }
-
-            if (coffeeBean.origin.isNotEmpty()) {
+          FlowRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            itemVerticalAlignment = Alignment.CenterVertically,
+          ) {
+            val annotatedString = buildAnnotatedString {
               withStyle(
-                MaterialTheme.typography.titleSmall.toSpanStyle().copy(
-                  color = MaterialTheme.colorScheme.onSurfaceVariant,
+                MaterialTheme.typography.titleMedium.toSpanStyle().copy(
+                  color = MaterialTheme.colorScheme.onSurface,
                 ),
               ) {
-                append(" • ")
-                append(coffeeBean.origin)
+                append(coffeeBean.name)
+              }
+
+              if (coffeeBean.origin.isNotEmpty()) {
+                withStyle(
+                  MaterialTheme.typography.titleSmall.toSpanStyle().copy(
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                  ),
+                ) {
+                  append(" • ")
+                  append(coffeeBean.origin)
+                }
               }
             }
+            Text(
+              text = annotatedString,
+              color = MaterialTheme.colorScheme.onSurface,
+            )
           }
-          Text(
-            text = annotatedString,
-            color = MaterialTheme.colorScheme.onSurface,
-          )
+
+          if (coffeeBean.roasterName.isNotEmpty()) {
+            Text(
+              style = MaterialTheme.typography.titleSmall,
+              text = coffeeBean.roasterName,
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+          }
         }
 
-        if (coffeeBean.roasterName.isNotEmpty()) {
-          Text(
-            style = MaterialTheme.typography.titleSmall,
-            text = coffeeBean.roasterName,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-          )
+        if (coffeeBean.rating > 0) {
+          RatingItem(coffeeBean.rating)
         }
       }
 
-      if (coffeeBean.rating > 0) {
-        RatingItem(coffeeBean.rating)
-      }
+      HorizontalDivider()
     }
   }
 }

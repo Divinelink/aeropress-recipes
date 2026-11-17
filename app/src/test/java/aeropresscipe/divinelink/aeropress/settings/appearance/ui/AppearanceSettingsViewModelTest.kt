@@ -1,7 +1,6 @@
 package aeropresscipe.divinelink.aeropress.settings.appearance.ui
 
 import aeropresscipe.divinelink.aeropress.MainDispatcherRule
-import aeropresscipe.divinelink.aeropress.base.keyvalue.Theme
 import aeropresscipe.divinelink.aeropress.settings.app.appearance.AppearanceSettingsViewModel
 import aeropresscipe.divinelink.aeropress.settings.app.appearance.UpdateSettingsState
 import aeropresscipe.divinelink.aeropress.settings.app.appearance.usecase.GetAvailableThemesUseCase

@@ -1,7 +1,6 @@
 package aeropresscipe.divinelink.aeropress.settings.appearance.usecase
 
 import aeropresscipe.divinelink.aeropress.MainDispatcherRule
-import aeropresscipe.divinelink.aeropress.base.keyvalue.Theme
 import aeropresscipe.divinelink.aeropress.settings.app.appearance.usecase.GetAvailableThemesUseCase
 import aeropresscipe.divinelink.aeropress.test.util.fakes.FakePreferenceStorage
 import com.google.common.truth.Truth.assertThat

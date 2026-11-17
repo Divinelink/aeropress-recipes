@@ -17,7 +17,7 @@ class HistoryViewModel @AssistedInject constructor(
   private var repository: HistoryRepository,
   @Assisted public override var delegate: WeakReference<IHistoryViewModel>? = null,
 ) : BaseViewModel<IHistoryViewModel>(),
-    HistoryIntents {
+  HistoryIntents {
   internal var statesList: MutableList<HistoryState> = mutableListOf()
 
   var state: HistoryState = HistoryState.InitialState
@@ -36,7 +36,10 @@ class HistoryViewModel @AssistedInject constructor(
     state = HistoryState.StartNewBrewState(recipe)
   }
 
-  override fun likeRecipe(recipe: History, position: Int) {
+  override fun likeRecipe(
+    recipe: History,
+    position: Int,
+  ) {
     repository.likeRecipe(Favorites(recipe.recipe, recipe.dateBrewed)) {
       state = HistoryState.RecipeLikedState(it, position)
       val value: LikeSnackBar = when {
@@ -77,7 +80,10 @@ interface IHistoryViewModel {
 
 interface HistoryIntents : MVIBaseView {
   fun startBrew(recipe: Recipe)
-  fun likeRecipe(recipe: History, position: Int)
+  fun likeRecipe(
+    recipe: History,
+    position: Int,
+  )
   fun clearHistory(delete: Boolean)
   fun refresh()
 }
@@ -92,7 +98,10 @@ sealed class HistoryState {
 
   data class StartNewBrewState(val recipe: Recipe) : HistoryState()
 
-  data class RecipeLikedState(val item: History, val position: Int) : HistoryState()
+  data class RecipeLikedState(
+    val item: History,
+    val position: Int,
+  ) : HistoryState()
   object ClearHistoryPopUpState : HistoryState()
 
   data class ShowSnackBar(val value: LikeSnackBar) : HistoryState()

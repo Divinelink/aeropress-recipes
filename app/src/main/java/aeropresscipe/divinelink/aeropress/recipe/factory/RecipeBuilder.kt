@@ -35,12 +35,10 @@ class RecipeBuilder {
     )
   }
 
-  private fun getDice(diceType: Dices): RecipeDice {
-    return when (diceType) {
-      Dices.METHOD -> BrewMethodDice().rollDice()
-      Dices.TEMPERATURE -> Temperature().rollDice()
-      Dices.GROUND_SIZE -> GroundSize().rollDice()
-      Dices.BREW_WATER -> BrewWaterAmountDice().rollDice()
-    }
+  private fun getDice(diceType: Dices): RecipeDice = when (diceType) {
+    Dices.METHOD -> BrewMethodDice().rollDice()
+    Dices.TEMPERATURE -> Temperature().rollDice()
+    Dices.GROUND_SIZE -> GroundSize().rollDice()
+    Dices.BREW_WATER -> BrewWaterAmountDice().rollDice()
   }
 }

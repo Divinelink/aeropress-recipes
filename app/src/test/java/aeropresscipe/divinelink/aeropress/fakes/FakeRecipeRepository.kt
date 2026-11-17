@@ -17,21 +17,15 @@ class FakeRecipeRepository {
   val mock = RoomRecipeRepository(mockRemote)
   // Fixme by injecting a FakeRecipeRepository instead of passing mockRemote
 
-  suspend fun mockCreateNewRecipe(
-    response: DiceDomain,
-  ) {
+  suspend fun mockCreateNewRecipe(response: DiceDomain) {
     whenever(mockRemote.createNewRecipe()).thenReturn(response)
   }
 
-  suspend fun mockGetRecipe(
-    response: DiceDomain?,
-  ) {
+  suspend fun mockGetRecipe(response: DiceDomain?) {
     whenever(mockRemote.getRecipe()).thenReturn(response)
   }
 
-  suspend fun mockGenerateRecipe(
-    response: Boolean,
-  ) {
+  suspend fun mockGenerateRecipe(response: Boolean) {
     whenever(mockRemote.alreadyBrewing()).thenReturn(response)
   }
 }

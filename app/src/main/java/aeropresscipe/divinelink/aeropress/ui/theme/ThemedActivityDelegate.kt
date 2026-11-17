@@ -17,7 +17,7 @@
 package aeropresscipe.divinelink.aeropress.ui.theme
 
 import aeropresscipe.divinelink.aeropress.base.di.ApplicationScope
-import aeropresscipe.divinelink.aeropress.base.keyvalue.Theme
+import aeropresscipe.divinelink.aeropress.model.Theme
 import aeropresscipe.divinelink.aeropress.settings.app.appearance.usecase.GetThemeUseCase
 import aeropresscipe.divinelink.aeropress.settings.app.appearance.usecase.ObserveThemeModeUseCase
 import gr.divinelink.core.util.domain.Result
@@ -66,7 +66,8 @@ class ThemedActivityDelegateImpl @Inject constructor(
   }.stateIn(externalScope, SharingStarted.Eagerly, Theme.SYSTEM)
 
   override val currentTheme: Theme
-    get() = runBlocking { // Using runBlocking to execute this coroutine synchronously
+    get() = runBlocking {
+      // Using runBlocking to execute this coroutine synchronously
       getThemeUseCase(Unit).let {
         if (it is Result.Success) it.data else Theme.SYSTEM
       }

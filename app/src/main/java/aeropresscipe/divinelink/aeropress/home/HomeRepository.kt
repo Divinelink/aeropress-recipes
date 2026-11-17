@@ -10,13 +10,10 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
-class HomeRepository @Inject constructor(
-  private val remote: HomeRemote,
-) : BaseRepository() {
+class HomeRepository @Inject constructor(private val remote: HomeRemote) : BaseRepository() {
 
-  fun getRecipe(
-    completionBlock: (DiceDomain) -> Unit,
-  ) = performTransaction(completionBlock) { remote.getRecipe() }
+  fun getRecipe(completionBlock: (DiceDomain) -> Unit) =
+    performTransaction(completionBlock) { remote.getRecipe() }
 
   fun updateRecipe(
     recipe: Recipe,
@@ -27,7 +24,10 @@ class HomeRepository @Inject constructor(
 
 interface IHomeRemote {
   suspend fun getRecipe(): DiceDomain
-  suspend fun updateRecipe(recipe: Recipe, update: Boolean): DiceDomain
+  suspend fun updateRecipe(
+    recipe: Recipe,
+    update: Boolean,
+  ): DiceDomain
 }
 
 open class HomeRemote @Inject constructor(

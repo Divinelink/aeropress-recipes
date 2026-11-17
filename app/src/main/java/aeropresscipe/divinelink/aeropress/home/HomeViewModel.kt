@@ -15,8 +15,8 @@ class HomeViewModel @Inject constructor(
   var repository: HomeRepository,
   themedActivityDelegate: ThemedActivityDelegate,
 ) : ViewModel(),
-    HomeIntents,
-    ThemedActivityDelegate by themedActivityDelegate {
+  HomeIntents,
+  ThemedActivityDelegate by themedActivityDelegate {
   var delegate: WeakReference<IHomeViewModel>? = null
   internal var statesList: MutableList<HomeState> = mutableListOf()
 
@@ -55,7 +55,11 @@ class HomeViewModel @Inject constructor(
     canResume = false
   }
 
-  override fun startTimer(recipe: Recipe, flow: TimerFlow, update: Boolean) {
+  override fun startTimer(
+    recipe: Recipe,
+    flow: TimerFlow,
+    update: Boolean,
+  ) {
     repository.updateRecipe(recipe, update) { dice ->
       Timber.d("Starting timer with recipeId: ${dice.id}")
       this.dice = dice
@@ -79,14 +83,21 @@ interface HomeIntents {
   fun resume()
   fun resumeTimer()
   fun generateRecipe()
-  fun startTimer(recipe: Recipe, flow: TimerFlow, update: Boolean)
+  fun startTimer(
+    recipe: Recipe,
+    flow: TimerFlow,
+    update: Boolean,
+  )
 }
 
 sealed class HomeState {
   object InitialState : HomeState()
   data class ShowResumeButtonState(val dice: DiceDomain) : HomeState()
   object HideResumeButtonState : HomeState()
-  data class StartTimerState(val recipe: Recipe, val flow: TimerFlow) : HomeState()
+  data class StartTimerState(
+    val recipe: Recipe,
+    val flow: TimerFlow,
+  ) : HomeState()
 }
 
 interface HomeStateHandler {

@@ -1,7 +1,7 @@
 package aeropresscipe.divinelink.aeropress.settings.app.appearance.usecase
 
 import aeropresscipe.divinelink.aeropress.base.di.MainDispatcher
-import aeropresscipe.divinelink.aeropress.base.keyvalue.Theme
+import aeropresscipe.divinelink.aeropress.model.Theme
 import android.os.Build
 import gr.divinelink.core.util.domain.UseCase
 import kotlinx.coroutines.CoroutineDispatcher

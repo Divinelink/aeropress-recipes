@@ -25,8 +25,14 @@ interface RecipeDao {
   @Update
   suspend fun updateBrewing(recipe: DiceDomain)
 
-  @Query("UPDATE Recipe SET isBrewing=:isBrewing, timeStartedMillis=:timeStartedMillis WHERE id = :id")
-  fun updateBrewingState(isBrewing: Boolean, timeStartedMillis: Long, id: Int)
+  @Query(
+    "UPDATE Recipe SET isBrewing=:isBrewing, timeStartedMillis=:timeStartedMillis WHERE id = :id",
+  )
+  fun updateBrewingState(
+    isBrewing: Boolean,
+    timeStartedMillis: Long,
+    id: Int,
+  )
 
   @Transaction
   suspend fun updateRecipe(recipe: Recipe) {
@@ -35,15 +41,13 @@ interface RecipeDao {
   }
 
   @Transaction
-  suspend fun getRecipe(): DiceDomain {
-    return if (singleRecipe() == null) {
-      Timber.d("Recipe is null, generating a new one.")
-      val recipe = RecipeBuilder().recipe
-      updateRecipe(recipe)
-      DiceDomain(recipe, false)
-    } else {
-      Timber.d("Fetching existing recipe.")
-      singleRecipe() as DiceDomain
-    }
+  suspend fun getRecipe(): DiceDomain = if (singleRecipe() == null) {
+    Timber.d("Recipe is null, generating a new one.")
+    val recipe = RecipeBuilder().recipe
+    updateRecipe(recipe)
+    DiceDomain(recipe, false)
+  } else {
+    Timber.d("Fetching existing recipe.")
+    singleRecipe() as DiceDomain
   }
 }

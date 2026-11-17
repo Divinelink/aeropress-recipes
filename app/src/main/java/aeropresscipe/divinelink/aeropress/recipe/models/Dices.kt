@@ -2,7 +2,7 @@ package aeropresscipe.divinelink.aeropress.recipe.models
 
 enum class BrewMethod(val method: String) {
   STANDARD("Standard"),
-  INVERTED("Inverted")
+  INVERTED("Inverted"),
 }
 
 enum class CoffeeGrindSize(val size: String) {
@@ -20,9 +20,7 @@ sealed class RecipeDice {
     val bloomWater: Int,
   ) : RecipeDice()
 
-  data class TemperatureDice(
-    val temperature: Int,
-  ) : RecipeDice()
+  data class TemperatureDice(val temperature: Int) : RecipeDice()
 
   data class GroundSizeDice(
     val groundSize: CoffeeGrindSize,
@@ -39,5 +37,5 @@ enum class Dices {
   METHOD,
   TEMPERATURE,
   GROUND_SIZE,
-  BREW_WATER
+  BREW_WATER,
 }

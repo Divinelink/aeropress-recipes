@@ -19,7 +19,7 @@ class SaveRecipeCardViewModel @AssistedInject constructor(
   private var repository: TimerRepository,
   @Assisted public override var delegate: WeakReference<ISaveRecipeCardViewModel>? = null,
 ) : BaseViewModel<ISaveRecipeCardViewModel>(),
-    SaveRecipeCardIntents {
+  SaveRecipeCardIntents {
   internal var statesList: MutableList<SaveRecipeCardState> = mutableListOf()
 
   var state: SaveRecipeCardState = SaveRecipeCardState.InitialState

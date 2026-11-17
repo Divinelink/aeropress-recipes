@@ -2,7 +2,7 @@ package aeropresscipe.divinelink.aeropress.settings.app.appearance.usecase
 
 import aeropresscipe.divinelink.aeropress.base.di.IoDispatcher
 import aeropresscipe.divinelink.aeropress.base.di.PreferenceStorage
-import aeropresscipe.divinelink.aeropress.base.keyvalue.Theme
+import aeropresscipe.divinelink.aeropress.model.Theme
 import gr.divinelink.core.util.domain.UseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject

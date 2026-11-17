@@ -2,8 +2,8 @@ package aeropresscipe.divinelink.aeropress.settings.app.appearance.usecase
 
 import aeropresscipe.divinelink.aeropress.base.di.IoDispatcher
 import aeropresscipe.divinelink.aeropress.base.di.PreferenceStorage
-import aeropresscipe.divinelink.aeropress.base.keyvalue.Theme
-import aeropresscipe.divinelink.aeropress.base.keyvalue.themeFromStorageKey
+import aeropresscipe.divinelink.aeropress.model.Theme
+import aeropresscipe.divinelink.aeropress.model.themeFromStorageKey
 import gr.divinelink.core.util.domain.UseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first

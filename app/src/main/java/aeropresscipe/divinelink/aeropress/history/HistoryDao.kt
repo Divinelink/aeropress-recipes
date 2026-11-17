@@ -29,7 +29,9 @@ interface HistoryDao {
   @Query("SELECT EXISTS (SELECT 1 FROM HistoryRecipes WHERE  id= :id)")
   fun historyRecipeExists(id: Int): Boolean
 
-  @Query("DELETE FROM HistoryRecipes where id NOT IN (SELECT id from HistoryRecipes ORDER BY id DESC LIMIT 20)")
+  @Query(
+    "DELETE FROM HistoryRecipes where id NOT IN (SELECT id from HistoryRecipes ORDER BY id DESC LIMIT 20)",
+  )
   fun deleteSurplus()
 
   @Query("DELETE FROM HistoryRecipes WHERE recipe=:recipe")
@@ -39,7 +41,10 @@ interface HistoryDao {
   fun updateHistory(recipe: History)
 
   @Query("UPDATE HistoryRecipes SET isRecipeLiked=:isLiked WHERE Recipe=:recipe")
-  fun updateLike(recipe: Recipe, isLiked: Boolean)
+  fun updateLike(
+    recipe: Recipe,
+    isLiked: Boolean,
+  )
 
   @Transaction
   fun updateRecipe(history: History) {

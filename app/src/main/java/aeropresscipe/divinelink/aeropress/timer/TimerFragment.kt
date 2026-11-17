@@ -28,7 +28,7 @@ import java.util.Locale
 
 enum class TimerFlow {
   START,
-  RESUME
+  RESUME,
 }
 
 @AndroidEntryPoint
@@ -61,7 +61,10 @@ class TimerFragment :
     return view
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     transferableModel.recipe = arguments?.getBundleSerializable(TIMER)
 
@@ -88,7 +91,10 @@ class TimerFragment :
     const val FLOW = "FLOW"
 
     @JvmStatic
-    fun newInstance(recipe: Recipe?, flow: TimerFlow? = TimerFlow.START): TimerFragment {
+    fun newInstance(
+      recipe: Recipe?,
+      flow: TimerFlow? = TimerFlow.START,
+    ): TimerFragment {
       val fragment = TimerFragment()
       val args = Bundle()
       args.putSerializable(TIMER, recipe)
@@ -148,7 +154,8 @@ class TimerFragment :
     if (state.animate) {
       ObjectAnimator
         .ofInt(
-          binding?.progressBar, "progress",
+          binding?.progressBar,
+          "progress",
           state.timeInMilliseconds.toInt(),
         )
         .setDuration(THREE_HUNDRED.toLong())
@@ -159,11 +166,11 @@ class TimerFragment :
       totalTime = milliSecondsLeft,
       interval = INTERVAL,
       onTick = {
-            updateCountdownUI(it)
-        },
+        updateCountdownUI(it)
+      },
       onFinish = {
-            viewModel.updateTimer()
-        },
+        viewModel.updateTimer()
+      },
     )
     timer?.start()
   }
@@ -178,9 +185,7 @@ class TimerFragment :
     mediaPlayer?.start()
   }
 
-  private fun updateCountdownUI(
-    timeInMilliseconds: Long,
-  ) {
+  private fun updateCountdownUI(timeInMilliseconds: Long) {
     milliSecondsLeft -= INTERVAL
     val time = timeInMilliseconds / ONE_THOUSAND
     val timeLeft = time.getPairOfMinutesSeconds()

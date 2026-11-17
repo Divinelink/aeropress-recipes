@@ -9,22 +9,16 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 interface RecipeRepository {
-  suspend fun checkIfBrewing(
-    completionBlock: (Boolean) -> Unit,
-  )
+  suspend fun checkIfBrewing(completionBlock: (Boolean) -> Unit)
 
-  fun getRecipe(
-    completionBlock: (DiceDomain) -> Unit,
-  )
+  fun getRecipe(completionBlock: (DiceDomain) -> Unit)
 
-  fun createNewRecipe(
-    completionBlock: (DiceDomain) -> Unit,
-  )
+  fun createNewRecipe(completionBlock: (DiceDomain) -> Unit)
 }
 
-class RoomRecipeRepository @Inject constructor(
-  private val remote: GenerateRecipeRemote,
-) : RecipeRepository, BaseRepository() {
+class RoomRecipeRepository @Inject constructor(private val remote: GenerateRecipeRemote) :
+  BaseRepository(),
+  RecipeRepository {
 
   override suspend fun checkIfBrewing(completionBlock: (Boolean) -> Unit) {
     performTransaction(
@@ -62,10 +56,8 @@ open class GenerateRecipeRemote @Inject constructor(
   @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : IGenerateRecipeRemote {
 
-  override suspend fun alreadyBrewing(): Boolean {
-    return withContext(dispatcher) {
-      recipeDao.getRecipe().isBrewing
-    }
+  override suspend fun alreadyBrewing(): Boolean = withContext(dispatcher) {
+    recipeDao.getRecipe().isBrewing
   }
 
   override suspend fun createNewRecipe(): DiceDomain {
@@ -76,9 +68,7 @@ open class GenerateRecipeRemote @Inject constructor(
     }
   }
 
-  override suspend fun getRecipe(): DiceDomain {
-    return withContext(dispatcher) {
-      recipeDao.getRecipe()
-    }
+  override suspend fun getRecipe(): DiceDomain = withContext(dispatcher) {
+    recipeDao.getRecipe()
   }
 }

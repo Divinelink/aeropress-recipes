@@ -1,6 +1,6 @@
 package aeropresscipe.divinelink.aeropress.settings.app.appearance
 
-import aeropresscipe.divinelink.aeropress.base.keyvalue.Theme
+import aeropresscipe.divinelink.aeropress.model.Theme
 import aeropresscipe.divinelink.aeropress.settings.DSLConfiguration
 import aeropresscipe.divinelink.aeropress.settings.DSLSettingsAdapter
 import aeropresscipe.divinelink.aeropress.settings.DSLSettingsFragment

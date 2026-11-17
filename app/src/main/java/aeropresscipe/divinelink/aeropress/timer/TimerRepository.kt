@@ -28,14 +28,12 @@ interface TimerRepository {
     completionBlock: () -> Unit,
   )
 
-  fun resume(
-    completionBlock: (DiceDomain) -> Unit,
-  )
+  fun resume(completionBlock: (DiceDomain) -> Unit)
 }
 
-class RoomTimerRepository @Inject constructor(
-  private val dbRemote: TimerServices,
-) : BaseRepository(), TimerRepository {
+class RoomTimerRepository @Inject constructor(private val dbRemote: TimerServices) :
+  BaseRepository(),
+  TimerRepository {
 
   override fun likeRecipe(
     recipe: Recipe,
@@ -73,9 +71,7 @@ class RoomTimerRepository @Inject constructor(
     }
   }
 
-  override fun resume(
-    completionBlock: (DiceDomain) -> Unit,
-  ) {
+  override fun resume(completionBlock: (DiceDomain) -> Unit) {
     performTransaction(completionBlock) { dbRemote.getResumeTimes() }
   }
 }

@@ -56,23 +56,17 @@ class HomeViewModelTestRobot {
     )
   }
 
-  fun assertViewState(
-    expectedViewState: HomeState,
-  ) = apply {
+  fun assertViewState(expectedViewState: HomeState) = apply {
     val actualViewStates = viewModel.statesList
     assertThat(actualViewStates).contains(expectedViewState)
   }
 
-  fun assertFalseViewState(
-    expectedViewState: HomeState,
-  ) = apply {
+  fun assertFalseViewState(expectedViewState: HomeState) = apply {
     val actualViewState = viewModel.statesList
     assertThat(actualViewState).doesNotContain(expectedViewState)
   }
 
-  suspend fun mockGetRecipe(
-    response: DiceDomain,
-  ) = apply {
+  suspend fun mockGetRecipe(response: DiceDomain) = apply {
     repository.mockGetRecipe(response)
   }
 

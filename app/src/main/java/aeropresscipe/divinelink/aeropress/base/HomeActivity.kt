@@ -200,11 +200,11 @@ class HomeActivity :
         setTimerView(
           dice = state.dice,
           onViewAttached = {
-                recipeFragment.updateBottomPadding(padding)
-                beanTrackerFragment.updateBottomPadding(padding)
-                favoritesFragment.updateBottomPadding(recyclerViewPadding)
-                historyFragment.updateBottomPadding(recyclerViewPadding)
-            },
+            recipeFragment.updateBottomPadding(padding)
+            beanTrackerFragment.updateBottomPadding(padding)
+            favoritesFragment.updateBottomPadding(recyclerViewPadding)
+            historyFragment.updateBottomPadding(recyclerViewPadding)
+          },
         )
       }
     }
@@ -245,7 +245,11 @@ class HomeActivity :
     }
   }
 
-  override fun onUpdateRecipe(recipe: Recipe, flow: TimerFlow, update: Boolean) {
+  override fun onUpdateRecipe(
+    recipe: Recipe,
+    flow: TimerFlow,
+    update: Boolean,
+  ) {
     Timber.d("Recipe updated. Set refresh to true.")
     recipeFragment.refresh = true
     viewModel.startTimer(recipe, flow, update)

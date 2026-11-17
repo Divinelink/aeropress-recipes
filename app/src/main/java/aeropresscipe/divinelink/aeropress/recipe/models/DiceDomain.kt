@@ -24,6 +24,7 @@ fun DiceDomain?.getBrewTimeLeft(): Pair<Long, Long> {
   val bloomTimeLeft =
     timeStartedMillis - System.currentTimeMillis() + this?.recipe?.bloomTime.inMilliseconds()
   val brewTimeLeft =
-    timeStartedMillis - System.currentTimeMillis() + this?.recipe?.bloomTime.inMilliseconds() + this?.recipe?.brewTime.inMilliseconds()
+    timeStartedMillis - System.currentTimeMillis() + this?.recipe?.bloomTime.inMilliseconds() +
+      this?.recipe?.brewTime.inMilliseconds()
   return Pair(bloomTimeLeft, brewTimeLeft)
 }

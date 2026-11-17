@@ -1,6 +1,6 @@
 package aeropresscipe.divinelink.aeropress.settings.app.appearance
 
-import aeropresscipe.divinelink.aeropress.base.keyvalue.Theme
+import aeropresscipe.divinelink.aeropress.model.Theme
 import aeropresscipe.divinelink.aeropress.settings.app.appearance.usecase.GetAvailableThemesUseCase
 import aeropresscipe.divinelink.aeropress.settings.app.appearance.usecase.GetThemeUseCase
 import aeropresscipe.divinelink.aeropress.settings.app.appearance.usecase.SetThemeUseCase

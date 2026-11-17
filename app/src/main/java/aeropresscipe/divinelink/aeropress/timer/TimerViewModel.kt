@@ -22,7 +22,7 @@ class TimerViewModel @Inject constructor(
   private var repository: TimerRepository,
   val getTimerSoundUseCase: GetTimerSoundUseCase,
 ) : ViewModel(),
-    TimerIntents {
+  TimerIntents {
   internal var statesList: MutableList<TimerState> = mutableListOf()
 
   var delegate: WeakReference<ITimerViewModel>? = null
@@ -77,7 +77,11 @@ class TimerViewModel @Inject constructor(
     }
   }
 
-  private fun startTimerStates(brewState: BrewState?, timeLeft: Long, animate: Boolean) {
+  private fun startTimerStates(
+    brewState: BrewState?,
+    timeLeft: Long,
+    animate: Boolean,
+  ) {
     if (brewState == null) return
     state = TimerState.UpdateDescriptionState(brewState, animate)
     state = TimerState.UpdateProgressBar(
@@ -164,8 +168,10 @@ interface TimerIntents {
 sealed class TimerState {
   object InitialState : TimerState()
   data class ErrorState(val data: String) : TimerState()
-  data class UpdateDescriptionState(val brewState: BrewState, val animateDescription: Boolean) :
-    TimerState()
+  data class UpdateDescriptionState(
+    val brewState: BrewState,
+    val animateDescription: Boolean,
+  ) : TimerState()
 
   data class UpdateProgressBar(
     val maxValue: Int,

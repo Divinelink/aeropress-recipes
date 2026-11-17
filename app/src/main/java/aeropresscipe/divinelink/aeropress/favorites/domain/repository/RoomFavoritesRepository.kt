@@ -13,13 +13,11 @@ class RoomFavoritesRepository @Inject constructor(
   private val favoritesDao: FavoritesDao,
 ) : FavoritesRepository {
 
-  override fun fetchAllFavorites(): Flow<FavoritesListResult> {
-    return favoritesDao
-      .fetchAllFavorites()
-      .map { favorites ->
-        Result.Success(favorites)
-      }
-  }
+  override fun fetchAllFavorites(): Flow<FavoritesListResult> = favoritesDao
+    .fetchAllFavorites()
+    .map { favorites ->
+      Result.Success(favorites)
+    }
 
   override suspend fun deleteFavorite(recipe: Recipe): Result<Unit> {
     favoritesDao.delete(recipe)
